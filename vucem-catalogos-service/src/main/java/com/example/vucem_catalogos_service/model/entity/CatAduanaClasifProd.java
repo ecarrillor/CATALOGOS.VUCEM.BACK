@@ -1,0 +1,33 @@
+package com.example.vucem_catalogos_service.model.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+import java.time.Instant;
+
+@Data
+@Entity
+@Table(name = "cat_aduana_clasif_prod")
+public class CatAduanaClasifProd {
+    @Id
+    @Column(name = "id_aduana_clasif_prod", nullable = false)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cve_aduana", referencedColumnName = "cve_aduana")
+    private CatAduana cveAduana;
+
+    @NotNull
+    @Column(name = "fec_ini_vigencia", nullable = false)
+    private Instant fecIniVigencia;
+
+    @Column(name = "fec_fin_vigencia")
+    private Instant fecFinVigencia;
+
+    @NotNull
+    @Column(name = "bln_activo")
+    private Boolean blnActivo;
+
+
+}

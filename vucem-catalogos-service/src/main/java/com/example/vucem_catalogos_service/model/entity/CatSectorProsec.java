@@ -1,0 +1,46 @@
+package com.example.vucem_catalogos_service.model.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.Instant;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "cat_sector_prosec")
+public class CatSectorProsec {
+    @Id
+    @Size(max = 6)
+    @Column(name = "cve_sector_prosec", nullable = false, length = 6)
+    private String cveSectorProsec;
+
+    @Size(max = 120)
+    @Column(name = "nombre", length = 120)
+    private String nombre;
+
+    @Column(name = "bln_productor_indirecto")
+    private Short blnProductorIndirecto;
+
+    @Column(name = "bln_ampliacion_mercancias")
+    private Short blnAmpliacionMercancias;
+
+    @NotNull
+    @Column(name = "fec_ini_vigencia", nullable = false)
+    private Instant fecIniVigencia;
+
+    @Column(name = "fec_fin_vigencia")
+    private Instant fecFinVigencia;
+
+    @NotNull
+    @Column(name = "bln_activo", nullable = false)
+    private Boolean blnActivo;
+
+
+}
