@@ -2,14 +2,14 @@ package com.example.vucem_catalogos_service.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "cat_equiv_moneda")
 public class CatEquivMoneda {

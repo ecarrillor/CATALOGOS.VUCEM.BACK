@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +12,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.Instant;
 
-@Getter
-@Setter
+    @Data
 
 @Embeddable
 public class CatEquivalenciaAelcId implements Serializable {

@@ -1,19 +1,26 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatAduana;
-import com.example.vucem_catalogos_service.repository.CatAduanaRepository;
+import com.example.vucem_catalogos_service.model.entity.CatAduanaClasifProd;
+import com.example.vucem_catalogos_service.persistence.repo.ICatAduanaRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
+import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
-public class CatAduanaServiceImpl implements CatalogService<CatAduana, String> {
+public class CatAduanaServiceImpl extends AbstractCatalogService<CatAduana, String> {
 
-    private final CatAduanaRepository repository;
+    @Autowired
+    private ICatAduanaRepository catAduanaRepository;
 
-    public CatAduanaServiceImpl(CatAduanaRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public String getCatalogKey() {
@@ -21,19 +28,38 @@ public class CatAduanaServiceImpl implements CatalogService<CatAduana, String> {
     }
 
     @Override
-    public Page<CatAduana> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<CatAduana> findAll(
+            String search,
+            Map<String, String> filters,
+            boolean includeSubcatalogs,
+            Pageable pageable) {
+
+        Specification<CatAduana> spec =
+                GenericSearchSpecification.<CatAduana>searchInFields(
+                        search,
+                        List.of("clave", "nombre", "descripcion")
+                ).and(
+                        GenericFilterSpecification.byFilters(filters)
+                );
+
+
+
+        return catAduanaRepository.findAll(spec, pageable);
     }
+
+
 
 
 
     @Override
-    public CatAduana save(CatAduana entity) {
-        return repository.save(entity);
+    public Class<CatAduana> getEntityClass() {
+        return CatAduana.class;
     }
 
     @Override
-    public void deleteById(String id) {
-        repository.deleteById(id);
+    protected JpaRepository<CatAduana, String> getRepository() {
+        return catAduanaRepository;
     }
+
+
 }

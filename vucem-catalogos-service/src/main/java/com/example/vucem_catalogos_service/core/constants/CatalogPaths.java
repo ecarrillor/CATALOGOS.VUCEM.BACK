@@ -8,6 +8,6 @@ public class CatalogPaths extends ConstPath{
 
     public static final String CREATE = "/ctc01/{catalog}";
     public static final String UPDATE = "/ctu01/{catalog}";
-    public static final String DELETE = "/ctd01/{catalog}/{id}";
+    public static final String FIND_BY_ID = "/ctd01/{cwatalog}/{id}";
     public static final String LIST   = "/ctl01/{catalog}";
 }

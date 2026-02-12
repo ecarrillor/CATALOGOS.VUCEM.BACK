@@ -1,13 +1,11 @@
 package com.example.vucem_catalogos_service.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.Instant;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "cat_isotopo_ttra")
 public class CatIsotopoTtra {

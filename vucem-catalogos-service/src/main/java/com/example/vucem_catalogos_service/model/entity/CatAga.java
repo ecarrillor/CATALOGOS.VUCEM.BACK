@@ -38,7 +38,7 @@ public class CatAga {
 
     @NotNull
     @Column(name = "bln_activo")
-    private Boolean blnActivo;
+    private Boolean blnActivo = true;
 
 
 }

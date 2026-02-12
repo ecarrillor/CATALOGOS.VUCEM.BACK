@@ -3,14 +3,14 @@ package com.example.vucem_catalogos_service.model.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode
 @Embeddable
 public class CatDictamenTramiteId implements Serializable {
