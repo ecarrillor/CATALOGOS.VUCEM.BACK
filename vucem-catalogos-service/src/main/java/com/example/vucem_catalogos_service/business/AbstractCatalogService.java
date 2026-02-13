@@ -21,9 +21,12 @@ public abstract class AbstractCatalogService<T, ID>
 
     @Override
     public T save(Object body) {
+
         T entity = mapper.convertValue(body, getEntityClass());
+
         return getRepository().save(entity);
     }
+
 
     @Override
     public Optional<T> findById(String id) {

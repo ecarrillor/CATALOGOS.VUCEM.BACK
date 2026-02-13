@@ -87,17 +87,18 @@ public class CatalogController {
     @PostMapping(CatalogPaths.CREATE)
     public ResponseEntity<?> create(
             @PathVariable String catalog,
-            @PathVariable String id,
             @RequestBody Object body) {
-        Object saved = getService(catalog).save(id,body);
+
+        Object saved = getService(catalog).save( body);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(saved);
     }
 
+
     @Operation(summary = "Actualizar registro")
-    @PostMapping(CatalogPaths.UPDATE)
+    @PutMapping(CatalogPaths.UPDATE)
     public ResponseEntity<?> update(
             @PathVariable String catalog,
             @PathVariable String id,

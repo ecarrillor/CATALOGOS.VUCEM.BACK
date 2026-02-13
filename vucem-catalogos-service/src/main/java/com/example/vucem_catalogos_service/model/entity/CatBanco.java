@@ -14,7 +14,6 @@ import java.time.Instant;
 @Table(name = "cat_banco")
 public class CatBanco {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Size(max = 20)
     @Column(name = "cve_banco", nullable = false, length = 20)
     private String cveBanco;
