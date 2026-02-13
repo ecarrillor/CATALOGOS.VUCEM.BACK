@@ -1,7 +1,9 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatAga;
+import com.example.vucem_catalogos_service.model.entity.CatBanco;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAgaRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatBancoRepository;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -17,24 +19,23 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class CatAgaCatalogServiceImpl extends AbstractCatalogService<CatAga, String> {
-
+public class CatBancoServiceImpl extends AbstractCatalogService<CatBanco, String>{
     @Autowired
-    private ICatAgaRepository catAgaRepository;
+    private ICatBancoRepository catBancoRepository;
 
     @Override
     public String getCatalogKey() {
-        return "cat-aga";
+        return "cat-banco";
     }
 
     @Override
-    public Class<CatAga> getEntityClass() {
-        return CatAga.class;
+    public Class<CatBanco> getEntityClass() {
+        return CatBanco.class;
     }
 
     @Override
-    protected JpaRepository<CatAga, String> getRepository() {
-        return catAgaRepository;
+    protected JpaRepository<CatBanco, String> getRepository() {
+        return catBancoRepository;
     }
 
     @Override
@@ -43,25 +44,23 @@ public class CatAgaCatalogServiceImpl extends AbstractCatalogService<CatAga, Str
     }
 
     @Override
-    public Page<CatAga> findAll(
+    public Page<CatBanco> findAll(
             String search,
             Map<String, String> filters,
             boolean includeSubcatalogs,
             Pageable pageable
     ) {
 
-        Specification<CatAga> spec =
-                GenericSearchSpecification.<CatAga>searchInFields(
+        Specification<CatBanco> spec =
+                GenericSearchSpecification.<CatBanco>searchInFields(
                         search,
-                        List.of("cveParametro", "descripcion", "valor")
+                        List.of("cveBanco", "nombre")
                 ).and(
-                        GenericFilterSpecification.<CatAga>byFilters(filters)
+                        GenericFilterSpecification.<CatBanco>byFilters(filters)
                 ).and(
                         (root, query, cb) -> cb.equal(root.get("blnActivo"), true)
                 );
 
-        return catAgaRepository.findAll(spec, pageable);
+        return catBancoRepository.findAll(spec, pageable);
     }
-
-
 }

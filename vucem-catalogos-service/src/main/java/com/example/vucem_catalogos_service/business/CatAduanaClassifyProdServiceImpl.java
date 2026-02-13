@@ -1,8 +1,6 @@
 package com.example.vucem_catalogos_service.business;
 
-import com.example.vucem_catalogos_service.model.entity.CatAduana;
 import com.example.vucem_catalogos_service.model.entity.CatAduanaClasifProd;
-import com.example.vucem_catalogos_service.model.entity.CatAga;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAduanaClasifProdRepository;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
@@ -27,6 +25,21 @@ public class CatAduanaClassifyProdServiceImpl extends AbstractCatalogService<Cat
     }
 
     @Override
+    public Class<CatAduanaClasifProd> getEntityClass() {
+        return CatAduanaClasifProd.class;
+    }
+
+    @Override
+    protected JpaRepository<CatAduanaClasifProd, Long> getRepository() {
+        return iCatAduanaClasifProdRepository;
+    }
+
+    @Override
+    protected Class<Long> getIdClass() {
+        return Long.class;
+    }
+
+    @Override
     public Page<CatAduanaClasifProd> findAll(
             String search,
             Map<String, String> filters,
@@ -45,20 +58,6 @@ public class CatAduanaClassifyProdServiceImpl extends AbstractCatalogService<Cat
 
         return iCatAduanaClasifProdRepository.findAll(spec, pageable);
     }
-
-
-
-    @Override
-    public Class<CatAduanaClasifProd> getEntityClass() {
-        return CatAduanaClasifProd.class;
-    }
-
-    @Override
-    protected JpaRepository<CatAduanaClasifProd, Long> getRepository() {
-        return iCatAduanaClasifProdRepository;
-    }
-
-
 
 
 }

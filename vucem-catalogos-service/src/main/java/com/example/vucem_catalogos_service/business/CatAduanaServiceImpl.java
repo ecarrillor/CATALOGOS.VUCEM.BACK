@@ -5,6 +5,7 @@ import com.example.vucem_catalogos_service.model.entity.CatAduanaClasifProd;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAduanaRepository;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class CatAduanaServiceImpl extends AbstractCatalogService<CatAduana, String> {
 
     @Autowired
@@ -26,6 +28,22 @@ public class CatAduanaServiceImpl extends AbstractCatalogService<CatAduana, Stri
     public String getCatalogKey() {
         return "cat-aduana";
     }
+
+    @Override
+    public Class<CatAduana> getEntityClass() {
+        return CatAduana.class;
+    }
+
+    @Override
+    protected JpaRepository<CatAduana, String> getRepository() {
+        return catAduanaRepository;
+    }
+
+    @Override
+    protected Class<String> getIdClass() {
+        return String.class;
+    }
+
 
     @Override
     public Page<CatAduana> findAll(
@@ -47,19 +65,6 @@ public class CatAduanaServiceImpl extends AbstractCatalogService<CatAduana, Stri
         return catAduanaRepository.findAll(spec, pageable);
     }
 
-
-
-
-
-    @Override
-    public Class<CatAduana> getEntityClass() {
-        return CatAduana.class;
-    }
-
-    @Override
-    protected JpaRepository<CatAduana, String> getRepository() {
-        return catAduanaRepository;
-    }
 
 
 }

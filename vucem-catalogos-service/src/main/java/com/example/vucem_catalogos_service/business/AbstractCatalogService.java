@@ -17,29 +17,52 @@ public abstract class AbstractCatalogService<T, ID>
 
     protected abstract JpaRepository<T, ID> getRepository();
 
+    protected abstract Class<ID> getIdClass();
+
     @Override
     public T save(Object body) {
         T entity = mapper.convertValue(body, getEntityClass());
         return getRepository().save(entity);
     }
 
-    /*@Override
-    public Optional<T> findById(ID id) {
-        return getRepository().findById(id);
+    @Override
+    public Optional<T> findById(String id) {
+        ID convertedId = convertId(id);
+        return getRepository().findById(convertedId);
     }
 
     @Override
-    public T update(ID id, Object body) throws JsonMappingException {
+    public T update(String id, Object body) throws JsonMappingException {
 
-        T existing = getRepository().findById(id)
+        ID convertedId = convertId(id);
+
+        T existing = getRepository().findById(convertedId)
                 .orElseThrow(() -> new RuntimeException("Registro no encontrado"));
 
-        T updated = mapper.convertValue(body, getEntityClass());
-
-        // Mantener el ID original
-        mapper.updateValue(existing, updated);
+        // Actualiza SOLO los campos que vienen en el body
+        mapper.updateValue(existing, body);
 
         return getRepository().save(existing);
-    }*/
+    }
+
+
+
+
+
+    @SuppressWarnings("unchecked")
+    private ID convertId(String id) {
+
+        Class<ID> idClass = getIdClass();
+
+        if (idClass.equals(Long.class)) {
+            return (ID) Long.valueOf(id);
+        } else if (idClass.equals(Integer.class)) {
+            return (ID) Integer.valueOf(id);
+        } else if (idClass.equals(String.class)) {
+            return (ID) id;
+        }
+
+        throw new IllegalArgumentException("Tipo de ID no soportado");
+    }
 
 }

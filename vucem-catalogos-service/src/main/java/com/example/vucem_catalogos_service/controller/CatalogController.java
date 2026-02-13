@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.controller;
 
 import com.example.vucem_catalogos_service.business.CatalogService;
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -57,16 +58,22 @@ public class CatalogController {
                 getService(catalog).findAll(search, filters, includeSubcatalogs, pageable)
         );
     }
-    /*@GetMapping(CatalogPaths.FIND_BY_ID)
-    public ResponseEntity<?> getById(
+
+
+    @Operation(summary = "Obtener registro por ID")
+    @GetMapping(CatalogPaths.FIND_BY_ID)
+    public ResponseEntity<?> findById(
             @PathVariable String catalog,
-            @PathVariable String id
-    ) {
-        return getService(catalog)
+            @PathVariable String id) {
+
+        return (ResponseEntity<?>) getService(catalog)
                 .findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }*/
+    }
+
+
+
 
     @Operation(
             summary = "Crear registro en catálogo",
@@ -80,21 +87,23 @@ public class CatalogController {
     @PostMapping(CatalogPaths.CREATE)
     public ResponseEntity<?> create(
             @PathVariable String catalog,
+            @PathVariable String id,
             @RequestBody Object body) {
-        Object saved = getService(catalog).save(body);
+        Object saved = getService(catalog).save(id,body);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(saved);
     }
 
-    @PutMapping(CatalogPaths.UPDATE)
+    @Operation(summary = "Actualizar registro")
+    @PostMapping(CatalogPaths.UPDATE)
     public ResponseEntity<?> update(
             @PathVariable String catalog,
-            @RequestBody Object body
-    ) {
+            @PathVariable String id,
+            @RequestBody Object body) throws JsonMappingException {
         return ResponseEntity.ok(
-                getService(catalog).save(body)
+                getService(catalog).update(id, body)
         );
     }
 

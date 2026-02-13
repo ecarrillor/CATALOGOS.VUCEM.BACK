@@ -1,9 +1,6 @@
 package com.example.vucem_catalogos_service.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -17,6 +14,7 @@ import java.time.Instant;
 @Table(name = "cat_banco")
 public class CatBanco {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Size(max = 20)
     @Column(name = "cve_banco", nullable = false, length = 20)
     private String cveBanco;
@@ -37,10 +35,10 @@ public class CatBanco {
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
-    private Boolean blnActivo;
+    private Boolean blnActivo = true;
 
     @Column(name = "bln_e5")
-    private Short blnE5;
+    private Boolean blnE5;
 
 
 }

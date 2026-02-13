@@ -1,10 +1,12 @@
 package com.example.vucem_catalogos_service.business;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Map;
+import java.util.Optional;
 
 
 public interface CatalogService<T, ID> {
@@ -18,14 +20,11 @@ public interface CatalogService<T, ID> {
             Pageable pageable
     );
 
-
-    //T update(ID id, Object body) throws JsonMappingException;
-
-
     T save(Object body);
 
+    Optional<T> findById(String id);
+
+    T update(String id, Object body) throws JsonMappingException;
+
     Class<T> getEntityClass();
-
-
-
 }

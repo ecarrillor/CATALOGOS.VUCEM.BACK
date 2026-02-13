@@ -7,7 +7,7 @@ public class CatalogPaths extends ConstPath{
     public static final String CONTROLLER = BASE_API_PATH + "/catalogs";
 
     public static final String CREATE = "/ctc01/{catalog}";
-    public static final String UPDATE = "/ctu01/{catalog}";
-    public static final String FIND_BY_ID = "/ctd01/{cwatalog}/{id}";
+    public static final String UPDATE = "/ctu01/{catalog}/{id}";
+    public static final String FIND_BY_ID = "/ctd01/{catalog}/{id}";
     public static final String LIST   = "/ctl01/{catalog}";
 }
