@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(CatalogPaths.CONTROLLER)
-@Tag(name = "Catálogos", description = "Operaciones genéricas de catálogos")
+@Tag(name = "CatÃ¡logos", description = "Operaciones genÃ©ricas de catÃ¡logos")
 
 public class CatalogController {
 
@@ -34,8 +34,8 @@ public class CatalogController {
 
 
     @Operation(
-            summary = "Listar catálogo, busqueda por key, en el excel pongo las keys",
-            description = "Devuelve registros paginados con búsqueda y filtros dinámicos"
+            summary = "Listar catÃ¡logo, busqueda por key, en el excel pongo las keys",
+            description = "Devuelve registros paginados con bÃºsqueda y filtros dinÃ¡micos"
     )
     @GetMapping(CatalogPaths.LIST)
     public ResponseEntity<?> list(
@@ -45,7 +45,7 @@ public class CatalogController {
             @RequestParam(defaultValue = "false") boolean includeSubcatalogs,
             Pageable pageable
     ) {
-        // Remover parámetros reservados de paginación
+        // Remover parÃ¡metros reservados de paginaciÃ³n
         if (filters != null) {
             filters.remove("page");
             filters.remove("size");
@@ -76,13 +76,13 @@ public class CatalogController {
 
 
     @Operation(
-            summary = "Crear registro en catálogo",
-            description = "Crea un registro dinámico según el catálogo indicado"
+            summary = "Crear registro en catÃ¡logo",
+            description = "Crea un registro dinÃ¡mico segÃºn el catÃ¡logo indicado"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Registro creado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "404", description = "Catálogo no encontrado")
+            @ApiResponse(responseCode = "400", description = "Datos invÃ¡lidos"),
+            @ApiResponse(responseCode = "404", description = "CatÃ¡logo no encontrado")
     })
     @PostMapping(CatalogPaths.CREATE)
     public ResponseEntity<?> create(
