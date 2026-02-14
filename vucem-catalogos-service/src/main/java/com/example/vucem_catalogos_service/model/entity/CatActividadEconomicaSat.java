@@ -1,5 +1,6 @@
 package com.example.vucem_catalogos_service.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -10,6 +11,8 @@ import lombok.Setter;
 import java.time.Instant;
 
 @Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 @Entity
 @Table(name = "cat_actividad_economica_sat")
 public class CatActividadEconomicaSat {

@@ -2,8 +2,10 @@ package com.example.vucem_catalogos_service.persistence.repo;
 
 import com.example.vucem_catalogos_service.model.entity.CatFundamentoDictaman;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ICatFundamentoDictamanRepository extends JpaRepository<CatFundamentoDictaman, Integer> {
+public interface ICatFundamentoDictamanRepository extends JpaRepository<CatFundamentoDictaman, Integer>,
+        JpaSpecificationExecutor<CatFundamentoDictaman> {
 }

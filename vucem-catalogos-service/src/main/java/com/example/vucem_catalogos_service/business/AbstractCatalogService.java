@@ -63,6 +63,8 @@ public abstract class AbstractCatalogService<T, ID>
             return (ID) Integer.valueOf(id);
         } else if (idClass.equals(String.class)) {
             return (ID) id;
+        }else if (idClass.equals(Short.class)) {
+            return (ID) id;
         }
 
         throw new IllegalArgumentException("Tipo de ID no soportado");
