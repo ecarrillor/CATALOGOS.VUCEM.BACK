@@ -23,7 +23,7 @@ public class CatFundamentoDictaman {
     private String descripcion;
 
     @Column(name = "bln_sentido_fundamento")
-    private Short blnSentidoFundamento;
+    private Boolean blnSentidoFundamento;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
