@@ -2,13 +2,11 @@ package com.example.vucem_catalogos_service.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.Instant;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "cat_regimen_ttra")
 public class CatRegimenTtra {
@@ -18,7 +16,7 @@ public class CatRegimenTtra {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cve_regimen", referencedColumnName = "cve_regimen")
-    private CatRegiman cveRegimen;
+    private CatRegimen cveRegimen;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_tramite", referencedColumnName = "id_tipo_tramite")

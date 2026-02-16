@@ -6,13 +6,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "cat_sector_prosec")
 public class CatSectorProsec {
@@ -26,10 +26,10 @@ public class CatSectorProsec {
     private String nombre;
 
     @Column(name = "bln_productor_indirecto")
-    private Short blnProductorIndirecto;
+    private Boolean blnProductorIndirecto;
 
     @Column(name = "bln_ampliacion_mercancias")
-    private Short blnAmpliacionMercancias;
+    private Boolean blnAmpliacionMercancias;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
