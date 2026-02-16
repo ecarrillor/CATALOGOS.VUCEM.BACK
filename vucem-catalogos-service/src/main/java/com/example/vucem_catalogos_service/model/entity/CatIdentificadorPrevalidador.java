@@ -32,7 +32,7 @@ public class CatIdentificadorPrevalidador {
 
     @NotNull
     @Column(name = "bln_utilizado", nullable = false)
-    private Short blnUtilizado;
+    private Boolean blnUtilizado;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)

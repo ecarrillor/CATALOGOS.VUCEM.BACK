@@ -1,8 +1,6 @@
 package com.example.vucem_catalogos_service.business;
 
-import com.example.vucem_catalogos_service.model.entity.CatFundamentoDictaman;
 import com.example.vucem_catalogos_service.model.entity.CatIdentificadorPrevalidador;
-import com.example.vucem_catalogos_service.persistence.repo.ICatFundamentoDictamanRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatIdentificadorPrevalidadorRepository;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
