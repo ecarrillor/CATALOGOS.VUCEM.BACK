@@ -1,7 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
-import com.example.vucem_catalogos_service.model.entity.CatSectorProsec;
-import com.example.vucem_catalogos_service.persistence.repo.ICatSectorProsecRepository;
+import com.example.vucem_catalogos_service.model.entity.CatTipoAduana;
+import com.example.vucem_catalogos_service.persistence.repo.ICatTipoAduanaRepository;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -17,23 +17,23 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class ICatSectorProsecServiceImpl extends AbstractCatalogService<CatSectorProsec, String> {
+public class CatTipoAduanaServiceImpl extends AbstractCatalogService<CatTipoAduana, String>{
     @Autowired
-    private ICatSectorProsecRepository catSectorProsecRepository;
+    private ICatTipoAduanaRepository catTipoAduanaRepository;
 
     @Override
     public String getCatalogKey() {
-        return "cat_sector_prosec";
+        return "cat_tipo_aduana";
     }
 
     @Override
-    public Class<CatSectorProsec> getEntityClass() {
-        return CatSectorProsec.class;
+    public Class<CatTipoAduana> getEntityClass() {
+        return CatTipoAduana.class;
     }
 
     @Override
-    protected JpaRepository<CatSectorProsec, String> getRepository() {
-        return catSectorProsecRepository;
+    protected JpaRepository<CatTipoAduana, String> getRepository() {
+        return catTipoAduanaRepository;
     }
 
     @Override
@@ -43,21 +43,21 @@ public class ICatSectorProsecServiceImpl extends AbstractCatalogService<CatSecto
 
 
     @Override
-    public Page<CatSectorProsec> findAll(
+    public Page<CatTipoAduana> findAll(
             String search,
             Map<String, String> filters,
             boolean includeSubcatalogs,
             Pageable pageable) {
 
-        Specification<CatSectorProsec> spec =
-                GenericSearchSpecification.<CatSectorProsec>searchInFields(
+        Specification<CatTipoAduana> spec =
+                GenericSearchSpecification.<CatTipoAduana>searchInFields(
                         search,
-                        List.of("cveSectorProsec", "nombre")
+                        List.of("nombre")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
                 );
 
 
-        return catSectorProsecRepository.findAll(spec, pageable);
+        return catTipoAduanaRepository.findAll(spec, pageable);
     }
 }

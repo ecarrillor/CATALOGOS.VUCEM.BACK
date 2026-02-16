@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
@@ -14,26 +13,23 @@ import java.time.Instant;
 
 @Data
 @Entity
-@Table(name = "cat_tipo_aduana")
-public class CatTipoAduana {
+@Table(name = "cat_sit_dom_idc")
+public class CatSitDomIdc {
     @Id
-    @Size(max = 2)
-    @Column(name = "cve_tipo_aduana", nullable = false, length = 2)
-    private String cveTipoAduana;
+    @Column(name = "id_sit_dom_idc", nullable = false)
+    private Long id;
 
-    @Size(max = 30)
-    @Column(name = "nombre", length = 30)
-    private String nombre;
+    @Size(max = 1000)
+    @Column(name = "descripcion", length = 1000)
+    private String descripcion;
 
-    @NotNull
-    @Column(name = "fec_ini_vigencia", nullable = false)
+    @Column(name = "fec_ini_vigencia")
     private Instant fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
     private Instant fecFinVigencia;
 
-    @NotNull
-    @Column(name = "bln_activo", nullable = false)
+    @Column(name = "bln_activo")
     private Boolean blnActivo;
 
 
