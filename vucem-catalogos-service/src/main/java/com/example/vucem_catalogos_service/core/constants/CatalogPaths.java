@@ -22,4 +22,14 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_CATALOGO_ADUANA = "/cat_aduana/save";
     public static final String FIND_CATALOGO_ADUANA = "/cat_aduana/{cveEntidad}";
     public static final String UPDATE_CATALOGO_ADUANA = "/cat_aduana/{cveEntidad}";
+
+    /*entidad CAT_APROB_CERT_SE */
+    public static final String LIST_CATALOGO_APROB_CERT = "/cat_aprobCert/list";
+    public static final String SAVE_CATALOGO_APROB_CERT = "/cat_aprobCert/save";
+    public static final String FIND_CATALOGO_APROB_CERT = "/cat_aprobCert/{id}";
+    public static final String UPDATE_CATALOGO_APROB_CERT = "/cat_aprobCert/{id}";
+
+    /*entidad CAT_UNIDAD_ADMINISTRATIVA */
+    public static final String LIST_UNIDAD_ADMIN_LIST_LAB = "/cat_unidad_adm/listLab";
+
 }
