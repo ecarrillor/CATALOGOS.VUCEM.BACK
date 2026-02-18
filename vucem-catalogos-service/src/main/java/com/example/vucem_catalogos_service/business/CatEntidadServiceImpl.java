@@ -46,11 +46,34 @@ public class CatEntidadServiceImpl implements ICatEntidadService {
     }
 
     @Override
-    public CatEntidad updateBlnActivo(String cveEntidad, Boolean blnActivo) {
+    public CatEntidad updateEntidad(String cveEntidad, CatEntidad catEntidad) {
         CatEntidad entidad = repository.findById(cveEntidad)
                 .orElseThrow(() -> new RuntimeException("Entidad no encontrada"));
 
-        entidad.setBlnActivo(blnActivo);
+
+        if (catEntidad.getNombre() != null) {
+            entidad.setNombre(catEntidad.getNombre());
+        }
+
+        if (catEntidad.getCodEntidadIdc() != null) {
+            entidad.setCodEntidadIdc(catEntidad.getCodEntidadIdc());
+        }
+
+        if (catEntidad.getFecIniVigencia() != null) {
+            entidad.setFecIniVigencia(catEntidad.getFecIniVigencia());
+        }
+
+        if (catEntidad.getFecFinVigencia() != null) {
+            entidad.setFecFinVigencia(catEntidad.getFecFinVigencia());
+        }
+
+        if (catEntidad.getBlnActivo() != null) {
+            entidad.setBlnActivo(catEntidad.getBlnActivo());
+        }
+
+        if (catEntidad.getCvePais() != null) {
+            entidad.setCvePais(catEntidad.getCvePais());
+        }
 
         return repository.save(entidad);
     }

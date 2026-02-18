@@ -14,7 +14,7 @@ public interface ICatEntidadService {
 
     CatEntidad findByCveEntidad(String cveEntidad);
 
-    CatEntidad updateBlnActivo(String cveEntidad, Boolean blnActivo);
+    CatEntidad updateEntidad(String cveEntidad, CatEntidad catEntidad);
 
     List<CatPais> findAllPaises();
 

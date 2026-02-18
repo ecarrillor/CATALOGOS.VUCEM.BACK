@@ -1,5 +1,7 @@
 package com.example.vucem_catalogos_service.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -15,8 +17,9 @@ public class CatAduanaClasifProd {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cve_aduana", referencedColumnName = "cve_aduana")
-    private CatAduana cveAduana;
+    @JoinColumn(name = "cve_aduana")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private CatAduana aduana;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
@@ -28,6 +31,11 @@ public class CatAduanaClasifProd {
     @NotNull
     @Column(name = "bln_activo")
     private Boolean blnActivo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_clasif_producto")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private CatClasifProducto idClasifProducto;
 
 
 }

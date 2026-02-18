@@ -79,10 +79,10 @@ public class CatTipoTramite {
     private String nombre;
 
     @Column(name = "bln_replica_info")
-    private Short blnReplicaInfo;
+    private Boolean blnReplicaInfo;
 
     @Column(name = "bln_automatico")
-    private Short blnAutomatico;
+    private Boolean blnAutomatico;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
@@ -93,7 +93,7 @@ public class CatTipoTramite {
     private Boolean blnActivo;
 
     @Column(name = "bln_asignacion")
-    private Short blnAsignacion;
+    private Boolean blnAsignacion;
 
     @NotNull
     @Column(name = "cve_modulo", nullable = false)

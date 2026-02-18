@@ -49,11 +49,7 @@ public class CatEntidadController {
             @PathVariable String cveEntidad,
             @RequestBody CatEntidad request) {
 
-        CatEntidad updated = service.updateBlnActivo(
-                cveEntidad,
-                request.getBlnActivo()
-        );
-
+        CatEntidad updated = service.updateEntidad(cveEntidad, request);
         return ResponseEntity.ok(updated);
     }
 
