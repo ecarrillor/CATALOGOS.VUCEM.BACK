@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.Instant;
 
@@ -23,7 +21,7 @@ public class CatPaisRestriccionTtra {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cve_pais", referencedColumnName = "cve_pais")
-    private CatPai cvePais;
+    private CatPais cvePais;
 
     @Size(max = 20)
     @Column(name = "ide_tipo_restriccion_pais_ttra", length = 20)

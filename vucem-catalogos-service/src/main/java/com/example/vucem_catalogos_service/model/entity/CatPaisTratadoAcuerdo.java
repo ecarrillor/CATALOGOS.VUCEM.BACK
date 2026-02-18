@@ -3,8 +3,6 @@ package com.example.vucem_catalogos_service.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.Instant;
 
@@ -18,7 +16,7 @@ public class CatPaisTratadoAcuerdo {
     @MapsId("cvePais")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cve_pais", nullable = false, referencedColumnName = "cve_pais")
-    private CatPai cvePais;
+    private CatPais cvePais;
 
     @Column(name = "fec_captura")
     private Instant fecCaptura;

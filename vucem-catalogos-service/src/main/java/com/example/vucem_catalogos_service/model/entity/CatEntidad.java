@@ -1,9 +1,8 @@
 package com.example.vucem_catalogos_service.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -43,5 +42,14 @@ public class CatEntidad {
     @Column(name = "bln_activo", nullable = false)
     private Boolean blnActivo;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cve_pais")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private CatPais cvePais;
+
+    @JsonProperty("cvePais")
+    public String getCvePaisCodigo() {
+        return cvePais != null ? cvePais.getCvePais() : null;
+    }
 
 }

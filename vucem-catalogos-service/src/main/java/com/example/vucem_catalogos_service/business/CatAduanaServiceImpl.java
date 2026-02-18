@@ -1,13 +1,16 @@
 package com.example.vucem_catalogos_service.business;
 
+import com.example.vucem_catalogos_service.business.Interface.ICatAduanaService;
 import com.example.vucem_catalogos_service.model.entity.CatAduana;
 import com.example.vucem_catalogos_service.model.entity.CatAduanaClasifProd;
+import com.example.vucem_catalogos_service.model.entity.CatEntidad;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAduanaRepository;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,53 +21,18 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class CatAduanaServiceImpl extends AbstractCatalogService<CatAduana, String> {
+public class CatAduanaServiceImpl implements ICatAduanaService {
 
     @Autowired
-    private ICatAduanaRepository catAduanaRepository;
+    private ICatAduanaRepository repository;
 
 
     @Override
-    public String getCatalogKey() {
-        return "cat-aduana";
+    public Page<CatAduana> catAduanaListAll(int page, int size, String search) {
+        Pageable pageable = PageRequest.of(page, size);
+        if (search == null || search.isEmpty()) {
+            return repository.findAll(pageable);
+        }
+        return repository.findByNombreContainingIgnoreCaseOrCveAduanaContainingIgnoreCase(search, search, pageable);
     }
-
-    @Override
-    public Class<CatAduana> getEntityClass() {
-        return CatAduana.class;
-    }
-
-    @Override
-    protected JpaRepository<CatAduana, String> getRepository() {
-        return catAduanaRepository;
-    }
-
-    @Override
-    protected Class<String> getIdClass() {
-        return String.class;
-    }
-
-
-    @Override
-    public Page<CatAduana> findAll(
-            String search,
-            Map<String, String> filters,
-            boolean includeSubcatalogs,
-            Pageable pageable) {
-
-        Specification<CatAduana> spec =
-                GenericSearchSpecification.<CatAduana>searchInFields(
-                        search,
-                        List.of("clave", "nombre", "descripcion")
-                ).and(
-                        GenericFilterSpecification.byFilters(filters)
-                );
-
-
-
-        return catAduanaRepository.findAll(spec, pageable);
-    }
-
-
-
 }

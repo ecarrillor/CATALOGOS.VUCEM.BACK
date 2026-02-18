@@ -1,18 +1,17 @@
 package com.example.vucem_catalogos_service.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.Instant;
 
 @Data
 @Entity
 @Table(name = "cat_pais")
-public class CatPai {
+public class CatPais {
     @Id
     @Size(max = 3)
     @Column(name = "cve_pais", nullable = false, length = 3)
@@ -22,6 +21,7 @@ public class CatPai {
     @Column(name = "nombre", length = 120)
     private String nombre;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cve_moneda", referencedColumnName = "cve_moneda")
     private CatMoneda cveMoneda;
@@ -50,6 +50,5 @@ public class CatPai {
     @Size(max = 120)
     @Column(name = "nombre_alterno", length = 120)
     private String nombreAlterno;
-
 
 }

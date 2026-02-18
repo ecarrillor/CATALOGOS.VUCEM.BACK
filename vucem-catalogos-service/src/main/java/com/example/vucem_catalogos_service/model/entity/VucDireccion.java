@@ -28,7 +28,7 @@ public class VucDireccion {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cve_pais", referencedColumnName = "cve_pais")
-    private CatPai cvePais;
+    private CatPais cvePais;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cve_deleg_mun", referencedColumnName = "cve_deleg_mun")

@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/vucem-catalogos-service.iml" filepath="$PROJECT_DIR$/.idea/vucem-catalogos-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/CATALOGOS.VUCEM.BACK.iml" filepath="$PROJECT_DIR$/.idea/CATALOGOS.VUCEM.BACK.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vucem-catalogos-service/vucem-catalogos-service.iml" filepath="$PROJECT_DIR$/vucem-catalogos-service/vucem-catalogos-service.iml" />
     </modules>
   </component>
 </project>
