@@ -23,6 +23,15 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_CATALOGO_ADUANA = "/cat_aduana/{cveEntidad}";
     public static final String UPDATE_CATALOGO_ADUANA = "/cat_aduana/{cveEntidad}";
 
+
+    public static final String LIST_CATALOGO_ADUANA_CLASIF_PRODUCTO = "/cat_aduana_clasif/list";
+    public static final String SAVE_CATALOGO_ADUANA_CLASIF_PRODUCTO = "/cat_aduana_clasif/save";
+    public static final String FIND_CATALOGO_ADUANA_CLASIF_PRODUCTO = "/cat_aduana_clasif/{cveAduana}";
+    public static final String UPDATE_CATALOGO_ADUANA_CLASIF_PRODUCTO = "/cat_aduana_clasif/{cveAduana}";
+    public static final String LIST_TIPOS_ADUANA_CLASIF_PRODUCTO = "/cat_aduana_clasif/tipos_aduana";
+    public static final String LIST_ENTIDADES_CLASIF_PRODUCTO = "/cat_aduana_clasif/entidades";
+
+
     /*entidad CAT_APROB_CERT_SE */
     public static final String LIST_CATALOGO_APROB_CERT = "/cat_aprobCert/list";
     public static final String SAVE_CATALOGO_APROB_CERT = "/cat_aprobCert/save";
