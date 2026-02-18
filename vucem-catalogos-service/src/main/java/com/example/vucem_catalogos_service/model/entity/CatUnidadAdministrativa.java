@@ -3,13 +3,11 @@ package com.example.vucem_catalogos_service.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.Instant;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "cat_unidad_administrativa")
 public class CatUnidadAdministrativa {
@@ -41,7 +39,7 @@ public class CatUnidadAdministrativa {
     @Column(name = "descripcion", length = 120)
     private String descripcion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "cve_entidad", referencedColumnName = "cve_entidad")
     private CatEntidad cveEntidad;
 
@@ -51,7 +49,7 @@ public class CatUnidadAdministrativa {
     private CatDependencia idDependencia;
 
     @Column(name = "bln_fronteriza")
-    private Short blnFronteriza;
+    private Boolean blnFronteriza;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
