@@ -58,13 +58,13 @@ public class CatAduanaController {
         return ResponseEntity.ok(updated);
     }
 
-    @GetMapping(CatalogPaths.LIST_TIPOS_ADUANA)
+    @GetMapping(CatalogPaths.LIST_TIPOS_ADUANA_CLASIF_PRODUCTO)
     public ResponseEntity<List<CatTipoAduana>> getAllTiposAduana() {
         List<CatTipoAduana> tipoAduanas = service.getAllTiposAduana();
         return ResponseEntity.ok(tipoAduanas);
     }
 
-    @GetMapping(CatalogPaths.LIST_ENTIDADES)
+    @GetMapping(CatalogPaths.LIST_ENTIDADES_CLASIF_PRODUCTO)
     public ResponseEntity<List<CatEntidad>> getAllEntidades() {
         List<CatEntidad> entidades = service.getAllEntidades();
         return ResponseEntity.ok(entidades);
