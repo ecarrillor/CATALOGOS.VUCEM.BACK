@@ -16,9 +16,8 @@ public interface ICatDelegMunRepository extends JpaRepository<CatDelegMun, Strin
             SELECT new com.example.vucem_catalogos_service.model.dto.CatDelegMunDTO(
                 cat.cveDelegMun,
                 cat.nombre,
-                cat.fecCaptura,
+                cat.cveEntidad.nombre,
                 cat.fecFinVigencia,
-                cat.satMunicipality,
                 cat.fecIniVigencia,
                 cat.blnActivo
             )
@@ -27,6 +26,7 @@ public interface ICatDelegMunRepository extends JpaRepository<CatDelegMun, Strin
                 (
                     :search IS NULL OR
                     LOWER(cat.cveDelegMun) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(cat.cveEntidad.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(cat.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )
                 AND (
@@ -42,11 +42,11 @@ public interface ICatDelegMunRepository extends JpaRepository<CatDelegMun, Strin
             SELECT new com.example.vucem_catalogos_service.model.dto.CatDelegMunDTO(
                 cat.cveDelegMun,
                 cat.nombre,
-                cat.fecCaptura,
+                cat.cveEntidad.nombre,
                 cat.fecFinVigencia,
-                cat.satMunicipality,
                 cat.fecIniVigencia,
                 cat.blnActivo
+                
             )
             FROM CatDelegMun cat
             WHERE cat.cveDelegMun = :cveDelegMun

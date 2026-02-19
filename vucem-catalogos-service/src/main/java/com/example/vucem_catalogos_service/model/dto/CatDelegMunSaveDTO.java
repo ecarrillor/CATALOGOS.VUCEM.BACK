@@ -1,22 +1,18 @@
 package com.example.vucem_catalogos_service.model.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
-@Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class CatDelegMunDTO {
+@Data
+public class CatDelegMunSaveDTO {
     private String cveDelegMun;
     private String nombre;
-    private String nombreEntidad;
-    private LocalDate fecIniVigencia;
+    private String cveEntidad;
     private LocalDate fecFinVigencia;
+    private String satMunicipality;
+    private LocalDate fecIniVigencia;
     private Boolean blnActivo;
 }
