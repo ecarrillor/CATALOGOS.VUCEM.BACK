@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.controller;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatEntidadService;
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatEntidad;
 import com.example.vucem_catalogos_service.model.entity.CatPais;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,10 @@ public class CatEntidadController {
     public ResponseEntity<List<CatPais>> getAllPaises() {
         List<CatPais> paises = service.findAllPaises();
         return ResponseEntity.ok(paises);
-}
+    }
+
+    @GetMapping(CatalogPaths.LIST_NOMBRES_ENTIDAD)
+    public ResponseEntity<List<SelectDTO>> listNombres() {
+        return ResponseEntity.ok(service.listNombres());
+    }
 }
