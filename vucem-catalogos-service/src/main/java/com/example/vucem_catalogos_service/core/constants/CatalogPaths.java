@@ -50,4 +50,11 @@ public class CatalogPaths extends ConstPath{
     /*entidad CAT_UNIDAD_ADMINISTRATIVA */
     public static final String LIST_UNIDAD_ADMIN_LIST_LAB = "/cat_unidad_adm/listLab";
 
+    /*entidad CAT_ARANCEL_PROSEC */
+    public static final String LIST_ARANCEL_PROSEC = "/cat_arancelPro/list";
+    public static final String SAVE_ARANCEL_PROSEC = "/cat_arancelPro/save";
+    public static final String FIND_ARANCEL_PROSEC = "/cat_arancelPro/{id}/{cveSectorProsec}";
+    public static final String UPDATE_ARANCEL_PROSEC = "/cat_arancelPro/{cveFraccion}/{cveSectorProsec}";
+
+
 }
