@@ -15,7 +15,7 @@ import java.time.Instant;
 public class CatTipoTramite {
     @Id
     @Column(name = "id_tipo_tramite", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Size(max = 2)
     @Column(name = "cve_servicio", length = 2)

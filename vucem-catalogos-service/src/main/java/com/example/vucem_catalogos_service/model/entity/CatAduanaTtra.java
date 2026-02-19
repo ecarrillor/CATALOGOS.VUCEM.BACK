@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import java.time.Instant;
 public class CatAduanaTtra {
     @Id
     @Column(name = "id_aduana_ttra", nullable = false)
-    private Integer id;
+    private Long id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -33,14 +34,14 @@ public class CatAduanaTtra {
     private String aliasAduana;
 
     @Column(name = "fec_captura")
-    private Instant fecCaptura;
+    private LocalDate fecCaptura;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
