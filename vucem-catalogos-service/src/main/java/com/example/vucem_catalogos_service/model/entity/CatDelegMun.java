@@ -1,9 +1,6 @@
 package com.example.vucem_catalogos_service.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -42,6 +39,10 @@ public class CatDelegMun {
     @NotNull
     @Column(name = "bln_activo", nullable = false)
     private Boolean blnActivo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cve_entidad")
+    private CatEntidad cveEntidad;
 
 
 }

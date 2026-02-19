@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatEntidadService;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatEntidad;
 import com.example.vucem_catalogos_service.model.entity.CatPais;
 import com.example.vucem_catalogos_service.persistence.repo.ICatEntidadRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -81,5 +83,17 @@ public class CatEntidadServiceImpl implements ICatEntidadService {
     @Override
     public List<CatPais> findAllPaises() {
         return paisRepository.findAll();
+    }
+
+    @Override
+    public List<SelectDTO> listNombres() {
+        return repository.findAll().stream()
+                .map(e -> {
+                    SelectDTO d = new SelectDTO();
+                    d.setCve(e.getCveEntidad());
+                    d.setNombre(e.getNombre());
+                    return d;
+                })
+                .collect(Collectors.toList());
     }
 }

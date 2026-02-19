@@ -50,6 +50,29 @@ public class CatalogPaths extends ConstPath{
     /*entidad CAT_UNIDAD_ADMINISTRATIVA */
     public static final String LIST_UNIDAD_ADMIN_LIST_LAB = "/cat_unidad_adm/listLab";
 
+    /*entidad CAT_COLONIA */
+    public static final String LIST_CATALOGO_COLONIA   = "/cat_colonia/list";
+    public static final String SAVE_CATALOGO_COLONIA   = "/cat_colonia/save";
+    public static final String FIND_CATALOGO_COLONIA   = "/cat_colonia/{cveColonia}";
+    public static final String UPDATE_CATALOGO_COLONIA = "/cat_colonia/{cveColonia}";
+    public static final String FIND_COLONIA_BY_CP      = "/cat_colonia/cp/{cp}";
+
+    /*entidad CAT_PAIS */
+    public static final String LIST_CATALOGO_PAIS   = "/cat_pais/list";
+    public static final String SAVE_CATALOGO_PAIS   = "/cat_pais/save";
+    public static final String FIND_CATALOGO_PAIS   = "/cat_pais/{cvePais}";
+    public static final String UPDATE_CATALOGO_PAIS = "/cat_pais/{cvePais}";
+    public static final String LIST_CAT_MONEDA = "/cat_pais/listMoneda";
+
+    /*entidad CAT_DELEG_MUN */
+    public static final String LIST_CATALOGO_DELEG_MUN   = "/cat_deleg_mun/list";
+    public static final String SAVE_CATALOGO_DELEG_MUN   = "/cat_deleg_mun/save";
+    public static final String FIND_CATALOGO_DELEG_MUN   = "/cat_deleg_mun/{cveDelegMun}";
+    public static final String UPDATE_CATALOGO_DELEG_MUN = "/cat_deleg_mun/{cveDelegMun}";
+
+    /*entidad CAT_ENTIDAD - listado simple */
+    public static final String LIST_NOMBRES_ENTIDAD = "/cat_entidad/nombres";
+
     /*entidad CAT_ARANCEL_PROSEC */
     public static final String LIST_ARANCEL_PROSEC = "/cat_arancelPro/list";
     public static final String SAVE_ARANCEL_PROSEC = "/cat_arancelPro/save";
