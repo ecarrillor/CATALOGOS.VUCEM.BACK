@@ -21,8 +21,8 @@ public class CatalogPaths extends ConstPath{
     /*entidad CAT_ADUANA */
     public static final String LIST_CATALOGO_ADUANA = "/cat_aduana/list";
     public static final String SAVE_CATALOGO_ADUANA = "/cat_aduana/save";
-    public static final String FIND_CATALOGO_ADUANA = "/cat_aduana/{cveEntidad}";
-    public static final String UPDATE_CATALOGO_ADUANA = "/cat_aduana/{cveEntidad}";
+    public static final String FIND_CATALOGO_ADUANA = "/cat_aduana/{cveAduana}";
+    public static final String UPDATE_CATALOGO_ADUANA = "/cat_aduana/{cveAduana}";
     public static final String LIST_TIPOS_ADUANA = "/cat_aduana/tipos_aduana";
     public static final String LIST_ENTIDADES = "/cat_aduana/entidades";
 
@@ -37,8 +37,9 @@ public class CatalogPaths extends ConstPath{
     /*entidad CAT_ADUANA_TRAMITE */
     public static final String LIST_ADUANA_TRAMITE = "/cat_aduana_tramite/list";
     public static final String SAVE_ADUANA_TRAMITE = "/cat_aduana_tramite/save";
-    public static final String FIND_ADUANA_TRAMITE = "/cat_aduana_tramite/{cveEntidad}";
-    public static final String UPDATE_ADUANA_TRAMITE = "/cat_aduana_tramite/{cveEntidad}";
+    public static final String FIND_ADUANA_TRAMITE = "/cat_aduana_tramite/{id}";
+    public static final String UPDATE_ADUANA_TRAMITE = "/cat_aduana_tramite/{id}";
+    public static final String LIST_TIPOS_TRAMITE = "/cat_aduana_tramite/tipos_tramite";
 
 
     /*entidad CAT_APROB_CERT_SE */
