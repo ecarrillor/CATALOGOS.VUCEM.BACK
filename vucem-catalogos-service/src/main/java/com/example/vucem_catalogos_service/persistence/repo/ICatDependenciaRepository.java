@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ICatDependenciaRepository extends JpaRepository<CatDependencia, Short> {
+public interface ICatDependenciaRepository extends JpaRepository<CatDependencia, Long> {
 
 
     @Query("""

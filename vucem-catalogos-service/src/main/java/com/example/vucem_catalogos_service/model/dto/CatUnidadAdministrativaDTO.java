@@ -21,7 +21,7 @@ public class CatUnidadAdministrativaDTO {
     private String descripcion;
     private String cveEntidad;
     private String nombreEntidad;
-    private Short idDependencia;
+    private Long idDependencia;
     private String nombreDependencia;
     private Boolean blnFronteriza;
     private Instant fecIniVigencia;
