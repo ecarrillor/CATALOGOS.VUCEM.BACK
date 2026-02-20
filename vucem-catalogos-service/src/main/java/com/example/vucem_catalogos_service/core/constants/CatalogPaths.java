@@ -68,6 +68,18 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_CATALOGO_FRACCION_ALADI   = "/cat_fraccion_aladi/{id}";
     public static final String UPDATE_CATALOGO_FRACCION_ALADI = "/cat_fraccion_aladi/{id}";
 
+    /*entidad CAT_FUNDAMENTO_DICTAMEN */
+    public static final String LIST_CATALOGO_FUNDAMENTO_DICTAMEN   = "/cat_fundamento_dictamen/list";
+    public static final String SAVE_CATALOGO_FUNDAMENTO_DICTAMEN   = "/cat_fundamento_dictamen/save";
+    public static final String FIND_CATALOGO_FUNDAMENTO_DICTAMEN   = "/cat_fundamento_dictamen/{id}";
+    public static final String UPDATE_CATALOGO_FUNDAMENTO_DICTAMEN = "/cat_fundamento_dictamen/{id}";
+
+    /*entidad CAT_JUSTIFICACION_TRAMITE */
+    public static final String LIST_CATALOGO_JUSTIFICACION_TRAMITE   = "/cat_justificacion_tramite/list";
+    public static final String SAVE_CATALOGO_JUSTIFICACION_TRAMITE   = "/cat_justificacion_tramite/save";
+    public static final String FIND_CATALOGO_JUSTIFICACION_TRAMITE   = "/cat_justificacion_tramite/{id}";
+    public static final String UPDATE_CATALOGO_JUSTIFICACION_TRAMITE = "/cat_justificacion_tramite/{id}";
+
 
     /*entidad CAT_APROB_CERT_SE */
     public static final String LIST_CATALOGO_APROB_CERT = "/cat_aprobCert/list";
