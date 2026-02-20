@@ -1,10 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatArancelProsecService;
-import com.example.vucem_catalogos_service.model.dto.CatAprobCertSeRequestDTO;
-import com.example.vucem_catalogos_service.model.dto.CatAprobCertSeResponseDTO;
-import com.example.vucem_catalogos_service.model.dto.CatArancelProsecDTO;
-import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.*;
 import com.example.vucem_catalogos_service.model.entity.*;
 import com.example.vucem_catalogos_service.persistence.repo.ICatArancelProsecRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatFraccionArancelariaRepository;
@@ -15,6 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 public class CatArancelProsecServiceImpl implements ICatArancelProsecService {
@@ -24,6 +24,9 @@ public class CatArancelProsecServiceImpl implements ICatArancelProsecService {
     private ICatFraccionArancelariaRepository catFraccionArancelariaRepository;
     @Autowired
     private ICatSectorProsecRepository catSectorProsecRepository;
+
+    @Autowired
+    private ICatFraccionArancelariaRepository iCatFraccionArancelariaRepository;
 
     @Override
     public PageResponseDTO<CatArancelProsecDTO> list(String search, Pageable pageable) {
@@ -136,6 +139,19 @@ public class CatArancelProsecServiceImpl implements ICatArancelProsecService {
         return mapToDTO(updated);
     }
 
+    @Override
+    public List<SelectDTO> listadoFraccionArancelaria() {
+        List<CatFraccionArancelaria> productos = iCatFraccionArancelariaRepository.findAll();
+        List<SelectDTO> resultado = new ArrayList<>();
+
+        for (CatFraccionArancelaria producto : productos) {
+            SelectDTO dto = new SelectDTO();
+            dto.setCve(producto.getCveFraccion());
+            dto.setNombre(producto.getDescripcion());
+            resultado.add(dto);
+        }
+        return resultado;
+    }
 
 
 }

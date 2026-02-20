@@ -5,11 +5,14 @@ import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
 import com.example.vucem_catalogos_service.model.dto.CatAprobCertSeRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatAprobCertSeResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -52,6 +55,10 @@ public class CatAprobCertSeController {
 
         return ResponseEntity.ok(service.update(id, dto));
     }
-
+    @GetMapping(CatalogPaths.LIST_LABORATORIOS)
+    public ResponseEntity<List<SelectDTO>> listadoLaboratorio(){
+        List<SelectDTO> lista = service.listadoLaboratorio();
+        return ResponseEntity.ok(lista);
+    }
 
 }

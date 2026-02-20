@@ -1,15 +1,13 @@
 package com.example.vucem_catalogos_service.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -20,14 +18,24 @@ public class CatDictamenTramite {
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
     private Boolean blnActivo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("idTipoTramite")
+    @JoinColumn(name = "id_tipo_tramite")
+    private CatTipoTramite tipoTramite;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("idTipoDictamen")
+    @JoinColumn(name = "id_tipo_dictamen")
+    private CatTipoDictamen tipoDictamen;
 
 
 }

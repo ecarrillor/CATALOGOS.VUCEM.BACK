@@ -17,7 +17,7 @@ import java.util.Set;
 public class CatTipoDictamen {
     @Id
     @Column(name = "id_tipo_dictamen", nullable = false)
-    private Short id;
+    private Long id;
 
     @Size(max = 120)
     @Column(name = "nombre", length = 120)

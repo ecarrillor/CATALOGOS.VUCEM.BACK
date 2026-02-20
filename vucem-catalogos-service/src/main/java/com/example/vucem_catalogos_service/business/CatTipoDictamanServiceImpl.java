@@ -1,7 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatTipoDictamen;
-import com.example.vucem_catalogos_service.persistence.repo.ICatTipoDictamanRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatTipoDictamenRepository;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -17,9 +17,9 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class CatTipoDictamanServiceImpl extends AbstractCatalogService<CatTipoDictamen,Short>{
+public class CatTipoDictamanServiceImpl extends AbstractCatalogService<CatTipoDictamen,Long>{
     @Autowired
-    private ICatTipoDictamanRepository catTipoDictamanRepository;
+    private ICatTipoDictamenRepository catTipoDictamanRepository;
 
     @Override
     public String getCatalogKey() {
@@ -32,13 +32,13 @@ public class CatTipoDictamanServiceImpl extends AbstractCatalogService<CatTipoDi
     }
 
     @Override
-    protected JpaRepository<CatTipoDictamen, Short> getRepository() {
+    protected JpaRepository<CatTipoDictamen, Long> getRepository() {
         return catTipoDictamanRepository;
     }
 
     @Override
-    protected Class<Short> getIdClass() {
-        return Short.class;
+    protected Class<Long> getIdClass() {
+        return Long.class;
     }
 
 

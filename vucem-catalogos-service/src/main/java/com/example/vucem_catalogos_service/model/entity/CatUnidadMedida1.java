@@ -10,13 +10,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "cat_unidad_medida")
-public class CatUnidadMedida {
+public class CatUnidadMedida1 {
     @Id
     @Size(max = 10)
     @Column(name = "cve_unidad_medida", nullable = false, length = 10)
@@ -27,18 +26,18 @@ public class CatUnidadMedida {
     private String descripcion;
 
     @Column(name = "fec_captura")
-    private LocalDate fecCaptura;
+    private Instant fecCaptura;
 
     @Column(name = "fec_fin_vigencia")
-    private LocalDate fecFinVigencia;
+    private Instant fecFinVigencia;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private LocalDate fecIniVigencia;
+    private Instant fecIniVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
-    private Boolean blnActivo;
+    private Short blnActivo;
 
     @Size(max = 20)
     @Column(name = "ide_origen_unidad_medida", length = 20)

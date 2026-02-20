@@ -63,10 +63,10 @@ public class CatFraccionArancelaria {
     private Boolean blnActivo;
 
     @Column(name = "bln_anexo_28")
-    private Short blnAnexo28;
+    private Boolean blnAnexo28;
 
     @Column(name = "bln_decreto_immex")
-    private Short blnDecretoImmex;
+    private Boolean blnDecretoImmex;
 
 
 }
