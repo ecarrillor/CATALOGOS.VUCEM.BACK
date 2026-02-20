@@ -4,6 +4,10 @@ import com.example.vucem_catalogos_service.model.entity.CatUnidadMedida;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
+
 public interface ICatUnidadMedidaRepository extends JpaRepository<CatUnidadMedida, String>,
         JpaSpecificationExecutor<CatUnidadMedida> {
+    List<CatUnidadMedida> findByBlnActivoTrue();
+
 }

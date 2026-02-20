@@ -27,8 +27,7 @@ public interface ICatArancelProsecRepository extends JpaRepository<CatArancelPro
             FROM CatArancelProsec cat
             JOIN cat.cveSectorProsec sec
             WHERE
-                (
-                    :search IS NULL OR
+                (:search IS NULL OR
                     LOWER(cat.cveFraccion.cveFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(sec.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )

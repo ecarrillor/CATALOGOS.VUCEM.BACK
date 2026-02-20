@@ -12,38 +12,34 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "cat_deleg_mun")
-public class CatDelegMun {
-    @Id
-    @Size(max = 6)
-    @Column(name = "cve_deleg_mun", nullable = false, length = 6)
-    private String cveDelegMun;
+@Table(name = "cat_clasificacion_regimen")
+public class CatClasificacionRegimen {
+    @EmbeddedId
+    private CatClasificacionRegimanId id;
+
+    @MapsId("cveRegimen")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cve_regimen", nullable = false)
+    private CatRegimen cveRegimen;
 
     @Size(max = 120)
     @Column(name = "nombre", length = 120)
     private String nombre;
 
-    @Column(name = "fec_captura")
-    private LocalDate fecCaptura;
-
-    @Column(name = "fec_fin_vigencia")
-    private LocalDate fecFinVigencia;
-
-    @Size(max = 5)
-    @Column(name = "sat_municipality", length = 5)
-    private String satMunicipality;
+    @Size(max = 3)
+    @Column(name = "cod_regimen", length = 3)
+    private String codRegimen;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
     private LocalDate fecIniVigencia;
 
+    @Column(name = "fec_fin_vigencia")
+    private LocalDate fecFinVigencia;
+
     @NotNull
     @Column(name = "bln_activo", nullable = false)
     private Boolean blnActivo;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cve_entidad")
-    private CatEntidad cveEntidad;
 
 
 }

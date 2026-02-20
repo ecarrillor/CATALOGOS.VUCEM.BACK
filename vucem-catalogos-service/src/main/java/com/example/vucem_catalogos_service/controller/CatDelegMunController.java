@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.controller;
 import com.example.vucem_catalogos_service.business.Interface.ICatDelegMunService;
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
 import com.example.vucem_catalogos_service.model.dto.CatDelegMunDTO;
+import com.example.vucem_catalogos_service.model.dto.CatDelegMunSaveDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -30,14 +31,14 @@ public class CatDelegMunController {
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_DELEG_MUN)
-    public ResponseEntity<CatDelegMunDTO> create(@RequestBody CatDelegMunDTO dto) {
+    public ResponseEntity<CatDelegMunSaveDTO> create(@RequestBody CatDelegMunSaveDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
     }
 
     @PutMapping(CatalogPaths.UPDATE_CATALOGO_DELEG_MUN)
-    public ResponseEntity<CatDelegMunDTO> update(
+    public ResponseEntity<CatDelegMunSaveDTO> update(
             @PathVariable String cveDelegMun,
-            @RequestBody CatDelegMunDTO dto) {
+            @RequestBody CatDelegMunSaveDTO dto) {
         return ResponseEntity.ok(service.update(cveDelegMun, dto));
     }
 }

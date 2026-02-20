@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ICatEntidadRepository extends JpaRepository<CatEntidad, String> {
 
@@ -14,4 +16,6 @@ public interface ICatEntidadRepository extends JpaRepository<CatEntidad, String>
             String cveEntidad,
             Pageable pageable
     );
+
+    List<CatEntidad> findByBlnActivoTrue();
 }

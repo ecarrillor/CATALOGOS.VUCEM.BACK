@@ -5,18 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CatDelegMunDTO {
-    private String cveDelegMun;
-    private String nombre;
-    private String nombreEntidad;
+public class CatEmpresaRecifDTO {
+    private String recif;
+    private String rfc;
+    private String razonSocial;
+    private Boolean blnActivo;
     private LocalDate fecIniVigencia;
     private LocalDate fecFinVigencia;
-    private Boolean blnActivo;
+    private String cveUnidadAdministrativa;
+    private String nombreUnidadAdministrativa;
 }

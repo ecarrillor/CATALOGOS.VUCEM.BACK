@@ -5,13 +5,14 @@ import com.example.vucem_catalogos_service.model.entity.CatDependencia;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface ICatDependenciaRepository extends JpaRepository<CatDependencia, Long>, JpaSpecificationExecutor<CatDependencia> {
+public interface ICatDependenciaRepository extends JpaRepository<CatDependencia, Short> {
 
 
     @Query("""
@@ -45,4 +46,6 @@ public interface ICatDependenciaRepository extends JpaRepository<CatDependencia,
             @Param("activo") Boolean activo,
             Pageable pageable
     );
+
+    List<CatDependencia> findByBlnActivoTrue();
 }

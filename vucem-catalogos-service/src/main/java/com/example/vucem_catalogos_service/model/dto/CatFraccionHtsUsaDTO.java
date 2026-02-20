@@ -12,11 +12,16 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CatDelegMunDTO {
-    private String cveDelegMun;
-    private String nombre;
-    private String nombreEntidad;
+public class CatFraccionHtsUsaDTO {
+    private Long id;
+    private String cveFraccionHtsUsa;
+    private String descripcion;
+    private LocalDate fecCaptura;
     private LocalDate fecIniVigencia;
     private LocalDate fecFinVigencia;
+    private String ideTipoBienFraccion;
+    private Boolean blnExenta;
     private Boolean blnActivo;
+    private String cveUnidadMedida;
+    private String nombreUnidadMedida;
 }

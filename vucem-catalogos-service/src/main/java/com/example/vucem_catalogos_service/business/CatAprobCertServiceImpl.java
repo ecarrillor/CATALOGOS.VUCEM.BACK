@@ -96,18 +96,13 @@ public class CatAprobCertServiceImpl implements ICatAprobCertService {
     public CatAprobCertSeResponseDTO update(Short id, CatAprobCertSeRequestDTO dto) {
         CatAprobCertSe entity = catAprobCertSeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Registro no encontrado"));
-        System.out.println(
-                "xxxx"
-        );
+
         entity.setCveUnidadAdministrativa(
                 catUnidadAdministrativaRepository
                         .findById(dto.getCveUnidadAdministrativaId())
                         .orElseThrow(() -> new RuntimeException("Laboratorio no encontrado"))
         );
 
-        System.out.println(
-                "mamooo"
-        );
         entity.setIdeTipoAprobCertSe(
                 mapTipoToCodigo(dto.getTipoAprobacion())
         );

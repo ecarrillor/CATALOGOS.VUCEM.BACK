@@ -1,12 +1,12 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatColoniaService;
-import com.example.vucem_catalogos_service.model.dto.CatColoniaDTO;
-import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.*;
 import com.example.vucem_catalogos_service.model.entity.CatColonia;
 import com.example.vucem_catalogos_service.persistence.repo.ICatColoniaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatDelegMunRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatLocalidadRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatPaisRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +28,9 @@ public class CatColoniaServiceImpl implements ICatColoniaService {
 
     @Autowired
     private ICatLocalidadRepository catLocalidadRepository;
+
+    @Autowired
+    private ICatPaisRepository paisRepository;
 
     @Override
     public PageResponseDTO<CatColoniaDTO> list(String search, Pageable pageable) {
@@ -157,6 +160,16 @@ public class CatColoniaServiceImpl implements ICatColoniaService {
     @Override
     public List<CatColoniaDTO> findByCp(String cp) {
         return catColoniaRepository.findByCp(cp);
+    }
+
+    @Override
+    public List<CatMuncipioDTO> findMunicipios(String cvePais, String cveEntidad) {
+        return paisRepository.findMunicipios(cvePais,cveEntidad);
+    }
+
+    @Override
+    public List<LocalidadDTO> findLocalidades(String cvePais, String cveEntidad, String cveMunicipio) {
+        return catLocalidadRepository.findLocalidades(cvePais, cveEntidad, cveMunicipio);
     }
 
     private CatColoniaDTO mapToDTO(CatColonia entity) {

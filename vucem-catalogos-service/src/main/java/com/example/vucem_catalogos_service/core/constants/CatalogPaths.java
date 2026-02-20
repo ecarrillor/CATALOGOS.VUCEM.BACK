@@ -77,7 +77,13 @@ public class CatalogPaths extends ConstPath{
     public static final String LIST_LABORATORIOS = "/cat_aprobCert/laboratorios";
 
     /*entidad CAT_UNIDAD_ADMINISTRATIVA */
-    public static final String LIST_UNIDAD_ADMIN_LIST_LAB = "/cat_unidad_adm/listLab";
+    public static final String LIST_UNIDAD_ADMIN_LIST_LAB    = "/cat_unidad_adm/listLab";
+    public static final String LIST_UNIDAD_ADMIN             = "/cat_unidad_admin/list";
+    public static final String SAVE_UNIDAD_ADMIN             = "/cat_unidad_admin/save";
+    public static final String FIND_UNIDAD_ADMIN             = "/cat_unidad_admin/{cveUnidadAdministrativa}";
+    public static final String UPDATE_UNIDAD_ADMIN           = "/cat_unidad_admin/{cveUnidadAdministrativa}";
+    public static final String LIST_ENTIDADES_UNIDAD_ADMIN   = "/cat_unidad_admin/entidades";
+    public static final String LIST_DEPENDENCIAS_UNIDAD_ADMIN = "/cat_unidad_admin/dependencias";
 
     /*entidad CAT_COLONIA */
     public static final String LIST_CATALOGO_COLONIA   = "/cat_colonia/list";
@@ -85,6 +91,8 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_CATALOGO_COLONIA   = "/cat_colonia/{cveColonia}";
     public static final String UPDATE_CATALOGO_COLONIA = "/cat_colonia/{cveColonia}";
     public static final String FIND_COLONIA_BY_CP      = "/cat_colonia/cp/{cp}";
+    public static final String FIND_MUNICIPIOS     = "/cat_colonia/{cvePais}/{cveEntidad}";
+    public static final String FIND_LOCALIDADES     = "/cat_colonia/{cvePais}/{cveEntidad}/{cveMunicipio}";
 
     /*entidad CAT_PAIS */
     public static final String LIST_CATALOGO_PAIS   = "/cat_pais/list";
@@ -108,6 +116,43 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_ARANCEL_PROSEC = "/cat_arancelPro/{id}/{cveSectorProsec}";
     public static final String UPDATE_ARANCEL_PROSEC = "/cat_arancelPro/{cveFraccion}/{cveSectorProsec}";
     public static final String LIST_FRACCION_ARANCELARIA = "/cat_arancelPro/fracc_arancelaria";
+
+    /*entidad CAT_CLASIFICACION_REGIMEN */
+    public static final String LIST_CLASIFICACION_REGIMEN   = "/cat_clasificacion_regimen/list";
+    public static final String SAVE_CLASIFICACION_REGIMEN   = "/cat_clasificacion_regimen/save";
+    public static final String FIND_CLASIFICACION_REGIMEN   = "/cat_clasificacion_regimen/{cveClasificacionRegimen}/{cveRegimen}";
+    public static final String UPDATE_CLASIFICACION_REGIMEN = "/cat_clasificacion_regimen/{cveClasificacionRegimen}/{cveRegimen}";
+    public static final String LIST_REGIMENES_SELECT        = "/cat_clasificacion_regimen/regimenes";
+
+    /*entidad CAT_DECLARACION_TRAMITE */
+    public static final String LIST_DECLARACION_TRAMITE   = "/cat_declaracion_tramite/list";
+    public static final String SAVE_DECLARACION_TRAMITE   = "/cat_declaracion_tramite/save";
+    public static final String FIND_DECLARACION_TRAMITE   = "/cat_declaracion_tramite/{cveDeclaracion}/{idTipoTramite}";
+    public static final String UPDATE_DECLARACION_TRAMITE = "/cat_declaracion_tramite/{cveDeclaracion}/{idTipoTramite}";
+    public static final String LIST_DECLARACIONES_SELECT  = "/cat_declaracion_tramite/declaraciones";
+    public static final String LIST_TIPOS_TRAMITE_DECL    = "/cat_declaracion_tramite/tipos_tramite";
+
+    /*entidad CAT_EQUIV_MONEDA */
+    public static final String LIST_EQUIV_MONEDA   = "/cat_equiv_moneda/list";
+    public static final String SAVE_EQUIV_MONEDA   = "/cat_equiv_moneda/save";
+    public static final String FIND_EQUIV_MONEDA   = "/cat_equiv_moneda/{id}";
+    public static final String UPDATE_EQUIV_MONEDA = "/cat_equiv_moneda/{id}";
+    public static final String LIST_MONEDAS_SELECT_MONORIGEN = "/cat_equiv_moneda/cveMonedaOrigen";
+    public static final String LIST_MONEDAS_SELECT_MONDEST = "/cat_equiv_moneda/cveMonedaDestino";
+
+    /*entidad CAT_EMPRESA_RECIF */
+    public static final String LIST_EMPRESA_RECIF        = "/cat_empresa_recif/list";
+    public static final String SAVE_EMPRESA_RECIF        = "/cat_empresa_recif/save";
+    public static final String FIND_EMPRESA_RECIF        = "/cat_empresa_recif/{recif}";
+    public static final String UPDATE_EMPRESA_RECIF      = "/cat_empresa_recif/{recif}";
+    public static final String LIST_UNIDADES_ADMIN_SELECT = "/cat_empresa_recif/unidades_admin";
+
+    /*entidad CAT_FRACCION_HTS_USA */
+    public static final String LIST_FRACCION_HTS_USA        = "/cat_fraccion_hts_usa/list";
+    public static final String SAVE_FRACCION_HTS_USA        = "/cat_fraccion_hts_usa/save";
+    public static final String FIND_FRACCION_HTS_USA        = "/cat_fraccion_hts_usa/{id}";
+    public static final String UPDATE_FRACCION_HTS_USA      = "/cat_fraccion_hts_usa/{id}";
+    public static final String LIST_UNIDADES_MEDIDA_SELECT  = "/cat_fraccion_hts_usa/unidades_medida";
 
 
 }
