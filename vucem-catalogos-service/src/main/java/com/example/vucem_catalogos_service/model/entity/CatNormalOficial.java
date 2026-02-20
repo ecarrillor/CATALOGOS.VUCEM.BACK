@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -22,10 +23,10 @@ public class CatNormalOficial {
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
@@ -36,10 +37,10 @@ public class CatNormalOficial {
     private String descNorma;
 
     @Column(name = "fec_publicacion")
-    private Instant fecPublicacion;
+    private LocalDate fecPublicacion;
 
     @Column(name = "fec_entrada_vigor")
-    private Instant fecEntradaVigor;
+    private LocalDate fecEntradaVigor;
 
     @Size(max = 20)
     @Column(name = "ide_clasif_norma", length = 20)
@@ -54,7 +55,7 @@ public class CatNormalOficial {
     private CatNormalOficial idNormaOficialR;
 
     @Column(name = "bln_lote_estructurado")
-    private Short blnLoteEstructurado;
+    private Boolean blnLoteEstructurado;
 
 
 }

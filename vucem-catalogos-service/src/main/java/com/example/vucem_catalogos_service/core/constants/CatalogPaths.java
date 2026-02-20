@@ -153,5 +153,26 @@ public class CatalogPaths extends ConstPath{
     public static final String UPDATE_FRACCION_HTS_USA      = "/cat_fraccion_hts_usa/{id}";
     public static final String LIST_UNIDADES_MEDIDA_SELECT  = "/cat_fraccion_hts_usa/unidades_medida";
 
+    /*entidad CAT_LOCALIDAD */
+    public static final String LIST_LOCALIDAD = "/cat_localidad/list";
+    public static final String SAVE_LOCALIDAD = "/cat_localidad/save";
+    public static final String FIND_LOCALIDAD = "/cat_localidad/{cveLocalidad}";
+    public static final String UPDATE_LOCALIDAD = "/cat_localidad/{cveLocalidad}";
+
+    /*entidad CAT_NORMAL_OFICIAL */
+    public static final String LIST_NORMAL_OFICIAL         = "/cat_normal_oficial/list";
+    public static final String SAVE_NORMAL_OFICIAL         = "/cat_normal_oficial/save";
+    public static final String FIND_NORMAL_OFICIAL         = "/cat_normal_oficial/{id}";
+    public static final String UPDATE_NORMAL_OFICIAL       = "/cat_normal_oficial/{id}";
+    public static final String LIST_NORMAL_OFICIAL_ACTIVOS = "/cat_normal_oficial/activos";
+
+    /*entidad CAT_PARTIDA_FRACCION */
+    public static final String LIST_PARTIDA_FRACCION            = "/cat_partida_fraccion/list";
+    public static final String SAVE_PARTIDA_FRACCION            = "/cat_partida_fraccion/save";
+    public static final String FIND_PARTIDA_FRACCION            = "/cat_partida_fraccion/{cveCapituloFraccion}/{cvePartidaFraccion}";
+    public static final String UPDATE_PARTIDA_FRACCION          = "/cat_partida_fraccion/{cveCapituloFraccion}/{cvePartidaFraccion}";
+    public static final String LIST_CAPITULOS_FRACCION_ACTIVOS  = "/cat_partida_fraccion/capitulos_activos";
+
+
 
 }
