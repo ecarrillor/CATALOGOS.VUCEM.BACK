@@ -7,10 +7,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -18,7 +16,7 @@ import java.time.Instant;
 public class CatFraccionAladi {
     @Id
     @Column(name = "id_fraccion_aladi", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Size(max = 20)
     @Column(name = "ide_tipo_fraccion_aladi", length = 20)
@@ -34,14 +32,14 @@ public class CatFraccionAladi {
     private String descripcion;
 
     @Column(name = "fec_captura")
-    private Instant fecCaptura;
+    private LocalDate fecCaptura;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)

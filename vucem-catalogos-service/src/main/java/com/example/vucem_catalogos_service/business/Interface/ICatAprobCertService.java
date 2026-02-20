@@ -1,10 +1,9 @@
 package com.example.vucem_catalogos_service.business.Interface;
 
-import com.example.vucem_catalogos_service.model.dto.CatAprobCertSeRequestDTO;
-import com.example.vucem_catalogos_service.model.dto.CatAprobCertSeResponseDTO;
-import com.example.vucem_catalogos_service.model.dto.CatUnidadAdministrativaNameDTO;
-import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.*;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface ICatAprobCertService {
     PageResponseDTO<CatAprobCertSeResponseDTO> list(String search, Pageable pageable);
@@ -15,4 +14,5 @@ public interface ICatAprobCertService {
 
     CatAprobCertSeResponseDTO update(Short id, CatAprobCertSeRequestDTO dto);
 
+    List<SelectDTO> listadoLaboratorio();
 }

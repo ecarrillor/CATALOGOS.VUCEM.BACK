@@ -4,11 +4,14 @@ import com.example.vucem_catalogos_service.business.Interface.ICatArancelProsecS
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
 import com.example.vucem_catalogos_service.model.dto.CatArancelProsecDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(CatalogPaths.CONTROLLER)
@@ -53,6 +56,10 @@ public class CatArancelProsecController {
 
         return ResponseEntity.ok(service.update(cveFraccion, cveSectorProsec, dto));
     }
-
+    @GetMapping(CatalogPaths.LIST_FRACCION_ARANCELARIA)
+    public ResponseEntity<List<SelectDTO>> listadoFraccionArancelaria(){
+        List<SelectDTO> lista = service.listadoFraccionArancelaria();
+        return ResponseEntity.ok(lista);
+    }
 
 }

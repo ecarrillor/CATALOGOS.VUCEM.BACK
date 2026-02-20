@@ -17,11 +17,11 @@ public class CatDictamenTramiteId implements Serializable {
     private static final long serialVersionUID = -4311028062317205603L;
     @NotNull
     @Column(name = "id_tipo_tramite", nullable = false)
-    private Integer idTipoTramite;
+    private Long idTipoTramite;
 
     @NotNull
     @Column(name = "id_tipo_dictamen", nullable = false)
-    private Short idTipoDictamen;
+    private Long idTipoDictamen;
 
 
 }

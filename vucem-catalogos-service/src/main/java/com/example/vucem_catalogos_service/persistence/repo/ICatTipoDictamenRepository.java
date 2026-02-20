@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ICatTipoDictamanRepository extends JpaRepository<CatTipoDictamen, Short>,
+public interface ICatTipoDictamenRepository extends JpaRepository<CatTipoDictamen, Long>,
         JpaSpecificationExecutor<CatTipoDictamen> {
 }

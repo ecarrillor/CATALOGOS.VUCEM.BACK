@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ICatTipoTramiteRepository extends JpaRepository<CatTipoTramite, Integer>,
+public interface ICatTipoTramiteRepository extends JpaRepository<CatTipoTramite, Long>,
         JpaSpecificationExecutor<CatTipoTramite> {
 
     List<CatTipoTramite> findByBlnActivoTrue();

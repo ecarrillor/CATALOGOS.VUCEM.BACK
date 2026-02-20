@@ -41,12 +41,40 @@ public class CatalogPaths extends ConstPath{
     public static final String UPDATE_ADUANA_TRAMITE = "/cat_aduana_tramite/{id}";
     public static final String LIST_TIPOS_TRAMITE = "/cat_aduana_tramite/tipos_tramite";
 
+    /*entidad CAT_CATEGORIA_TEXTIL */
+    public static final String LIST_CATALOGO_CATEGORIA_TEXTIL= "/cat_categ_textil/list";
+    public static final String SAVE_CATALOGO_CATEGORIA_TEXTIL = "/cat_categ_textil/save";
+    public static final String FIND_CATALOGO_CATEGORIA_TEXTIL = "/cat_categ_textil/{id}";
+    public static final String UPDATE_CATALOGO_CATEGORIA_TEXTIL = "/cat_categ_textil/{id}";
+    public static final String UNIDAD_MEDIDA_CATALOGO_CATEGORIA_TEXTIL = "/cat_categ_textil/unidad_medidas";
+
+    /*entidad CAT_DEPENDENCIA */
+    public static final String LIST_CATALOGO_DEPENDENCIA= "/cat_dependencia/list";
+    public static final String SAVE_CATALOGO_DEPENDENCIA = "/cat_dependencia/save";
+    public static final String FIND_CATALOGO_DEPENDENCIA = "/cat_dependencia/{id}";
+    public static final String UPDATE_CATALOGO_DEPENDENCIA = "/cat_dependencia/{id}";
+    public static final String CALENDARIO_CATALOGO_DEPENDENCIA = "/cat_dependencia/calendarios";
+
+    /*entidad CAT_DICTAMEN_TRAMITE */
+    public static final String LIST_CATALOGO_DICTAMEN_TRAMITE = "/cat_dictamen_tramite/list";
+    public static final String SAVE_CATALOGO_DICTAMEN_TRAMITE = "/cat_dictamen_tramite/save";
+    public static final String FIND_CATALOGO_DICTAMEN_TRAMITE = "/cat_dictamen_tramite/{tt}/{dc}";
+    public static final String UPDATE_CATALOGO_DICTAMEN_TRAMITE = "/cat_dictamen_tramite/{tt}/{dc}";
+    public static final String TIPO_DICTAMEN_CATALOGO_DICTAMEN_TRAMITE = "/cat_dictamen_tramite/tipos_dictamen";
+
+    /*entidad CAT_FRACCION_ALADI */
+    public static final String LIST_CATALOGO_FRACCION_ALADI   = "/cat_fraccion_aladi/list";
+    public static final String SAVE_CATALOGO_FRACCION_ALADI   = "/cat_fraccion_aladi/save";
+    public static final String FIND_CATALOGO_FRACCION_ALADI   = "/cat_fraccion_aladi/{id}";
+    public static final String UPDATE_CATALOGO_FRACCION_ALADI = "/cat_fraccion_aladi/{id}";
+
 
     /*entidad CAT_APROB_CERT_SE */
     public static final String LIST_CATALOGO_APROB_CERT = "/cat_aprobCert/list";
     public static final String SAVE_CATALOGO_APROB_CERT = "/cat_aprobCert/save";
     public static final String FIND_CATALOGO_APROB_CERT = "/cat_aprobCert/{id}";
     public static final String UPDATE_CATALOGO_APROB_CERT = "/cat_aprobCert/{id}";
+    public static final String LIST_LABORATORIOS = "/cat_aprobCert/laboratorios";
 
     /*entidad CAT_UNIDAD_ADMINISTRATIVA */
     public static final String LIST_UNIDAD_ADMIN_LIST_LAB    = "/cat_unidad_adm/listLab";
@@ -87,6 +115,7 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_ARANCEL_PROSEC = "/cat_arancelPro/save";
     public static final String FIND_ARANCEL_PROSEC = "/cat_arancelPro/{id}/{cveSectorProsec}";
     public static final String UPDATE_ARANCEL_PROSEC = "/cat_arancelPro/{cveFraccion}/{cveSectorProsec}";
+    public static final String LIST_FRACCION_ARANCELARIA = "/cat_arancelPro/fracc_arancelaria";
 
     /*entidad CAT_CLASIFICACION_REGIMEN */
     public static final String LIST_CLASIFICACION_REGIMEN   = "/cat_clasificacion_regimen/list";

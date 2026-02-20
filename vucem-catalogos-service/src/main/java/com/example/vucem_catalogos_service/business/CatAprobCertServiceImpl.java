@@ -4,14 +4,20 @@ import com.example.vucem_catalogos_service.business.Interface.ICatAprobCertServi
 import com.example.vucem_catalogos_service.model.dto.CatAprobCertSeRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatAprobCertSeResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatAprobCertSe;
+import com.example.vucem_catalogos_service.model.entity.CatLaboratorioTtra;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAprobCertSeRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatLaboratorioTtraRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadAdministrativaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -21,6 +27,9 @@ public class CatAprobCertServiceImpl implements ICatAprobCertService {
 
     @Autowired
     private ICatUnidadAdministrativaRepository catUnidadAdministrativaRepository;
+
+    @Autowired
+    private ICatLaboratorioTtraRepository iCatLaboratorioTtraRepository;
 
     public PageResponseDTO<CatAprobCertSeResponseDTO> list(String search, Pageable pageable) {
 
@@ -107,6 +116,20 @@ public class CatAprobCertServiceImpl implements ICatAprobCertService {
         CatAprobCertSe updated = catAprobCertSeRepository.save(entity);
 
         return mapToResponse(updated);
+    }
+
+    @Override
+    public List<SelectDTO> listadoLaboratorio() {
+        List<CatLaboratorioTtra> productos = iCatLaboratorioTtraRepository.findAll();
+        List<SelectDTO> resultado = new ArrayList<>();
+
+        for (CatLaboratorioTtra producto : productos) {
+            SelectDTO dto = new SelectDTO();
+            dto.setId(producto.getId());
+            dto.setNombre(producto.getDescLaboratorio());
+            resultado.add(dto);
+        }
+        return resultado;
     }
 
 
