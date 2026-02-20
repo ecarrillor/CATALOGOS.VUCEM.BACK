@@ -108,7 +108,6 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_EQUIV_MONEDA   = "/cat_equiv_moneda/save";
     public static final String FIND_EQUIV_MONEDA   = "/cat_equiv_moneda/{id}";
     public static final String UPDATE_EQUIV_MONEDA = "/cat_equiv_moneda/{id}";
-    public static final String LIST_MONEDAS_SELECT_MONORIGEN = "/cat_equiv_moneda/cveMonedaOrigen";
     public static final String LIST_MONEDAS_SELECT_MONDEST = "/cat_equiv_moneda/cveMonedaDestino";
 
     /*entidad CAT_EMPRESA_RECIF */

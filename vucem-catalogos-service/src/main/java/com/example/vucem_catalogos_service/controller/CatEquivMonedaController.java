@@ -44,12 +44,7 @@ public class CatEquivMonedaController {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
-    @GetMapping(CatalogPaths.LIST_MONEDAS_SELECT_MONORIGEN)
-    public ResponseEntity<List<SelectDTO>> buscarMonedasOrige(
-            @RequestParam String term) {
 
-        return ResponseEntity.ok(service.buscarMonedasOrige(term));
-    }
     @GetMapping(CatalogPaths.LIST_MONEDAS_SELECT_MONDEST)
     public ResponseEntity<List<SelectDTO>> buscarMonedasDest(
             @RequestParam String term) {

@@ -15,5 +15,5 @@ public interface ICatEquivMonedaService {
 
     List<SelectDTO> buscarMonedasDest(String term);
 
-    List<SelectDTO> buscarMonedasOrige(String term);
+
 }
