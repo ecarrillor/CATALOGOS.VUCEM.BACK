@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,15 +12,23 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "cat_declaracion_tramite")
-public class CatDeclaracionTramite {
+@Table(name = "cat_clasificacion_regimen")
+public class CatClasificacionRegimen {
     @EmbeddedId
-    private CatDeclaracionTramiteId id;
+    private CatClasificacionRegimanId id;
 
-    @MapsId("cveDeclaracion")
+    @MapsId("cveRegimen")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "cve_declaracion", nullable = false, referencedColumnName = "cve_declaracion")
-    private CatDeclaracion cveDeclaracion;
+    @JoinColumn(name = "cve_regimen", nullable = false)
+    private CatRegimen cveRegimen;
+
+    @Size(max = 120)
+    @Column(name = "nombre", length = 120)
+    private String nombre;
+
+    @Size(max = 3)
+    @Column(name = "cod_regimen", length = 3)
+    private String codRegimen;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)

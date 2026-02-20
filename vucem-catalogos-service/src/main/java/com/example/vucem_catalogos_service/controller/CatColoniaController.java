@@ -2,8 +2,7 @@ package com.example.vucem_catalogos_service.controller;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatColoniaService;
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
-import com.example.vucem_catalogos_service.model.dto.CatColoniaDTO;
-import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -46,5 +45,23 @@ public class CatColoniaController {
     @GetMapping(CatalogPaths.FIND_COLONIA_BY_CP)
     public ResponseEntity<List<CatColoniaDTO>> findByCp(@PathVariable String cp) {
         return ResponseEntity.ok(service.findByCp(cp));
+    }
+
+    @GetMapping(CatalogPaths.FIND_MUNICIPIOS)
+    public ResponseEntity<List<CatMuncipioDTO>> findMunicipios(
+            @PathVariable String cvePais,
+            @PathVariable String cveEntidad) {
+
+        return ResponseEntity.ok(service.findMunicipios(cvePais, cveEntidad));
+    }
+
+    @GetMapping(CatalogPaths.FIND_LOCALIDADES)
+    public ResponseEntity<List<LocalidadDTO>> findLocalidades(
+            @PathVariable String cvePais,
+            @PathVariable String cveEntidad,
+            @PathVariable String cveMunicipio) {
+
+        return ResponseEntity.ok(service.findLocalidades(
+                cvePais, cveEntidad, cveMunicipio));
     }
 }

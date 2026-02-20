@@ -1,13 +1,13 @@
 package com.example.vucem_catalogos_service.persistence.repo;
 
-import com.example.vucem_catalogos_service.model.entity.CatDependencia;
+import com.example.vucem_catalogos_service.model.entity.CatUnidadMedida;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ICatDependenciaRepository extends JpaRepository<CatDependencia, Short> {
+public interface ICatUnidadMedidaRepository extends JpaRepository<CatUnidadMedida, String> {
 
-    List<CatDependencia> findByBlnActivoTrue();
+    List<CatUnidadMedida> findByBlnActivoTrue();
 }
