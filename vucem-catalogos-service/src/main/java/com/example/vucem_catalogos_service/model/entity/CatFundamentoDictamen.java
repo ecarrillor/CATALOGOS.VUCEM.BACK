@@ -8,15 +8,15 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
 @Table(name = "cat_fundamento_dictamen")
-public class CatFundamentoDictaman {
+public class CatFundamentoDictamen {
     @Id
     @Column(name = "id_fundamento_dictamen", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Size(max = 2000)
     @Column(name = "descripcion", length = 2000)
@@ -27,10 +27,10 @@ public class CatFundamentoDictaman {
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
