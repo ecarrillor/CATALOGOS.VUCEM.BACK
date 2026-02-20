@@ -5,11 +5,11 @@ import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
 import com.example.vucem_catalogos_service.model.dto.CatColoniaDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -21,9 +21,16 @@ public class CatColoniaController {
 
     @GetMapping(CatalogPaths.LIST_CATALOGO_COLONIA)
     public ResponseEntity<PageResponseDTO<CatColoniaDTO>> list(
-            @RequestParam(required = false) String search,
-            Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String cp,
+            @RequestParam(required = false) String municipio,
+            @RequestParam(required = false) String nombrePais,
+            @RequestParam(required = false) Boolean blnActivo,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size)
+        {
+
+        return ResponseEntity.ok(service.list(nombre, cp, municipio, nombrePais, blnActivo, page, size));
     }
 
     @GetMapping(CatalogPaths.FIND_CATALOGO_COLONIA)

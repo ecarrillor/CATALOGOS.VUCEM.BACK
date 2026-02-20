@@ -10,6 +10,7 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatLocalidadReposit
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -30,30 +31,29 @@ public class CatColoniaServiceImpl implements ICatColoniaService {
     private ICatLocalidadRepository catLocalidadRepository;
 
     @Override
-    public PageResponseDTO<CatColoniaDTO> list(String search, Pageable pageable) {
-        Boolean activo = null;
-        String texto = null;
-
-        if (search != null && !search.isBlank()) {
-            String s = search.trim().toLowerCase();
-            if (s.equals("activo")) {
-                activo = true;
-            } else if (s.equals("inactivo")) {
-                activo = false;
-            } else {
-                texto = search;
-            }
+    public PageResponseDTO<CatColoniaDTO> list(String nombre, String cp, String municipio, String nombrePais, Boolean blnActivo, Integer page, Integer size) {
+        if (page == null && size == null) {
+            List<CatColoniaDTO> all = catColoniaRepository.searchAll(nombre, cp, municipio, nombrePais, blnActivo);
+            return PageResponseDTO.<CatColoniaDTO>builder()
+                    .content(all)
+                    .page(0)
+                    .size(all.size())
+                    .totalElements((long) all.size())
+                    .totalPages(1)
+                    .last(true)
+                    .build();
         }
 
-        Page<CatColoniaDTO> page = catColoniaRepository.search(texto, activo, pageable);
+        Pageable pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 20);
+        Page<CatColoniaDTO> pg = catColoniaRepository.search(nombre, cp, municipio, nombrePais, blnActivo, pageable);
 
         return PageResponseDTO.<CatColoniaDTO>builder()
-                .content(page.getContent())
-                .page(page.getNumber())
-                .size(page.getSize())
-                .totalElements(page.getTotalElements())
-                .totalPages(page.getTotalPages())
-                .last(page.isLast())
+                .content(pg.getContent())
+                .page(pg.getNumber())
+                .size(pg.getSize())
+                .totalElements(pg.getTotalElements())
+                .totalPages(pg.getTotalPages())
+                .last(pg.isLast())
                 .build();
     }
 

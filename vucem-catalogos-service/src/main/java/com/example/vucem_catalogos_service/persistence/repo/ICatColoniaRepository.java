@@ -35,21 +35,18 @@ public interface ICatColoniaRepository extends JpaRepository<CatColonia, String>
             LEFT JOIN en.cvePais pais
             LEFT JOIN cat.cveLocalidad loc
             WHERE
-                (
-                    :search IS NULL OR
-                    LOWER(cat.cveColonia) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(cat.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(loc.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(dm.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(cat.cp) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
-                )
-                AND (
-                    :activo IS NULL OR cat.blnActivo = :activo
-                )
+                (:nombre IS NULL OR LOWER(cat.nombre) LIKE LOWER(CONCAT('%', CAST(:nombre AS string), '%')))
+                AND (:cp IS NULL OR LOWER(cat.cp) LIKE LOWER(CONCAT('%', CAST(:cp AS string), '%')))
+                AND (:municipio IS NULL OR LOWER(dm.nombre) LIKE LOWER(CONCAT('%', CAST(:municipio AS string), '%')))
+                AND (:nombrePais IS NULL OR LOWER(pais.nombre) LIKE LOWER(CONCAT('%', CAST(:nombrePais AS string), '%')))
+                AND (:blnActivo IS NULL OR cat.blnActivo = :blnActivo)
             """)
     Page<CatColoniaDTO> search(
-            @Param("search") String search,
-            @Param("activo") Boolean activo,
+            @Param("nombre") String nombre,
+            @Param("cp") String cp,
+            @Param("municipio") String municipio,
+            @Param("nombrePais") String nombrePais,
+            @Param("blnActivo") Boolean blnActivo,
             Pageable pageable);
 
     @Query("""
@@ -65,7 +62,41 @@ public interface ICatColoniaRepository extends JpaRepository<CatColonia, String>
                 cat.blnActivo,
                 dm.cveDelegMun,
                 loc.cveLocalidad,
-                pais.nombre  
+                pais.nombre
+            )
+            FROM CatColonia cat
+            LEFT JOIN cat.cveDelegMun dm
+            LEFT JOIN dm.cveEntidad en
+            LEFT JOIN en.cvePais pais
+            LEFT JOIN cat.cveLocalidad loc
+            WHERE
+                (:nombre IS NULL OR LOWER(cat.nombre) LIKE LOWER(CONCAT('%', CAST(:nombre AS string), '%')))
+                AND (:cp IS NULL OR LOWER(cat.cp) LIKE LOWER(CONCAT('%', CAST(:cp AS string), '%')))
+                AND (:municipio IS NULL OR LOWER(dm.nombre) LIKE LOWER(CONCAT('%', CAST(:municipio AS string), '%')))
+                AND (:nombrePais IS NULL OR LOWER(pais.nombre) LIKE LOWER(CONCAT('%', CAST(:nombrePais AS string), '%')))
+                AND (:blnActivo IS NULL OR cat.blnActivo = :blnActivo)
+            """)
+    List<CatColoniaDTO> searchAll(
+            @Param("nombre") String nombre,
+            @Param("cp") String cp,
+            @Param("municipio") String municipio,
+            @Param("nombrePais") String nombrePais,
+            @Param("blnActivo") Boolean blnActivo);
+
+    @Query("""
+            SELECT new com.example.vucem_catalogos_service.model.dto.CatColoniaDTO(
+                cat.cveColonia,
+                cat.nombre,
+                dm.nombre,
+                loc.nombre,
+                cat.cp,
+                cat.fecCaptura,
+                cat.fecIniVigencia,
+                cat.fecFinVigencia,
+                cat.blnActivo,
+                dm.cveDelegMun,
+                loc.cveLocalidad,
+                pais.nombre
             )
             FROM CatColonia cat
             LEFT JOIN cat.cveDelegMun dm
