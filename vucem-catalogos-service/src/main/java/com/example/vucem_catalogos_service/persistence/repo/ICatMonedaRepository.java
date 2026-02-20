@@ -3,6 +3,8 @@ package com.example.vucem_catalogos_service.persistence.repo;
 import com.example.vucem_catalogos_service.model.entity.CatMoneda;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,4 +14,16 @@ public interface ICatMonedaRepository extends JpaRepository<CatMoneda, String>,
         JpaSpecificationExecutor<CatMoneda> {
 
     List<CatMoneda> findByBlnActivoTrue();
+
+    @Query("""
+            SELECT DISTINCT e
+            FROM CatMoneda e
+            WHERE (
+                :term IS NULL OR
+                LOWER(e.cveMoneda) LIKE LOWER(CONCAT('%', :term, '%'))
+            )
+            ORDER BY e.cveMoneda
+            """)
+    List<CatMoneda> buscarMonedasDest(@Param("term") String term);
+
 }

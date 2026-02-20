@@ -131,7 +131,7 @@ public class CatEquivMonedaServiceImpl implements ICatEquivMonedaService {
 
     @Override
     public List<SelectDTO> buscarMonedasDest(String term) {
-        List<CatMoneda> monedas = iCatEquivMonedaRepository.buscarMonedasDest(term);
+        List<CatMoneda> monedas = iCatMonedaRepository.buscarMonedasDest(term);
         List<SelectDTO> resultado = new ArrayList<>();
 
         for (CatMoneda m : monedas) {
@@ -143,19 +143,7 @@ public class CatEquivMonedaServiceImpl implements ICatEquivMonedaService {
         return resultado;
     }
 
-    @Override
-    public List<SelectDTO> buscarMonedasOrige(String term) {
-        List<CatMoneda> monedas = iCatEquivMonedaRepository.buscarMonedasOrige(term);
-        List<SelectDTO> resultado = new ArrayList<>();
 
-        for (CatMoneda m : monedas) {
-            SelectDTO dto = new SelectDTO();
-            dto.setCve(m.getCveMoneda());
-            dto.setNombre(m.getNombre());
-            resultado.add(dto);
-        }
-        return resultado;
-    }
 
     private CatEquivMonedaDTO mapToDTO(CatEquivMoneda e) {
         return CatEquivMonedaDTO.builder()

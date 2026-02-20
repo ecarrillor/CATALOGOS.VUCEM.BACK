@@ -62,29 +62,4 @@ public interface ICatEquivMonedaRepository extends JpaRepository<CatEquivMoneda,
             """)
     CatEquivMonedaDTO findByEquivMonedaDTO(@Param("id") Integer id);
 
-
-    @Query("""
-            SELECT DISTINCT cd
-            FROM CatEquivMoneda e
-            JOIN e.cveMonedaDestino cd
-            WHERE (
-                   LOWER(cd.cveMoneda) LIKE LOWER(CONCAT('%', :term, '%'))
-                OR LOWER(cd.nombre) LIKE LOWER(CONCAT('%', :term, '%'))
-            )
-            ORDER BY cd.cveMoneda
-            """)
-    List<CatMoneda> buscarMonedasDest(@Param("term") String term);
-
-
-    @Query("""
-            SELECT DISTINCT cd
-            FROM CatEquivMoneda e
-            JOIN e.cveMonedaOrigen cd
-            WHERE (
-                   LOWER(cd.cveMoneda) LIKE LOWER(CONCAT('%', :term, '%'))
-                OR LOWER(cd.nombre) LIKE LOWER(CONCAT('%', :term, '%'))
-            )
-            ORDER BY cd.cveMoneda
-            """)
-    List<CatMoneda> buscarMonedasOrige(@Param("term") String term);
 }
