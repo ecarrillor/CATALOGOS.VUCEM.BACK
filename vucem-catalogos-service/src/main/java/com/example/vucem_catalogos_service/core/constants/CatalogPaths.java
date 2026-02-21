@@ -185,6 +185,18 @@ public class CatalogPaths extends ConstPath{
     public static final String UPDATE_PARTIDA_FRACCION          = "/cat_partida_fraccion/{cveCapituloFraccion}/{cvePartidaFraccion}";
     public static final String LIST_CAPITULOS_FRACCION_ACTIVOS  = "/cat_partida_fraccion/capitulos_activos";
 
+    /*entidad CAT_PATENTE_ADUANAL */
+    public static final String LIST_PATENTE_ADUANAL   = "/cat_patente_aduanal/list";
+    public static final String SAVE_PATENTE_ADUANAL   = "/cat_patente_aduanal/save";
+    public static final String FIND_PATENTE_ADUANAL   = "/cat_patente_aduanal/{cvePatenteAduanal}";
+    public static final String UPDATE_PATENTE_ADUANAL = "/cat_patente_aduanal/{cvePatenteAduanal}";
+
+    /*entidad CAT_PAIS_RESTRICCION_TTRA */
+    public static final String LIST_PAIS_RESTRICCION_TTRA   = "/cat_pais_restriccion_ttra/list";
+    public static final String SAVE_PAIS_RESTRICCION_TTRA   = "/cat_pais_restriccion_ttra/save";
+    public static final String FIND_PAIS_RESTRICCION_TTRA   = "/cat_pais_restriccion_ttra/{id}";
+    public static final String UPDATE_PAIS_RESTRICCION_TTRA = "/cat_pais_restriccion_ttra/{id}";
+
 
 
 }
