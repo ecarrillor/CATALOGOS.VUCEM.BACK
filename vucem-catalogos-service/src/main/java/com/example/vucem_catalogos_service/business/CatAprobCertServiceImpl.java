@@ -7,6 +7,7 @@ import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatAprobCertSe;
 import com.example.vucem_catalogos_service.model.entity.CatLaboratorioTtra;
+import com.example.vucem_catalogos_service.model.entity.CatUnidadAdministrativa;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAprobCertSeRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatLaboratorioTtraRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadAdministrativaRepository;
@@ -28,8 +29,7 @@ public class CatAprobCertServiceImpl implements ICatAprobCertService {
     @Autowired
     private ICatUnidadAdministrativaRepository catUnidadAdministrativaRepository;
 
-    @Autowired
-    private ICatLaboratorioTtraRepository iCatLaboratorioTtraRepository;
+
 
     public PageResponseDTO<CatAprobCertSeResponseDTO> list(String search, Pageable pageable) {
 
@@ -118,13 +118,13 @@ public class CatAprobCertServiceImpl implements ICatAprobCertService {
 
     @Override
     public List<SelectDTO> listadoLaboratorio() {
-        List<CatLaboratorioTtra> productos = iCatLaboratorioTtraRepository.findAll();
+        List<CatUnidadAdministrativa> productos = catAprobCertSeRepository.listadoLaboratorio();
         List<SelectDTO> resultado = new ArrayList<>();
 
-        for (CatLaboratorioTtra producto : productos) {
+        for (CatUnidadAdministrativa producto : productos) {
             SelectDTO dto = new SelectDTO();
-            dto.setId(producto.getId());
-            dto.setNombre(producto.getDescLaboratorio());
+            dto.setCve(producto.getCveUnidadAdministrativa());
+            dto.setNombre(producto.getNombre());
             resultado.add(dto);
         }
         return resultado;

@@ -3,6 +3,8 @@ package com.example.vucem_catalogos_service.persistence.repo;
 import com.example.vucem_catalogos_service.model.dto.CatAprobCertSeResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.CatUnidadAdministrativaNameDTO;
 import com.example.vucem_catalogos_service.model.entity.CatAprobCertSe;
+import com.example.vucem_catalogos_service.model.entity.CatLaboratorioTtra;
+import com.example.vucem_catalogos_service.model.entity.CatUnidadAdministrativa;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -79,4 +81,15 @@ public interface ICatAprobCertSeRepository extends JpaRepository<CatAprobCertSe,
             JOIN a.cveUnidadAdministrativa u
             """)
     List<CatUnidadAdministrativaNameDTO> findByName();
+
+    @Query("""
+            SELECT u
+            FROM CatAprobCertSe a
+            JOIN a.cveUnidadAdministrativa u
+            WHERE a.blnActivo = true
+            ORDER BY u.nombre asc 
+            """)
+    List<CatUnidadAdministrativa> listadoLaboratorio();
+
+
 }
