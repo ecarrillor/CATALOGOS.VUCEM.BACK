@@ -11,5 +11,6 @@ import java.util.List;
 public interface ICatTipoTramiteRepository extends JpaRepository<CatTipoTramite, Long>,
         JpaSpecificationExecutor<CatTipoTramite> {
 
-    List<CatTipoTramite> findByBlnActivoTrue();
+
+    List<CatTipoTramite> findByBlnActivoTrueOrderByIdDesc();
 }

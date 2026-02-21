@@ -132,7 +132,7 @@ public class CatDeclaracionTramiteServiceImpl implements ICatDeclaracionTramiteS
 
     @Override
     public List<SelectDTO> listadoTiposTramite() {
-        List<CatTipoTramite> tipos = iCatTipoTramiteRepository.findByBlnActivoTrue();
+        List<CatTipoTramite> tipos = iCatTipoTramiteRepository.findByBlnActivoTrueOrderByIdDesc();
         List<SelectDTO> resultado = new ArrayList<>();
 
         for (CatTipoTramite t : tipos) {

@@ -76,7 +76,6 @@ public class CatArancelProsecServiceImpl implements ICatArancelProsecService {
         id.setCveFraccion(dto.getCveFraccion());
         id.setCveSectorProsec(dto.getCveSectorProsec());
 
-        // 🔹 Crear entidad
         CatArancelProsec entity = new CatArancelProsec();
         entity.setId(id);
 
