@@ -1,6 +1,8 @@
 package com.example.vucem_catalogos_service.persistence.repo;
 
+import com.example.vucem_catalogos_service.model.dto.CatNormalOficialDTO;
 import com.example.vucem_catalogos_service.model.dto.Dependencia.CatDependenciaResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatDependencia;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,4 +50,24 @@ public interface ICatDependenciaRepository extends JpaRepository<CatDependencia,
     );
 
     List<CatDependencia> findByBlnActivoTrue();
+
+
+    @Query("""
+        SELECT new com.example.vucem_catalogos_service.model.dto.Dependencia.CatDependenciaResponseDTO(
+             a.id,
+                a.nombre,
+                a.acronimo,
+                b.nombre,
+                b.cveCalendario,
+                a.blnTramitesVu,
+                a.fecIniVigencia,
+                a.fecFinVigencia,
+                a.blnActivo
+        )
+        FROM CatDependencia a
+                JOIN a.cveCalendario b
+        WHERE a.blnActivo = true
+        """)
+    List<CatDependenciaResponseDTO> findAllActive();
 }
+

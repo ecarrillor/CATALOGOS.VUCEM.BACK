@@ -18,4 +18,6 @@ public interface ICatDependenciaService {
     CatDependenciaResponseDTO update(Long id, CatDependenciaRequestDTO dto);
 
     List<SelectDTO> listadoCalendarios();
+
+    List<SelectDTO> listadoDependencias();
 }

@@ -80,6 +80,25 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_CATALOGO_JUSTIFICACION_TRAMITE   = "/cat_justificacion_tramite/{id}";
     public static final String UPDATE_CATALOGO_JUSTIFICACION_TRAMITE = "/cat_justificacion_tramite/{id}";
 
+    /*entidad CAT_LEYENDA_TEXTO */
+    public static final String LIST_CATALOGO_LEYENDA_TEXTO = "/cat_leyenda_texto/list";
+    public static final String SAVE_CATALOGO_LEYENDA_TEXTO = "/cat_leyenda_texto/save";
+    public static final String FIND_CATALOGO_LEYENDA_TEXTO = "/cat_leyenda_texto/{id}";
+    public static final String UPDATE_CATALOGO_LEYENDA_TEXTO = "/cat_leyenda_texto/{id}";
+
+    /*entidad CAT_MOTIVO_TRAMITE */
+    public static final String LIST_CATALOGO_MOTIVO_TRAMITE = "/cat_motivo_tramite/list";
+    public static final String SAVE_CATALOGO_MOTIVO_TRAMITE = "/cat_motivo_tramite/save";
+    public static final String FIND_CATALOGO_MOTIVO_TRAMITE = "/cat_motivo_tramite/{id}";
+    public static final String UPDATE_CATALOGO_MOTIVO_TRAMITE = "/cat_motivo_tramite/{id}";
+
+    /*entidad CAT_PARAMETRO */
+    public static final String LIST_CATALOGO_PARAMETRO = "/cat_parametro/list";
+    public static final String SAVE_CATALOGO_PARAMETRO = "/cat_parametro/save";
+    public static final String FIND_CATALOGO_PARAMETRO = "/cat_parametro/{id}";
+    public static final String UPDATE_CATALOGO_PARAMETRO = "/cat_parametro/{id}";
+    public static final String LIST_DEPENDENCIAS = "/cat_parametro/dependencias";
+
 
     /*entidad CAT_APROB_CERT_SE */
     public static final String LIST_CATALOGO_APROB_CERT = "/cat_aprobCert/list";

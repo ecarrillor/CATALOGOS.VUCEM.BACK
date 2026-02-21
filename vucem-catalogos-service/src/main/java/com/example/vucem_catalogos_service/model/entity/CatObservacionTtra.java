@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -15,7 +16,7 @@ import java.time.Instant;
 public class CatObservacionTtra {
     @Id
     @Column(name = "id_observacion_ttra", nullable = false)
-    private Short id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_tramite", referencedColumnName = "id_tipo_tramite")
@@ -27,10 +28,10 @@ public class CatObservacionTtra {
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)

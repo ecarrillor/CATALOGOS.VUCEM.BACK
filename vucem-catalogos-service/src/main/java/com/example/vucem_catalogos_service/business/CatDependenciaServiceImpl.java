@@ -173,4 +173,18 @@ public class CatDependenciaServiceImpl implements ICatDependenciaService {
         }
         return resultado;
     }
+
+    @Override
+    public List<SelectDTO> listadoDependencias() {
+        List<CatDependenciaResponseDTO> productos = iCatDependenciaRepository.findAllActive();
+        List<SelectDTO> resultado = new ArrayList<>();
+
+        for (CatDependenciaResponseDTO producto : productos) {
+            SelectDTO dto = new SelectDTO();
+            dto.setId(producto.getCveDependencia());
+            dto.setNombre(producto.getNombreDependencia());
+            resultado.add(dto);
+        }
+        return resultado;
+    }
 }

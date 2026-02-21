@@ -13,5 +13,4 @@ public class SelectDTO {
 
     private Long id;
 
-
 }
