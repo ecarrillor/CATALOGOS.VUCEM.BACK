@@ -79,7 +79,7 @@ public class CatAprobCertServiceImpl implements ICatAprobCertService {
                         .orElseThrow(() -> new RuntimeException("Laboratorio no encontrado"))
         );
 
-        entity.setIdeTipoAprobCertSe(mapTipoToCodigo(dto.getTipoAprobacion()));
+        entity.setIdeTipoAprobCertSe(dto.getTipoAprobacion());
 
         entity.setNumAprobCert(dto.getNumAprobCert());
         entity.setFecEmision(dto.getFecEmision());
@@ -103,9 +103,7 @@ public class CatAprobCertServiceImpl implements ICatAprobCertService {
                         .orElseThrow(() -> new RuntimeException("Laboratorio no encontrado"))
         );
 
-        entity.setIdeTipoAprobCertSe(
-                mapTipoToCodigo(dto.getTipoAprobacion())
-        );
+        entity.setIdeTipoAprobCertSe(dto.getTipoAprobacion());
 
         entity.setNumAprobCert(dto.getNumAprobCert());
         entity.setFecEmision(dto.getFecEmision());
@@ -150,26 +148,6 @@ public class CatAprobCertServiceImpl implements ICatAprobCertService {
                 e.getFecFinVigencia(),
                 e.getBlnActivo()
         );
-    }
-
-
-    private String mapTipoToCodigo(String tipo) {
-
-        if (tipo == null) {
-            throw new RuntimeException("Tipo de aprobación es obligatorio");
-        }
-
-        String t = tipo.trim().toLowerCase();
-
-        if (t.equals("acreditación") || t.equals("acreditacion")) {
-            return "TIAPC.AC";
-        }
-
-        if (t.equals("aprobación") || t.equals("aprobacion")) {
-            return "TIAPC.AP";
-        }
-
-        throw new RuntimeException("Tipo de aprobación inválido: " + tipo);
     }
 
 
