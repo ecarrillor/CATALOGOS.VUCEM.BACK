@@ -99,6 +99,11 @@ public class CatalogPaths extends ConstPath{
     public static final String UPDATE_CATALOGO_PARAMETRO = "/cat_parametro/{id}";
     public static final String LIST_DEPENDENCIAS = "/cat_parametro/dependencias";
 
+    /*entidad CAT_OBSERVACION_TRAMITE */
+    public static final String LIST_CATALOGO_OBSERVACION_TRAMITE = "/cat_observacion_ttra/list";
+    public static final String SAVE_CATALOGO_OBSERVACION_TRAMITE = "/cat_observacion_ttra/save";
+    public static final String FIND_CATALOGO_OBSERVACION_TRAMITE = "/cat_observacion_ttra/{id}";
+    public static final String UPDATE_CATALOGO_OBSERVACION_TRAMITE = "/cat_observacion_ttra/{id}";
 
     /*entidad CAT_APROB_CERT_SE */
     public static final String LIST_CATALOGO_APROB_CERT = "/cat_aprobCert/list";
