@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -22,7 +23,7 @@ public class CatPlazoMaximoAutTramite {
     private CatTipoTramite idTipoTramite;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @Column(name = "plazo_anios")
     private Short plazoAnios;
@@ -32,14 +33,14 @@ public class CatPlazoMaximoAutTramite {
     private String idePlazoMeses;
 
     @Column(name = "bln_ilimitado")
-    private Short blnIlimitado;
+    private Boolean blnIlimitado;
 
     @Size(max = 8)
     @Column(name = "plazo", length = 8)
     private String plazo;
 
     @Column(name = "bln_asignacion_fecha_fin")
-    private Short blnAsignacionFechaFin;
+    private Boolean blnAsignacionFechaFin;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)

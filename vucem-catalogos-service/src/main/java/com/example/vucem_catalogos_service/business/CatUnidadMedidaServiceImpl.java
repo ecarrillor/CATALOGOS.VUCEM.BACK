@@ -1,7 +1,8 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatPuntoVerificacion;
-import com.example.vucem_catalogos_service.persistence.repo.ICatPuntoVerificacionRepository;
+import com.example.vucem_catalogos_service.model.entity.CatUnidadMedida;
+import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadMedidaRepository;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -17,48 +18,48 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class CatPuntoVerificacionServiceImpl extends AbstractCatalogService<CatPuntoVerificacion,Integer>{
+public class CatUnidadMedidaServiceImpl extends AbstractCatalogService<CatUnidadMedida,String>{
     @Autowired
-    private ICatPuntoVerificacionRepository catPuntoVerificacionRepository;
+    private ICatUnidadMedidaRepository catUnidadMedidaRepository;
 
     @Override
     public String getCatalogKey() {
-        return "cat_punto_verificacion";
+        return "cat_unidad_medida";
     }
 
     @Override
-    public Class<CatPuntoVerificacion> getEntityClass() {
-        return CatPuntoVerificacion.class;
+    public Class<CatUnidadMedida> getEntityClass() {
+        return CatUnidadMedida.class;
     }
 
     @Override
-    protected JpaRepository<CatPuntoVerificacion, Integer> getRepository() {
-        return catPuntoVerificacionRepository;
+    protected JpaRepository<CatUnidadMedida, String> getRepository() {
+        return catUnidadMedidaRepository;
     }
 
     @Override
-    protected Class<Integer> getIdClass() {
-        return Integer.class;
+    protected Class<String> getIdClass() {
+        return String.class;
     }
 
 
     @Override
-    public Page<CatPuntoVerificacion> findAll(
+    public Page<CatUnidadMedida> findAll(
             String search,
             Map<String, String> filters,
             boolean includeSubcatalogs,
             Pageable pageable) {
 
-        Specification<CatPuntoVerificacion> spec =
-                GenericSearchSpecification.<CatPuntoVerificacion>searchInFields(
+        Specification<CatUnidadMedida> spec =
+                GenericSearchSpecification.<CatUnidadMedida>searchInFields(
                         search,
-                        List.of("nomPuntoVerif")
+                        List.of("cveUnidadMedida","descripcion")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
                 );
 
 
 
-        return catPuntoVerificacionRepository.findAll(spec, pageable);
+        return catUnidadMedidaRepository.findAll(spec, pageable);
     }
 }

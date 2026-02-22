@@ -221,6 +221,36 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_PAIS_RESTRICCION_TTRA   = "/cat_pais_restriccion_ttra/{id}";
     public static final String UPDATE_PAIS_RESTRICCION_TTRA = "/cat_pais_restriccion_ttra/{id}";
 
+    /*entidad CAT_PLAZO_MAXIMO_AUT_TRAMITE */
+    public static final String LIST_PLAZO_MAX_TTRA   = "/cat_plazo_max_ttra/list";
+    public static final String SAVE_PLAZO_MAX_TTRA   = "/cat_plazo_max_ttra/save";
+    public static final String FIND_PLAZO_MAX_TTRA   = "/cat_plazo_max_ttra/{idTipoTramite}/{fecIniVigencia}";
+    public static final String UPDATE_PLAZO_MAX_TTRA = "/cat_plazo_max_ttra/{idTipoTramite}/{fecIniVigencia}";
+
+    /*entidad CAT_SECCION_TTRA */
+    public static final String LIST_SECCION_TTRA   = "/cat_seccion_ttra/list";
+    public static final String SAVE_SECCION_TTRA   = "/cat_seccion_ttra/save";
+    public static final String FIND_SECCION_TTRA   = "/cat_seccion_ttra/{id}";
+    public static final String UPDATE_SECCION_TTRA = "/cat_seccion_ttra/{id}";
+
+    /*entidad CAT_SERVICIO_IMMEX */
+    public static final String LIST_SERVICIO_IMMEX   = "/cat_servicio_immex/list";
+    public static final String SAVE_SERVICIO_IMMEX   = "/cat_servicio_immex/save";
+    public static final String FIND_SERVICIO_IMMEX   = "/cat_servicio_immex/{id}";
+    public static final String UPDATE_SERVICIO_IMMEX = "/cat_servicio_immex/{id}";
+
+    /*entidad CAT_SUPLENCIA */
+    public static final String LIST_SUPLENCIA              = "/cat_suplencia/list";
+    public static final String SAVE_SUPLENCIA              = "/cat_suplencia/save";
+    public static final String FIND_SUPLENCIA              = "/cat_suplencia/{id}";
+    public static final String UPDATE_SUPLENCIA            = "/cat_suplencia/{id}";
+    public static final String LIST_DEPENDENCIAS_SUPLENCIA = "/cat_suplencia/dependencias";
+
+    /*entidad CAT_USO_ESPEC_MERCANCIA_TTRA */
+    public static final String LIST_USO_ESPEC_MERCANCIA_TTRA   = "/cat_uso_espec_mercancia_ttra/list";
+    public static final String SAVE_USO_ESPEC_MERCANCIA_TTRA   = "/cat_uso_espec_mercancia_ttra/save";
+    public static final String FIND_USO_ESPEC_MERCANCIA_TTRA   = "/cat_uso_espec_mercancia_ttra/{id}";
+    public static final String UPDATE_USO_ESPEC_MERCANCIA_TTRA = "/cat_uso_espec_mercancia_ttra/{id}";
 
 
 }

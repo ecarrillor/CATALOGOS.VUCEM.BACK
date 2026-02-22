@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,11 +19,11 @@ public class CatPlazoMaximoAutTramiteId implements Serializable {
     private static final long serialVersionUID = 1686899093006663106L;
     @NotNull
     @Column(name = "id_tipo_tramite", nullable = false)
-    private Integer idTipoTramite;
+    private Long idTipoTramite;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
 
 }
