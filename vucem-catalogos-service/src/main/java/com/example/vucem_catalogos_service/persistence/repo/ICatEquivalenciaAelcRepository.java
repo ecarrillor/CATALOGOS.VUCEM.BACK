@@ -19,7 +19,7 @@ public interface ICatEquivalenciaAelcRepository extends JpaRepository<CatEquival
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatEquivalenciaAelcDTO(
                 e.id.fecIniVigencia,
-                e.id.cveMoneda,
+                e.id.nombre,
                 e.valor,
                 e.fecCaptura,
                 e.fecFinVigencia,

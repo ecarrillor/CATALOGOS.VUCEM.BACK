@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -23,10 +24,10 @@ public class CatEquivalenciaAelc {
     private BigDecimal valor;
 
     @Column(name = "fec_captura")
-    private Instant fecCaptura;
+    private LocalDate fecCaptura;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
