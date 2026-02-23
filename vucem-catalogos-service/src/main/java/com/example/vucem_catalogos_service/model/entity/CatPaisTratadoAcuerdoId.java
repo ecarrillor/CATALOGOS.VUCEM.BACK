@@ -16,10 +16,6 @@ import java.time.Instant;
 @EqualsAndHashCode
 @Embeddable
 public class CatPaisTratadoAcuerdoId implements Serializable {
-    private static final long serialVersionUID = -568964018412796896L;
-    @NotNull
-    @Column(name = "fec_fin_vigencia", nullable = false)
-    private Instant fecFinVigencia;
 
     @Size(max = 3)
     @NotNull

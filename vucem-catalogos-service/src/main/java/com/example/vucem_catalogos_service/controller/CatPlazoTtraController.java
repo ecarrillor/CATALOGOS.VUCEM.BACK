@@ -27,7 +27,7 @@ public class CatPlazoTtraController {
 
     @GetMapping(CatalogPaths.FIND_PLAZO_TTRA)
     public ResponseEntity<CatPlazoTtraDTO> findById(
-            @PathVariable Integer idTipoTramite,
+            @PathVariable Long idTipoTramite,
             @PathVariable String idePlazoVigencia) {
         return ResponseEntity.ok(service.findById(idTipoTramite, idePlazoVigencia));
     }
@@ -39,7 +39,7 @@ public class CatPlazoTtraController {
 
     @PutMapping(CatalogPaths.UPDATE_PLAZO_TTRA)
     public ResponseEntity<CatPlazoTtraDTO> update(
-            @PathVariable Integer idTipoTramite,
+            @PathVariable Long idTipoTramite,
             @PathVariable String idePlazoVigencia,
             @RequestBody CatPlazoTtraDTO dto) {
         return ResponseEntity.ok(service.update(idTipoTramite, idePlazoVigencia, dto));

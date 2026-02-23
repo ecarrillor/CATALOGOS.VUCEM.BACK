@@ -33,10 +33,14 @@ public interface ICatRecintoFiscalizadoRepository extends JpaRepository<CatRecin
                 e.tipo
             )
             FROM CatRecintoFiscalizado e
-            WHERE (:search IS NULL OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', :search, '%'))
-                OR LOWER(e.rfc) LIKE LOWER(CONCAT('%', :search, '%'))
-                OR LOWER(e.ideTipoRecintoFiscalizado) LIKE LOWER(CONCAT('%', :search, '%')))
-            AND (:activo IS NULL OR e.blnActivo = :activo)
+            WHERE
+                                       (
+                                                   :search IS NULL OR
+                                                   LOWER(e.nombre) LIKE :search OR
+                                                   LOWER(e.rfc) LIKE :search OR
+                                                   LOWER(e.descUrl) LIKE :search OR
+                                                   STR(e.id) LIKE :search
+                                      )
             """)
     Page<CatRecintoFiscalizadoDTO> search(@Param("search") String search,
                                            @Param("activo") Boolean activo,

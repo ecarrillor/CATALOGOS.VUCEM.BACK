@@ -9,8 +9,10 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatRecintoFiscaliza
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -27,12 +29,19 @@ public class CatRecintoFiscalizadoServiceImpl implements ICatRecintoFiscalizadoS
         Boolean activo = null;
         String texto = null;
 
-        if ("activo".equalsIgnoreCase(search)) {
-            activo = true;
-        } else if ("inactivo".equalsIgnoreCase(search)) {
-            activo = false;
-        } else {
-            texto = search;
+        if (search != null && !search.isBlank()) {
+
+            String s = search.trim().toLowerCase();
+
+            if (s.equals("activo")) {
+                activo = true;
+            }
+            else if (s.equals("inactivo")) {
+                activo = false;
+            }
+            else {
+                texto = "%" + search.trim().toLowerCase() + "%";
+            }
         }
 
         Page<CatRecintoFiscalizadoDTO> page = catRecintoFiscalizadoRepository.search(texto, activo, pageable);
@@ -56,6 +65,16 @@ public class CatRecintoFiscalizadoServiceImpl implements ICatRecintoFiscalizadoS
     @Override
     public CatRecintoFiscalizadoDTO create(CatRecintoFiscalizadoDTO dto) {
         CatRecintoFiscalizado entity = new CatRecintoFiscalizado();
+
+        if (catRecintoFiscalizadoRepository.existsById(dto.getId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Ya existe un reciento fiscalizado con id: "
+                            + dto.getId()
+            );
+        }
+
+        entity.setId(dto.getId());
         entity.setIdeTipoRecintoFiscalizado(dto.getIdeTipoRecintoFiscalizado());
         entity.setNombre(dto.getNombre());
         entity.setRfc(dto.getRfc());

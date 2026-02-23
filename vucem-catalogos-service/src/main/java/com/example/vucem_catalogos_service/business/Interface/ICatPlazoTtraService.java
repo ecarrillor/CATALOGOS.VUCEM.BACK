@@ -8,9 +8,9 @@ public interface ICatPlazoTtraService {
 
     PageResponseDTO<CatPlazoTtraDTO> list(String search, Pageable pageable);
 
-    CatPlazoTtraDTO findById(Integer idTipoTramite, String idePlazoVigencia);
+    CatPlazoTtraDTO findById(Long idTipoTramite, String idePlazoVigencia);
 
     CatPlazoTtraDTO create(CatPlazoTtraDTO dto);
 
-    CatPlazoTtraDTO update(Integer idTipoTramite, String idePlazoVigencia, CatPlazoTtraDTO dto);
+    CatPlazoTtraDTO update(Long idTipoTramite, String idePlazoVigencia, CatPlazoTtraDTO dto);
 }

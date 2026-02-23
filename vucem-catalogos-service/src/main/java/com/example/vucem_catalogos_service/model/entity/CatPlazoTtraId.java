@@ -18,7 +18,7 @@ public class CatPlazoTtraId implements Serializable {
     private static final long serialVersionUID = 4634884882715768991L;
     @NotNull
     @Column(name = "id_tipo_tramite", nullable = false)
-    private Integer idTipoTramite;
+    private Long idTipoTramite;
 
     @Size(max = 20)
     @NotNull
