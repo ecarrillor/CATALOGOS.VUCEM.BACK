@@ -70,18 +70,48 @@ public class CatTratadoAcuerdoServiceImpl implements ICatTratadoAcuerdoService {
     @Override
     public CatTratadoAcuerdoDTO update(Short id, CatTratadoAcuerdoDTO dto) {
         CatTratadoAcuerdo entity = catTratadoAcuerdoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("CatTratadoAcuerdo no encontrado con id: " + id));
+                .orElseThrow(() -> new RuntimeException(
+                        "CatTratadoAcuerdo no encontrado con id: " + id));
 
-        entity.setIdeTipoTratadoAcuerdo(dto.getIdeTipoTratadoAcuerdo());
-        entity.setCveTratadoAcuerdo(dto.getCveTratadoAcuerdo());
-        entity.setNombre(dto.getNombre());
-        entity.setBlnPexim(dto.getBlnPexim());
-        entity.setFecCaptura(dto.getFecCaptura());
-        entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setIdeTipoCupoSaai(dto.getIdeTipoCupoSaai());
-        entity.setFecIniVigencia(dto.getFecIniVigencia());
-        entity.setBlnActivo(dto.getBlnActivo());
-        entity.setBlnEvaluarIndividual(dto.getBlnEvaluarIndividual());
+        if (dto.getIdeTipoTratadoAcuerdo() != null) {
+            entity.setIdeTipoTratadoAcuerdo(dto.getIdeTipoTratadoAcuerdo());
+        }
+
+        if (dto.getCveTratadoAcuerdo() != null) {
+            entity.setCveTratadoAcuerdo(dto.getCveTratadoAcuerdo());
+        }
+
+        if (dto.getNombre() != null) {
+            entity.setNombre(dto.getNombre());
+        }
+
+        if (dto.getBlnPexim() != null) {
+            entity.setBlnPexim(dto.getBlnPexim());
+        }
+
+        if (dto.getFecCaptura() != null) {
+            entity.setFecCaptura(dto.getFecCaptura());
+        }
+
+        if (dto.getFecFinVigencia() != null) {
+            entity.setFecFinVigencia(dto.getFecFinVigencia());
+        }
+
+        if (dto.getIdeTipoCupoSaai() != null) {
+            entity.setIdeTipoCupoSaai(dto.getIdeTipoCupoSaai());
+        }
+
+        if (dto.getFecIniVigencia() != null) {
+            entity.setFecIniVigencia(dto.getFecIniVigencia());
+        }
+
+        if (dto.getBlnActivo() != null) {
+            entity.setBlnActivo(dto.getBlnActivo());
+        }
+
+        if (dto.getBlnEvaluarIndividual() != null) {
+            entity.setBlnEvaluarIndividual(dto.getBlnEvaluarIndividual());
+        }
 
         CatTratadoAcuerdo saved = catTratadoAcuerdoRepository.save(entity);
         return mapToDTO(saved);

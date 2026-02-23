@@ -6,6 +6,7 @@ import com.example.vucem_catalogos_service.model.dto.CatTratadoAcuerdoDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,8 @@ public class CatTratadoAcuerdoController {
     @GetMapping(CatalogPaths.LIST_TRATADO_ACUERDO)
     public ResponseEntity<PageResponseDTO<CatTratadoAcuerdoDTO>> list(
             @RequestParam(required = false) String search,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(service.list(search, PageRequest.of(page, size)));
+            Pageable pageable) {
+        return ResponseEntity.ok(service.list(search, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_TRATADO_ACUERDO)
