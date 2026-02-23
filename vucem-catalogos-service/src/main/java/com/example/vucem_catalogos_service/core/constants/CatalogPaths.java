@@ -313,5 +313,29 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_EQUIVALENCIA_AELC   = "/cat_equiv_aelc/{fecIniVigencia}/{cveMoneda}";
     public static final String UPDATE_EQUIVALENCIA_AELC = "/cat_equiv_aelc/{fecIniVigencia}/{cveMoneda}";
 
+    /*entidad CAT_SECTOR_PROSEC */
+    public static final String LIST_SECTOR_PROSEC   = "/cat_sector_prosec/list";
+    public static final String SAVE_SECTOR_PROSEC   = "/cat_sector_prosec/save";
+    public static final String FIND_SECTOR_PROSEC   = "/cat_sector_prosec/{cveSectorProsec}";
+    public static final String UPDATE_SECTOR_PROSEC = "/cat_sector_prosec/{cveSectorProsec}";
+
+    /*entidad CAT_SCIAN */
+    public static final String LIST_SCIAN   = "/cat_scian/list";
+    public static final String SAVE_SCIAN   = "/cat_scian/save";
+    public static final String FIND_SCIAN   = "/cat_scian/{cveScian}";
+    public static final String UPDATE_SCIAN = "/cat_scian/{cveScian}";
+
+    /*entidad CAT_MEDIO_TRANSPORTE_TTRA */
+    public static final String LIST_MEDIO_TRANSPORTE_TTRA   = "/cat_medio_tporte_ttra/list";
+    public static final String SAVE_MEDIO_TRANSPORTE_TTRA   = "/cat_medio_tporte_ttra/save";
+    public static final String FIND_MEDIO_TRANSPORTE_TTRA   = "/cat_medio_tporte_ttra/{id}";
+    public static final String UPDATE_MEDIO_TRANSPORTE_TTRA = "/cat_medio_tporte_ttra/{id}";
+
+    /*entidad CAT_CLASIF_TOXICOLOGICA_TTRA */
+    public static final String LIST_CLASIF_TOXICOLOGICA_TTRA   = "/cat_clasif_toxicol_ttra/list";
+    public static final String SAVE_CLASIF_TOXICOLOGICA_TTRA   = "/cat_clasif_toxicol_ttra/save";
+    public static final String FIND_CLASIF_TOXICOLOGICA_TTRA   = "/cat_clasif_toxicol_ttra/{id}";
+    public static final String UPDATE_CLASIF_TOXICOLOGICA_TTRA = "/cat_clasif_toxicol_ttra/{id}";
+
 
 }

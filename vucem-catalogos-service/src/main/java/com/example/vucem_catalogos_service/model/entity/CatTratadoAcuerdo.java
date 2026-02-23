@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "cat_tratado_acuerdo")
 public class CatTratadoAcuerdo {
+
     @Id
     @Column(name = "id_tratado_acuerdo", nullable = false)
     private Short id;
