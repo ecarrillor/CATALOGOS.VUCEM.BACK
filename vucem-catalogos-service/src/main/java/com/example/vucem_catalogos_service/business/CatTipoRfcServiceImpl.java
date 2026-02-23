@@ -91,23 +91,56 @@ public class CatTipoRfcServiceImpl implements ICatTipoRfcService {
         pk.setIdeTipoRfc(ideTipoRfc);
 
         CatTipoRfc entity = catTipoRfcRepository.findById(pk)
-                .orElseThrow(() -> new RuntimeException("CatTipoRfc no encontrado para rfc=" + rfc + ", ideTipoRfc=" + ideTipoRfc));
+                .orElseThrow(() -> new RuntimeException(
+                        "CatTipoRfc no encontrado para rfc=" + rfc + ", ideTipoRfc=" + ideTipoRfc));
 
-        entity.setRazonSocial(dto.getRazonSocial());
-        entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setFecIniVigencia(dto.getFecIniVigencia());
-        entity.setDireccion(dto.getDireccion());
-        entity.setTelefono(dto.getTelefono());
-        entity.setClave(dto.getClave());
-        entity.setBlnActivo(dto.getBlnActivo());
-        entity.setCorreoElectronico(dto.getCorreoElectronico());
-        entity.setFax(dto.getFax());
-        entity.setBlnLabAcreditado(dto.getBlnLabAcreditado());
+        if (dto.getRazonSocial() != null) {
+            entity.setRazonSocial(dto.getRazonSocial());
+        }
+
+        if (dto.getFecFinVigencia() != null) {
+            entity.setFecFinVigencia(dto.getFecFinVigencia());
+        }
+
+        if (dto.getFecIniVigencia() != null) {
+            entity.setFecIniVigencia(dto.getFecIniVigencia());
+        }
+
+        if (dto.getDireccion() != null) {
+            entity.setDireccion(dto.getDireccion());
+        }
+
+        if (dto.getTelefono() != null) {
+            entity.setTelefono(dto.getTelefono());
+        }
+
+        if (dto.getClave() != null) {
+            entity.setClave(dto.getClave());
+        }
+
+        if (dto.getBlnActivo() != null) {
+            entity.setBlnActivo(dto.getBlnActivo());
+        }
+
+        if (dto.getCorreoElectronico() != null) {
+            entity.setCorreoElectronico(dto.getCorreoElectronico());
+        }
+
+        if (dto.getFax() != null) {
+            entity.setFax(dto.getFax());
+        }
+
+        if (dto.getBlnLabAcreditado() != null) {
+            entity.setBlnLabAcreditado(dto.getBlnLabAcreditado());
+        }
 
         if (dto.getCveUnidadAdministrativa() != null) {
             entity.setCveUnidadAdministrativa(
-                    catUnidadAdministrativaRepository.findById(dto.getCveUnidadAdministrativa())
-                            .orElseThrow(() -> new RuntimeException("CatUnidadAdministrativa no encontrada: " + dto.getCveUnidadAdministrativa()))
+                    catUnidadAdministrativaRepository
+                            .findById(dto.getCveUnidadAdministrativa())
+                            .orElseThrow(() -> new RuntimeException(
+                                    "CatUnidadAdministrativa no encontrada: "
+                                            + dto.getCveUnidadAdministrativa()))
             );
         }
 

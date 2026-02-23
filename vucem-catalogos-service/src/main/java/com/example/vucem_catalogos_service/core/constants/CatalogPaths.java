@@ -282,5 +282,36 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_RECINTO_FISCALIZADO   = "/cat_recinto_fis/{id}";
     public static final String UPDATE_RECINTO_FISCALIZADO = "/cat_recinto_fis/{id}";
 
+    /*entidad CAT_DOCUMENTO_TRAMITE */
+    public static final String LIST_DOCUMENTO_TRAMITE   = "/cat_documento_tramite/list";
+    public static final String SAVE_DOCUMENTO_TRAMITE   = "/cat_documento_tramite/save";
+    public static final String FIND_DOCUMENTO_TRAMITE   = "/cat_documento_tramite/{idTipoDoc}/{idTipoTramite}";
+    public static final String UPDATE_DOCUMENTO_TRAMITE = "/cat_documento_tramite/{idTipoDoc}/{idTipoTramite}";
+
+    /*entidad CAT_VIDA_SILVESTRE */
+    public static final String LIST_VIDA_SILVESTRE   = "/cat_vida_silvestre/list";
+    public static final String SAVE_VIDA_SILVESTRE   = "/cat_vida_silvestre/save";
+    public static final String FIND_VIDA_SILVESTRE   = "/cat_vida_silvestre/{id}";
+    public static final String UPDATE_VIDA_SILVESTRE = "/cat_vida_silvestre/{id}";
+    public static final String LIST_ESPECIES_ACTIVAS = "/cat_vida_silvestre/especies";
+
+    /*entidad CAT_ACTIVIDAD_ECONOMICA_SAT */
+    public static final String LIST_ACTIVIDAD_ECONOMICA_SAT   = "/cat_activ_eco_sat/list";
+    public static final String SAVE_ACTIVIDAD_ECONOMICA_SAT   = "/cat_activ_eco_sat/save";
+    public static final String FIND_ACTIVIDAD_ECONOMICA_SAT   = "/cat_activ_eco_sat/{id}";
+    public static final String UPDATE_ACTIVIDAD_ECONOMICA_SAT = "/cat_activ_eco_sat/{id}";
+
+    /*entidad CAT_DIA_NO_LABORABLE */
+    public static final String LIST_DIA_NO_LABORABLE   = "/cat_dia_no_lab/list";
+    public static final String SAVE_DIA_NO_LABORABLE   = "/cat_dia_no_lab/save";
+    public static final String FIND_DIA_NO_LABORABLE   = "/cat_dia_no_lab/{fecNoLaborable}/{cveCalendario}";
+    public static final String UPDATE_DIA_NO_LABORABLE = "/cat_dia_no_lab/{fecNoLaborable}/{cveCalendario}";
+
+    /*entidad CAT_EQUIVALENCIA_AELC */
+    public static final String LIST_EQUIVALENCIA_AELC   = "/cat_equiv_aelc/list";
+    public static final String SAVE_EQUIVALENCIA_AELC   = "/cat_equiv_aelc/save";
+    public static final String FIND_EQUIVALENCIA_AELC   = "/cat_equiv_aelc/{fecIniVigencia}/{cveMoneda}";
+    public static final String UPDATE_EQUIVALENCIA_AELC = "/cat_equiv_aelc/{fecIniVigencia}/{cveMoneda}";
+
 
 }

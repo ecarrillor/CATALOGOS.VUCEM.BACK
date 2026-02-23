@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -32,17 +33,17 @@ public class CatDocumentoTramite {
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
     private Boolean blnActivo;
 
     @Column(name = "bln_solo_anexar")
-    private Short blnSoloAnexar;
+    private Boolean blnSoloAnexar;
 
     @Size(max = 20)
     @Column(name = "ide_regla_anexado", length = 20)
