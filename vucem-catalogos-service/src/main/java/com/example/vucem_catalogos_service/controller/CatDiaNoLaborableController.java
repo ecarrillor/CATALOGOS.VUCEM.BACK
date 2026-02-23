@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(CatalogPaths.CONTROLLER)
@@ -28,9 +29,9 @@ public class CatDiaNoLaborableController {
 
     @GetMapping(CatalogPaths.FIND_DIA_NO_LABORABLE)
     public ResponseEntity<CatDiaNoLaborableDTO> findById(
-            @PathVariable String fecNoLaborable,
+            @PathVariable LocalDate fecNoLaborable,
             @PathVariable String cveCalendario) {
-        return ResponseEntity.ok(service.findById(Instant.parse(fecNoLaborable), cveCalendario));
+        return ResponseEntity.ok(service.findById(fecNoLaborable, cveCalendario));
     }
 
     @PostMapping(CatalogPaths.SAVE_DIA_NO_LABORABLE)
@@ -40,9 +41,9 @@ public class CatDiaNoLaborableController {
 
     @PutMapping(CatalogPaths.UPDATE_DIA_NO_LABORABLE)
     public ResponseEntity<CatDiaNoLaborableDTO> update(
-            @PathVariable String fecNoLaborable,
+            @PathVariable LocalDate fecNoLaborable,
             @PathVariable String cveCalendario,
             @RequestBody CatDiaNoLaborableDTO dto) {
-        return ResponseEntity.ok(service.update(Instant.parse(fecNoLaborable), cveCalendario, dto));
+        return ResponseEntity.ok(service.update(fecNoLaborable, cveCalendario, dto));
     }
 }

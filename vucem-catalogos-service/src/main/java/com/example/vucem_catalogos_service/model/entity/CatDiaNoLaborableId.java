@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode
@@ -19,7 +20,7 @@ public class CatDiaNoLaborableId implements Serializable {
     private static final long serialVersionUID = 8373111051876371574L;
     @NotNull
     @Column(name = "fec_no_laborable", nullable = false)
-    private Instant fecNoLaborable;
+    private LocalDate fecNoLaborable;
 
     @Size(max = 4)
     @NotNull

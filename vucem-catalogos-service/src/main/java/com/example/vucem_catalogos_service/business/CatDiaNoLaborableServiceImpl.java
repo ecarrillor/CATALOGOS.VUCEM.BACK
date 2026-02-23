@@ -8,12 +8,16 @@ import com.example.vucem_catalogos_service.model.entity.CatDiaNoLaborableId;
 import com.example.vucem_catalogos_service.persistence.repo.ICatCalendarioRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatDiaNoLaborableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Service
 @Transactional
@@ -51,7 +55,7 @@ public class CatDiaNoLaborableServiceImpl implements ICatDiaNoLaborableService {
     }
 
     @Override
-    public CatDiaNoLaborableDTO findById(Instant fecNoLaborable, String cveCalendario) {
+    public CatDiaNoLaborableDTO findById(LocalDate fecNoLaborable, String cveCalendario) {
         return catDiaNoLaborableRepository.findByDiaNoLaborableDTO(fecNoLaborable, cveCalendario)
                 .orElseThrow(() -> new RuntimeException(
                         "CatDiaNoLaborable no encontrado para fecNoLaborable=" + fecNoLaborable + ", cveCalendario=" + cveCalendario));
@@ -62,6 +66,13 @@ public class CatDiaNoLaborableServiceImpl implements ICatDiaNoLaborableService {
         CatDiaNoLaborableId id = new CatDiaNoLaborableId();
         id.setFecNoLaborable(dto.getFecNoLaborable());
         id.setCveCalendario(dto.getCveCalendario());
+
+        if (catDiaNoLaborableRepository.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
 
         CatDiaNoLaborable entity = new CatDiaNoLaborable();
         entity.setId(id);
@@ -79,7 +90,7 @@ public class CatDiaNoLaborableServiceImpl implements ICatDiaNoLaborableService {
     }
 
     @Override
-    public CatDiaNoLaborableDTO update(Instant fecNoLaborable, String cveCalendario, CatDiaNoLaborableDTO dto) {
+    public CatDiaNoLaborableDTO update(LocalDate fecNoLaborable, String cveCalendario, CatDiaNoLaborableDTO dto) {
         CatDiaNoLaborableId pk = new CatDiaNoLaborableId();
         pk.setFecNoLaborable(fecNoLaborable);
         pk.setCveCalendario(cveCalendario);
