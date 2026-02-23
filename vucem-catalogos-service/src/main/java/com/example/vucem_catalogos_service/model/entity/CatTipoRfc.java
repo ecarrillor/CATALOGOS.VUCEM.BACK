@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -21,11 +22,11 @@ public class CatTipoRfc {
     private String razonSocial;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Size(max = 255)
     @Column(name = "direccion")
@@ -52,7 +53,7 @@ public class CatTipoRfc {
     private String fax;
 
     @Column(name = "bln_lab_acreditado")
-    private Short blnLabAcreditado;
+    private Boolean blnLabAcreditado;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cve_unidad_administrativa", referencedColumnName = "cve_unidad_administrativa")

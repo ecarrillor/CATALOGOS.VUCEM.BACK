@@ -6,13 +6,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "cat_tratado_acuerdo")
 public class CatTratadoAcuerdo {
@@ -34,13 +35,13 @@ public class CatTratadoAcuerdo {
     private String nombre;
 
     @Column(name = "bln_pexim")
-    private Short blnPexim;
+    private Boolean blnPexim;
 
     @Column(name = "fec_captura")
-    private Instant fecCaptura;
+    private LocalDate fecCaptura;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @Size(max = 20)
     @Column(name = "ide_tipo_cupo_saai", length = 20)
@@ -48,14 +49,14 @@ public class CatTratadoAcuerdo {
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
     private Boolean blnActivo;
 
     @Column(name = "bln_evaluar_individual")
-    private Short blnEvaluarIndividual;
+    private Boolean blnEvaluarIndividual;
 
 
 }

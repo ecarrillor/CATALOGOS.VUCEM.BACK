@@ -252,5 +252,29 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_USO_ESPEC_MERCANCIA_TTRA   = "/cat_uso_espec_mercancia_ttra/{id}";
     public static final String UPDATE_USO_ESPEC_MERCANCIA_TTRA = "/cat_uso_espec_mercancia_ttra/{id}";
 
+    /*entidad CAT_TIPO_RFC */
+    public static final String LIST_TIPO_RFC   = "/cat_tipo_rfc/list";
+    public static final String SAVE_TIPO_RFC   = "/cat_tipo_rfc/save";
+    public static final String FIND_TIPO_RFC   = "/cat_tipo_rfc/{rfc}/{ideTipoRfc}";
+    public static final String UPDATE_TIPO_RFC = "/cat_tipo_rfc/{rfc}/{ideTipoRfc}";
+
+    /*entidad CAT_TRATADO_ACUERDO */
+    public static final String LIST_TRATADO_ACUERDO   = "/cat_tratado_acuerdo/list";
+    public static final String SAVE_TRATADO_ACUERDO   = "/cat_tratado_acuerdo/save";
+    public static final String FIND_TRATADO_ACUERDO   = "/cat_tratado_acuerdo/{id}";
+    public static final String UPDATE_TRATADO_ACUERDO = "/cat_tratado_acuerdo/{id}";
+
+    /*entidad CAT_PLAZO_TTRA */
+    public static final String LIST_PLAZO_TTRA   = "/cat_plazo_ttra/list";
+    public static final String SAVE_PLAZO_TTRA   = "/cat_plazo_ttra/save";
+    public static final String FIND_PLAZO_TTRA   = "/cat_plazo_ttra/{idTipoTramite}/{idePlazoVigencia}";
+    public static final String UPDATE_PLAZO_TTRA = "/cat_plazo_ttra/{idTipoTramite}/{idePlazoVigencia}";
+
+    /*entidad CAT_RECINTO_FISCALIZADO */
+    public static final String LIST_RECINTO_FISCALIZADO   = "/cat_recinto_fis/list";
+    public static final String SAVE_RECINTO_FISCALIZADO   = "/cat_recinto_fis/save";
+    public static final String FIND_RECINTO_FISCALIZADO   = "/cat_recinto_fis/{id}";
+    public static final String UPDATE_RECINTO_FISCALIZADO = "/cat_recinto_fis/{id}";
+
 
 }
