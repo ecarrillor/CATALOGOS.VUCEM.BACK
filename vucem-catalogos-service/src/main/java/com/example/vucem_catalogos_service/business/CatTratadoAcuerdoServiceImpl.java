@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @Transactional
 public class CatTratadoAcuerdoServiceImpl implements ICatTratadoAcuerdoService {
@@ -52,16 +54,17 @@ public class CatTratadoAcuerdoServiceImpl implements ICatTratadoAcuerdoService {
     @Override
     public CatTratadoAcuerdoDTO create(CatTratadoAcuerdoDTO dto) {
         CatTratadoAcuerdo entity = new CatTratadoAcuerdo();
+        entity.setId(dto.getId());
         entity.setIdeTipoTratadoAcuerdo(dto.getIdeTipoTratadoAcuerdo());
         entity.setCveTratadoAcuerdo(dto.getCveTratadoAcuerdo());
         entity.setNombre(dto.getNombre());
-        entity.setBlnPexim(dto.getBlnPexim());
-        entity.setFecCaptura(dto.getFecCaptura());
+        entity.setBlnPexim(true);
+        entity.setFecCaptura(LocalDate.now());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
         entity.setIdeTipoCupoSaai(dto.getIdeTipoCupoSaai());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
-        entity.setBlnActivo(dto.getBlnActivo());
-        entity.setBlnEvaluarIndividual(dto.getBlnEvaluarIndividual());
+        entity.setBlnActivo(true);
+        entity.setBlnEvaluarIndividual(true);
 
         CatTratadoAcuerdo saved = catTratadoAcuerdoRepository.save(entity);
         return mapToDTO(saved);
