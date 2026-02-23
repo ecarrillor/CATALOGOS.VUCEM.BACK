@@ -6,17 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CatDiaNoLaborableDTO {
-    private Instant fecNoLaborable;
+    private LocalDate fecNoLaborable;
     private String cveCalendario;
     private String nombreCalendario;
     private String descripcion;
-    private Instant fecIniVigencia;
-    private Instant fecFinVigencia;
+    private LocalDate fecIniVigencia;
+    private LocalDate fecFinVigencia;
     private Boolean blnActivo;
 }

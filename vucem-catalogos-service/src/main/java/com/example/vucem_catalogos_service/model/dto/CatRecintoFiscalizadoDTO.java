@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -19,11 +20,11 @@ public class CatRecintoFiscalizadoDTO {
     private String nombre;
     private String rfc;
     private String numAutorizacion;
-    private Instant fecIniVigencia;
-    private Instant fecFinVigencia;
+    private LocalDate fecIniVigencia;
+    private LocalDate fecFinVigencia;
     private Boolean blnActivo;
     private String codCamir;
-    private Short blnComRfMf;
+    private Boolean blnComRfMf;
     private String correoElectronico;
     private String descUrl;
     private String tipo;

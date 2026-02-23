@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Repository
@@ -49,6 +50,6 @@ public interface ICatDiaNoLaborableRepository extends JpaRepository<CatDiaNoLabo
             FROM CatDiaNoLaborable e
             WHERE e.id.fecNoLaborable = :fecNoLaborable AND e.id.cveCalendario = :cveCalendario
             """)
-    Optional<CatDiaNoLaborableDTO> findByDiaNoLaborableDTO(@Param("fecNoLaborable") Instant fecNoLaborable,
+    Optional<CatDiaNoLaborableDTO> findByDiaNoLaborableDTO(@Param("fecNoLaborable") LocalDate fecNoLaborable,
                                                             @Param("cveCalendario") String cveCalendario);
 }

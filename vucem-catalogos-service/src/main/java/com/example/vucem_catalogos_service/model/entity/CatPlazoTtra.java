@@ -1,29 +1,28 @@
 package com.example.vucem_catalogos_service.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "cat_plazo_ttra")
 public class CatPlazoTtra {
+
     @EmbeddedId
     private CatPlazoTtraId id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idTipoTramite")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_tipo_tramite", nullable = false, referencedColumnName = "id_tipo_tramite")
-    private CatTipoTramite idTipoTramite;
+    @JoinColumn(name = "id_tipo_tramite")
+    private CatTipoTramite tipoTramite;
 
     @Column(name = "fec_ini_vigencia")
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @Column(name = "bln_activo")
     private Boolean blnActivo;

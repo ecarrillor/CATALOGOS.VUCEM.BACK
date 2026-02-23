@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -18,19 +19,28 @@ public class CatPaisTratadoAcuerdo {
     @JoinColumn(name = "cve_pais", nullable = false, referencedColumnName = "cve_pais")
     private CatPais cvePais;
 
+    @MapsId("idTratadoAcuerdo")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_tratado_acuerdo", nullable = false, referencedColumnName = "id_tratado_acuerdo")
+    private CatTratadoAcuerdo idTratadoAcuerdo;
+
     @Column(name = "fec_captura")
-    private Instant fecCaptura;
+    private LocalDate fecCaptura;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
+
+    @NotNull
+    @Column(name = "fec_fin_vigencia", nullable = false)
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
     private Boolean blnActivo;
 
     @Column(name = "bln_envio_electronico")
-    private Short blnEnvioElectronico;
+    private Boolean blnEnvioElectronico;
 
 
 }

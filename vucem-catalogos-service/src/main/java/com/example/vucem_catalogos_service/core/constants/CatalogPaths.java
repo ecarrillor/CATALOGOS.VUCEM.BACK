@@ -105,6 +105,12 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_CATALOGO_OBSERVACION_TRAMITE = "/cat_observacion_ttra/{id}";
     public static final String UPDATE_CATALOGO_OBSERVACION_TRAMITE = "/cat_observacion_ttra/{id}";
 
+    /*entidad CAT_PAIS_TRATADO_ACUERDO */
+    public static final String LIST_CATALOGO_PAIS_TRATADO_ACUERDO = "/cat_pais_tratado_ac/list";
+    public static final String SAVE_CATALOGO_PAIS_TRATADO_ACUERDO = "/cat_pais_tratado_ac/save";
+    public static final String FIND_CATALOGO_PAIS_TRATADO_ACUERDO = "/cat_pais_tratado_ac/{idPais}/{idTratado}";
+    public static final String UPDATE_CATALOGO_PAIS_TRATADO_ACUERDO = "/cat_pais_tratado_ac/{idPais}/{idTratado}";
+
     /*entidad CAT_APROB_CERT_SE */
     public static final String LIST_CATALOGO_APROB_CERT = "/cat_aprobCert/list";
     public static final String SAVE_CATALOGO_APROB_CERT = "/cat_aprobCert/save";

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -41,10 +42,10 @@ public class CatRecintoFiscalizado {
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
@@ -56,7 +57,7 @@ public class CatRecintoFiscalizado {
 
     @NotNull
     @Column(name = "bln_com_rf_mf", nullable = false)
-    private Short blnComRfMf;
+    private Boolean blnComRfMf;
 
     @Size(max = 300)
     @Column(name = "correo_electronico", length = 300)
