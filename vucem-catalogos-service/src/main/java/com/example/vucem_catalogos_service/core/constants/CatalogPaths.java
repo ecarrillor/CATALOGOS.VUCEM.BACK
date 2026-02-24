@@ -395,6 +395,8 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_TIPO_EMPRESA_RECIF   = "/cat_tipo_empresa_recif/save";
     public static final String FIND_TIPO_EMPRESA_RECIF   = "/cat_tipo_empresa_recif/{cveTipoEmpresaRecif}";
     public static final String UPDATE_TIPO_EMPRESA_RECIF = "/cat_tipo_empresa_recif/{cveTipoEmpresaRecif}";
+    public static final String SELECT_TIPO_EMPRESA_RECIF = "/cat_tipo_empresa_recif/select_tipo_empresa";
+
 
     /*entidad CAT_TRATADO_BLOQUE */
     public static final String LIST_TRATADO_BLOQUE   = "/cat_tratado_bloque/list";

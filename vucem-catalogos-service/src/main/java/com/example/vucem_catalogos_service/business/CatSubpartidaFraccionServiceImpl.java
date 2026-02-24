@@ -65,24 +65,32 @@ public class CatSubpartidaFraccionServiceImpl implements ICatSubpartidaFraccionS
         id.setCveCapituloFraccion(dto.getCveCapituloFraccion());
         id.setCvePartidaFraccion(dto.getCvePartidaFraccion());
 
+        if (catSubpartidaFraccionRepository.existsById(id)) {
+            throw new RuntimeException("La Subpartida ya existe.");
+        }
 
-        if (!catSubpartidaFraccionRepository.existsById(id)) {
+        CatPartidaFraccionId partidaId = new CatPartidaFraccionId();
+        partidaId.setCveCapituloFraccion(dto.getCveCapituloFraccion());
+        partidaId.setCvePartidaFraccion(dto.getCvePartidaFraccion());
+
+        if (!catPartidaFraccionRepository.existsById(partidaId)) {
             throw new RuntimeException(
                     "CatPartidaFraccion no encontrada con cveCapituloFraccion: "
                             + dto.getCveCapituloFraccion()
-                            + " y cvePartidaFraccion: " + dto.getCvePartidaFraccion()
+                            + " y cvePartidaFraccion: "
+                            + dto.getCvePartidaFraccion()
             );
         }
 
         CatSubpartidaFraccion entity = new CatSubpartidaFraccion();
         entity.setId(id);
-
-        entity.setNombre(dto.getNombre());
+        entity.setNombre(dto.getNombrePartidaFraccion());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
         entity.setBlnActivo(dto.getBlnActivo());
 
         CatSubpartidaFraccion saved = catSubpartidaFraccionRepository.save(entity);
+
         return mapToDTO(saved);
     }
 
@@ -99,8 +107,8 @@ public class CatSubpartidaFraccionServiceImpl implements ICatSubpartidaFraccionS
                                 + ", cveCapituloFraccion: " + cveCapituloFraccion
                                 + ", cvePartidaFraccion: " + cvePartidaFraccion));
 
-        if (dto.getNombre() != null) {
-            entity.setNombre(dto.getNombre());
+        if (dto.getNombrePartidaFraccion() != null) {
+            entity.setNombre(dto.getNombrePartidaFraccion());
         }
         if (dto.getFecIniVigencia() != null) {
             entity.setFecIniVigencia(dto.getFecIniVigencia());
@@ -121,7 +129,7 @@ public class CatSubpartidaFraccionServiceImpl implements ICatSubpartidaFraccionS
                 .cveSubpartidaFraccion(entity.getId().getCveSubpartidaFraccion())
                 .cveCapituloFraccion(entity.getId().getCveCapituloFraccion())
                 .cvePartidaFraccion(entity.getId().getCvePartidaFraccion())
-                .nombre(entity.getNombre())
+                .nombrePartidaFraccion(entity.getNombre())
                 .fecIniVigencia(entity.getFecIniVigencia())
                 .fecFinVigencia(entity.getFecFinVigencia())
                 .blnActivo(entity.getBlnActivo())

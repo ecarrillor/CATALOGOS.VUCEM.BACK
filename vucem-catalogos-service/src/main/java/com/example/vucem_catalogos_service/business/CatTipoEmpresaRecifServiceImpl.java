@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class CatTipoEmpresaRecifServiceImpl implements ICatTipoEmpresaRecifService {
@@ -95,6 +97,11 @@ public class CatTipoEmpresaRecifServiceImpl implements ICatTipoEmpresaRecifServi
 
         CatTipoEmpresaRecif saved = catTipoEmpresaRecifRepository.save(entity);
         return mapToDTO(saved);
+    }
+
+    @Override
+    public List<CatTipoEmpresaRecif> listTipoEmpresaRecif() {
+        return catTipoEmpresaRecifRepository.findByBlnActivoTrue();
     }
 
     private CatTipoEmpresaRecifDTO mapToDTO(CatTipoEmpresaRecif entity) {
