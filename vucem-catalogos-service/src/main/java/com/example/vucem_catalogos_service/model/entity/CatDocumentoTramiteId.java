@@ -20,7 +20,7 @@ public class CatDocumentoTramiteId implements Serializable {
 
     @NotNull
     @Column(name = "id_tipo_tramite", nullable = false)
-    private Integer idTipoTramite;
+    private Long idTipoTramite;
 
 
 }

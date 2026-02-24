@@ -8,5 +8,6 @@ import lombok.Data;
 public class CatUnidadAdministrativaNameDTO {
     private String cveUnidadAdministrativaId;
     private String nombre;
+    private String descripcion;
 
 }

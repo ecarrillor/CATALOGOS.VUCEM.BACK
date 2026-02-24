@@ -18,7 +18,8 @@ public interface ICatUnidadAdministrativaRepository extends JpaRepository<CatUni
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatUnidadAdministrativaNameDTO(
                 a.cveUnidadAdministrativa,
-                a.nombre)
+                a.nombre,
+                a.descripcion)
             FROM CatUnidadAdministrativa a
             ORDER BY a.nombre DESC
             """)

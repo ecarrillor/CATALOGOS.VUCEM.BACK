@@ -13,7 +13,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CatDocumentoTramiteDTO {
     private Short idTipoDoc;
-    private Integer idTipoTramite;
+    private String nombreDocumento;
+    private Long idTipoTramite;
+    private String nombreTramite;
     private Boolean blnEspecifico;
     private String ideClasificacionDocumento;
     private String ideTipoSolicitanteRfe;
