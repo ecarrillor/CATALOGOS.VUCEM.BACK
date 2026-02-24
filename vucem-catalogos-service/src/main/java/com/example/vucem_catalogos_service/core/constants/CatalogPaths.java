@@ -298,6 +298,8 @@ public class CatalogPaths extends ConstPath{
 
     /*entidad CAT_ACTIVIDAD_ECONOMICA_SAT */
     public static final String LIST_ACTIVIDAD_ECONOMICA_SAT   = "/cat_activ_eco_sat/list";
+    public static final String LIST_ACTIVIDAD_ECONOMICA_SAT_DESC   = "/cat_activ_eco_sat/Lisdesc";
+    public static final String LIST_ACTIVIDAD_ECONOMICA_SAT_REL   = "/cat_activ_eco_sat/listActRe";
     public static final String SAVE_ACTIVIDAD_ECONOMICA_SAT   = "/cat_activ_eco_sat/save";
     public static final String FIND_ACTIVIDAD_ECONOMICA_SAT   = "/cat_activ_eco_sat/{id}";
     public static final String UPDATE_ACTIVIDAD_ECONOMICA_SAT = "/cat_activ_eco_sat/{id}";
@@ -367,5 +369,41 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_TIPO_TRAMITE   = "/cat_tipo_tramite/save";
     public static final String FIND_TIPO_TRAMITE   = "/cat_tipo_tramite/{id}";
     public static final String UPDATE_TIPO_TRAMITE = "/cat_tipo_tramite/{id}";
+
+    /*entidad CAT_SUBDIVISION_FRACCION */
+    public static final String LIST_SUBDIVISION_FRACCION   = "/cat_subdivision_fraccion/list";
+    public static final String SAVE_SUBDIVISION_FRACCION   = "/cat_subdivision_fraccion/save";
+    public static final String FIND_SUBDIVISION_FRACCION   = "/cat_subdivision_fraccion/{cveSubdivision}";
+    public static final String UPDATE_SUBDIVISION_FRACCION = "/cat_subdivision_fraccion/{cveSubdivision}";
+
+    /*entidad CAT_USO_MERCANCIA_TTRA */
+    public static final String LIST_USO_MERCANCIA_TTRA   = "/cat_uso_mercancia_ttra/list";
+    public static final String SAVE_USO_MERCANCIA_TTRA   = "/cat_uso_mercancia_ttra/save";
+    public static final String FIND_USO_MERCANCIA_TTRA   = "/cat_uso_mercancia_ttra/{id}";
+    public static final String UPDATE_USO_MERCANCIA_TTRA = "/cat_uso_mercancia_ttra/{id}";
+
+    /*entidad CAT_UNIDAD_MEDIDA_TTRA */
+    public static final String LIST_UNIDAD_MEDIDA_TTRA   = "/cat_unidad_medida_ttra/list";
+    public static final String SAVE_UNIDAD_MEDIDA_TTRA   = "/cat_unidad_medida_ttra/save";
+    public static final String FIND_UNIDAD_MEDIDA_TTRA   = "/cat_unidad_medida_ttra/{id}";
+    public static final String UPDATE_UNIDAD_MEDIDA_TTRA = "/cat_unidad_medida_ttra/{id}";
+
+    /*entidad CAT_TIPO_EMPRESA_RECIF */
+    public static final String LIST_TIPO_EMPRESA_RECIF   = "/cat_tipo_empresa_recif/list";
+    public static final String SAVE_TIPO_EMPRESA_RECIF   = "/cat_tipo_empresa_recif/save";
+    public static final String FIND_TIPO_EMPRESA_RECIF   = "/cat_tipo_empresa_recif/{cveTipoEmpresaRecif}";
+    public static final String UPDATE_TIPO_EMPRESA_RECIF = "/cat_tipo_empresa_recif/{cveTipoEmpresaRecif}";
+
+    /*entidad CAT_TRATADO_BLOQUE */
+    public static final String LIST_TRATADO_BLOQUE   = "/cat_tratado_bloque/list";
+    public static final String SAVE_TRATADO_BLOQUE   = "/cat_tratado_bloque/save";
+    public static final String FIND_TRATADO_BLOQUE   = "/cat_tratado_bloque/{idTratadoAcuerdo}/{idBloque}";
+    public static final String UPDATE_TRATADO_BLOQUE = "/cat_tratado_bloque/{idTratadoAcuerdo}/{idBloque}";
+
+    /*entidad CAT_TRATAMIENTO_ESPECIAL */
+    public static final String LIST_TRATAMIENTO_ESPECIAL   = "/cat_tratamiento_especial/list";
+    public static final String SAVE_TRATAMIENTO_ESPECIAL   = "/cat_tratamiento_especial/save";
+    public static final String FIND_TRATAMIENTO_ESPECIAL   = "/cat_tratamiento_especial/{id}";
+    public static final String UPDATE_TRATAMIENTO_ESPECIAL = "/cat_tratamiento_especial/{id}";
 
 }

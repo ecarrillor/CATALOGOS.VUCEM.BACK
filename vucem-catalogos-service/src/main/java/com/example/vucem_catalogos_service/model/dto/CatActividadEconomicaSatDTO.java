@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -14,14 +15,16 @@ import java.time.Instant;
 public class CatActividadEconomicaSatDTO {
     private Long id;
     private Long idActividadEconomicaR;
-    private String descripcionPadre;
+    private String descActividadEconomicaR;
     private String descripcion;
     private String descScian;
     private String descNotas;
-    private Instant fecIniVigencia;
-    private Instant fecFinVigencia;
-    private Instant fecCaptura;
-    private Instant fecActualizacion;
+    private String descEmpresaRecif;
+    private String cveTipoEmpresaRecif;
+    private LocalDate fecIniVigencia;
+    private LocalDate fecFinVigencia;
+    private LocalDate fecCaptura;
+    private LocalDate fecActualizacion;
     private String cveTipoIndustriaIdc;
     private Boolean blnActivo;
 }

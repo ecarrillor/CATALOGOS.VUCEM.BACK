@@ -4,11 +4,14 @@ import com.example.vucem_catalogos_service.business.Interface.ICatActividadEcono
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
 import com.example.vucem_catalogos_service.model.dto.CatActividadEconomicaSatDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(CatalogPaths.CONTROLLER)
@@ -39,5 +42,17 @@ public class CatActividadEconomicaSatController {
             @PathVariable Long id,
             @RequestBody CatActividadEconomicaSatDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
+    }
+
+    @GetMapping(CatalogPaths.LIST_ACTIVIDAD_ECONOMICA_SAT_DESC)
+    public ResponseEntity<List<SelectDTO>> listadoActRel(){
+        List<SelectDTO> lista = service.listadoActRel();
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping(CatalogPaths.LIST_ACTIVIDAD_ECONOMICA_SAT_REL)
+    public ResponseEntity<List<SelectDTO>> listadoAcDesc(){
+        List<SelectDTO> lista = service.listadoAcDesc();
+        return ResponseEntity.ok(lista);
     }
 }

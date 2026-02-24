@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -38,17 +39,17 @@ public class CatActividadEconomicaSat {
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "fec_captura", nullable = false)
-    private Instant fecCaptura;
+    private LocalDate fecCaptura;
 
     @Column(name = "fec_actualizacion")
-    private Instant fecActualizacion;
+    private LocalDate fecActualizacion;
 
     @Size(max = 2)
     @Column(name = "cve_tipo_industria_idc", length = 2)
@@ -57,6 +58,10 @@ public class CatActividadEconomicaSat {
     @NotNull
     @Column(name = "bln_activo", nullable = false)
     private Boolean blnActivo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cve_tipo_empresa_recif")
+    private CatTipoEmpresaRecif cveTipoEmpresaRecif;
 
 
 }

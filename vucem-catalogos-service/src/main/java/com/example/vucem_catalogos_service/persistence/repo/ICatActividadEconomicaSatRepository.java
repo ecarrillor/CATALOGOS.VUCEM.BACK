@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,6 +23,8 @@ public interface ICatActividadEconomicaSatRepository extends JpaRepository<CatAc
                 e.descripcion,
                 e.descScian,
                 e.descNotas,
+                e.cveTipoEmpresaRecif.descripcion,
+                e.cveTipoEmpresaRecif.cveTipoEmpresaRecif,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
                 e.fecCaptura,
@@ -40,22 +43,27 @@ public interface ICatActividadEconomicaSatRepository extends JpaRepository<CatAc
                                               Pageable pageable);
 
     @Query("""
-            SELECT new com.example.vucem_catalogos_service.model.dto.CatActividadEconomicaSatDTO(
-                e.id,
-                CASE WHEN e.idActividadEconomicaR IS NOT NULL THEN e.idActividadEconomicaR.id ELSE NULL END,
-                CASE WHEN e.idActividadEconomicaR IS NOT NULL THEN e.idActividadEconomicaR.descripcion ELSE NULL END,
-                e.descripcion,
-                e.descScian,
-                e.descNotas,
-                e.fecIniVigencia,
-                e.fecFinVigencia,
-                e.fecCaptura,
-                e.fecActualizacion,
-                e.cveTipoIndustriaIdc,
-                e.blnActivo
-            )
-            FROM CatActividadEconomicaSat e
-            WHERE e.id = :id
+                        SELECT new com.example.vucem_catalogos_service.model.dto.CatActividadEconomicaSatDTO(
+                            e.id,
+                            CASE WHEN e.idActividadEconomicaR IS NOT NULL THEN e.idActividadEconomicaR.id ELSE NULL END,
+                            CASE WHEN e.idActividadEconomicaR IS NOT NULL THEN e.idActividadEconomicaR.descripcion ELSE NULL END,
+                            e.descripcion,
+                            e.descScian,
+                            e.descNotas,
+                            cv.descripcion,
+                            cv.cveTipoEmpresaRecif,
+                            e.fecIniVigencia,
+                            e.fecFinVigencia,
+                            e.fecCaptura,
+                            e.fecActualizacion,
+                            e.cveTipoIndustriaIdc,
+                            e.blnActivo
+                        )
+                        FROM CatActividadEconomicaSat e
+                        LEFT JOIN e.cveTipoEmpresaRecif cv
+                        WHERE e.id = :id
             """)
     Optional<CatActividadEconomicaSatDTO> findByActividadEconomicaSatDTO(@Param("id") Long id);
+
+    List<CatActividadEconomicaSat> findByBlnActivoTrue();
 }
