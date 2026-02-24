@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -69,10 +70,10 @@ public class CatTipoTramite {
     private String urlAxway;
 
     @Column(name = "fec_captura")
-    private Instant fecCaptura;
+    private LocalDate fecCaptura;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @Size(max = 250)
     @Column(name = "nombre", length = 250)
@@ -86,7 +87,7 @@ public class CatTipoTramite {
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)

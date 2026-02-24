@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -16,7 +17,7 @@ public class CatMedioTransporteTtraDTO {
     private Long idTipoTramite;
     private String nombreTipoTramite;
     private String ideMedioTransporteGob;
-    private Instant fecIniVigencia;
-    private Instant fecFinVigencia;
+    private LocalDate fecIniVigencia;
+    private LocalDate fecFinVigencia;
     private Boolean blnActivo;
 }

@@ -1,9 +1,6 @@
 package com.example.vucem_catalogos_service.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
@@ -22,6 +19,11 @@ public class CatEquivalenciaAelc {
 
     @Column(name = "valor", precision = 19, scale = 2)
     private BigDecimal valor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("cveMoneda")
+    @JoinColumn(name = "cve_moneda")
+    private CatMoneda moneda;
 
     @Column(name = "fec_captura")
     private LocalDate fecCaptura;

@@ -8,8 +8,10 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatScianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -51,6 +53,12 @@ public class CatScianServiceImpl implements ICatScianService {
 
     @Override
     public CatScianDTO create(CatScianDTO dto) {
+        if (catScianRepository.existsById(dto.getCveScian())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
         CatScian entity = new CatScian();
         entity.setCveScian(dto.getCveScian());
         entity.setDescScian(dto.getDescScian());

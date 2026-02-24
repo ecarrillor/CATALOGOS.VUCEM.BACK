@@ -17,14 +17,15 @@ public interface ICatMedioTransporteTtraRepository extends JpaRepository<CatMedi
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatMedioTransporteTtraDTO(
                 e.id,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.id ELSE NULL END,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.nombre ELSE NULL END,
+                t.id,
+                t.descModalidad,
                 e.ideMedioTransporteGob,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
                 e.blnActivo
             )
             FROM CatMedioTransporteTtra e
+            JOIN e.idTipoTramite t
             WHERE (:search IS NULL OR LOWER(e.ideMedioTransporteGob) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
@@ -34,15 +35,16 @@ public interface ICatMedioTransporteTtraRepository extends JpaRepository<CatMedi
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatMedioTransporteTtraDTO(
-                e.id,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.id ELSE NULL END,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.nombre ELSE NULL END,
+                   e.id,
+                t.id,
+                t.descModalidad,
                 e.ideMedioTransporteGob,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
                 e.blnActivo
             )
             FROM CatMedioTransporteTtra e
+            JOIN e.idTipoTramite t
             WHERE e.id = :id
             """)
     Optional<CatMedioTransporteTtraDTO> findByMedioTransporteTtraDTO(@Param("id") Integer id);

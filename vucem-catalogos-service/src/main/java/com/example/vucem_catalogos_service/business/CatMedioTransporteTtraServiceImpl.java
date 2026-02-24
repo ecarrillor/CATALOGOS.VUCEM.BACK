@@ -9,8 +9,12 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepos
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -37,6 +41,13 @@ public class CatMedioTransporteTtraServiceImpl implements ICatMedioTransporteTtr
 
         Page<CatMedioTransporteTtraDTO> page = catMedioTransporteTtraRepository.search(texto, activo, pageable);
 
+        List<CatMedioTransporteTtraDTO> contentTransformado =
+                page.getContent().stream()
+                        .peek(dto -> dto.setIdeMedioTransporteGob(
+                                obtenerDescripcion(dto.getIdeMedioTransporteGob())
+                        ))
+                        .toList();
+
         return PageResponseDTO.<CatMedioTransporteTtraDTO>builder()
                 .content(page.getContent())
                 .page(page.getNumber())
@@ -49,13 +60,30 @@ public class CatMedioTransporteTtraServiceImpl implements ICatMedioTransporteTtr
 
     @Override
     public CatMedioTransporteTtraDTO findById(Integer id) {
-        return catMedioTransporteTtraRepository.findByMedioTransporteTtraDTO(id)
-                .orElseThrow(() -> new RuntimeException("CatMedioTransporteTtra no encontrado con id: " + id));
+        CatMedioTransporteTtraDTO dto = catMedioTransporteTtraRepository
+                .findByMedioTransporteTtraDTO(id)
+                .orElseThrow(() ->
+                        new RuntimeException("CatMedioTransporteTtra no encontrado con id: " + id)
+                );
+
+        dto.setIdeMedioTransporteGob(
+                obtenerDescripcion(dto.getIdeMedioTransporteGob())
+        );
+
+        return dto;
     }
 
     @Override
     public CatMedioTransporteTtraDTO create(CatMedioTransporteTtraDTO dto) {
+
+        if (catMedioTransporteTtraRepository.existsById(dto.getId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
         CatMedioTransporteTtra entity = new CatMedioTransporteTtra();
+        entity.setId(dto.getId());
         entity.setIdeMedioTransporteGob(dto.getIdeMedioTransporteGob());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
@@ -103,12 +131,34 @@ public class CatMedioTransporteTtraServiceImpl implements ICatMedioTransporteTtr
     private CatMedioTransporteTtraDTO mapToDTO(CatMedioTransporteTtra entity) {
         return CatMedioTransporteTtraDTO.builder()
                 .id(entity.getId())
-                .idTipoTramite(entity.getIdTipoTramite() != null ? entity.getIdTipoTramite().getId() : null)
-                .nombreTipoTramite(entity.getIdTipoTramite() != null ? entity.getIdTipoTramite().getNombre() : null)
-                .ideMedioTransporteGob(entity.getIdeMedioTransporteGob())
+                .idTipoTramite(entity.getIdTipoTramite() != null
+                        ? entity.getIdTipoTramite().getId()
+                        : null)
+                .nombreTipoTramite(entity.getIdTipoTramite() != null
+                        ? entity.getIdTipoTramite().getDescModalidad()
+                        : null)
+                .ideMedioTransporteGob(
+                        obtenerDescripcion(entity.getIdeMedioTransporteGob())
+                )
                 .fecIniVigencia(entity.getFecIniVigencia())
                 .fecFinVigencia(entity.getFecFinVigencia())
                 .blnActivo(entity.getBlnActivo())
                 .build();
+    }
+
+    private String obtenerDescripcion(String id) {
+        return switch (id) {
+            case "MEDTRG.AE" -> "Aéreo";
+            case "MEDTRG.CA" -> "Cables";
+            case "MEDTRG.CR" -> "Carretero";
+            case "MEDTRG.DU" -> "Ductos";
+            case "MEDTRG.FR" -> "Ferroviario";
+            case "MEDTRG.MR" -> "Marítimo";
+            case "MEDTRG.OTR" -> "Otros";
+            case "MEDTRG.PO" -> "Postal";
+            case "MEDTRG.TE" -> "Terrestre";
+            case "MEDTRG.TU" -> "Tubería";
+            default -> id;
+        };
     }
 }

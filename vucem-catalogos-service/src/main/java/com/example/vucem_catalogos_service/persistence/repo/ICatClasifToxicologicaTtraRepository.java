@@ -17,14 +17,15 @@ public interface ICatClasifToxicologicaTtraRepository extends JpaRepository<CatC
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatClasifToxicologicaTtraDTO(
                 e.id,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.id ELSE NULL END,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.nombre ELSE NULL END,
+                t.id,
+                t.descModalidad,
                 e.descClasifToxicologica,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
                 e.blnActivo
             )
             FROM CatClasifToxicologicaTtra e
+            JOIN e.idTipoTramite t
             WHERE (:search IS NULL OR LOWER(e.descClasifToxicologica) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
@@ -34,15 +35,16 @@ public interface ICatClasifToxicologicaTtraRepository extends JpaRepository<CatC
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatClasifToxicologicaTtraDTO(
-                e.id,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.id ELSE NULL END,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.nombre ELSE NULL END,
+               e.id,
+                t.id,
+                t.descModalidad,
                 e.descClasifToxicologica,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
                 e.blnActivo
             )
             FROM CatClasifToxicologicaTtra e
+            JOIN e.idTipoTramite t
             WHERE e.id = :id
             """)
     Optional<CatClasifToxicologicaTtraDTO> findByClasifToxicologicaTtraDTO(@Param("id") Short id);

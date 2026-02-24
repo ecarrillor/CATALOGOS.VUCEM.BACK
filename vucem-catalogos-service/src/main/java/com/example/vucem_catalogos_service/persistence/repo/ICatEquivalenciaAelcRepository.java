@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Repository
@@ -19,13 +20,15 @@ public interface ICatEquivalenciaAelcRepository extends JpaRepository<CatEquival
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatEquivalenciaAelcDTO(
                 e.id.fecIniVigencia,
-                e.id.nombre,
+                e.id.cveMoneda,
+                m.nombre,           
                 e.valor,
                 e.fecCaptura,
                 e.fecFinVigencia,
                 e.blnActivo
             )
             FROM CatEquivalenciaAelc e
+            JOIN e.moneda m
             WHERE (:search IS NULL OR LOWER(e.id.cveMoneda) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
@@ -35,16 +38,18 @@ public interface ICatEquivalenciaAelcRepository extends JpaRepository<CatEquival
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatEquivalenciaAelcDTO(
-                e.id.fecIniVigencia,
+               e.id.fecIniVigencia,
                 e.id.cveMoneda,
+                m.nombre,           
                 e.valor,
                 e.fecCaptura,
                 e.fecFinVigencia,
                 e.blnActivo
             )
             FROM CatEquivalenciaAelc e
+            JOIN e.moneda m
             WHERE e.id.fecIniVigencia = :fecIniVigencia AND e.id.cveMoneda = :cveMoneda
             """)
-    Optional<CatEquivalenciaAelcDTO> findByEquivalenciaAelcDTO(@Param("fecIniVigencia") Instant fecIniVigencia,
+    Optional<CatEquivalenciaAelcDTO> findByEquivalenciaAelcDTO(@Param("fecIniVigencia") LocalDate fecIniVigencia,
                                                                 @Param("cveMoneda") String cveMoneda);
 }
