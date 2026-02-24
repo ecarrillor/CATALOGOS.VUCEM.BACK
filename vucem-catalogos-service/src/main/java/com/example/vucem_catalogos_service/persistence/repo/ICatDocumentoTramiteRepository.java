@@ -17,8 +17,10 @@ public interface ICatDocumentoTramiteRepository extends JpaRepository<CatDocumen
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatDocumentoTramiteDTO(
-                e.id.idTipoDoc,
-                e.id.idTipoTramite,
+                td.id,
+                td.nombre,
+                tr.id,
+                tr.descModalidad,
                 e.blnEspecifico,
                 e.ideClasificacionDocumento,
                 e.ideTipoSolicitanteRfe,
@@ -29,7 +31,8 @@ public interface ICatDocumentoTramiteRepository extends JpaRepository<CatDocumen
                 e.ideReglaAnexado
             )
             FROM CatDocumentoTramite e
-            
+            JOIN e.idTipoDoc td
+            JOIN e.idTipoTramite tr
             WHERE (:search IS NULL OR LOWER(e.ideClasificacionDocumento) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 OR LOWER(e.ideTipoSolicitanteRfe) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 OR LOWER(e.ideReglaAnexado) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
@@ -41,8 +44,10 @@ public interface ICatDocumentoTramiteRepository extends JpaRepository<CatDocumen
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatDocumentoTramiteDTO(
-                e.id.idTipoDoc,
-                e.id.idTipoTramite,
+                td.id,
+                td.nombre,
+                tr.id,
+                tr.descModalidad,
                 e.blnEspecifico,
                 e.ideClasificacionDocumento,
                 e.ideTipoSolicitanteRfe,
@@ -53,8 +58,10 @@ public interface ICatDocumentoTramiteRepository extends JpaRepository<CatDocumen
                 e.ideReglaAnexado
             )
             FROM CatDocumentoTramite e
+            JOIN e.idTipoDoc td
+            JOIN e.idTipoTramite tr
             WHERE e.id.idTipoDoc = :idTipoDoc AND e.id.idTipoTramite = :idTipoTramite
             """)
     Optional<CatDocumentoTramiteDTO> findByDocumentoTramiteDTO(@Param("idTipoDoc") Short idTipoDoc,
-                                                                @Param("idTipoTramite") Integer idTipoTramite);
+                                                                @Param("idTipoTramite") Long idTipoTramite);
 }

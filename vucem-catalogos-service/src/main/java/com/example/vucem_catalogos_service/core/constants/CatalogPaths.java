@@ -287,6 +287,7 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_DOCUMENTO_TRAMITE   = "/cat_documento_tramite/save";
     public static final String FIND_DOCUMENTO_TRAMITE   = "/cat_documento_tramite/{idTipoDoc}/{idTipoTramite}";
     public static final String UPDATE_DOCUMENTO_TRAMITE = "/cat_documento_tramite/{idTipoDoc}/{idTipoTramite}";
+    public static final String LISTADO_TIPO_DOCUMENTO = "/cat_documento_tramite/listDocumento";
 
     /*entidad CAT_VIDA_SILVESTRE */
     public static final String LIST_VIDA_SILVESTRE   = "/cat_vida_silvestre/list";
