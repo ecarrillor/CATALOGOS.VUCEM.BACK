@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(CatalogPaths.CONTROLLER)
@@ -28,9 +29,9 @@ public class CatEquivalenciaAelcController {
 
     @GetMapping(CatalogPaths.FIND_EQUIVALENCIA_AELC)
     public ResponseEntity<CatEquivalenciaAelcDTO> findById(
-            @PathVariable String fecIniVigencia,
+            @PathVariable LocalDate fecIniVigencia,
             @PathVariable String cveMoneda) {
-        return ResponseEntity.ok(service.findById(Instant.parse(fecIniVigencia), cveMoneda));
+        return ResponseEntity.ok(service.findById(fecIniVigencia, cveMoneda));
     }
 
     @PostMapping(CatalogPaths.SAVE_EQUIVALENCIA_AELC)
@@ -40,9 +41,9 @@ public class CatEquivalenciaAelcController {
 
     @PutMapping(CatalogPaths.UPDATE_EQUIVALENCIA_AELC)
     public ResponseEntity<CatEquivalenciaAelcDTO> update(
-            @PathVariable String fecIniVigencia,
+            @PathVariable LocalDate fecIniVigencia,
             @PathVariable String cveMoneda,
             @RequestBody CatEquivalenciaAelcDTO dto) {
-        return ResponseEntity.ok(service.update(Instant.parse(fecIniVigencia), cveMoneda, dto));
+        return ResponseEntity.ok(service.update(fecIniVigencia, cveMoneda, dto));
     }
 }

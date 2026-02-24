@@ -6,13 +6,17 @@ import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatEquivalenciaAelc;
 import com.example.vucem_catalogos_service.model.entity.CatEquivalenciaAelcId;
 import com.example.vucem_catalogos_service.persistence.repo.ICatEquivalenciaAelcRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatMonedaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Service
 @Transactional
@@ -20,6 +24,9 @@ public class CatEquivalenciaAELCServiceImpl implements ICatEquivalenciaAELCServi
 
     @Autowired
     private ICatEquivalenciaAelcRepository catEquivalenciaAelcRepository;
+
+    @Autowired
+    private ICatMonedaRepository iCatMonedaRepository;
 
     @Override
     public PageResponseDTO<CatEquivalenciaAelcDTO> list(String search, Pageable pageable) {
@@ -47,7 +54,7 @@ public class CatEquivalenciaAELCServiceImpl implements ICatEquivalenciaAELCServi
     }
 
     @Override
-    public CatEquivalenciaAelcDTO findById(Instant fecIniVigencia, String cveMoneda) {
+    public CatEquivalenciaAelcDTO findById(LocalDate fecIniVigencia, String cveMoneda) {
         return catEquivalenciaAelcRepository.findByEquivalenciaAelcDTO(fecIniVigencia, cveMoneda)
                 .orElseThrow(() -> new RuntimeException(
                         "CatEquivalenciaAelc no encontrada para fecIniVigencia=" + fecIniVigencia + ", cveMoneda=" + cveMoneda));
@@ -59,10 +66,23 @@ public class CatEquivalenciaAELCServiceImpl implements ICatEquivalenciaAELCServi
         id.setFecIniVigencia(dto.getFecIniVigencia());
         id.setCveMoneda(dto.getCveMoneda());
 
+        if (catEquivalenciaAelcRepository.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "El id ya existe"
+            );
+        }
+
         CatEquivalenciaAelc entity = new CatEquivalenciaAelc();
+
+        entity.setMoneda(
+                iCatMonedaRepository
+                        .findById(dto.getCveMoneda())
+                        .orElseThrow(() -> new RuntimeException("Moneda no encontrada"))
+        );
         entity.setId(id);
         entity.setValor(dto.getValor());
-        entity.setFecCaptura(dto.getFecCaptura());
+        entity.setFecCaptura(LocalDate.now());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
         entity.setBlnActivo(dto.getBlnActivo());
 
@@ -71,7 +91,7 @@ public class CatEquivalenciaAELCServiceImpl implements ICatEquivalenciaAELCServi
     }
 
     @Override
-    public CatEquivalenciaAelcDTO update(Instant fecIniVigencia, String cveMoneda, CatEquivalenciaAelcDTO dto) {
+    public CatEquivalenciaAelcDTO update(LocalDate fecIniVigencia, String cveMoneda, CatEquivalenciaAelcDTO dto) {
         CatEquivalenciaAelcId pk = new CatEquivalenciaAelcId();
         pk.setFecIniVigencia(fecIniVigencia);
         pk.setCveMoneda(cveMoneda);

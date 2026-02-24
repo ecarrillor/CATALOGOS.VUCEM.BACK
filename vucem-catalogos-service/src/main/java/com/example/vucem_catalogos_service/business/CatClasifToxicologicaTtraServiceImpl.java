@@ -9,8 +9,10 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepos
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -55,7 +57,14 @@ public class CatClasifToxicologicaTtraServiceImpl implements ICatClasifToxicolog
 
     @Override
     public CatClasifToxicologicaTtraDTO create(CatClasifToxicologicaTtraDTO dto) {
+        if (catClasifToxicologicaTtraRepository.existsById(dto.getId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
         CatClasifToxicologicaTtra entity = new CatClasifToxicologicaTtra();
+        entity.setId(dto.getId());
         entity.setDescClasifToxicologica(dto.getDescClasifToxicologica());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
@@ -104,7 +113,7 @@ public class CatClasifToxicologicaTtraServiceImpl implements ICatClasifToxicolog
         return CatClasifToxicologicaTtraDTO.builder()
                 .id(entity.getId())
                 .idTipoTramite(entity.getIdTipoTramite() != null ? entity.getIdTipoTramite().getId() : null)
-                .nombreTipoTramite(entity.getIdTipoTramite() != null ? entity.getIdTipoTramite().getNombre() : null)
+                .nombreTipoTramite(entity.getIdTipoTramite() != null ? entity.getIdTipoTramite().getDescModalidad() : null)
                 .descClasifToxicologica(entity.getDescClasifToxicologica())
                 .fecIniVigencia(entity.getFecIniVigencia())
                 .fecFinVigencia(entity.getFecFinVigencia())

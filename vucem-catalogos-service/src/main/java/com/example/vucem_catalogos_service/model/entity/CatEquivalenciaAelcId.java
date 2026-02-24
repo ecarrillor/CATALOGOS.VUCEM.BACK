@@ -11,15 +11,16 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 
-    @Data
+@Data
 
 @Embeddable
 public class CatEquivalenciaAelcId implements Serializable {
     private static final long serialVersionUID = -2481523761262642810L;
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Size(max = 3)
     @NotNull

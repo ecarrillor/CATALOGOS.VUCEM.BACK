@@ -1,6 +1,5 @@
 package com.example.vucem_catalogos_service.model.entity;
 
-import com.example.vucem_catalogos_service.CatDocumentoTramiteId;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -23,7 +24,7 @@ public class CatTarifa {
 
     @NotNull
     @Column(name = "fec_fin_vigencia", nullable = false)
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @Column(name = "tarifa", precision = 19, scale = 2)
     private BigDecimal tarifa;
