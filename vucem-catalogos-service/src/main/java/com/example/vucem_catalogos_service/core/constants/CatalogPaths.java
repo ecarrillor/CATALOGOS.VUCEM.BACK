@@ -373,6 +373,7 @@ public class CatalogPaths extends ConstPath{
     public static final String UPDATE_TIPO_TRAMITE = "/cat_tipo_tramite/{id}";
 
     /*entidad CAT_SUBDIVISION_FRACCION */
+    public static final String LIST_FRACCION_ARANCELARIA_BY_ID   = "/cat_subdivision_fraccion/cvefraccion";
     public static final String LIST_SUBDIVISION_FRACCION   = "/cat_subdivision_fraccion/list";
     public static final String SAVE_SUBDIVISION_FRACCION   = "/cat_subdivision_fraccion/save";
     public static final String FIND_SUBDIVISION_FRACCION   = "/cat_subdivision_fraccion/{cveSubdivision}";
@@ -409,5 +410,29 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_TRATAMIENTO_ESPECIAL   = "/cat_tratamiento_especial/save";
     public static final String FIND_TRATAMIENTO_ESPECIAL   = "/cat_tratamiento_especial/{id}";
     public static final String UPDATE_TRATAMIENTO_ESPECIAL = "/cat_tratamiento_especial/{id}";
+
+    /*entidad CAT_VIGENCIA_SERVICIO */
+    public static final String LIST_VIGENCIA_SERVICIO   = "/cat_vigencia_servicio/list";
+    public static final String SAVE_VIGENCIA_SERVICIO   = "/cat_vigencia_servicio/save";
+    public static final String FIND_VIGENCIA_SERVICIO   = "/cat_vigencia_servicio/{id}";
+    public static final String UPDATE_VIGENCIA_SERVICIO = "/cat_vigencia_servicio/{id}";
+
+    /*entidad CAT_UNIDAD_ADMIN_VECINA */
+    public static final String LIST_UNIDAD_ADMIN_VECINA   = "/cat_unidad_admin_vecina/list";
+    public static final String SAVE_UNIDAD_ADMIN_VECINA   = "/cat_unidad_admin_vecina/save";
+    public static final String FIND_UNIDAD_ADMIN_VECINA   = "/cat_unidad_admin_vecina/{cveUnidadAdministrativa}/{cveEntidad}";
+    public static final String UPDATE_UNIDAD_ADMIN_VECINA = "/cat_unidad_admin_vecina/{cveUnidadAdministrativa}/{cveEntidad}";
+
+    /*entidad CAT_COMBINACION_SG */
+    public static final String LIST_COMBINACION_SG   = "/cat_combinacion_sg/list";
+    public static final String SAVE_COMBINACION_SG   = "/cat_combinacion_sg/save";
+    public static final String FIND_COMBINACION_SG   = "/cat_combinacion_sg/{id}";
+    public static final String UPDATE_COMBINACION_SG = "/cat_combinacion_sg/{id}";
+
+    /*entidad CAT_REGIMEN_TTRA */
+    public static final String LIST_REGIMEN_TTRA   = "/cat_regimen_ttra/list";
+    public static final String SAVE_REGIMEN_TTRA   = "/cat_regimen_ttra/save";
+    public static final String FIND_REGIMEN_TTRA   = "/cat_regimen_ttra/{id}";
+    public static final String UPDATE_REGIMEN_TTRA = "/cat_regimen_ttra/{id}";
 
 }

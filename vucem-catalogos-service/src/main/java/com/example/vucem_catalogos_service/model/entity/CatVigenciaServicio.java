@@ -3,13 +3,14 @@ package com.example.vucem_catalogos_service.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "cat_vigencia_servicio")
 public class CatVigenciaServicio {
@@ -45,7 +46,7 @@ public class CatVigenciaServicio {
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)

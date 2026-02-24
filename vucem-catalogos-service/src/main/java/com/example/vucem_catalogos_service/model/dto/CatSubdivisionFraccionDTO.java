@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -17,9 +18,9 @@ public class CatSubdivisionFraccionDTO {
     private String cveFraccion;
     private String descripcionFraccion;
     private String codSubdivision;
-    private String descripcion;
+    private String descripcionSubdivision;
     private BigDecimal precioEstimado;
-    private Instant fecIniVigencia;
-    private Instant fecFinVigencia;
+    private LocalDate fecIniVigencia;
+    private LocalDate fecFinVigencia;
     private Boolean blnActivo;
 }
