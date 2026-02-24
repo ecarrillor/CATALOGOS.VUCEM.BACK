@@ -110,6 +110,7 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_CATALOGO_PAIS_TRATADO_ACUERDO = "/cat_pais_tratado_ac/save";
     public static final String FIND_CATALOGO_PAIS_TRATADO_ACUERDO = "/cat_pais_tratado_ac/{idPais}/{idTratado}";
     public static final String UPDATE_CATALOGO_PAIS_TRATADO_ACUERDO = "/cat_pais_tratado_ac/{idPais}/{idTratado}";
+    public static final String LIST_SELECT_TRATADO_ACUERDO = "/cat_pais_tratado_ac/tratados_acuerdo";
 
     /*entidad CAT_APROB_CERT_SE */
     public static final String LIST_CATALOGO_APROB_CERT = "/cat_aprobCert/list";
@@ -309,6 +310,7 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_DIA_NO_LABORABLE   = "/cat_dia_no_lab/save";
     public static final String FIND_DIA_NO_LABORABLE   = "/cat_dia_no_lab/{fecNoLaborable}/{cveCalendario}";
     public static final String UPDATE_DIA_NO_LABORABLE = "/cat_dia_no_lab/{fecNoLaborable}/{cveCalendario}";
+    public static final String LIST_SELECT_CALENDARIO = "/cat_dia_no_lab/calendarios";
 
     /*entidad CAT_EQUIVALENCIA_AELC */
     public static final String LIST_EQUIVALENCIA_AELC   = "/cat_equiv_aelc/list";

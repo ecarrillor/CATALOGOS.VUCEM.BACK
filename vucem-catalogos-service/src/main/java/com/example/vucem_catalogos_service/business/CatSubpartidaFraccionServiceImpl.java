@@ -65,19 +65,18 @@ public class CatSubpartidaFraccionServiceImpl implements ICatSubpartidaFraccionS
         id.setCveCapituloFraccion(dto.getCveCapituloFraccion());
         id.setCvePartidaFraccion(dto.getCvePartidaFraccion());
 
-        CatPartidaFraccionId partidaId = new CatPartidaFraccionId();
-        partidaId.setCveCapituloFraccion(dto.getCveCapituloFraccion());
-        partidaId.setCvePartidaFraccion(dto.getCvePartidaFraccion());
+
+        if (!catSubpartidaFraccionRepository.existsById(id)) {
+            throw new RuntimeException(
+                    "CatPartidaFraccion no encontrada con cveCapituloFraccion: "
+                            + dto.getCveCapituloFraccion()
+                            + " y cvePartidaFraccion: " + dto.getCvePartidaFraccion()
+            );
+        }
 
         CatSubpartidaFraccion entity = new CatSubpartidaFraccion();
         entity.setId(id);
-        entity.setCatPartidaFraccion(
-                catPartidaFraccionRepository.findById(partidaId)
-                        .orElseThrow(() -> new RuntimeException(
-                                "CatPartidaFraccion no encontrada con cveCapituloFraccion: "
-                                        + dto.getCveCapituloFraccion()
-                                        + " y cvePartidaFraccion: " + dto.getCvePartidaFraccion()))
-        );
+
         entity.setNombre(dto.getNombre());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
@@ -122,8 +121,6 @@ public class CatSubpartidaFraccionServiceImpl implements ICatSubpartidaFraccionS
                 .cveSubpartidaFraccion(entity.getId().getCveSubpartidaFraccion())
                 .cveCapituloFraccion(entity.getId().getCveCapituloFraccion())
                 .cvePartidaFraccion(entity.getId().getCvePartidaFraccion())
-                .nombrePartidaFraccion(entity.getCatPartidaFraccion() != null
-                        ? entity.getCatPartidaFraccion().getNombre() : null)
                 .nombre(entity.getNombre())
                 .fecIniVigencia(entity.getFecIniVigencia())
                 .fecFinVigencia(entity.getFecFinVigencia())

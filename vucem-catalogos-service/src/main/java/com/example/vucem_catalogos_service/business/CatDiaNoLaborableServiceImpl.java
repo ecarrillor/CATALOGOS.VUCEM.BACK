@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.business.Interface.ICatDiaNoLaborableService;
 import com.example.vucem_catalogos_service.model.dto.CatDiaNoLaborableDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatDiaNoLaborable;
 import com.example.vucem_catalogos_service.model.entity.CatDiaNoLaborableId;
 import com.example.vucem_catalogos_service.persistence.repo.ICatCalendarioRepository;
@@ -18,6 +19,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -114,6 +117,18 @@ public class CatDiaNoLaborableServiceImpl implements ICatDiaNoLaborableService {
 
         CatDiaNoLaborable saved = catDiaNoLaborableRepository.save(entity);
         return mapToDTO(saved);
+    }
+
+    @Override
+    public List<SelectDTO> listCalendario() {
+        return catCalendarioRepository.findAll().stream()
+                .map(e -> {
+                    SelectDTO d = new SelectDTO();
+                    d.setCve(e.getCveCalendario());
+                    d.setNombre(e.getNombre());
+                    return d;
+                })
+                .collect(Collectors.toList());
     }
 
     private CatDiaNoLaborableDTO mapToDTO(CatDiaNoLaborable entity) {
