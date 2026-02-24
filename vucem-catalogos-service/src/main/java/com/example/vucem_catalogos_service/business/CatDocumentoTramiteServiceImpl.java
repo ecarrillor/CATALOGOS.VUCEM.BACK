@@ -1,11 +1,15 @@
 package com.example.vucem_catalogos_service.business;
 
+import com.example.vucem_catalogos_service.model.entity.CatDocumentoTramite;
 import com.example.vucem_catalogos_service.business.Interface.ICatDocumentoTramiteService;
 import com.example.vucem_catalogos_service.model.dto.CatDocumentoTramiteDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
-import com.example.vucem_catalogos_service.model.entity.CatDocumentoTramite;
 import com.example.vucem_catalogos_service.model.entity.CatDocumentoTramiteId;
+import com.example.vucem_catalogos_service.model.entity.CatTipoDocumento;
+import com.example.vucem_catalogos_service.model.entity.CatTipoTramite;
 import com.example.vucem_catalogos_service.persistence.repo.ICatDocumentoTramiteRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatTipoDocumentoRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +22,10 @@ public class CatDocumentoTramiteServiceImpl implements ICatDocumentoTramiteServi
 
     @Autowired
     private ICatDocumentoTramiteRepository catDocumentoTramiteRepository;
-
+    @Autowired
+    private ICatTipoDocumentoRepository catTipoDocumentoRepository;
+    @Autowired
+    private ICatTipoTramiteRepository catTipoTramiteRepository;
     @Override
     public PageResponseDTO<CatDocumentoTramiteDTO> list(String search, Pageable pageable) {
         Boolean activo = null;
@@ -53,12 +60,39 @@ public class CatDocumentoTramiteServiceImpl implements ICatDocumentoTramiteServi
 
     @Override
     public CatDocumentoTramiteDTO create(CatDocumentoTramiteDTO dto) {
-        CatDocumentoTramiteId id = new CatDocumentoTramiteId();
-        id.setIdTipoDoc(dto.getIdTipoDoc());
-        id.setIdTipoTramite(dto.getIdTipoTramite());
+        if (dto.getIdTipoDoc() == null || dto.getIdTipoTramite() == null) {
+            throw new RuntimeException("idTipoDoc e idTipoTramite son obligatorios");
+        }
+
+        CatDocumentoTramiteId id = new CatDocumentoTramiteId(
+                dto.getIdTipoDoc(),
+                dto.getIdTipoTramite()
+        );
+
+        if (catDocumentoTramiteRepository.existsById(id)) {
+            throw new RuntimeException(
+                    "Ya existe un documento trámite con idTipoDoc="
+                            + dto.getIdTipoDoc()
+                            + " e idTipoTramite="
+                            + dto.getIdTipoTramite());
+        }
+
+        CatTipoDocumento tipoDocumento = catTipoDocumentoRepository
+                .findById(dto.getIdTipoDoc())
+                .orElseThrow(() -> new RuntimeException(
+                        "TipoDocumento no encontrado: " + dto.getIdTipoDoc()));
+
+        CatTipoTramite tipoTramite = catTipoTramiteRepository
+                .findById(Long.valueOf(dto.getIdTipoTramite()))
+                .orElseThrow(() -> new RuntimeException(
+                        "TipoTramite no encontrado: " + dto.getIdTipoTramite()));
 
         CatDocumentoTramite entity = new CatDocumentoTramite();
-        entity.setId(id);
+
+
+        entity.setIdTipoDoc(tipoDocumento);
+        entity.setIdTipoTramite(tipoTramite);
+
         entity.setBlnEspecifico(dto.getBlnEspecifico());
         entity.setIdeClasificacionDocumento(dto.getIdeClasificacionDocumento());
         entity.setIdeTipoSolicitanteRfe(dto.getIdeTipoSolicitanteRfe());
@@ -69,6 +103,7 @@ public class CatDocumentoTramiteServiceImpl implements ICatDocumentoTramiteServi
         entity.setIdeReglaAnexado(dto.getIdeReglaAnexado());
 
         CatDocumentoTramite saved = catDocumentoTramiteRepository.save(entity);
+
         return mapToDTO(saved);
     }
 

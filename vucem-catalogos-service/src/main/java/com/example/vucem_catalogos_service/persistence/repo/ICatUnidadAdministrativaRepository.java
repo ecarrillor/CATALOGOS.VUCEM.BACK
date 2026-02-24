@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.persistence.repo;
 
 import com.example.vucem_catalogos_service.model.dto.CatUnidadAdministrativaDTO;
+import com.example.vucem_catalogos_service.model.dto.CatUnidadAdministrativaNameDTO;
 import com.example.vucem_catalogos_service.model.entity.CatUnidadAdministrativa;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,15 @@ import java.util.List;
 
 @Repository
 public interface ICatUnidadAdministrativaRepository extends JpaRepository<CatUnidadAdministrativa, String> {
+
+    @Query("""
+            SELECT new com.example.vucem_catalogos_service.model.dto.CatUnidadAdministrativaNameDTO(
+                a.cveUnidadAdministrativa,
+                a.nombre)
+            FROM CatUnidadAdministrativa a
+            ORDER BY a.nombre DESC
+            """)
+    List<CatUnidadAdministrativaNameDTO> findByName();
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatUnidadAdministrativaDTO(
@@ -36,8 +46,8 @@ public interface ICatUnidadAdministrativaRepository extends JpaRepository<CatUni
             LEFT JOIN e.cveUnidadAdministrativaR parent
             LEFT JOIN e.cveEntidad ent
             JOIN e.idDependencia dep
-            WHERE (:search IS NULL OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', :search, '%'))
-                OR LOWER(e.acronimo) LIKE LOWER(CONCAT('%', :search, '%')))
+            WHERE (:search IS NULL OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                OR LOWER(e.acronimo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatUnidadAdministrativaDTO> search(@Param("search") String search,

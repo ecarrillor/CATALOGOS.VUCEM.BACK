@@ -1,16 +1,11 @@
 package com.example.vucem_catalogos_service.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.example.vucem_catalogos_service.CatDocumentoTramiteId;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 @Data
@@ -20,8 +15,18 @@ public class CatDocumentoTramite {
     @EmbeddedId
     private CatDocumentoTramiteId id;
 
+    @MapsId("idTipoDoc")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_tipo_doc", nullable = false)
+    private CatTipoDocumento idTipoDoc;
+
+    @MapsId("idTipoTramite")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_tipo_tramite", nullable = false)
+    private CatTipoTramite idTipoTramite;
+
     @Column(name = "bln_especifico")
-    private Short blnEspecifico;
+    private Boolean blnEspecifico;
 
     @Size(max = 20)
     @Column(name = "ide_clasificacion_documento", length = 20)

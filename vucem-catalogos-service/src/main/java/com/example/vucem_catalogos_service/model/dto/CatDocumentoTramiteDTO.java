@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class CatDocumentoTramiteDTO {
     private Short idTipoDoc;
     private Integer idTipoTramite;
-    private Short blnEspecifico;
+    private Boolean blnEspecifico;
     private String ideClasificacionDocumento;
     private String ideTipoSolicitanteRfe;
     private LocalDate fecIniVigencia;

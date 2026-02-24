@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -24,7 +25,7 @@ public class CatUnidadAdministrativaDTO {
     private Long idDependencia;
     private String nombreDependencia;
     private Boolean blnFronteriza;
-    private Instant fecIniVigencia;
-    private Instant fecFinVigencia;
+    private LocalDate fecIniVigencia;
+    private LocalDate fecFinVigencia;
     private Boolean blnActivo;
 }

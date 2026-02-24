@@ -1,19 +1,20 @@
-package com.example.vucem_catalogos_service.model.entity;
+package com.example.vucem_catalogos_service;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode
 @Embeddable
 public class CatDocumentoTramiteId implements Serializable {
-    private static final long serialVersionUID = -5140269353744234380L;
+    private static final long serialVersionUID = 5979142113504495791L;
     @NotNull
     @Column(name = "id_tipo_doc", nullable = false)
     private Short idTipoDoc;

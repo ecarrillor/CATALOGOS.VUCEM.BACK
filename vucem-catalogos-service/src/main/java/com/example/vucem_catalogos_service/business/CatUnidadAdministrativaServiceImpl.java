@@ -39,7 +39,7 @@ public class CatUnidadAdministrativaServiceImpl implements ICatUnidadAdministrat
 
     @Override
     public List<CatUnidadAdministrativaNameDTO> findByAll() {
-        return catAprobCertSeRepository.findByName();
+        return iCatUnidadAdministrativaRepository.findByName();
     }
 
     @Override
@@ -113,7 +113,7 @@ public class CatUnidadAdministrativaServiceImpl implements ICatUnidadAdministrat
         entity.setBlnFronteriza(dto.getBlnFronteriza());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setBlnActivo(dto.getBlnActivo());
+        entity.setBlnActivo(true);
 
         CatUnidadAdministrativa saved = iCatUnidadAdministrativaRepository.save(entity);
         return mapToDTO(saved);
@@ -127,45 +127,74 @@ public class CatUnidadAdministrativaServiceImpl implements ICatUnidadAdministrat
                 .orElseThrow(() -> new RuntimeException(
                         "CatUnidadAdministrativa no encontrada: " + cveUnidadAdministrativa));
 
-        entity.setIdeTipoUnidadAdministrativa(dto.getIdeTipoUnidadAdministrativa());
+        if (dto.getIdeTipoUnidadAdministrativa() != null) {
+            entity.setIdeTipoUnidadAdministrativa(dto.getIdeTipoUnidadAdministrativa());
+        }
+
+        if (dto.getNivel() != null) {
+            entity.setNivel(dto.getNivel());
+        }
+
+        if (dto.getAcronimo() != null) {
+            entity.setAcronimo(dto.getAcronimo());
+        }
+
+        if (dto.getNombre() != null) {
+            entity.setNombre(dto.getNombre());
+        }
+
+        if (dto.getDescripcion() != null) {
+            entity.setDescripcion(dto.getDescripcion());
+        }
+
+        if (dto.getBlnFronteriza() != null) {
+            entity.setBlnFronteriza(dto.getBlnFronteriza());
+        }
+
+        if (dto.getFecIniVigencia() != null) {
+            entity.setFecIniVigencia(dto.getFecIniVigencia());
+        }
+
+        if (dto.getFecFinVigencia() != null) {
+            entity.setFecFinVigencia(dto.getFecFinVigencia());
+        }
+
+        if (dto.getBlnActivo() != null) {
+            entity.setBlnActivo(dto.getBlnActivo());
+        }
+
 
         if (dto.getCveUnidadAdministrativaR() != null) {
             entity.setCveUnidadAdministrativaR(
-                    iCatUnidadAdministrativaRepository.findById(dto.getCveUnidadAdministrativaR())
+                    iCatUnidadAdministrativaRepository
+                            .findById(dto.getCveUnidadAdministrativaR())
                             .orElseThrow(() -> new RuntimeException(
-                                    "Unidad administrativa padre no encontrada: " + dto.getCveUnidadAdministrativaR()))
+                                    "Unidad administrativa padre no encontrada: "
+                                            + dto.getCveUnidadAdministrativaR()))
             );
-        } else {
-            entity.setCveUnidadAdministrativaR(null);
         }
-
-        entity.setNivel(dto.getNivel());
-        entity.setAcronimo(dto.getAcronimo());
-        entity.setNombre(dto.getNombre());
-        entity.setDescripcion(dto.getDescripcion());
 
         if (dto.getCveEntidad() != null) {
             entity.setCveEntidad(
-                    iCatEntidadRepository.findById(dto.getCveEntidad())
+                    iCatEntidadRepository
+                            .findById(dto.getCveEntidad())
                             .orElseThrow(() -> new RuntimeException(
                                     "Entidad no encontrada: " + dto.getCveEntidad()))
             );
-        } else {
-            entity.setCveEntidad(null);
         }
 
-        entity.setIdDependencia(
-                iCatDependenciaRepository.findById(dto.getIdDependencia())
-                        .orElseThrow(() -> new RuntimeException(
-                                "Dependencia no encontrada: " + dto.getIdDependencia()))
-        );
+        if (dto.getIdDependencia() != null) {
+            entity.setIdDependencia(
+                    iCatDependenciaRepository
+                            .findById(dto.getIdDependencia())
+                            .orElseThrow(() -> new RuntimeException(
+                                    "Dependencia no encontrada: " + dto.getIdDependencia()))
+            );
+        }
 
-        entity.setBlnFronteriza(dto.getBlnFronteriza());
-        entity.setFecIniVigencia(dto.getFecIniVigencia());
-        entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setBlnActivo(dto.getBlnActivo());
+        CatUnidadAdministrativa updated =
+                iCatUnidadAdministrativaRepository.save(entity);
 
-        CatUnidadAdministrativa updated = iCatUnidadAdministrativaRepository.save(entity);
         return mapToDTO(updated);
     }
 

@@ -5,18 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CatPatenteAduanalDTO {
-    private String cvePatenteAduanal;
-    private String rfc;
+public class CatUnidadAdminAduanaDTO {
+    private String cveUnidadAdministrativa;
+    private String cveAduana;
+    private String nombreUnidadAdministrativa;
+    private String nombreAduana;
     private LocalDate fecIniVigencia;
     private LocalDate fecFinVigencia;
     private Boolean blnActivo;
-    private String ideEstPatenteAut;
 }

@@ -29,6 +29,7 @@ public interface ICatDocumentoTramiteRepository extends JpaRepository<CatDocumen
                 e.ideReglaAnexado
             )
             FROM CatDocumentoTramite e
+            
             WHERE (:search IS NULL OR LOWER(e.ideClasificacionDocumento) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 OR LOWER(e.ideTipoSolicitanteRfe) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 OR LOWER(e.ideReglaAnexado) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))

@@ -73,14 +73,7 @@ public interface ICatAprobCertSeRepository extends JpaRepository<CatAprobCertSe,
     CatAprobCertSeResponseDTO findByCatAprobeId(@Param("id") Short id);
 
 
-    @Query("""
-            SELECT new com.example.vucem_catalogos_service.model.dto.CatUnidadAdministrativaNameDTO(
-                u.cveUnidadAdministrativa,
-                u.nombre)
-            FROM CatAprobCertSe a
-            JOIN a.cveUnidadAdministrativa u
-            """)
-    List<CatUnidadAdministrativaNameDTO> findByName();
+
 
     @Query("""
             SELECT u

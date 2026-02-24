@@ -119,7 +119,7 @@ public class CatalogPaths extends ConstPath{
     public static final String LIST_LABORATORIOS = "/cat_aprobCert/laboratorios";
 
     /*entidad CAT_UNIDAD_ADMINISTRATIVA */
-    public static final String LIST_UNIDAD_ADMIN_LIST_LAB    = "/cat_unidad_adm/listLab";
+    public static final String LIST_UNIDAD_ADMIN_LIST_LAB    = "/cat_unidad_adm/listUnidadAdm";
     public static final String LIST_UNIDAD_ADMIN             = "/cat_unidad_admin/list";
     public static final String SAVE_UNIDAD_ADMIN             = "/cat_unidad_admin/save";
     public static final String FIND_UNIDAD_ADMIN             = "/cat_unidad_admin/{cveUnidadAdministrativa}";
@@ -337,5 +337,10 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_CLASIF_TOXICOLOGICA_TTRA   = "/cat_clasif_toxicol_ttra/{id}";
     public static final String UPDATE_CLASIF_TOXICOLOGICA_TTRA = "/cat_clasif_toxicol_ttra/{id}";
 
+    /*entidad CAT_UNIDAD_ADMIN_ADUANA */
+    public static final String LIST_UNIDAD_ADMIN_ADUANA   = "/cat_unidad_admin_aduana/list";
+    public static final String SAVE_UNIDAD_ADMIN_ADUANA   = "/cat_unidad_admin_aduana/save";
+    public static final String FIND_UNIDAD_ADMIN_ADUANA   = "/cat_unidad_admin_aduana/{cveUnidadAdministrativa}/{cveAduana}";
+    public static final String UPDATE_UNIDAD_ADMIN_ADUANA = "/cat_unidad_admin_aduana/{cveUnidadAdministrativa}/{cveAduana}";
 
 }

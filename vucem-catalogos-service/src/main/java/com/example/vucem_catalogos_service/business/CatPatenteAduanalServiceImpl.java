@@ -69,13 +69,28 @@ public class CatPatenteAduanalServiceImpl implements ICatPatenteAduanalService {
     @Override
     public CatPatenteAduanalDTO update(String cvePatenteAduanal, CatPatenteAduanalDTO dto) {
         CatPatenteAduanal entity = catPatenteAduanalRepository.findById(cvePatenteAduanal)
-                .orElseThrow(() -> new RuntimeException("Patente aduanal no encontrada: " + cvePatenteAduanal));
+                .orElseThrow(() -> new RuntimeException(
+                        "Patente aduanal no encontrada: " + cvePatenteAduanal));
 
-        entity.setRfc(dto.getRfc());
-        entity.setFecIniVigencia(dto.getFecIniVigencia());
-        entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setBlnActivo(dto.getBlnActivo());
-        entity.setIdeEstPatenteAut(dto.getIdeEstPatenteAut());
+        if (dto.getRfc() != null) {
+            entity.setRfc(dto.getRfc());
+        }
+
+        if (dto.getFecIniVigencia() != null) {
+            entity.setFecIniVigencia(dto.getFecIniVigencia());
+        }
+
+        if (dto.getFecFinVigencia() != null) {
+            entity.setFecFinVigencia(dto.getFecFinVigencia());
+        }
+
+        if (dto.getBlnActivo() != null) {
+            entity.setBlnActivo(dto.getBlnActivo());
+        }
+
+        if (dto.getIdeEstPatenteAut() != null) {
+            entity.setIdeEstPatenteAut(dto.getIdeEstPatenteAut());
+        }
 
         CatPatenteAduanal updated = catPatenteAduanalRepository.save(entity);
         return mapToDTO(updated);
