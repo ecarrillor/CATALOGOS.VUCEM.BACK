@@ -4,6 +4,7 @@ import com.example.vucem_catalogos_service.business.Interface.ICatDiaNoLaborable
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
 import com.example.vucem_catalogos_service.model.dto.CatDiaNoLaborableDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping(CatalogPaths.CONTROLLER)
@@ -45,5 +47,10 @@ public class CatDiaNoLaborableController {
             @PathVariable String cveCalendario,
             @RequestBody CatDiaNoLaborableDTO dto) {
         return ResponseEntity.ok(service.update(fecNoLaborable, cveCalendario, dto));
+    }
+
+    @GetMapping(CatalogPaths.LIST_SELECT_CALENDARIO)
+    public ResponseEntity<List<SelectDTO>> listCalendario() {
+        return ResponseEntity.ok(service.listCalendario());
     }
 }

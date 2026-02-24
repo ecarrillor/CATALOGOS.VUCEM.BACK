@@ -17,16 +17,6 @@ public class CatSubpartidaFraccion {
     @EmbeddedId
     private CatSubpartidaFraccionId id;
 
-    @MapsId("id")
-    @JoinColumns({
-            @JoinColumn(name = "cve_capitulo_fraccion",
-                    referencedColumnName = "cve_capitulo_fraccion",
-                    nullable = false),
-            @JoinColumn(name = "cve_partida_fraccion",
-                    referencedColumnName = "cve_partida_fraccion",
-                    nullable = false)})
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private CatPartidaFraccion catPartidaFraccion;
 
     @Size(max = 1000)
     @Column(name = "nombre", length = 1000)

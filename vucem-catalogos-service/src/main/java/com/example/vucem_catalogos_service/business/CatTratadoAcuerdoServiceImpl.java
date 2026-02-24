@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.business.Interface.ICatTratadoAcuerdoService;
 import com.example.vucem_catalogos_service.model.dto.CatTratadoAcuerdoDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatTratadoAcuerdo;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoAcuerdoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -120,6 +123,18 @@ public class CatTratadoAcuerdoServiceImpl implements ICatTratadoAcuerdoService {
         return mapToDTO(saved);
     }
 
+    @Override
+    public List<SelectDTO> listTratadoAcuerdo() {
+        return catTratadoAcuerdoRepository.findAll().stream()
+                .map(e -> {
+                    SelectDTO d = new SelectDTO();
+                    d.setCve(e.getCveTratadoAcuerdo());
+                    d.setNombre(e.getNombre());
+                    return d;
+                })
+                .collect(Collectors.toList());
+    }
+
     private CatTratadoAcuerdoDTO mapToDTO(CatTratadoAcuerdo entity) {
         return CatTratadoAcuerdoDTO.builder()
                 .id(entity.getId())
@@ -135,4 +150,6 @@ public class CatTratadoAcuerdoServiceImpl implements ICatTratadoAcuerdoService {
                 .blnEvaluarIndividual(entity.getBlnEvaluarIndividual())
                 .build();
     }
+
+
 }

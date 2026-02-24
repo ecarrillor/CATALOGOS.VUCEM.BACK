@@ -10,10 +10,15 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepos
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -40,8 +45,15 @@ public class CatTarifaServiceImpl implements ICatTarifaService {
 
         Page<CatTarifaDTO> page = catTarifaRepository.search(texto, activo, pageable);
 
+        List<CatTarifaDTO> contentTransformado =
+                page.getContent().stream()
+                        .peek(dto -> dto.setCveTipoTarifa(
+                                obtenerDescripcionTarifa(dto.getCveTipoTarifa())
+                        ))
+                        .toList();
+
         return PageResponseDTO.<CatTarifaDTO>builder()
-                .content(page.getContent())
+                .content(contentTransformado)
                 .page(page.getNumber())
                 .size(page.getSize())
                 .totalElements(page.getTotalElements())
@@ -51,20 +63,35 @@ public class CatTarifaServiceImpl implements ICatTarifaService {
     }
 
     @Override
-    public CatTarifaDTO findById(Long idTipoTramite, Instant fecIniVigencia, String ideTipoTarifa) {
-        return catTarifaRepository.findByTarifaDTO(idTipoTramite.intValue(), fecIniVigencia, ideTipoTarifa)
-                .orElseThrow(() -> new RuntimeException(
-                        "CatTarifa no encontrada con idTipoTramite: " + idTipoTramite
-                                + ", fecIniVigencia: " + fecIniVigencia
-                                + ", ideTipoTarifa: " + ideTipoTarifa));
+    public CatTarifaDTO findById(Long idTipoTramite, LocalDate fecIniVigencia, String ideTipoTarifa) {
+        CatTarifaDTO dto = catTarifaRepository
+                .findByTarifaDTO(
+                        idTipoTramite.intValue(),
+                        fecIniVigencia,
+                        ideTipoTarifa
+                )
+                .orElseThrow(() -> new RuntimeException("CatTarifa no encontrada"));
+
+        dto.setCveTipoTarifa(
+                obtenerDescripcionTarifa(dto.getCveTipoTarifa())
+        );
+
+        return dto;
     }
 
     @Override
     public CatTarifaDTO create(CatTarifaDTO dto) {
         CatTarifaId id = new CatTarifaId();
-        id.setIdTipoTramite(dto.getIdTipoTramite().intValue());
+        id.setIdTipoTramite(dto.getIdTipoTramite());
         id.setFecIniVigencia(dto.getFecIniVigencia());
-        id.setIdeTipoTarifa(dto.getIdeTipoTarifa());
+        id.setIdeTipoTarifa(dto.getIdTipoTarifa());
+
+        if (catTarifaRepository.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
 
         CatTarifa entity = new CatTarifa();
         entity.setId(id);
@@ -81,15 +108,15 @@ public class CatTarifaServiceImpl implements ICatTarifaService {
     }
 
     @Override
-    public CatTarifaDTO update(Long idTipoTramite, Instant fecIniVigencia, String ideTipoTarifa, CatTarifaDTO dto) {
+    public CatTarifaDTO update(Long idTipoTramite, LocalDate fecIniVigencia, String ideTipoTarifa, CatTarifaDTO dto) {
         CatTarifaId id = new CatTarifaId();
-        id.setIdTipoTramite(idTipoTramite.intValue());
+        id.setIdTipoTramite(idTipoTramite);
         id.setFecIniVigencia(fecIniVigencia);
         id.setIdeTipoTarifa(ideTipoTarifa);
 
         CatTarifa entity = catTarifaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
-                        "CatTarifa no encontrada con idTipoTramite: " + idTipoTramite
+                .orElseThrow(() -> new ResponseStatusException(
+                       HttpStatus.BAD_REQUEST, "CatTarifa no encontrada con idTipoTramite: " + idTipoTramite
                                 + ", fecIniVigencia: " + fecIniVigencia
                                 + ", ideTipoTarifa: " + ideTipoTarifa));
 
@@ -108,14 +135,33 @@ public class CatTarifaServiceImpl implements ICatTarifaService {
     }
 
     private CatTarifaDTO mapToDTO(CatTarifa entity) {
+        String idTipoTarifa = entity.getId().getIdeTipoTarifa();
         return CatTarifaDTO.builder()
-                .idTipoTramite(entity.getId().getIdTipoTramite().longValue())
+                .idTipoTramite(entity.getId().getIdTipoTramite())
                 .fecIniVigencia(entity.getId().getFecIniVigencia())
-                .ideTipoTarifa(entity.getId().getIdeTipoTarifa())
-                .nombreTipoTramite(entity.getIdTipoTramite() != null ? entity.getIdTipoTramite().getNombre() : null)
+                .idTipoTarifa(idTipoTarifa)
+                .cveTipoTarifa(obtenerDescripcionTarifa(idTipoTarifa))
+                .cveTipoTramite(entity.getIdTipoTramite().getDescSubservicio())
                 .fecFinVigencia(entity.getFecFinVigencia())
                 .tarifa(entity.getTarifa())
                 .blnActivo(entity.getBlnActivo())
                 .build();
+
+    }
+
+    private String obtenerDescripcionTarifa(String id) {
+
+        if (id == null) {
+            return null;
+        }
+
+        String clave = id.trim();
+
+        Map<String, String> TIPO_TARIFA_MAP = Map.of(
+                "TITAR.CC", "Copia Certificada",
+                "TITAR.TR", "Trámite"
+        );
+
+        return TIPO_TARIFA_MAP.getOrDefault(clave, clave);
     }
 }

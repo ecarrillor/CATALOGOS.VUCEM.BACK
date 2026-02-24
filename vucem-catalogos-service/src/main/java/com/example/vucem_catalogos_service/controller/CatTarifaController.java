@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(CatalogPaths.CONTROLLER)
@@ -29,9 +30,9 @@ public class CatTarifaController {
     @GetMapping(CatalogPaths.FIND_TARIFA)
     public ResponseEntity<CatTarifaDTO> findById(
             @PathVariable Long idTipoTramite,
-            @PathVariable String fecIniVigencia,
+            @PathVariable LocalDate fecIniVigencia,
             @PathVariable String ideTipoTarifa) {
-        return ResponseEntity.ok(service.findById(idTipoTramite, Instant.parse(fecIniVigencia), ideTipoTarifa));
+        return ResponseEntity.ok(service.findById(idTipoTramite,fecIniVigencia, ideTipoTarifa));
     }
 
     @PostMapping(CatalogPaths.SAVE_TARIFA)
@@ -42,9 +43,9 @@ public class CatTarifaController {
     @PutMapping(CatalogPaths.UPDATE_TARIFA)
     public ResponseEntity<CatTarifaDTO> update(
             @PathVariable Long idTipoTramite,
-            @PathVariable String fecIniVigencia,
+            @PathVariable LocalDate fecIniVigencia,
             @PathVariable String ideTipoTarifa,
             @RequestBody CatTarifaDTO dto) {
-        return ResponseEntity.ok(service.update(idTipoTramite, Instant.parse(fecIniVigencia), ideTipoTarifa, dto));
+        return ResponseEntity.ok(service.update(idTipoTramite, fecIniVigencia, ideTipoTarifa, dto));
     }
 }

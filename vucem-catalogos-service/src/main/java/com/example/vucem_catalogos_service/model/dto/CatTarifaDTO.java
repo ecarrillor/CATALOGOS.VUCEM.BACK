@@ -15,9 +15,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CatTarifaDTO {
     private Long idTipoTramite;
-    private Instant fecIniVigencia;
-    private String ideTipoTarifa;
-    private String nombreTipoTramite;
+    private String cveTipoTramite;
+    private LocalDate fecIniVigencia;
+    private String idTipoTarifa;
+    private String cveTipoTarifa;
     private LocalDate fecFinVigencia;
     private BigDecimal tarifa;
     private Boolean blnActivo;
