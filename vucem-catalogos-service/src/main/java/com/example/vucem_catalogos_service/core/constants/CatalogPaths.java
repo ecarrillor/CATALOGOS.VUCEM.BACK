@@ -343,4 +343,28 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_UNIDAD_ADMIN_ADUANA   = "/cat_unidad_admin_aduana/{cveUnidadAdministrativa}/{cveAduana}";
     public static final String UPDATE_UNIDAD_ADMIN_ADUANA = "/cat_unidad_admin_aduana/{cveUnidadAdministrativa}/{cveAduana}";
 
+    /*entidad CAT_TARIFA */
+    public static final String LIST_TARIFA   = "/cat_tarifa/list";
+    public static final String SAVE_TARIFA   = "/cat_tarifa/save";
+    public static final String FIND_TARIFA   = "/cat_tarifa/{idTipoTramite}/{fecIniVigencia}/{ideTipoTarifa}";
+    public static final String UPDATE_TARIFA = "/cat_tarifa/{idTipoTramite}/{fecIniVigencia}/{ideTipoTarifa}";
+
+    /*entidad CAT_SUBPARTIDA_FRACCION */
+    public static final String LIST_SUBPARTIDA_FRACCION   = "/cat_subpartida_fraccion/list";
+    public static final String SAVE_SUBPARTIDA_FRACCION   = "/cat_subpartida_fraccion/save";
+    public static final String FIND_SUBPARTIDA_FRACCION   = "/cat_subpartida_fraccion/{cveSubpartidaFraccion}/{cveCapituloFraccion}/{cvePartidaFraccion}";
+    public static final String UPDATE_SUBPARTIDA_FRACCION = "/cat_subpartida_fraccion/{cveSubpartidaFraccion}/{cveCapituloFraccion}/{cvePartidaFraccion}";
+
+    /*entidad CAT_TIPO_PRODUCTO_TTRA */
+    public static final String LIST_TIPO_PRODUCTO_TTRA   = "/cat_tipo_producto_ttra/list";
+    public static final String SAVE_TIPO_PRODUCTO_TTRA   = "/cat_tipo_producto_ttra/save";
+    public static final String FIND_TIPO_PRODUCTO_TTRA   = "/cat_tipo_producto_ttra/{id}";
+    public static final String UPDATE_TIPO_PRODUCTO_TTRA = "/cat_tipo_producto_ttra/{id}";
+
+    /*entidad CAT_TIPO_TRAMITE */
+    public static final String LIST_TIPO_TRAMITE   = "/cat_tipo_tramite/list";
+    public static final String SAVE_TIPO_TRAMITE   = "/cat_tipo_tramite/save";
+    public static final String FIND_TIPO_TRAMITE   = "/cat_tipo_tramite/{id}";
+    public static final String UPDATE_TIPO_TRAMITE = "/cat_tipo_tramite/{id}";
+
 }
