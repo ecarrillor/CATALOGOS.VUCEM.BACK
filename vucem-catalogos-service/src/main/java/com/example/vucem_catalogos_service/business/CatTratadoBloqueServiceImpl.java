@@ -10,8 +10,10 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoBloqueRep
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -58,9 +60,18 @@ public class CatTratadoBloqueServiceImpl implements ICatTratadoBloqueService {
 
     @Override
     public CatTratadoBloqueDTO create(CatTratadoBloqueDTO dto) {
+
+
         CatTratadoBloqueId id = new CatTratadoBloqueId();
         id.setIdTratadoAcuerdo(dto.getIdTratadoAcuerdo());
         id.setIdBloque(dto.getIdBloque());
+
+        if (catTratadoBloqueRepository.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
 
         CatTratadoBloque entity = new CatTratadoBloque();
         entity.setId(id);

@@ -8,8 +8,10 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTratamientoEspec
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -51,7 +53,14 @@ public class CatTratamientoEspecialServiceImpl implements ICatTratamientoEspecia
 
     @Override
     public CatTratamientoEspecialDTO create(CatTratamientoEspecialDTO dto) {
+        if (catTratamientoEspecialRepository.existsById(dto.getId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
         CatTratamientoEspecial entity = new CatTratamientoEspecial();
+        entity.setId(dto.getId());
         entity.setNombre(dto.getNombre());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
