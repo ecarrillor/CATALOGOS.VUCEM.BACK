@@ -25,6 +25,7 @@ public interface ICatVigenciaServicioRepository extends JpaRepository<CatVigenci
     e.catPaisTratadoAcuerdo.idTratadoAcuerdo.id,
     e.idBloque.id,
     e.idBloque.nombre,
+    e.cveCriterioOrigen.cveCriterioOrigen,
     e.fecIniVigencia,
     e.blnActivo
 )
@@ -48,6 +49,7 @@ LEFT JOIN e.idBloque b
                                               t.id,
                                               b.id,
                                               b.nombre,
+                                              e.cveCriterioOrigen.cveCriterioOrigen,
                                               e.fecIniVigencia,
                                               e.blnActivo
                                           )

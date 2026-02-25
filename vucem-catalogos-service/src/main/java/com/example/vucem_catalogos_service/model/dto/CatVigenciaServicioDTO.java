@@ -21,6 +21,7 @@ public class CatVigenciaServicioDTO {
     private Short idTratadoAcuerdo;
     private Short idBloque;
     private String nombreBloque;
+    private String criterio;
     private LocalDate fecIniVigencia;
     private Boolean blnActivo;
 }

@@ -50,5 +50,9 @@ public class CatVigenciaServicio {
     @Column(name = "bln_activo", nullable = false)
     private Boolean blnActivo;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cve_criterio_origen")
+    private CatCriterioOrigen cveCriterioOrigen;
+
 
 }

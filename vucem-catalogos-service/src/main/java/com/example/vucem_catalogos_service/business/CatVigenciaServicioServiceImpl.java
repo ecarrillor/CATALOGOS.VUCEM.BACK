@@ -3,17 +3,22 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.business.Interface.ICatVigenciaServicioService;
 import com.example.vucem_catalogos_service.model.dto.CatVigenciaServicioDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
-import com.example.vucem_catalogos_service.model.entity.CatPaisTratadoAcuerdo;
-import com.example.vucem_catalogos_service.model.entity.CatTratadoAcuerdo;
-import com.example.vucem_catalogos_service.model.entity.CatVigenciaServicio;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
+import com.example.vucem_catalogos_service.model.entity.*;
+import com.example.vucem_catalogos_service.persistence.repo.ICatCriterioOrigenRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatPaisTratadoAcuerdoRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoAcuerdoRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatVigenciaServicioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -27,6 +32,9 @@ public class CatVigenciaServicioServiceImpl implements ICatVigenciaServicioServi
 
     @Autowired
     private ICatTratadoAcuerdoRepository catTratadoAcuerdoRepository;
+
+    @Autowired
+    private ICatCriterioOrigenRepository catCriterioOrigenRepository;
 
     @Override
     public PageResponseDTO<CatVigenciaServicioDTO> list(String search, Pageable pageable) {
@@ -62,6 +70,14 @@ public class CatVigenciaServicioServiceImpl implements ICatVigenciaServicioServi
 
     @Override
     public CatVigenciaServicioDTO create(CatVigenciaServicioDTO dto) {
+
+        if (catVigenciaServicioRepository.existsById(dto.getId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
+
         CatVigenciaServicio entity = new CatVigenciaServicio();
         entity.setId(dto.getId());
         entity.setNumVigencia(dto.getNumVigencia());
@@ -82,6 +98,13 @@ public class CatVigenciaServicioServiceImpl implements ICatVigenciaServicioServi
                     .orElseThrow(() -> new RuntimeException(
                             "CatTratadoAcuerdo no encontrado con id: " + dto.getIdBloque()));
             entity.setIdBloque(bloque);
+        }
+
+        if (dto.getCriterio() != null) {
+            CatCriterioOrigen criterio = catCriterioOrigenRepository.findById(dto.getCriterio())
+                    .orElseThrow(() -> new RuntimeException(
+                            "CatCriterioOrigen no encontrado con id: " + dto.getCriterio()));
+            entity.setCveCriterioOrigen(criterio);
         }
 
         CatVigenciaServicio saved = catVigenciaServicioRepository.save(entity);
@@ -115,6 +138,20 @@ public class CatVigenciaServicioServiceImpl implements ICatVigenciaServicioServi
 
         CatVigenciaServicio saved = catVigenciaServicioRepository.save(entity);
         return mapToDTO(saved);
+    }
+
+    @Override
+    public List<SelectDTO> listadoCriterioOrigen() {
+        List<CatCriterioOrigen> entidades = catCriterioOrigenRepository.findByBlnActivoTrue();
+        List<SelectDTO> resultado = new ArrayList<>();
+
+        for (CatCriterioOrigen e : entidades) {
+            SelectDTO dto = new SelectDTO();
+            dto.setCve(e.getCveCriterioOrigen());
+            dto.setNombre(e.getNombre());
+            resultado.add(dto);
+        }
+        return resultado;
     }
 
     private CatVigenciaServicioDTO mapToDTO(CatVigenciaServicio entity) {

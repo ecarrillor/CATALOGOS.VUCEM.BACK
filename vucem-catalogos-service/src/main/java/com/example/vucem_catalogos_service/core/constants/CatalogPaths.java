@@ -416,6 +416,7 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_VIGENCIA_SERVICIO   = "/cat_vigencia_servicio/save";
     public static final String FIND_VIGENCIA_SERVICIO   = "/cat_vigencia_servicio/{id}";
     public static final String UPDATE_VIGENCIA_SERVICIO = "/cat_vigencia_servicio/{id}";
+    public static final String SELECT_CRITERIO_ORIGEN = "/cat_vigencia_servicio/criterio_origen";
 
     /*entidad CAT_UNIDAD_ADMIN_VECINA */
     public static final String LIST_UNIDAD_ADMIN_VECINA   = "/cat_unidad_admin_vecina/list";
