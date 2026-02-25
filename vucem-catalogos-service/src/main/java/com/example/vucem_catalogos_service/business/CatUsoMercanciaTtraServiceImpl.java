@@ -24,13 +24,13 @@ public class CatUsoMercanciaTtraServiceImpl implements ICatUsoMercanciaTtraServi
 
     @Override
     public PageResponseDTO<CatUsoMercanciaTtraDTO> list(String search, Pageable pageable) {
-        Short activo = null;
+        Boolean activo = null;
         String texto = null;
 
         if ("activo".equalsIgnoreCase(search)) {
-            activo = 1;
+            activo = true;
         } else if ("inactivo".equalsIgnoreCase(search)) {
-            activo = 0;
+            activo = false;
         } else {
             texto = search;
         }
@@ -56,10 +56,11 @@ public class CatUsoMercanciaTtraServiceImpl implements ICatUsoMercanciaTtraServi
     @Override
     public CatUsoMercanciaTtraDTO create(CatUsoMercanciaTtraDTO dto) {
         CatUsoMercanciaTtra entity = new CatUsoMercanciaTtra();
+        entity.setId(dto.getId());
         entity.setDescUsoMercancia(dto.getDescUsoMercancia());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setBlnActivo(dto.getBlnActivo());
+        entity.setBlnActivo(true);
 
         if (dto.getIdTipoTramite() != null) {
             entity.setIdTipoTramite(

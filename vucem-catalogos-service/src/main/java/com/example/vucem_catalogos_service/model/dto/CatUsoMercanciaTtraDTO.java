@@ -18,5 +18,5 @@ public class CatUsoMercanciaTtraDTO {
     private String descUsoMercancia;
     private LocalDate fecIniVigencia;
     private LocalDate fecFinVigencia;
-    private Short blnActivo;
+    private Boolean blnActivo;
 }

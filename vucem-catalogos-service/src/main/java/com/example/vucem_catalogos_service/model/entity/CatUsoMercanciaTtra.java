@@ -35,7 +35,7 @@ public class CatUsoMercanciaTtra {
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
-    private Short blnActivo;
+    private Boolean blnActivo;
 
 
 }
