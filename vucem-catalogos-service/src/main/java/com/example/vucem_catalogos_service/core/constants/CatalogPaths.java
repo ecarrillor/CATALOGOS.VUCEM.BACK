@@ -365,7 +365,6 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_TIPO_PRODUCTO_TTRA   = "/cat_tipo_producto_ttra/save";
     public static final String FIND_TIPO_PRODUCTO_TTRA   = "/cat_tipo_producto_ttra/{id}";
     public static final String UPDATE_TIPO_PRODUCTO_TTRA = "/cat_tipo_producto_ttra/{id}";
-    public static final String SELECT_TIPO_CERTIFICADO_MERCANCIA = "/cat_tipo_producto_ttra/tipo_certificado";
 
     /*entidad CAT_TIPO_TRAMITE */
     public static final String LIST_TIPO_TRAMITE   = "/cat_tipo_tramite/list";
@@ -423,6 +422,7 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_UNIDAD_ADMIN_VECINA   = "/cat_unidad_admin_vecina/save";
     public static final String FIND_UNIDAD_ADMIN_VECINA   = "/cat_unidad_admin_vecina/{cveUnidadAdministrativa}/{cveEntidad}";
     public static final String UPDATE_UNIDAD_ADMIN_VECINA = "/cat_unidad_admin_vecina/{cveUnidadAdministrativa}/{cveEntidad}";
+    public static final String LIST_UNIDAD_ADMINISTRATIVA = "/cat_unidad_admin_vecina/unidad_administrativa";
 
     /*entidad CAT_COMBINACION_SG */
     public static final String LIST_COMBINACION_SG   = "/cat_combinacion_sg/list";
