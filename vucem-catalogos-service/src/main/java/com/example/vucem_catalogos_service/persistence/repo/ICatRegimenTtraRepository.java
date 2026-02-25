@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,7 +21,7 @@ public interface ICatRegimenTtraRepository extends JpaRepository<CatRegimenTtra,
                 CASE WHEN e.cveRegimen IS NOT NULL THEN e.cveRegimen.cveRegimen ELSE NULL END,
                 CASE WHEN e.cveRegimen IS NOT NULL THEN e.cveRegimen.nombre ELSE NULL END,
                 CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.id ELSE NULL END,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.nombre ELSE NULL END,
+                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.descSubservicio ELSE NULL END,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
                 e.blnActivo
@@ -39,7 +40,7 @@ public interface ICatRegimenTtraRepository extends JpaRepository<CatRegimenTtra,
                 CASE WHEN e.cveRegimen IS NOT NULL THEN e.cveRegimen.cveRegimen ELSE NULL END,
                 CASE WHEN e.cveRegimen IS NOT NULL THEN e.cveRegimen.nombre ELSE NULL END,
                 CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.id ELSE NULL END,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.nombre ELSE NULL END,
+                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.descSubservicio ELSE NULL END,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
                 e.blnActivo
@@ -48,4 +49,6 @@ public interface ICatRegimenTtraRepository extends JpaRepository<CatRegimenTtra,
             WHERE e.id = :id
             """)
     Optional<CatRegimenTtraDTO> findByRegimenTtraDTO(@Param("id") Short id);
+
+
 }

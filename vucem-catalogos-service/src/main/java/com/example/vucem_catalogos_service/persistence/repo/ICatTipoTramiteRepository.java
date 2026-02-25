@@ -13,4 +13,6 @@ public interface ICatTipoTramiteRepository extends JpaRepository<CatTipoTramite,
 
 
     List<CatTipoTramite> findByBlnActivoTrueOrderByIdDesc();
+
+    List<CatTipoTramite> findByBlnActivoTrue();
 }

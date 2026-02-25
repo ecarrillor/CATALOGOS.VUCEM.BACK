@@ -3,7 +3,9 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.business.Interface.ICatTipoProductoTtraService;
 import com.example.vucem_catalogos_service.model.dto.CatTipoProductoTtraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatTipoProductoTtra;
+import com.example.vucem_catalogos_service.persistence.repo.ICatTipoCertificado;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoProductoTtraRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class CatTipoProductoTtraServiceImpl implements ICatTipoProductoTtraServi
 
     @Autowired
     private ICatTipoTramiteRepository catTipoTramiteRepository;
+
+    @Autowired
+    private ICatTipoCertificado catTipoCertificado;
 
     @Override
     public PageResponseDTO<CatTipoProductoTtraDTO> list(String search, Pageable pageable) {
@@ -121,6 +126,8 @@ public class CatTipoProductoTtraServiceImpl implements ICatTipoProductoTtraServi
         CatTipoProductoTtra saved = catTipoProductoTtraRepository.save(entity);
         return mapToDTO(saved);
     }
+
+
 
     private CatTipoProductoTtraDTO mapToDTO(CatTipoProductoTtra entity) {
         return CatTipoProductoTtraDTO.builder()
