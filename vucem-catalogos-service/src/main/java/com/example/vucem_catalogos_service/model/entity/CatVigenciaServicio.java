@@ -31,8 +31,6 @@ public class CatVigenciaServicio {
     private String ideTipoServicioCeror;
 
     @JoinColumns({
-            @JoinColumn(name = "fec_fin_vigencia",
-                    referencedColumnName = "fec_fin_vigencia"),
             @JoinColumn(name = "cve_pais",
                     referencedColumnName = "cve_pais"),
             @JoinColumn(name = "id_tratado_acuerdo",

@@ -58,6 +58,7 @@ public class CatAduanaServiceImpl implements ICatAduanaService {
         catAduana.setTipoAduana(tipoAduana);
         catAduana.setEntidad(entidad);
 
+
         return repository.save(catAduana);
     }
 

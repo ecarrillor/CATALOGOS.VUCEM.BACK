@@ -41,6 +41,7 @@ public class CatVigenciaServicioServiceImpl implements ICatVigenciaServicioServi
             texto = search;
         }
 
+
         Page<CatVigenciaServicioDTO> page = catVigenciaServicioRepository.search(texto, activo, pageable);
 
         return PageResponseDTO.<CatVigenciaServicioDTO>builder()
