@@ -55,16 +55,11 @@ public class CatFraccionALADIServiceImpl implements ICatFraccionALADIService {
     public CatFraccionALADIResponseDTO crearFraacionAladi(CatFraccionALADIRequestDTO dto) {
 
 
-            if (iCatFraccionAladiRepository.existsById(dto.getIdFraccionAladi())) {
-                throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        "Ya existe una fracción ALADI con el id: " + dto.getIdFraccionAladi()
-                );
-            }
 
             CatFraccionAladi entity = new CatFraccionAladi();
 
-            entity.setId(dto.getIdFraccionAladi());
+            Long nextId = iCatFraccionAladiRepository.findMaxId() + 1;
+            entity.setId(nextId);
             entity.setFecIniVigencia(dto.getFecIniVigencia());
             entity.setFecFinVigencia(dto.getFecFinVigencia());
             entity.setIdeTipoFraccionAladi(dto.getCveTipoFraccion());

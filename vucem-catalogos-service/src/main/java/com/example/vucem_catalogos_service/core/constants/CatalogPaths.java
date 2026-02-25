@@ -159,6 +159,7 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_ARANCEL_PROSEC = "/cat_arancelPro/{id}/{cveSectorProsec}";
     public static final String UPDATE_ARANCEL_PROSEC = "/cat_arancelPro/{cveFraccion}/{cveSectorProsec}";
     public static final String LIST_FRACCION_ARANCELARIA = "/cat_arancelPro/fracc_arancelaria";
+    public static final String SELECT_SECTOR_PROSEC = "/cat_arancelPro/sector_prosec";
 
     /*entidad CAT_CLASIFICACION_REGIMEN */
     public static final String LIST_CLASIFICACION_REGIMEN   = "/cat_clasificacion_regimen/list";
@@ -359,6 +360,8 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_SUBPARTIDA_FRACCION   = "/cat_subpartida_fraccion/save";
     public static final String FIND_SUBPARTIDA_FRACCION   = "/cat_subpartida_fraccion/{cveSubpartidaFraccion}/{cveCapituloFraccion}/{cvePartidaFraccion}";
     public static final String UPDATE_SUBPARTIDA_FRACCION = "/cat_subpartida_fraccion/{cveSubpartidaFraccion}/{cveCapituloFraccion}/{cvePartidaFraccion}";
+    public static final String SELECT_CAPITULO_FRACCION = "/cat_subpartida_fraccion/capitulo_fraccion";
+    public static final String SELECT_PARTIDA_FRACCION = "/cat_subpartida_fraccion/partida_fraccion/{capitulo}";
 
     /*entidad CAT_TIPO_PRODUCTO_TTRA */
     public static final String LIST_TIPO_PRODUCTO_TTRA   = "/cat_tipo_producto_ttra/list";

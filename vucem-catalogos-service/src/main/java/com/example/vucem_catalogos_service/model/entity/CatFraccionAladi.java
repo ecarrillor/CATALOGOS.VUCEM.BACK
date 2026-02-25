@@ -1,9 +1,6 @@
 package com.example.vucem_catalogos_service.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "cat_fraccion_aladi")
 public class CatFraccionAladi {
+
     @Id
     @Column(name = "id_fraccion_aladi", nullable = false)
     private Long id;

@@ -62,4 +62,10 @@ public class CatArancelProsecController {
         return ResponseEntity.ok(lista);
     }
 
+    @GetMapping(CatalogPaths.SELECT_SECTOR_PROSEC)
+    public ResponseEntity<List<SelectDTO>> listadoSectorProsec(){
+        List<SelectDTO> lista = service.listadoSectorProsec();
+        return ResponseEntity.ok(lista);
+    }
+
 }

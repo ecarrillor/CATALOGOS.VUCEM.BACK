@@ -12,4 +12,6 @@ public interface ICatCapituloFraccionRepository extends JpaRepository<CatCapitul
         JpaSpecificationExecutor<CatCapituloFraccion> {
 
     List<CatCapituloFraccion> findAllByBlnActivoTrue();
+
+    List<CatCapituloFraccion> findByBlnActivoTrue();
 }

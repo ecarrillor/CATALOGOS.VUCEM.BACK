@@ -3,9 +3,10 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.business.Interface.ICatSubpartidaFraccionService;
 import com.example.vucem_catalogos_service.model.dto.CatSubpartidaFraccionDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
-import com.example.vucem_catalogos_service.model.entity.CatSubpartidaFraccion;
-import com.example.vucem_catalogos_service.model.entity.CatSubpartidaFraccionId;
-import com.example.vucem_catalogos_service.model.entity.CatPartidaFraccionId;
+import com.example.vucem_catalogos_service.model.dto.SelectCatPartidaFraccion;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
+import com.example.vucem_catalogos_service.model.entity.*;
+import com.example.vucem_catalogos_service.persistence.repo.ICatCapituloFraccionRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatSubpartidaFraccionRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatPartidaFraccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 public class CatSubpartidaFraccionServiceImpl implements ICatSubpartidaFraccionService {
@@ -25,6 +29,9 @@ public class CatSubpartidaFraccionServiceImpl implements ICatSubpartidaFraccionS
 
     @Autowired
     private ICatPartidaFraccionRepository catPartidaFraccionRepository;
+
+    @Autowired
+    private ICatCapituloFraccionRepository catCapituloFraccionRepository;
 
     @Override
     public PageResponseDTO<CatSubpartidaFraccionDTO> list(String search, Pageable pageable) {
@@ -124,6 +131,34 @@ public class CatSubpartidaFraccionServiceImpl implements ICatSubpartidaFraccionS
 
         CatSubpartidaFraccion saved = catSubpartidaFraccionRepository.save(entity);
         return mapToDTO(saved);
+    }
+
+    @Override
+    public List<SelectDTO> listadoCapituloFraccion() {
+        List<CatCapituloFraccion> entidades = catCapituloFraccionRepository.findByBlnActivoTrue();
+        List<SelectDTO> resultado = new ArrayList<>();
+
+        for (CatCapituloFraccion e : entidades) {
+            SelectDTO dto = new SelectDTO();
+            dto.setCve(e.getCveCapituloFraccion());
+            dto.setNombre(e.getNombre());
+            resultado.add(dto);
+        }
+        return resultado;
+    }
+
+    @Override
+    public List<SelectCatPartidaFraccion> listadoPartidaFracciobn(String capitulo) {
+        List<SelectCatPartidaFraccion> entidades = catPartidaFraccionRepository.findByBlnActivoTrue(capitulo);
+        List<SelectCatPartidaFraccion> resultado = new ArrayList<>();
+
+        for (SelectCatPartidaFraccion e : entidades) {
+            SelectCatPartidaFraccion dto = new SelectCatPartidaFraccion();
+            dto.setCvePartidaFraccion(e.getCvePartidaFraccion());
+            dto.setNombre(e.getNombre());
+            resultado.add(dto);
+        }
+        return resultado;
     }
 
     private CatSubpartidaFraccionDTO mapToDTO(CatSubpartidaFraccion entity) {
