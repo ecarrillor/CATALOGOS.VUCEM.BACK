@@ -18,7 +18,7 @@ public interface ICatUnidadMedidaTtraRepository extends JpaRepository<CatUnidadM
                 e.cveUnidadMedida.cveUnidadMedida,
                 e.cveUnidadMedida.descripcion,
                 e.idTipoTramite.id,
-                e.idTipoTramite.nombre,
+                e.idTipoTramite.descModalidad,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
                 e.blnActivo
@@ -29,7 +29,7 @@ public interface ICatUnidadMedidaTtraRepository extends JpaRepository<CatUnidadM
             """)
     Page<CatUnidadMedidaTtraDTO> search(
             @Param("search") String search,
-            @Param("activo") Short activo,
+            @Param("activo") Boolean activo,
             Pageable pageable
     );
 
@@ -39,7 +39,7 @@ public interface ICatUnidadMedidaTtraRepository extends JpaRepository<CatUnidadM
                 e.cveUnidadMedida.cveUnidadMedida,
                 e.cveUnidadMedida.descripcion,
                 e.idTipoTramite.id,
-                e.idTipoTramite.nombre,
+                e.idTipoTramite.descModalidad,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
                 e.blnActivo
