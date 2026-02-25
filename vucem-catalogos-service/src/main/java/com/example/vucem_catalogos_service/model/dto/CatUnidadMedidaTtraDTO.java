@@ -19,5 +19,5 @@ public class CatUnidadMedidaTtraDTO {
     private String nombreTipoTramite;
     private LocalDate fecIniVigencia;
     private LocalDate fecFinVigencia;
-    private Short blnActivo;
+    private Boolean blnActivo;
 }

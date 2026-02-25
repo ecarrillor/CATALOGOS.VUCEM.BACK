@@ -15,34 +15,43 @@ public interface ICatUsoMercanciaTtraRepository extends JpaRepository<CatUsoMerc
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatUsoMercanciaTtraDTO(
                 e.id,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.id ELSE NULL END,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.nombre ELSE NULL END,
+                CASE WHEN tr.id IS NOT NULL THEN tr.id ELSE NULL END,
+                CASE WHEN tr.id IS NOT NULL THEN tr.descModalidad ELSE NULL END,
                 e.descUsoMercancia,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
                 e.blnActivo
             )
             FROM CatUsoMercanciaTtra e
-            WHERE (:search IS NULL OR LOWER(e.descUsoMercancia) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
-              AND (:activo IS NULL OR e.blnActivo = :activo)
-            """)
+            LEFT JOIN e.idTipoTramite tr
+            WHERE (:search IS NULL OR :search = '' OR
+            LOWER(e.descUsoMercancia) LIKE LOWER(CONCAT('%', :search, '%')) OR
+            LOWER(tr.descModalidad) LIKE LOWER(CONCAT('%', :search, '%')) OR
+        
+            CAST(tr.id AS string) LIKE CONCAT('%', :search, '%') OR
+            CAST(e.id AS string) LIKE CONCAT('%', :search, '%') OR
+        
+            CAST(e.fecIniVigencia AS string) LIKE CONCAT('%', :search, '%') OR
+            CAST(e.fecFinVigencia AS string) LIKE CONCAT('%', :search, '%'))
+            AND (:activo IS NULL OR e.blnActivo = :activo)""")
     Page<CatUsoMercanciaTtraDTO> search(
             @Param("search") String search,
-            @Param("activo") Short activo,
+            @Param("activo") Boolean activo,
             Pageable pageable
     );
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatUsoMercanciaTtraDTO(
-                e.id,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.id ELSE NULL END,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.nombre ELSE NULL END,
+               e.id,
+                CASE WHEN tr.id IS NOT NULL THEN tr.id ELSE NULL END,
+                CASE WHEN tr.id IS NOT NULL THEN tr.descModalidad ELSE NULL END,
                 e.descUsoMercancia,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
                 e.blnActivo
             )
             FROM CatUsoMercanciaTtra e
+            LEFT JOIN e.idTipoTramite tr
             WHERE e.id = :id
             """)
     Optional<CatUsoMercanciaTtraDTO> findByUsoMercanciaTtraDTO(@Param("id") Short id);

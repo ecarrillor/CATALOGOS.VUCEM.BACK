@@ -28,13 +28,13 @@ public class CatUnidadMedidaTtraServiceImpl implements ICatUnidadMedidaTtraServi
 
     @Override
     public PageResponseDTO<CatUnidadMedidaTtraDTO> list(String search, Pageable pageable) {
-        Short activo = null;
+        Boolean activo = null;
         String texto = null;
 
         if ("activo".equalsIgnoreCase(search)) {
-            activo = 1;
+            activo = true;
         } else if ("inactivo".equalsIgnoreCase(search)) {
-            activo = 0;
+            activo = false;
         } else {
             texto = search;
         }
@@ -60,6 +60,7 @@ public class CatUnidadMedidaTtraServiceImpl implements ICatUnidadMedidaTtraServi
     @Override
     public CatUnidadMedidaTtraDTO create(CatUnidadMedidaTtraDTO dto) {
         CatUnidadMedidaTtra entity = new CatUnidadMedidaTtra();
+        entity.setId(dto.getId());
         entity.setCveUnidadMedida(
                 catUnidadMedidaRepository.findById(dto.getCveUnidadMedida())
                         .orElseThrow(() -> new RuntimeException("CatUnidadMedida no encontrada: " + dto.getCveUnidadMedida()))
@@ -70,7 +71,7 @@ public class CatUnidadMedidaTtraServiceImpl implements ICatUnidadMedidaTtraServi
         );
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setBlnActivo(dto.getBlnActivo());
+        entity.setBlnActivo(true);
 
         CatUnidadMedidaTtra saved = catUnidadMedidaTtraRepository.save(entity);
         return mapToDTO(saved);
