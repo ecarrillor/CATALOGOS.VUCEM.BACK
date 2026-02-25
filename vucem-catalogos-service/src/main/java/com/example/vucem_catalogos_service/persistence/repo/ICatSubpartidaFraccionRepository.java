@@ -18,7 +18,6 @@ public interface ICatSubpartidaFraccionRepository extends JpaRepository<CatSubpa
                 e.id.cveSubpartidaFraccion,
                 e.id.cveCapituloFraccion,
                 e.id.cvePartidaFraccion,
-                e.id.cvePartidaFraccion,
                 e.nombre,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
@@ -38,7 +37,6 @@ public interface ICatSubpartidaFraccionRepository extends JpaRepository<CatSubpa
             SELECT new com.example.vucem_catalogos_service.model.dto.CatSubpartidaFraccionDTO(
                 e.id.cveSubpartidaFraccion,
                 e.id.cveCapituloFraccion,
-                e.id.cvePartidaFraccion,
                 e.id.cvePartidaFraccion,
                 e.nombre,
                 e.fecIniVigencia,

@@ -396,6 +396,8 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_TIPO_EMPRESA_RECIF   = "/cat_tipo_empresa_recif/save";
     public static final String FIND_TIPO_EMPRESA_RECIF   = "/cat_tipo_empresa_recif/{cveTipoEmpresaRecif}";
     public static final String UPDATE_TIPO_EMPRESA_RECIF = "/cat_tipo_empresa_recif/{cveTipoEmpresaRecif}";
+    public static final String SELECT_TIPO_EMPRESA_RECIF = "/cat_tipo_empresa_recif/select_tipo_empresa";
+
 
     /*entidad CAT_TRATADO_BLOQUE */
     public static final String LIST_TRATADO_BLOQUE   = "/cat_tratado_bloque/list";
@@ -420,6 +422,7 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_UNIDAD_ADMIN_VECINA   = "/cat_unidad_admin_vecina/save";
     public static final String FIND_UNIDAD_ADMIN_VECINA   = "/cat_unidad_admin_vecina/{cveUnidadAdministrativa}/{cveEntidad}";
     public static final String UPDATE_UNIDAD_ADMIN_VECINA = "/cat_unidad_admin_vecina/{cveUnidadAdministrativa}/{cveEntidad}";
+    public static final String LIST_UNIDAD_ADMINISTRATIVA = "/cat_unidad_admin_vecina/unidad_administrativa";
 
     /*entidad CAT_COMBINACION_SG */
     public static final String LIST_COMBINACION_SG   = "/cat_combinacion_sg/list";
@@ -432,5 +435,7 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_REGIMEN_TTRA   = "/cat_regimen_ttra/save";
     public static final String FIND_REGIMEN_TTRA   = "/cat_regimen_ttra/{id}";
     public static final String UPDATE_REGIMEN_TTRA = "/cat_regimen_ttra/{id}";
+    public static final String SELECT_TIPO_TRAMITE = "/cat_regimen_ttra/tipo_tramite";
+    public static final String SELECT_REGIMEN = "/cat_regimen_ttra/list_regimen";
 
 }

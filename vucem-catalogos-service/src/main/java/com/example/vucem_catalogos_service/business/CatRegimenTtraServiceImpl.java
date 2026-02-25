@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.business.Interface.ICatRegimenTtraService;
 import com.example.vucem_catalogos_service.model.dto.CatRegimenTtraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatRegimen;
 import com.example.vucem_catalogos_service.model.entity.CatRegimenTtra;
 import com.example.vucem_catalogos_service.model.entity.CatTipoTramite;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -110,6 +113,32 @@ public class CatRegimenTtraServiceImpl implements ICatRegimenTtraService {
 
         CatRegimenTtra saved = catRegimenTtraRepository.save(entity);
         return mapToDTO(saved);
+    }
+
+    @Override
+    public List<SelectDTO>  listTipoTramite() {
+        return catTipoTramiteRepository.findByBlnActivoTrue()
+                .stream()
+                .map(entity -> {
+                    SelectDTO dto = new SelectDTO();
+                    dto.setId(entity.getId().longValue());
+                    dto.setNombre(entity.getDescSubservicio());
+                    return dto;
+                })
+                .toList();
+    }
+
+    @Override
+    public List<SelectDTO> listRegimen() {
+        return catRegimenRepository.findByBlnActivoTrue()
+                .stream()
+                .map(entity -> {
+                    SelectDTO dto = new SelectDTO();
+                    dto.setCve(entity.getCveRegimen());
+                    dto.setNombre(entity.getNombre());
+                    return dto;
+                })
+                .toList();
     }
 
     private CatRegimenTtraDTO mapToDTO(CatRegimenTtra entity) {

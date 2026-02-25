@@ -16,7 +16,6 @@ public class CatSubpartidaFraccionDTO {
     private String cveCapituloFraccion;
     private String cvePartidaFraccion;
     private String nombrePartidaFraccion;
-    private String nombre;
     private LocalDate fecIniVigencia;
     private LocalDate fecFinVigencia;
     private Boolean blnActivo;

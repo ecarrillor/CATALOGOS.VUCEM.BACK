@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -17,7 +18,7 @@ public class CatRegimenTtraDTO {
     private String nombreRegimen;
     private Long idTipoTramite;
     private String nombreTipoTramite;
-    private Instant fecIniVigencia;
-    private Instant fecFinVigencia;
+    private LocalDate fecIniVigencia;
+    private LocalDate fecFinVigencia;
     private Boolean blnActivo;
 }

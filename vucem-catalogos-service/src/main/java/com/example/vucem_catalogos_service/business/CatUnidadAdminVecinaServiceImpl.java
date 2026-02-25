@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.business.Interface.ICatUnidadAdminVecinaService;
 import com.example.vucem_catalogos_service.model.dto.CatUnidadAdminVecinaDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatEntidad;
 import com.example.vucem_catalogos_service.model.entity.CatUnidadAdminVecina;
 import com.example.vucem_catalogos_service.model.entity.CatUnidadAdminVecinaId;
@@ -13,8 +14,12 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadAdministra
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -78,6 +83,10 @@ public class CatUnidadAdminVecinaServiceImpl implements ICatUnidadAdminVecinaSer
         id.setCveUnidadAdministrativa(dto.getCveUnidadAdministrativa());
         id.setCveEntidad(dto.getCveEntidad());
 
+        if (catUnidadAdminVecinaRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"La Unidad Admin Vecina ya existe.");
+        }
+
         CatUnidadAdminVecina entity = new CatUnidadAdminVecina();
         entity.setId(id);
         entity.setCveUnidadAdministrativa(unidadAdmin);
@@ -108,6 +117,19 @@ public class CatUnidadAdminVecinaServiceImpl implements ICatUnidadAdminVecinaSer
 
         CatUnidadAdminVecina saved = catUnidadAdminVecinaRepository.save(entity);
         return mapToDTO(saved);
+    }
+
+    @Override
+    public List<SelectDTO> listUnidadAdministrativa() {
+        return catUnidadAdministrativaRepository.findByBlnActivoTrue()
+                .stream()
+                .map(entity -> {
+                    SelectDTO dto = new SelectDTO();
+                    dto.setCve(entity.getCveUnidadAdministrativa());
+                    dto.setNombre(entity.getNombre());
+                    return dto;
+                })
+                .toList();
     }
 
     private CatUnidadAdminVecinaDTO mapToDTO(CatUnidadAdminVecina entity) {

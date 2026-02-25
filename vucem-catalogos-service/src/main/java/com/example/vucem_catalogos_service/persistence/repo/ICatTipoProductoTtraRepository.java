@@ -15,8 +15,8 @@ public interface ICatTipoProductoTtraRepository extends JpaRepository<CatTipoPro
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatTipoProductoTtraDTO(
                 e.id,
-                e.idTipoTramite.id,
-                e.idTipoTramite.nombre,
+                t.id,
+                t.descSubservicio,
                 e.descTipoProducto,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
@@ -24,6 +24,7 @@ public interface ICatTipoProductoTtraRepository extends JpaRepository<CatTipoPro
                 e.ideTipoCertificadoMerc
             )
             FROM CatTipoProductoTtra e
+            JOIN e.idTipoTramite t
             WHERE (:search IS NULL OR LOWER(e.descTipoProducto) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
@@ -36,8 +37,8 @@ public interface ICatTipoProductoTtraRepository extends JpaRepository<CatTipoPro
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatTipoProductoTtraDTO(
                 e.id,
-                e.idTipoTramite.id,
-                e.idTipoTramite.nombre,
+                t.id,
+                t.descSubservicio,
                 e.descTipoProducto,
                 e.fecIniVigencia,
                 e.fecFinVigencia,
@@ -45,6 +46,7 @@ public interface ICatTipoProductoTtraRepository extends JpaRepository<CatTipoPro
                 e.ideTipoCertificadoMerc
             )
             FROM CatTipoProductoTtra e
+            JOIN e.idTipoTramite t
             WHERE e.id = :id
             """)
     Optional<CatTipoProductoTtraDTO> findByTipoProductoTtraDTO(@Param("id") Short id);
