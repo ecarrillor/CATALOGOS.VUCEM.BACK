@@ -1,9 +1,6 @@
 package com.example.vucem_catalogos_service.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -53,6 +50,15 @@ public class CatCatalogoD {
     @NotNull
     @Column(name = "bln_activo", nullable = false)
     private Short blnActivo;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cve_catalogo_h", nullable = false)
+    private CatCatalogoH cveCatalogoH;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cve_catalogo_r")
+    private CatCatalogoD cveCatalogoR;
 
 
 }

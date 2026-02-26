@@ -154,6 +154,7 @@ public class CatAduanaTramiteServiceImpl implements ICatAduanaTramiteService {
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
         entity.setBlnActivo(dto.getBlnActivo());
+        entity.setAliasAduana(dto.getAliasAduana());
 
         CatAduanaTtra updated = iCatAduanaTtraRepository.save(entity);
 

@@ -26,9 +26,12 @@ public interface ICatClasificacionRegimenRepository extends JpaRepository<CatCla
                 )
                 FROM CatClasificacionRegimen e
                 JOIN e.cveRegimen re
-                WHERE (:search IS NULL 
+                WHERE (:search IS NULL OR
+                     e.id.cveClasificacionRegimen LIKE (CONCAT('%', CAST(:search AS string), '%')) OR 
+                     e.id.cveRegimen LIKE (CONCAT('%', CAST(:search AS string), '%')) 
                     OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(re.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(re.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(e.codRegimen) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) 
                 )
                 AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
