@@ -438,4 +438,18 @@ public class CatalogPaths extends ConstPath{
     public static final String SELECT_TIPO_TRAMITE = "/cat_regimen_ttra/tipo_tramite";
     public static final String SELECT_REGIMEN = "/cat_regimen_ttra/list_regimen";
 
+    /*entidad CAT_CLASIF_PRODUCTO */
+    public static final String LIST_CLASIF_PRODUCTO              = "/cat_clasif_producto/list";
+    public static final String SAVE_CLASIF_PRODUCTO              = "/cat_clasif_producto/save";
+    public static final String FIND_CLASIF_PRODUCTO              = "/cat_clasif_producto/{id}";
+    public static final String UPDATE_CLASIF_PRODUCTO            = "/cat_clasif_producto/{id}";
+    public static final String LIST_TIPO_TRAMITE_CLASIF_PRODUCTO = "/cat_clasif_producto/tipo_tramite";
+    public static final String LIST_TIPO_CLASIF_PRODUCTO_R = "/cat_clasif_producto/listClasfPrR";
+
+    /*entidad CAT_FUNDAMENTO_TTRA */
+    public static final String LIST_FUNDAMENTO_TTRA   = "/cat_fundamento_ttra/list";
+    public static final String SAVE_FUNDAMENTO_TTRA   = "/cat_fundamento_ttra/save";
+    public static final String FIND_FUNDAMENTO_TTRA   = "/cat_fundamento_ttra/{id}";
+    public static final String UPDATE_FUNDAMENTO_TTRA = "/cat_fundamento_ttra/{id}";
+
 }
