@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Transactional
@@ -47,9 +48,6 @@ public abstract class AbstractCatalogService<T, ID>
 
         return getRepository().save(existing);
     }
-
-
-
 
 
     @SuppressWarnings("unchecked")

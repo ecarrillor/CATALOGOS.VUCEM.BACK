@@ -27,7 +27,7 @@ public class InfAdicionalAduana {
 
     @NotNull
     @Column(name = "bln_cuenta_rni", nullable = false)
-    private Short blnCuentaRni;
+    private Boolean blnCuentaRni;
 
     @Size(max = 100)
     @Column(name = "tag_aduana", length = 100)

@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -28,14 +29,14 @@ public class CatMontoExportacion {
     private BigDecimal monto;
 
     @Column(name = "fec_modificacion")
-    private Instant fecModificacion;
+    private LocalDate fecModificacion;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)

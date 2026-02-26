@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode
@@ -24,7 +25,7 @@ public class CatMontoExportacionId implements Serializable {
 
     @NotNull
     @Column(name = "fec_monto_exportacion", nullable = false)
-    private Instant fecMontoExportacion;
+    private LocalDate fecMontoExportacion;
 
 
 }
