@@ -31,8 +31,6 @@ public class CatVigenciaServicio {
     private String ideTipoServicioCeror;
 
     @JoinColumns({
-            @JoinColumn(name = "fec_fin_vigencia",
-                    referencedColumnName = "fec_fin_vigencia"),
             @JoinColumn(name = "cve_pais",
                     referencedColumnName = "cve_pais"),
             @JoinColumn(name = "id_tratado_acuerdo",
@@ -51,6 +49,10 @@ public class CatVigenciaServicio {
     @NotNull
     @Column(name = "bln_activo", nullable = false)
     private Boolean blnActivo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cve_criterio_origen")
+    private CatCriterioOrigen cveCriterioOrigen;
 
 
 }

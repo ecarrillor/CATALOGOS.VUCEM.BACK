@@ -152,5 +152,19 @@ public class CatArancelProsecServiceImpl implements ICatArancelProsecService {
         return resultado;
     }
 
+    @Override
+    public List<SelectDTO> listadoSectorProsec() {
+        List<CatSectorProsec> entidades = catSectorProsecRepository.findByBlnActivoTrue();
+        List<SelectDTO> resultado = new ArrayList<>();
+
+        for (CatSectorProsec e : entidades) {
+            SelectDTO dto = new SelectDTO();
+            dto.setCve(e.getCveSectorProsec());
+            dto.setNombre(e.getNombre());
+            resultado.add(dto);
+        }
+        return resultado;
+    }
+
 
 }

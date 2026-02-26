@@ -4,11 +4,15 @@ import com.example.vucem_catalogos_service.business.Interface.ICatSubpartidaFrac
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
 import com.example.vucem_catalogos_service.model.dto.CatSubpartidaFraccionDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectCatPartidaFraccion;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(CatalogPaths.CONTROLLER)
@@ -44,5 +48,16 @@ public class CatSubpartidaFraccionController {
             @PathVariable String cvePartidaFraccion,
             @RequestBody CatSubpartidaFraccionDTO dto) {
         return ResponseEntity.ok(service.update(cveSubpartidaFraccion, cveCapituloFraccion, cvePartidaFraccion, dto));
+    }
+
+    @GetMapping(CatalogPaths.SELECT_CAPITULO_FRACCION)
+    public ResponseEntity<List<SelectDTO>> listadoCapituloFraccion() {
+        return ResponseEntity.ok(service.listadoCapituloFraccion());
+
+}
+    @GetMapping(CatalogPaths.SELECT_PARTIDA_FRACCION)
+    public ResponseEntity<List<SelectCatPartidaFraccion>> listadoPartidaFracciobn(
+            @PathVariable String capitulo) {
+        return ResponseEntity.ok(service.listadoPartidaFracciobn(capitulo));
     }
 }

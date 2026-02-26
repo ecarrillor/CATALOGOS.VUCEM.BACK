@@ -1,6 +1,8 @@
 package com.example.vucem_catalogos_service.persistence.repo;
 
 import com.example.vucem_catalogos_service.model.dto.CatPartidaFraccionDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectCatPartidaFraccion;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatPartidaFraccion;
 import com.example.vucem_catalogos_service.model.entity.CatPartidaFraccionId;
 import org.springframework.data.domain.Page;
@@ -9,6 +11,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface ICatPartidaFraccionRepository extends JpaRepository<CatPartidaFraccion, CatPartidaFraccionId> {
@@ -53,4 +57,15 @@ public interface ICatPartidaFraccionRepository extends JpaRepository<CatPartidaF
             """)
     CatPartidaFraccionDTO findByPartidaFraccionDTO(@Param("cveCapituloFraccion") String cveCapituloFraccion,
                                                    @Param("cvePartidaFraccion") String cvePartidaFraccion);
+
+    @Query("""
+            SELECT new com.example.vucem_catalogos_service.model.dto.SelectCatPartidaFraccion(
+                e.id.cvePartidaFraccion,
+                e.nombre
+              )
+            FROM CatPartidaFraccion e
+            LEFT JOIN e.cveCapituloFraccion cap
+            WHERE e.id.cveCapituloFraccion = :capitulo AND e.blnActivo = true 
+            """)
+    List<SelectCatPartidaFraccion> findByBlnActivoTrue(@Param("capitulo") String capitulo);
 }

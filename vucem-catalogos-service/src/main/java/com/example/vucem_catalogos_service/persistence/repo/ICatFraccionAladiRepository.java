@@ -39,4 +39,8 @@ public interface ICatFraccionAladiRepository extends JpaRepository<CatFraccionAl
             @Param("search") String search,
             @Param("activo") Boolean activo,
             Pageable pageable
-    );}
+    );
+
+    @Query("SELECT COALESCE(MAX(e.id),0) FROM CatFraccionAladi e")
+    Long findMaxId();
+}

@@ -16,18 +16,21 @@ public interface ICatVigenciaServicioRepository extends JpaRepository<CatVigenci
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatVigenciaServicioDTO(
-                e.id,
-                e.numVigencia,
-                e.ideTipoVigencia,
-                e.ideTipoServicioCeror,
-                CASE WHEN e.catPaisTratadoAcuerdo IS NOT NULL THEN e.catPaisTratadoAcuerdo.id.cvePais ELSE NULL END,
-                CASE WHEN e.catPaisTratadoAcuerdo IS NOT NULL THEN e.catPaisTratadoAcuerdo.id.idTratadoAcuerdo ELSE NULL END,
-                CASE WHEN e.idBloque IS NOT NULL THEN e.idBloque.id ELSE NULL END,
-                CASE WHEN e.idBloque IS NOT NULL THEN e.idBloque.nombre ELSE NULL END,
-                e.fecIniVigencia,
-                e.blnActivo
-            )
-            FROM CatVigenciaServicio e
+  e.id,
+    e.numVigencia,
+    e.ideTipoVigencia,
+    e.ideTipoServicioCeror,
+    e.catPaisTratadoAcuerdo.cvePais.cvePais,
+    e.catPaisTratadoAcuerdo.cvePais.nombre,
+    e.catPaisTratadoAcuerdo.idTratadoAcuerdo.id,
+    e.idBloque.id,
+    e.idBloque.nombre,
+    e.cveCriterioOrigen.cveCriterioOrigen,
+    e.fecIniVigencia,
+    e.blnActivo
+)
+FROM CatVigenciaServicio e
+LEFT JOIN e.idBloque b
             WHERE (:search IS NULL OR LOWER(e.numVigencia) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
@@ -38,17 +41,23 @@ public interface ICatVigenciaServicioRepository extends JpaRepository<CatVigenci
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatVigenciaServicioDTO(
                 e.id,
-                e.numVigencia,
-                e.ideTipoVigencia,
-                e.ideTipoServicioCeror,
-                CASE WHEN e.catPaisTratadoAcuerdo IS NOT NULL THEN e.catPaisTratadoAcuerdo.id.cvePais ELSE NULL END,
-                CASE WHEN e.catPaisTratadoAcuerdo IS NOT NULL THEN e.catPaisTratadoAcuerdo.id.idTratadoAcuerdo ELSE NULL END,
-                CASE WHEN e.idBloque IS NOT NULL THEN e.idBloque.id ELSE NULL END,
-                CASE WHEN e.idBloque IS NOT NULL THEN e.idBloque.nombre ELSE NULL END,
-                e.fecIniVigencia,
-                e.blnActivo
-            )
-            FROM CatVigenciaServicio e
+                                              e.numVigencia,
+                                              e.ideTipoVigencia,
+                                              e.ideTipoServicioCeror,
+                                              c.cvePais,
+                                              c.nombre,
+                                              t.id,
+                                              b.id,
+                                              b.nombre,
+                                              e.cveCriterioOrigen.cveCriterioOrigen,
+                                              e.fecIniVigencia,
+                                              e.blnActivo
+                                          )
+                                          FROM CatVigenciaServicio e
+                                          LEFT JOIN e.catPaisTratadoAcuerdo cpa
+                                          LEFT JOIN cpa.cvePais c
+                                          LEFT JOIN cpa.idTratadoAcuerdo t
+                                          LEFT JOIN e.idBloque b
             WHERE e.id = :id
             """)
     Optional<CatVigenciaServicioDTO> findByVigenciaServicioDTO(@Param("id") Short id);

@@ -18,4 +18,6 @@ public interface ICatArancelProsecService {
     CatArancelProsecDTO update(String cveFraccion, String cveSectorProsec, CatArancelProsecDTO dto);
 
     List<SelectDTO> listadoFraccionArancelaria();
+
+    List<SelectDTO> listadoSectorProsec();
 }

@@ -128,8 +128,8 @@ public class CatTratadoAcuerdoServiceImpl implements ICatTratadoAcuerdoService {
         return catTratadoAcuerdoRepository.findAll().stream()
                 .map(e -> {
                     SelectDTO d = new SelectDTO();
+                    d.setId(e.getId().longValue());
                     d.setCve(e.getCveTratadoAcuerdo());
-                    d.setNombre(e.getNombre());
                     return d;
                 })
                 .collect(Collectors.toList());
