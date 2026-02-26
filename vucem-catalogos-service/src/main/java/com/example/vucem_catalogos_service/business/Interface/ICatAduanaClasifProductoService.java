@@ -4,8 +4,6 @@ import com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAdu
 import com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAduanaClasifProdResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
-import com.example.vucem_catalogos_service.model.entity.CatAduanaClasifProd;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
