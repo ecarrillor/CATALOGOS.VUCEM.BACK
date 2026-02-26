@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -21,11 +22,11 @@ public class CatClasifProducto {
     private Boolean blnActivo;
 
     @Column(name = "fec_fin_vigencia")
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     @NotNull
     @Column(name = "fec_ini_vigencia", nullable = false)
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
     @Size(max = 500)
     @Column(name = "nombre", length = 500)
@@ -35,6 +36,13 @@ public class CatClasifProducto {
     @Column(name = "ide_tipo_clasif_producto", length = 20)
     private String ideTipoClasifProducto;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_clasif_producto_r")
+    private CatClasifProducto idClasifProductoR;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tipo_tramite")
+    private CatTipoTramite idTipoTramite;
 
 
 }
