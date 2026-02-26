@@ -31,6 +31,7 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_CATALOGO_ADUANA_CLASIF_PRODUCTO = "/cat_aduana_clasif/save";
     public static final String FIND_CATALOGO_ADUANA_CLASIF_PRODUCTO = "/cat_aduana_clasif/{id}";
     public static final String UPDATE_CATALOGO_ADUANA_CLASIF_PRODUCTO = "/cat_aduana_clasif/{id}";
+    public static final String LIST_TIPO_TRAMITE_ADUANA_CLASIF = "/cat_aduana_clasif/tipo_tramite";
     public static final String LIST_ADUANA = "/cat_aduana_clasif/aduanas";
     public static final String LIST_CLASIFICACION_PRODUCTO = "/cat_aduana_clasif/clasificaciones_producto";
 
@@ -455,5 +456,12 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_FUNDAMENTO_TTRA   = "/cat_fundamento_ttra/save";
     public static final String FIND_FUNDAMENTO_TTRA   = "/cat_fundamento_ttra/{id}";
     public static final String UPDATE_FUNDAMENTO_TTRA = "/cat_fundamento_ttra/{id}";
+
+    /*entidad INF_ADICIONAL_ADUANA */
+    public static final String LIST_INF_ADICIONAL_ADUANA   = "/inf_adicional_aduana/list";
+    public static final String SAVE_INF_ADICIONAL_ADUANA   = "/inf_adicional_aduana/save";
+    public static final String FIND_INF_ADICIONAL_ADUANA   = "/inf_adicional_aduana/{cveAduana}";
+    public static final String UPDATE_INF_ADICIONAL_ADUANA = "/inf_adicional_aduana/{cveAduana}";
+    public static final String LIST_ADUANA_INF_ADICIONAL   = "/inf_adicional_aduana/aduanas";
 
 }
