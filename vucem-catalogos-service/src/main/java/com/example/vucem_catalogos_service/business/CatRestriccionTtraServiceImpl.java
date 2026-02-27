@@ -84,8 +84,6 @@ public class CatRestriccionTtraServiceImpl implements ICatRestriccionTtraService
         entity.setFecFinVigencia(dto.getFecFinVigencia());
         entity.setBlnActivo(true);
         entity.setIdeSentDictamen(dto.getIdeSentDictamen());
-        entity.setIdeTipoRestriccionTtra(dto.getIdeTipoRestriccionTtra());
-        entity.setIdeMotivoRechazoDict(dto.getIdeMotivoRechazoDict());
 
         CatRestriccionTtra saved = repository.save(entity);
 

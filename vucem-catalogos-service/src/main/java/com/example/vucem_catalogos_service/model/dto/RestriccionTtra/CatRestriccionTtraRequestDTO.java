@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -19,9 +20,9 @@ public class CatRestriccionTtraRequestDTO {
 
     private String descContenidoRestriccion;
 
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     private Boolean blnActivo;
 
