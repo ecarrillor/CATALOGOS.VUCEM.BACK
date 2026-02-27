@@ -49,6 +49,8 @@ public interface ICatLocalidadRepository extends JpaRepository<CatLocalidad, Str
              WHERE
                 (:search IS NULL OR
                     LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(e.cveLocalidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(e.cveDelegMun.cveDelegMun) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(e.cp) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(e.cveDelegMun.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )

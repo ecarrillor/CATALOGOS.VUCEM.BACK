@@ -1,8 +1,9 @@
 package com.example.vucem_catalogos_service.business;
 
-import com.example.vucem_catalogos_service.model.entity.CatMoneda;
-import com.example.vucem_catalogos_service.model.entity.CatMontoExportacion;
-import com.example.vucem_catalogos_service.model.entity.CatMontoExportacionId;
+import com.example.vucem_catalogos_service.business.Interface.ICatMontoExportacionService;
+import com.example.vucem_catalogos_service.model.dto.CatMontoExportacionDTO;
+import com.example.vucem_catalogos_service.model.dto.LeyendaTexto.CatLeyendaTextoResponseDTO;
+import com.example.vucem_catalogos_service.model.entity.*;
 import com.example.vucem_catalogos_service.persistence.repo.ICatMonedaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatMontoExportacionRepository;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
@@ -15,12 +16,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 @Transactional
 @Service
-public class CatMontoExportacionServiceImpl extends AbstractCatalogService<CatMontoExportacion, CatMontoExportacionId>{
+public class CatMontoExportacionServiceImpl extends AbstractCatalogService<CatMontoExportacion, CatMontoExportacionId> implements ICatMontoExportacionService {
     @Autowired
     private ICatMontoExportacionRepository catMontoExportacionRepository;
 
@@ -33,6 +35,7 @@ public class CatMontoExportacionServiceImpl extends AbstractCatalogService<CatMo
     public Class<CatMontoExportacion> getEntityClass() {
         return CatMontoExportacion.class;
     }
+
 
     @Override
     protected JpaRepository<CatMontoExportacion, CatMontoExportacionId> getRepository() {
@@ -55,13 +58,56 @@ public class CatMontoExportacionServiceImpl extends AbstractCatalogService<CatMo
         Specification<CatMontoExportacion> spec =
                 GenericSearchSpecification.<CatMontoExportacion>searchInFields(
                         search,
-                        List.of("razonSocial","monto")
+                        List.of("razonSocial", "monto")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
                 );
 
 
-
         return catMontoExportacionRepository.findAll(spec, pageable);
     }
+
+    @Override
+    public CatMontoExportacionDTO findMontoExportacion(String id, LocalDate fecha) {
+        return catMontoExportacionRepository.findByMontoExportacion(id, fecha)
+                .orElseThrow(() -> new RuntimeException(
+                        "CatMontoExportacion no encontrado para fecha=" + fecha + ", RFC=" + id));
+    }
+
+    @Override
+    public CatMontoExportacionDTO update(String id, LocalDate fecha, CatMontoExportacionDTO dto) {
+        CatMontoExportacionId pk = new CatMontoExportacionId();
+        pk.setFecMontoExportacion(fecha);
+        pk.setRfcExportador(id);
+
+        CatMontoExportacion entity = catMontoExportacionRepository.findById(pk)
+                .orElseThrow(() -> new RuntimeException(
+                        "CatMontoExportacion no encontrado para fecha=" + fecha + ", RFC=" + id));
+
+        if (dto.getRazonSocial() != null) {
+            entity.setRazonSocial(dto.getRazonSocial());
+        }
+        if (dto.getFecIniVigencia() != null) {
+            entity.setFecIniVigencia(dto.getFecIniVigencia());
+        }
+        if (dto.getFecFinVigencia() != null) {
+            entity.setFecFinVigencia(dto.getFecFinVigencia());
+        }
+        if (dto.getBlnActivo() != null) {
+            entity.setBlnActivo(dto.getBlnActivo());
+        }
+        if (dto.getMonto() != null) {
+            entity.setMonto(dto.getMonto());
+        }
+
+        CatMontoExportacion saved = catMontoExportacionRepository.save(entity);
+        return CatMontoExportacionDTO.builder()
+                .monto(saved.getMonto())
+                .razonSocial(saved.getRazonSocial())
+                .fecIniVigencia(saved.getFecIniVigencia())
+                .fecFinVigencia(saved.getFecFinVigencia())
+                .blnActivo(saved.getBlnActivo())
+                .build();
+    }
+
 }

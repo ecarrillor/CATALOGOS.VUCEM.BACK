@@ -122,6 +122,7 @@ public class CatActividadEconomicaSatServiceImpl implements ICatActividadEconomi
         if (dto.getCveTipoIndustriaIdc() != null) {
             entity.setCveTipoIndustriaIdc(dto.getCveTipoIndustriaIdc());
         }
+
         if (dto.getBlnActivo() != null) {
             entity.setBlnActivo(dto.getBlnActivo());
         }
@@ -130,6 +131,14 @@ public class CatActividadEconomicaSatServiceImpl implements ICatActividadEconomi
                     catActividadEconomicaSatRepository.findById(dto.getIdActividadEconomicaR())
                             .orElseThrow(() -> new RuntimeException(
                                     "CatActividadEconomicaSat padre no encontrada con id: " + dto.getIdActividadEconomicaR()))
+            );
+        }
+
+        if (dto.getCveTipoEmpresaRecif() != null) {
+            entity.setCveTipoEmpresaRecif(
+                    catTipoEmpresaRecifRepository.findById(dto.getCveTipoEmpresaRecif())
+                            .orElseThrow(() -> new RuntimeException(
+                                    "CveTipoEmpresaRecif padre no encontrada con id: " + dto.getCveTipoEmpresaRecif()))
             );
         }
 

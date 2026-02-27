@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -23,8 +24,8 @@ public class CatCombinacionSgDTO {
     private String descTipoProducto;
     private String cvePais;
     private String nombrePais;
-    private Instant fecIniVigencia;
-    private Instant fecFinVigencia;
-    private Short blnActivo;
+    private LocalDate fecIniVigencia;
+    private LocalDate fecFinVigencia;
+    private Boolean blnActivo;
     private String ideTipoCertificadoMerc;
 }

@@ -31,12 +31,19 @@ public class CatPlazoTtraServiceImpl implements ICatPlazoTtraService {
         Boolean activo = null;
         String texto = null;
 
-        if ("activo".equalsIgnoreCase(search)) {
-            activo = true;
-        } else if ("inactivo".equalsIgnoreCase(search)) {
-            activo = false;
-        } else {
-            texto = search;
+        if (search != null && !search.isBlank()) {
+
+            String s = search.trim().toLowerCase();
+
+            if (s.equals("activo")) {
+                activo = true;
+            }
+            else if (s.equals("inactivo")) {
+                activo = false;
+            }
+            else {
+                texto = "%" + search.trim().toLowerCase() + "%";
+            }
         }
 
         Page<CatPlazoTtraDTO> page = catPlazoTtraRepository.search(texto, activo, pageable);

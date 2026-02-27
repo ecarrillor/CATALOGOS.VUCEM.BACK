@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.business.Interface.ICatFundamentoTtraService;
 import com.example.vucem_catalogos_service.model.dto.CatFundamentoTtraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatFundamentoTtra;
 import com.example.vucem_catalogos_service.model.entity.CatTipoTramite;
 import com.example.vucem_catalogos_service.persistence.repo.ICatFundamentoTtraRepository;
@@ -10,8 +11,12 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepos
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -56,6 +61,13 @@ public class CatFundamentoTtraServiceImpl implements ICatFundamentoTtraService {
 
     @Override
     public CatFundamentoTtraDTO create(CatFundamentoTtraDTO dto) {
+
+        if (catFundamentoTtraRepository.existsById(dto.getId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
         CatFundamentoTtra entity = new CatFundamentoTtra();
         entity.setId(dto.getId());
         entity.setIdeTipoFundamentoTtra(dto.getIdeTipoFundamentoTtra());
@@ -98,6 +110,8 @@ public class CatFundamentoTtraServiceImpl implements ICatFundamentoTtraService {
         CatFundamentoTtra saved = catFundamentoTtraRepository.save(entity);
         return mapToDTO(saved);
     }
+
+
 
     private CatFundamentoTtraDTO mapToDTO(CatFundamentoTtra entity) {
         return CatFundamentoTtraDTO.builder()

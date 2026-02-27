@@ -27,7 +27,13 @@ public interface ICatRegimenTtraRepository extends JpaRepository<CatRegimenTtra,
                 e.blnActivo
             )
             FROM CatRegimenTtra e
-            WHERE (:search IS NULL OR LOWER(e.cveRegimen.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (
+                        :search IS NULL OR
+                        LOWER(e.cveRegimen.nombre) LIKE :search OR
+                        LOWER(e.cveRegimen.cveRegimen) LIKE :search OR
+                        LOWER(e.idTipoTramite.descSubservicio) LIKE :search OR
+                        STR(e.id) LIKE :search
+                        )
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatRegimenTtraDTO> search(@Param("search") String search,

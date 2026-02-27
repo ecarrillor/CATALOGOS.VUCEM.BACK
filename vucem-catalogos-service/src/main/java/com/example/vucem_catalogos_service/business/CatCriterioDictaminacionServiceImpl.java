@@ -54,8 +54,6 @@ public class CatCriterioDictaminacionServiceImpl extends AbstractCatalogService<
                         List.of("nombre")
                 ).and(
                         GenericFilterSpecification.<CatCriterioDictaminacion>byFilters(filters)
-                ).and(
-                        (root, query, cb) -> cb.equal(root.get("blnActivo"), true)
                 );
 
         return catCriterioDictaminacionRepository.findAll(spec, pageable);

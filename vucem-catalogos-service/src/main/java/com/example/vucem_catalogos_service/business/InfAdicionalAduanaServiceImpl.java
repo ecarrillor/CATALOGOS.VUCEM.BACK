@@ -11,8 +11,10 @@ import com.example.vucem_catalogos_service.persistence.repo.IInfAdicionalAduanaR
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -53,6 +55,13 @@ public class InfAdicionalAduanaServiceImpl implements IInfAdicionalAduanaService
         CatAduana aduana = catAduanaRepository.findById(dto.getCveAduana())
                 .orElseThrow(() -> new RuntimeException(
                         "CatAduana no encontrada con cveAduana: " + dto.getCveAduana()));
+
+        if (catAduanaRepository.existsById(dto.getCveAduana())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
 
         InfAdicionalAduana entity = new InfAdicionalAduana();
         entity.setCveAduana(dto.getCveAduana());

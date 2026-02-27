@@ -15,7 +15,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Embeddable
 public class CatClasificacionRegimanId implements Serializable {
-    private static final long serialVersionUID = -3176933530637366052L;
     @Size(max = 2)
     @NotNull
     @Column(name = "cve_clasificacion_regimen", nullable = false, length = 2)

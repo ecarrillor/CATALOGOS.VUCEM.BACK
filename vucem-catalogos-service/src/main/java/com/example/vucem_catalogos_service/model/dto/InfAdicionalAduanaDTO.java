@@ -13,6 +13,6 @@ public class InfAdicionalAduanaDTO {
     private String cveAduana;
     private String nombreAduana;
     private String correoNotificacion;
-    private Short blnCuentaRni;
+    private Boolean blnCuentaRni;
     private String tagAduana;
 }

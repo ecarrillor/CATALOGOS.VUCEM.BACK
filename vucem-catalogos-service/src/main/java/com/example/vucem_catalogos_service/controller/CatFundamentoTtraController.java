@@ -4,11 +4,14 @@ import com.example.vucem_catalogos_service.business.Interface.ICatFundamentoTtra
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
 import com.example.vucem_catalogos_service.model.dto.CatFundamentoTtraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(CatalogPaths.CONTROLLER)
@@ -40,4 +43,5 @@ public class CatFundamentoTtraController {
             @RequestBody CatFundamentoTtraDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
+
 }

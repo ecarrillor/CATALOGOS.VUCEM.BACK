@@ -16,7 +16,7 @@ public interface ICatPaisRestriccionTtraRepository extends JpaRepository<CatPais
             SELECT new com.example.vucem_catalogos_service.model.dto.CatPaisRestriccionTtraDTO(
                 e.id,
                 tt.id,
-                tt.nombre,
+                tt.descModalidad,
                 p.cvePais,
                 p.nombre,
                 e.ideTipoRestriccionPaisTtra,
@@ -30,7 +30,7 @@ public interface ICatPaisRestriccionTtraRepository extends JpaRepository<CatPais
             WHERE (:search IS NULL OR
                 LOWER(e.ideTipoRestriccionPaisTtra) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                 LOWER(p.nombre)                     LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(tt.nombre)                    LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                LOWER(tt.descModalidad)                    LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
             )
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
@@ -42,7 +42,7 @@ public interface ICatPaisRestriccionTtraRepository extends JpaRepository<CatPais
             SELECT new com.example.vucem_catalogos_service.model.dto.CatPaisRestriccionTtraDTO(
                 e.id,
                 tt.id,
-                tt.nombre,
+                tt.descModalidad,
                 p.cvePais,
                 p.nombre,
                 e.ideTipoRestriccionPaisTtra,
