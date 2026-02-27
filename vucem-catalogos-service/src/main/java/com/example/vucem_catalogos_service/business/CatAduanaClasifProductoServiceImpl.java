@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.business.Interface.ICatAduanaClasifProductoService;
 import com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAduanaClasifProdRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAduanaClasifProdResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.*;
@@ -132,6 +133,7 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
 
     @Override
         public CatAduanaClasifProdResponseDTO update(Long id, CatAduanaClasifProdRequestDTO dto) {
+        System.out.println("id:"+id);
         CatAduanaClasifProd entity = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Registro no encontrado"));
 
@@ -191,6 +193,11 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
             resultado.add(dto);
         }
         return resultado;
+    }
+
+    @Override
+    public List<ClasifProductoTraDTO> listadoClasifTram() {
+        return repository.listadoClasifPrR();
     }
 
 

@@ -5,6 +5,7 @@ import com.example.vucem_catalogos_service.business.Interface.ICatAduanaClasifPr
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
 import com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAduanaClasifProdRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAduanaClasifProdResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,12 @@ public class CatAduanaClasifProductoController {
             @RequestBody CatAduanaClasifProdRequestDTO dto) {
 
         return ResponseEntity.ok(service.update(id, dto));
+    }
+
+    @GetMapping(CatalogPaths.LIST_TIPO_TRAMITE_ADUANA_CLASIF)
+    public ResponseEntity<List<ClasifProductoTraDTO>> listadoClasifTram() {
+
+        return ResponseEntity.ok(service.listadoClasifTram());
     }
 
     @GetMapping(CatalogPaths.LIST_ADUANA)

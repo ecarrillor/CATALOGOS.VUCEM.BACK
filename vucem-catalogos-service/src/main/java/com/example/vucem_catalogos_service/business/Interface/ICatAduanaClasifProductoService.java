@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business.Interface;
 
 import com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAduanaClasifProdRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAduanaClasifProdResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +22,6 @@ public interface ICatAduanaClasifProductoService {
     List<SelectDTO> listadoAduana();
 
     List<SelectDTO> listadoClasificacionProducto();
+
+    List<ClasifProductoTraDTO> listadoClasifTram();
 }

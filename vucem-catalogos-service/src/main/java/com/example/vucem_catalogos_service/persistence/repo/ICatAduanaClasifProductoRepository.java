@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.persistence.repo;
 
 import com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAduanaClasifProdResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.CatAprobCertSeResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.entity.CatAduanaClasifProd;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface ICatAduanaClasifProductoRepository extends JpaRepository<CatAduanaClasifProd, Long>, JpaSpecificationExecutor<CatAduanaClasifProd> {
@@ -61,4 +64,26 @@ public interface ICatAduanaClasifProductoRepository extends JpaRepository<CatAdu
             WHERE a.id = :id
             """)
     CatAduanaClasifProdResponseDTO findByIdAduanaClasif(@Param("id") Long id);
+
+
+    @Query("""
+                SELECT DISTINCT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(
+                    tr.id,
+                    CONCAT(
+                        tr.id, ' ',
+                        COALESCE(tr.descModalidad, tr.descSubservicio)
+                    )
+                )
+                FROM CatAduanaClasifProd cat
+                JOIN cat.idClasifProducto cp
+                JOIN cp.idTipoTramite tr
+                WHERE tr.id IN (
+                    260301,260302,260303,260304,
+                    260603,260604,
+                    261101,261102,261103,261104
+                )
+                AND cat.blnActivo = true
+                ORDER BY tr.id ASC
+            """)
+    List<ClasifProductoTraDTO> listadoClasifPrR();
 }

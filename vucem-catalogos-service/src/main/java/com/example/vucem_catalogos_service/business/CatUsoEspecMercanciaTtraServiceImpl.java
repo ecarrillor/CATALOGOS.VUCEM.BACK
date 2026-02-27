@@ -84,6 +84,7 @@ public class CatUsoEspecMercanciaTtraServiceImpl implements ICatUsoEspecMercanci
             entity.setIdTipoTramite(tipoTramite);
         }
         if (dto.getDescUsoEspMercancia() != null)
+            System.out.println("desc mercancia:"+dto.getDescUsoEspMercancia());
             entity.setDescUsoEspMercancia(dto.getDescUsoEspMercancia());
         if (dto.getFecIniVigencia() != null)
             entity.setFecIniVigencia(dto.getFecIniVigencia());
