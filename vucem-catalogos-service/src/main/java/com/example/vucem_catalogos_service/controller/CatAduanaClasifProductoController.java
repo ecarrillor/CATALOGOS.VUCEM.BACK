@@ -26,9 +26,11 @@ public class CatAduanaClasifProductoController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_ADUANA_CLASIF_PRODUCTO)
     public ResponseEntity<PageResponseDTO<CatAduanaClasifProdResponseDTO>> listarCatAduanaClasif(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long idTipoTramite,
+
             Pageable pageable) {
         return ResponseEntity.ok(
-                service.catAduanaListAll(search, pageable));
+                service.catAduanaListAll(search,idTipoTramite, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_ADUANA_CLASIF_PRODUCTO)
@@ -66,8 +68,10 @@ public class CatAduanaClasifProductoController {
     }
 
     @GetMapping(CatalogPaths.LIST_CLASIFICACION_PRODUCTO)
-    public ResponseEntity<List<SelectDTO>> listadoClasificacionProducto(){
-        List<SelectDTO> lista = service.listadoClasificacionProducto();
+    public ResponseEntity<List<ClasifProductoTraDTO>> listadoClasificacionProducto(@RequestParam Long idTipoTramite){
+        List<ClasifProductoTraDTO> lista = service.listadoClasificacionProducto(idTipoTramite);
         return ResponseEntity.ok(lista);
     }
+
+
 }

@@ -20,32 +20,31 @@ public interface ICatAduanaClasifProductoRepository extends JpaRepository<CatAdu
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAduanaClasifProdResponseDTO(
                 a.id,
-                u.cveAduana,
-                u.nombre,
-                b.idClasifProduct,
-                b.nombre,
+                a.aduana.cveAduana,
+                a.aduana.nombre,
+                a.idClasifProducto.idClasifProduct,
+                a.idClasifProducto.nombre,
                 a.fecIniVigencia,
                 a.fecFinVigencia,
                 a.blnActivo
             )
             FROM CatAduanaClasifProd a
-            JOIN a.aduana u
-            JOIN a.idClasifProducto b
+            JOIN a.idClasifProducto cp
+            JOIN cp.idTipoTramite tr
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(u.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(u.cveAduana) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(b.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) )
-                AND (
-                    :activo IS NULL OR a.blnActivo = :activo
-                )
+                    LOWER(a.aduana.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(a.aduana.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(a.idClasifProducto.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) )
+                AND (:activo IS NULL OR a.blnActivo = :activo)
+                AND (:idTipoTramite IS NULL OR (tr.id IS NOT NULL AND tr.id = :idTipoTramite))
             """)
     Page<CatAduanaClasifProdResponseDTO> search(
             @Param("search") String search,
             @Param("activo") Boolean activo,
-            Pageable pageable
-    );
+            @Param("idTipoTramite") Long idTipoTramite,
+            Pageable pageable);
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAduanaClasifProdResponseDTO(
@@ -86,4 +85,6 @@ public interface ICatAduanaClasifProductoRepository extends JpaRepository<CatAdu
                 ORDER BY tr.id ASC
             """)
     List<ClasifProductoTraDTO> listadoClasifPrR();
+
+
 }

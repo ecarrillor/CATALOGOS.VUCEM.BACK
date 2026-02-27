@@ -467,5 +467,20 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_BY_DATE_ID = "/cat_monto_exportacion/{id}/{fecha}";
     public static final String UPDATE_BY_DATE_ID = "/cat_monto_exportacion/{id}/{fecha}";
 
+    /*entidad CAT_RESTRICCION_TTRA */
+    public static final String LIST_CATALOGO_RESTRICCION_TTRA      = "/cat_restriccion_ttra/list";
+    public static final String SAVE_CATALOGO_RESTRICCION_TTRA      = "/cat_restriccion_ttra/save";
+    public static final String FIND_CATALOGO_RESTRICCION_TTRA      = "/cat_restriccion_ttra/{id}";
+    public static final String UPDATE_CATALOGO_RESTRICCION_TTRA    = "/cat_restriccion_ttra/{id}";
+    public static final String LIST_TIPO_TRAMITE_RESTRICCION_TTRA  = "/cat_restriccion_ttra/tipo_tramite";
+
+    /*entidad CAT_RESTRIC_DESC_PROD */
+    public static final String LIST_RESTRIC_DESC_PROD            = "/cat_restric_desc_prod/list";
+    public static final String SAVE_RESTRIC_DESC_PROD            = "/cat_restric_desc_prod/save";
+    public static final String FIND_RESTRIC_DESC_PROD            = "/cat_restric_desc_prod/{id}";
+    public static final String UPDATE_RESTRIC_DESC_PROD          = "/cat_restric_desc_prod/{id}";
+    public static final String LIST_TIPO_TRAMITE_RESTRIC_DESC    = "/cat_restric_desc_prod/tipo_tramite";
+    public static final String LIST_RESTRICCION_TTRA             = "/cat_restric_desc_prod/restricciones";
+    public static final String LIST_DESCRIPCION_PROD             = "/cat_restric_desc_prod/descripciones_prod";
 
 }
