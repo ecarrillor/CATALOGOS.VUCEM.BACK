@@ -56,7 +56,7 @@ public class InfAdicionalAduanaServiceImpl implements IInfAdicionalAduanaService
                 .orElseThrow(() -> new RuntimeException(
                         "CatAduana no encontrada con cveAduana: " + dto.getCveAduana()));
 
-        if (catAduanaRepository.existsById(dto.getCveAduana())) {
+        if (infAdicionalAduanaRepository.existsById(dto.getCveAduana())) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "El id ya existe"
@@ -64,7 +64,6 @@ public class InfAdicionalAduanaServiceImpl implements IInfAdicionalAduanaService
         }
 
         InfAdicionalAduana entity = new InfAdicionalAduana();
-        entity.setCveAduana(dto.getCveAduana());
         entity.setCatAduana(aduana);
         entity.setCorreoNotificacion(dto.getCorreoNotificacion());
         entity.setBlnCuentaRni(dto.getBlnCuentaRni());
