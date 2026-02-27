@@ -11,7 +11,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Transactional
@@ -61,6 +63,12 @@ public class CatPaisRestriccionTtraServiceImpl implements ICatPaisRestriccionTtr
 
     @Override
     public CatPaisRestriccionTtraDTO create(CatPaisRestriccionTtraDTO dto) {
+        if (catPaisRestriccionTtraRepository.existsById(dto.getId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
         CatPaisRestriccionTtra entity = new CatPaisRestriccionTtra();
 
         entity.setId(dto.getId());
@@ -132,8 +140,8 @@ public class CatPaisRestriccionTtraServiceImpl implements ICatPaisRestriccionTtr
     private CatPaisRestriccionTtraDTO mapToDTO(CatPaisRestriccionTtra entity) {
         return CatPaisRestriccionTtraDTO.builder()
                 .id(entity.getId())
-                .idTipoTramite(entity.getIdTipoTramite() != null ? entity.getIdTipoTramite().getId() : null)
-                .nombreTipoTramite(entity.getIdTipoTramite() != null ? entity.getIdTipoTramite().getNombre() : null)
+                .idTipoTramite(entity.getIdTipoTramite().getId())
+                .nombreTipoTramite(entity.getIdTipoTramite().getDescModalidad())
                 .cvePais(entity.getCvePais() != null ? entity.getCvePais().getCvePais() : null)
                 .nombrePais(entity.getCvePais() != null ? entity.getCvePais().getNombre() : null)
                 .ideTipoRestriccionPaisTtra(entity.getIdeTipoRestriccionPaisTtra())

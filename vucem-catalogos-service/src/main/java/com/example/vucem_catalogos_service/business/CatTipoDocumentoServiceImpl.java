@@ -52,7 +52,7 @@ public class CatTipoDocumentoServiceImpl extends AbstractCatalogService<CatTipoD
         Specification<CatTipoDocumento> spec =
                 GenericSearchSpecification.<CatTipoDocumento>searchInFields(
                         search,
-                        List.of("nombre")
+                        List.of("nombre", "ideRangoResolucionImagen", "id")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
                 );

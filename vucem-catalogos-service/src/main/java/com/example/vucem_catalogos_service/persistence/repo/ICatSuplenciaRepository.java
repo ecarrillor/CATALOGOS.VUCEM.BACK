@@ -16,7 +16,7 @@ public interface ICatSuplenciaRepository extends JpaRepository<CatSuplencia, Sho
             "e.id, e.idDependencia.id, e.idDependencia.nombre, e.texto, e.fecIniVigencia, e.fecFinVigencia, e.blnActivo) " +
             "FROM CatSuplencia e " +
             "WHERE (:activo IS NULL OR e.blnActivo = :activo) " +
-            "AND (:search IS NULL OR :search = '' OR LOWER(e.texto) LIKE LOWER(CONCAT('%', :search, '%')))")
+            "AND (:search IS NULL OR :search = '' OR LOWER(e.idDependencia.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(e.texto) LIKE LOWER(CONCAT('%', :search, '%')))")
     Page<CatSuplenciaDTO> search(@Param("search") String search,
                                  @Param("activo") Boolean activo,
                                  Pageable pageable);

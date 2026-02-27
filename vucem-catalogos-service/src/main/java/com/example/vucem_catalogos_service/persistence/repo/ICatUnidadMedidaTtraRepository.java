@@ -24,7 +24,13 @@ public interface ICatUnidadMedidaTtraRepository extends JpaRepository<CatUnidadM
                 e.blnActivo
             )
             FROM CatUnidadMedidaTtra e
-            WHERE (:search IS NULL OR LOWER(e.cveUnidadMedida.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (
+                        :search IS NULL OR
+                        LOWER(e.cveUnidadMedida.cveUnidadMedida) LIKE :search OR
+                        LOWER(e.cveUnidadMedida.descripcion) LIKE :search OR
+                        LOWER(e.idTipoTramite.descModalidad) LIKE :search OR
+                        STR(e.id) LIKE :search
+                   )
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatUnidadMedidaTtraDTO> search(

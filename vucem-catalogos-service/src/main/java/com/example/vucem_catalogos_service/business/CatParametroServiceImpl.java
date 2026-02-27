@@ -133,6 +133,8 @@ public class CatParametroServiceImpl implements ICatParametroService {
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
         entity.setBlnActivo(dto.getBlnActivo());
+        entity.setValor(dto.getValor());
+        entity.setDescripcion(dto.getDescripcion());
 
         CatParametro updated = iCatParametroRepository.save(entity);
 

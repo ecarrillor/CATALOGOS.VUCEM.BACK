@@ -28,13 +28,17 @@ public class CatUsoEspecMercanciaTtraServiceImpl implements ICatUsoEspecMercanci
         Boolean activo = null;
         String texto = null;
         if (search != null && !search.isBlank()) {
+
             String s = search.trim().toLowerCase();
+
             if (s.equals("activo")) {
                 activo = true;
-            } else if (s.equals("inactivo")) {
+            }
+            else if (s.equals("inactivo")) {
                 activo = false;
-            } else {
-                texto = search;
+            }
+            else {
+                texto = "%" + search.trim().toLowerCase() + "%";
             }
         }
         Page<CatUsoEspecMercanciaTtraDTO> page =

@@ -31,6 +31,7 @@ public interface ICatFraccionHtsUsaRepository extends JpaRepository<CatFraccionH
              WHERE
                 (:search IS NULL OR
                     LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(e.cveFraccionHtsUsa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(e.cveUnidadMedida.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )
                 AND (
