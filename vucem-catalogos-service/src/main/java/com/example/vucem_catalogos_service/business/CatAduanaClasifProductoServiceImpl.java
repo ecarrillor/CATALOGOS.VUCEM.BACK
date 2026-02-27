@@ -36,7 +36,7 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
 
 
     @Override
-    public PageResponseDTO<CatAduanaClasifProdResponseDTO> catAduanaListAll(String search, Pageable pageable) {
+    public PageResponseDTO<CatAduanaClasifProdResponseDTO> catAduanaListAll(String search, Long idTipoTramite, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -53,7 +53,7 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
         }
 
         Page<CatAduanaClasifProdResponseDTO> page =
-                repository.search(texto, activo, pageable);
+                repository.search(texto, activo, idTipoTramite, pageable);
 
         return PageResponseDTO.<CatAduanaClasifProdResponseDTO>builder()
                 .content(page.getContent())
@@ -94,11 +94,12 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
 
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setBlnActivo(dto.getBlnActivo());
+        entity.setBlnActivo(true);
 
         CatAduanaClasifProd saved = repository.save(entity);
 
         return CatAduanaClasifProdResponseDTO.builder()
+                .idAduanaClasifProduct(saved.getId())
                 .cveAduana(saved.getAduana().getCveAduana())
                 .nombreAduana(saved.getAduana().getNombre())
                 .idClasifProducto(saved.getIdClasifProducto().getIdClasifProduct())
@@ -132,30 +133,42 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
     }
 
     @Override
-        public CatAduanaClasifProdResponseDTO update(Long id, CatAduanaClasifProdRequestDTO dto) {
-        System.out.println("id:"+id);
+    public CatAduanaClasifProdResponseDTO update(Long id, CatAduanaClasifProdRequestDTO dto) {
+
         CatAduanaClasifProd entity = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Registro no encontrado"));
 
-        entity.setAduana(
-                aduanaRepository
-                        .findById(dto.getCveAduana())
-                        .orElseThrow(() -> new RuntimeException("Aduana no encontrada"))
-        );
+        if (dto.getCveAduana() != null) {
+            entity.setAduana(
+                    aduanaRepository
+                            .findById(dto.getCveAduana())
+                            .orElseThrow(() -> new RuntimeException("Aduana no encontrada"))
+            );
+        }
 
-        entity.setIdClasifProducto(
-                clasificacionProductoRepository
-                        .findById(dto.getIdClasifProducto())
-                        .orElseThrow(() -> new RuntimeException("Clasificacion no encontrada"))
-        );
+        if (dto.getIdClasifProducto() != null) {
+            entity.setIdClasifProducto(
+                    clasificacionProductoRepository
+                            .findById(dto.getIdClasifProducto())
+                            .orElseThrow(() -> new RuntimeException("Clasificacion no encontrada"))
+            );
+        }
 
-        entity.setFecIniVigencia(dto.getFecIniVigencia());
-        entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setBlnActivo(dto.getBlnActivo());
+        if (dto.getFecIniVigencia() != null) {
+            entity.setFecIniVigencia(dto.getFecIniVigencia());
+        }
+
+        if (dto.getFecFinVigencia() != null) {
+            entity.setFecFinVigencia(dto.getFecFinVigencia());
+        }
+
+        if (dto.getBlnActivo() != null) {
+            entity.setBlnActivo(dto.getBlnActivo());
+        }
 
         CatAduanaClasifProd updated = repository.save(entity);
 
-        return  CatAduanaClasifProdResponseDTO.builder()
+        return CatAduanaClasifProdResponseDTO.builder()
                 .idClasifProducto(updated.getId())
                 .cveAduana(updated.getAduana().getCveAduana())
                 .nombreAduana(updated.getAduana().getNombre())
@@ -169,7 +182,7 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
 
     @Override
     public List<SelectDTO> listadoAduana() {
-        List<CatAduana> productos = aduanaRepository.findAll();
+        List<CatAduana> productos = aduanaRepository.findAllByBlnActivoTrueOrderByNombreAsc();
         List<SelectDTO> resultado = new ArrayList<>();
 
         for (CatAduana producto : productos) {
@@ -182,17 +195,8 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
     }
 
     @Override
-    public List<SelectDTO> listadoClasificacionProducto() {
-        List<CatClasifProducto> productos = clasificacionProductoRepository.findAll();
-        List<SelectDTO> resultado = new ArrayList<>();
-
-        for (CatClasifProducto producto : productos) {
-            SelectDTO dto = new SelectDTO();
-            dto.setId(producto.getIdClasifProduct());
-            dto.setNombre(producto.getNombre());
-            resultado.add(dto);
-        }
-        return resultado;
+    public List<ClasifProductoTraDTO> listadoClasificacionProducto(Long idTipoTramite) {
+        return clasificacionProductoRepository.listadoClasificacionProducto(idTipoTramite);
     }
 
     @Override

@@ -14,4 +14,6 @@ public interface ICatAduanaRepository extends JpaRepository<CatAduana, String> {
     Page<CatAduana> findByNombreContainingIgnoreCaseOrCveAduanaContainingIgnoreCase(String search, String search1, Pageable pageable);
 
     List<CatAduana> findByBlnActivoTrueOrderByNombreAsc();
+
+    List<CatAduana> findAllByBlnActivoTrueOrderByNombreAsc();
 }

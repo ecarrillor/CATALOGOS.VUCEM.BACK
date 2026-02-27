@@ -4,6 +4,11 @@ import com.example.vucem_catalogos_service.model.entity.CatDescripcionProd;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ICatDescripcionProdRepository extends JpaRepository<CatDescripcionProd, Integer> {
+
+    List<CatDescripcionProd> findAllByBlnActivoTrueOrderByDescripcionProductoAsc();
+
 }

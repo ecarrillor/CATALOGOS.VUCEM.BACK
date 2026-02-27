@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ICatAduanaClasifProductoService {
 
-    PageResponseDTO<CatAduanaClasifProdResponseDTO> catAduanaListAll(String search, Pageable pageable);
+    PageResponseDTO<CatAduanaClasifProdResponseDTO> catAduanaListAll(String search, Long idTipoTramite, Pageable pageable);
 
     CatAduanaClasifProdResponseDTO crearAduanaClasifProducto(CatAduanaClasifProdRequestDTO aduanaClasifProd);
 
@@ -21,7 +21,7 @@ public interface ICatAduanaClasifProductoService {
 
     List<SelectDTO> listadoAduana();
 
-    List<SelectDTO> listadoClasificacionProducto();
+    List<ClasifProductoTraDTO> listadoClasificacionProducto(Long idTipoTramite);
 
     List<ClasifProductoTraDTO> listadoClasifTram();
 }
