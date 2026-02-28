@@ -61,13 +61,13 @@ public interface ICatCasFraccionTtraRepository extends JpaRepository<CatCasFracc
     @Query("""
             SELECT DISTINCT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(
                 tt.id,
-                CONCAT(CAST(tt.id AS string), '  ', COALESCE(tt.descModalidad, tt.descSubservicio))
+                COALESCE(tt.descModalidad, tt.descSubservicio)
             )
             FROM CatCasFraccionTtra cas
             JOIN cas.idTipoTramite tt
             WHERE tt.blnActivo = true
               AND tt.cveServicio IN ('23', '26')
-            ORDER BY UPPER(TRIM(COALESCE(tt.descModalidad, tt.descSubservicio))) ASC
+            ORDER BY COALESCE(tt.descModalidad, tt.descSubservicio) ASC
             """)
     List<ClasifProductoTraDTO> listadoTipoTramite();
 }

@@ -54,8 +54,8 @@ public interface ICatCasRepository extends JpaRepository<CatCa, Short> {
     @Query("""
        SELECT c
        FROM CatCa c
-       WHERE c.blActivo = :blActivo
+       WHERE c.blActivo = :activo
        ORDER BY c.descCas ASC
        """)
-    List<CatCa> findAllActivos(boolean b);
+    List<CatCa> findAllActivos(@Param("activo") Boolean activo);
 }
