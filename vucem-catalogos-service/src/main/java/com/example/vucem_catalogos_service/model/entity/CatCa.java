@@ -32,7 +32,7 @@ public class CatCa {
 
     @NotNull
     @Column(name = "bl_activo", nullable = false)
-    private Short blActivo;
+    private Boolean blActivo;
 
 
 }

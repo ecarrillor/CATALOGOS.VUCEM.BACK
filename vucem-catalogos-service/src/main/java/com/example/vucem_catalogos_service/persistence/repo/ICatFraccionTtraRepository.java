@@ -57,16 +57,7 @@ public interface ICatFraccionTtraRepository extends JpaRepository<CatFraccionTtr
             @Param("idTipoTramite") Long idTipoTramite,
             Pageable pageable);
 
-    @Query("""
-            SELECT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(
-                t.id,
-                COALESCE(t.descModalidad, t.descSubservicio)
-            )
-            FROM CatTipoTramite t
-            WHERE t.blnActivo = true
-            ORDER BY UPPER(TRIM(COALESCE(t.descModalidad, t.descSubservicio))) ASC
-            """)
-    List<ClasifProductoTraDTO> listadoTipoTramite();
+
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(

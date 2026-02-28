@@ -58,7 +58,7 @@ public interface ICatFraccionTtraDescProdRepository extends JpaRepository<CatFra
             JOIN f.idTipoTramite t
             WHERE t.blnActivo = true
               AND t.cveServicio IN ('23', '25')
-            ORDER BY UPPER(TRIM(COALESCE(t.descModalidad, t.descSubservicio))) ASC
+            ORDER BY COALESCE(t.descModalidad, t.descSubservicio) ASC
             """)
     List<ClasifProductoTraDTO> listadoTipoTramite();
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -22,9 +23,9 @@ public class CatFraccionTtraResponseDTO {
     private Long idTipoTramite;
     private String descTipoTramite;
 
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     private Boolean blnActivo;
 
@@ -32,7 +33,7 @@ public class CatFraccionTtraResponseDTO {
 
     private String ideClasifPartida;
 
-    private Short blnFraccionControlada;
+    private Boolean blnFraccionControlada;
 
     private Long idCategoriaTextil;
     private String descripcionCategoriaTextil;

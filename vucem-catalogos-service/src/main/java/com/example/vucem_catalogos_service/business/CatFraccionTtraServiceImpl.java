@@ -96,6 +96,7 @@ public class CatFraccionTtraServiceImpl implements ICatFraccionTtraService {
                                 HttpStatus.NOT_FOUND, "Tipo de trámite no encontrado"))
         );
 
+        // Opcional
         if (dto.getIdCategoriaTextil() != null) {
             entity.setIdCategoriaTextil(
                     categoriaTextilRepository
@@ -106,19 +107,22 @@ public class CatFraccionTtraServiceImpl implements ICatFraccionTtraService {
         }
 
         entity.setFecIniVigencia(dto.getFecIniVigencia());
-        entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setBlnActivo(true);
-        entity.setDescFraccionAlt(dto.getDescFraccionAlt());
-        entity.setIdeClasifPartida(dto.getIdeClasifPartida());
-        entity.setBlnFraccionControlada(dto.getBlnFraccionControlada());
-        entity.setFactorConversion(dto.getFactorConversion());
-        entity.setValorEquivalencia(dto.getValorEquivalencia());
-        entity.setCveUnidadMedida(dto.getCveUnidadMedida());
-        entity.setReglaAplicable(dto.getReglaAplicable());
+        entity.setBlnActivo(dto.getBlnActivo() != null ? dto.getBlnActivo() : true);
+
+        if (dto.getFecFinVigencia() != null) entity.setFecFinVigencia(dto.getFecFinVigencia());
+        if (dto.getDescFraccionAlt() != null) entity.setDescFraccionAlt(dto.getDescFraccionAlt());
+        if (dto.getIdeClasifPartida() != null) entity.setIdeClasifPartida(dto.getIdeClasifPartida());
+        if (dto.getBlnFraccionControlada() != null) entity.setBlnFraccionControlada(dto.getBlnFraccionControlada());
+        if (dto.getFactorConversion() != null) entity.setFactorConversion(dto.getFactorConversion());
+        if (dto.getValorEquivalencia() != null) entity.setValorEquivalencia(dto.getValorEquivalencia());
+        if (dto.getCveUnidadMedida() != null) entity.setCveUnidadMedida(dto.getCveUnidadMedida());
+        if (dto.getReglaAplicable() != null) entity.setReglaAplicable(dto.getReglaAplicable());
 
         CatFraccionTtra saved = repository.save(entity);
 
         return toResponseDTO(saved);
+
+
     }
 
     @Override
@@ -214,7 +218,7 @@ public class CatFraccionTtraServiceImpl implements ICatFraccionTtraService {
 
     @Override
     public List<ClasifProductoTraDTO> listadoTipoTramite() {
-        return repository.listadoTipoTramite();
+        return tipoTramiteRepository.listadoTipoTramite();
     }
 
     @Override
