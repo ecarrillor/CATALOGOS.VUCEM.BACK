@@ -18,22 +18,24 @@ import java.util.Optional;
 public interface ICatClasifProductoRepository extends JpaRepository<CatClasifProducto, Long> {
 
     @Query("""
-            SELECT new com.example.vucem_catalogos_service.model.dto.CatClasifProductoDTO(
-                e.idClasifProduct,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.id ELSE NULL END,
-                CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.descModalidad ELSE NULL END,
-                CASE WHEN e.idClasifProductoR IS NOT NULL THEN e.idClasifProductoR.idClasifProduct ELSE NULL END,
-                e.idClasifProductoR.nombre,
-                e.nombre,
-                e.ideTipoClasifProducto,
-                e.fecIniVigencia,
-                e.fecFinVigencia,
-                e.blnActivo
-            )
-            FROM CatClasifProducto e
-            WHERE (:texto IS NULL OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')))
-            AND (:activo IS NULL OR e.blnActivo = :activo)
-            AND (:idTipoTramite IS NULL OR (e.idTipoTramite IS NOT NULL AND e.idTipoTramite.id = :idTipoTramite))
+                SELECT new com.example.vucem_catalogos_service.model.dto.CatClasifProductoDTO(
+                    e.idClasifProduct,
+                    t.id,
+                    t.descModalidad,
+                    r.idClasifProduct,
+                    r.nombre,
+                    e.nombre,
+                    e.ideTipoClasifProducto,
+                    e.fecIniVigencia,
+                    e.fecFinVigencia,
+                    e.blnActivo
+                )
+                FROM CatClasifProducto e
+                LEFT JOIN e.idTipoTramite t
+                LEFT JOIN e.idClasifProductoR r
+                WHERE (:texto IS NULL OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')))
+                AND (:activo IS NULL OR e.blnActivo = :activo)
+                AND (:idTipoTramite IS NULL OR t.id = :idTipoTramite)
             """)
     Page<CatClasifProductoDTO> search(@Param("texto") String texto,
                                       @Param("activo") Boolean activo,
@@ -59,31 +61,31 @@ public interface ICatClasifProductoRepository extends JpaRepository<CatClasifPro
     Optional<CatClasifProductoDTO> findByClasifProductoDTO(@Param("id") Long id);
 
     @Query("""
-    SELECT DISTINCT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(
-        t.id,
-        COALESCE(t.descModalidad, t.descSubservicio)
-    )
-    FROM CatClasifProducto cp
-    JOIN cp.idTipoTramite t
-    WHERE t.blnActivo = true
-      AND t.cveServicio = '26'
-    ORDER BY COALESCE(t.descModalidad, t.descSubservicio) ASC
-    """)
+            SELECT DISTINCT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(
+                t.id,
+                COALESCE(t.descModalidad, t.descSubservicio)
+            )
+            FROM CatClasifProducto cp
+            JOIN cp.idTipoTramite t
+            WHERE t.blnActivo = true
+              AND t.cveServicio = '26'
+            ORDER BY COALESCE(t.descModalidad, t.descSubservicio) ASC
+            """)
     List<ClasifProductoTraDTO> findTipoTramiteListado();
 
 
     @Query("""
-    SELECT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(
-        cp.idClasifProduct,
-        cp.nombre
-    )
-    FROM CatClasifProducto cp
-    JOIN cp.idTipoTramite t
-    WHERE t.blnActivo = true
-      AND t.cveServicio = '26'
-      AND t.id = :idTipoTramite
-    ORDER BY cp.idClasifProductoR.nombre ASC
-    """)
+            SELECT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(
+                cp.idClasifProduct,
+                cp.nombre
+            )
+            FROM CatClasifProducto cp
+            JOIN cp.idTipoTramite t
+            WHERE t.blnActivo = true
+              AND t.cveServicio = '26'
+              AND t.id = :idTipoTramite
+            ORDER BY cp.idClasifProductoR.nombre ASC
+            """)
     List<ClasifProductoTraDTO> listadoClasifPrR(
             @Param("idTipoTramite") Long idTipoTramite);
 }

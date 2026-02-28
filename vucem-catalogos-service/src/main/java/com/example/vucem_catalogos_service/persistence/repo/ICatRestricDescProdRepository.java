@@ -56,7 +56,7 @@ public interface ICatRestricDescProdRepository extends JpaRepository<CatRestricD
             WHERE a.blnActivo = true
               AND tr.blnActivo = true
               AND tr.cveServicio = '23'
-            ORDER BY UPPER(TRIM(COALESCE(tr.descModalidad, tr.descSubservicio))) ASC
+            ORDER BY COALESCE(tr.descModalidad, tr.descSubservicio) ASC
             """)
     List<ClasifProductoTraDTO> listadoTipoTramite();
 
