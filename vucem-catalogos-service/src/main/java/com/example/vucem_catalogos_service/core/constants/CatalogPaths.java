@@ -467,6 +467,30 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_BY_DATE_ID = "/cat_monto_exportacion/{id}/{fecha}";
     public static final String UPDATE_BY_DATE_ID = "/cat_monto_exportacion/{id}/{fecha}";
 
+    /*entidad CAT_FRACCION_TTRA_DESC_PROD */
+    public static final String LIST_FRACCION_TTRA_DESC_PROD      = "/cat_fraccion_ttra_desc_prod/list";
+    public static final String SAVE_FRACCION_TTRA_DESC_PROD      = "/cat_fraccion_ttra_desc_prod/save";
+    public static final String FIND_FRACCION_TTRA_DESC_PROD      = "/cat_fraccion_ttra_desc_prod/{id}";
+    public static final String UPDATE_FRACCION_TTRA_DESC_PROD    = "/cat_fraccion_ttra_desc_prod/{id}";
+    public static final String TIPO_TRAMITE_FRAC_DESC_PROD       = "/cat_fraccion_ttra_desc_prod/tipo_tramite";
+    public static final String FRACCIONES_FRAC_DESC_PROD         = "/cat_fraccion_ttra_desc_prod/fracciones";
+    public static final String DESC_PROD_FRAC_DESC_PROD          = "/cat_fraccion_ttra_desc_prod/descripciones_prod";
+
+    /*entidad CAT_FRACCION_TTRA */
+    public static final String LIST_FRACCION_TTRA          = "/cat_fraccion_ttra/list";
+    public static final String SAVE_FRACCION_TTRA          = "/cat_fraccion_ttra/save";
+    public static final String FIND_FRACCION_TTRA          = "/cat_fraccion_ttra/{id}";
+    public static final String UPDATE_FRACCION_TTRA        = "/cat_fraccion_ttra/{id}";
+    public static final String TIPO_TRAMITE_FRACCION_TTRA  = "/cat_fraccion_ttra/tipo_tramite";
+    public static final String CATEGORIA_TEXTIL_FRACCION   = "/cat_fraccion_ttra/categorias_textil";
+
+    /*entidad CAT_DESCRIPCION_PROD */
+    public static final String LIST_CATALOGO_DESC_PROD    = "/cat_descripcion_prod/list";
+    public static final String SAVE_CATALOGO_DESC_PROD    = "/cat_descripcion_prod/save";
+    public static final String FIND_CATALOGO_DESC_PROD    = "/cat_descripcion_prod/{id}";
+    public static final String UPDATE_CATALOGO_DESC_PROD  = "/cat_descripcion_prod/{id}";
+    public static final String TIPO_TRAMITE_DESC_PROD     = "/cat_descripcion_prod/tipo_tramite";
+
     /*entidad CAT_RESTRICCION_TTRA */
     public static final String LIST_CATALOGO_RESTRICCION_TTRA      = "/cat_restriccion_ttra/list";
     public static final String SAVE_CATALOGO_RESTRICCION_TTRA      = "/cat_restriccion_ttra/save";
@@ -482,5 +506,20 @@ public class CatalogPaths extends ConstPath{
     public static final String LIST_TIPO_TRAMITE_RESTRIC_DESC    = "/cat_restric_desc_prod/tipo_tramite";
     public static final String LIST_RESTRICCION_TTRA             = "/cat_restric_desc_prod/restricciones";
     public static final String LIST_DESCRIPCION_PROD             = "/cat_restric_desc_prod/descripciones_prod";
+
+    /*entidad CAT_CAS */
+    public static final String LIST_CAT_CAS                  = "/cat_cas/list";
+    public static final String SAVE_CAT_CAS                  = "/cat_cas/save";
+    public static final String FIND_CAT_CAS                  = "/cat_cas/{id}";
+    public static final String UPDATE_CAT_CAS                = "/cat_cas/{id}";
+    public static final String LIST_TIPO_TRAMITE_CAT_CAS     = "/cat_cas/tipo_tramite";
+
+    /*entidad CAT_CAS_FRACCION_TTRA */
+    public static final String LIST_CAS_FRACCION_TTRA        = "/cat_cas_fraccion_ttra/list";
+    public static final String SAVE_CAS_FRACCION_TTRA        = "/cat_cas_fraccion_ttra/save";
+    public static final String FIND_CAS_FRACCION_TTRA        = "/cat_cas_fraccion_ttra/{id}";
+    public static final String UPDATE_CAS_FRACCION_TTRA      = "/cat_cas_fraccion_ttra/{id}";
+    public static final String LIST_TIPO_TRAMITE_CAS_FRACC   = "/cat_cas_fraccion_ttra/tipo_tramite";
+    public static final String LIST_CAS_SELECT               = "/cat_cas_fraccion_ttra/cas";
 
 }

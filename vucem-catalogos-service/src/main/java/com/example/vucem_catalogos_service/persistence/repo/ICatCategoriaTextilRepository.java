@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ICatCategoriaTextilRepository extends JpaRepository<CatCategoriaTextil, Long>, JpaSpecificationExecutor<CatCategoriaTextil> {
 
@@ -45,4 +47,6 @@ public interface ICatCategoriaTextilRepository extends JpaRepository<CatCategori
             @Param("activo") Boolean activo,
             Pageable pageable
     );
+
+    List<CatCategoriaTextil> findAllByBlnActivoTrueOrderByDescripcionAsc();
 }
