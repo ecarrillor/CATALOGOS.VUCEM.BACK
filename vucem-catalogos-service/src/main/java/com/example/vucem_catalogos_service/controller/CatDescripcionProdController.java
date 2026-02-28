@@ -24,19 +24,20 @@ public class CatDescripcionProdController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_DESC_PROD)
     public ResponseEntity<PageResponseDTO<CatDescripcionProdResponseDTO>> listar(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long idTipoTramite,
             Pageable pageable) {
-        return ResponseEntity.ok(service.listAll(search, pageable));
+        return ResponseEntity.ok(service.listAll(search,idTipoTramite,pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_DESC_PROD)
-    public ResponseEntity<CatDescripcionProdResponseDTO> crear(@RequestBody CatDescripcionProdRequestDTO dto) {
+    public ResponseEntity<CatDescripcionProdResponseDTO> crear(@RequestBody CatDescripcionProdRequestDTO dto, @PathVariable Long idTipoTramite) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(service.crear(dto));
+                .body(service.crear(dto, idTipoTramite));
     }
 
     @GetMapping(CatalogPaths.FIND_CATALOGO_DESC_PROD)
-    public ResponseEntity<CatDescripcionProdResponseDTO> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<CatDescripcionProdResponseDTO> findById(@PathVariable Integer id, @PathVariable Long idTipoTramite) {
+        return ResponseEntity.ok(service.findById(id, idTipoTramite));
     }
 
     @PutMapping(CatalogPaths.UPDATE_CATALOGO_DESC_PROD)

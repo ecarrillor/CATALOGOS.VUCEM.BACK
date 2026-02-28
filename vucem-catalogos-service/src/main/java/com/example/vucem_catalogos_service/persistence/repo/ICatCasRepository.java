@@ -17,7 +17,13 @@ import java.util.List;
 public interface ICatCasRepository extends JpaRepository<CatCa, Short>,
         JpaSpecificationExecutor<CatCa> {
 
-    List<CatCa> findAllByBlActivoOrderByDescCasAsc(Short blActivo);
+    @Query("""
+    SELECT a
+    FROM CatCa a
+    WHERE a.blActivo = :blActivo
+    ORDER BY a.descCas ASC
+""")
+    List<CatCa> findAllByBlActivoOrderByDescCasAsc(@Param("blActivo") Boolean blActivo);
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatCas.CatCaResponseDTO(
@@ -35,7 +41,7 @@ public interface ICatCasRepository extends JpaRepository<CatCa, Short>,
             """)
     Page<CatCaResponseDTO> search(
             @Param("search") String search,
-            @Param("activo") Short activo,
+            @Param("activo") Boolean activo,
             Pageable pageable);
 
     @Query("""

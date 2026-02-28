@@ -26,15 +26,15 @@ public class CatCasServiceImpl implements ICatCasService {
 
     @Override
     public PageResponseDTO<CatCaResponseDTO> listAll(String search, Pageable pageable) {
-        Short activo = null;
+        Boolean activo = null;
         String texto = null;
 
         if (search != null && !search.isBlank()) {
             String s = search.trim().toLowerCase();
             if (s.equals("activo")) {
-                activo = (short) 1;
+                activo = true;
             } else if (s.equals("inactivo")) {
-                activo = (short) 0;
+                activo =  false;
             } else {
                 texto = search;
             }
@@ -67,7 +67,7 @@ public class CatCasServiceImpl implements ICatCasService {
         entity.setDescCas(dto.getDescCas());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setBlActivo((short) 1);
+        entity.setBlActivo(true);
 
         return toResponseDTO(repository.save(entity));
     }

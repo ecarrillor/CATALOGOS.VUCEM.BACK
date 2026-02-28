@@ -19,5 +19,5 @@ public class CatCaRequestDTO {
 
     private LocalDate fecFinVigencia;
 
-    private Short blActivo;
+    private Boolean blActivo;
 }

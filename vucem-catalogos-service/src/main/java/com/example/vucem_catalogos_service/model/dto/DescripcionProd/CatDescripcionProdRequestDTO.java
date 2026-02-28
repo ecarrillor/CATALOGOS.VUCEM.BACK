@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -15,11 +16,11 @@ public class CatDescripcionProdRequestDTO {
 
     private String descripcionProducto;
 
-    private Instant fecCaptura;
+    private LocalDate fecCaptura;
 
-    private Instant fecIniVigencia;
+    private LocalDate fecIniVigencia;
 
-    private Instant fecFinVigencia;
+    private LocalDate fecFinVigencia;
 
     private Boolean blnActivo;
 }

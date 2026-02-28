@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface ICatDescripcionProdService {
 
-    PageResponseDTO<CatDescripcionProdResponseDTO> listAll(String search, Pageable pageable);
+    PageResponseDTO<CatDescripcionProdResponseDTO> listAll(String search,Long idTipoTramite, Pageable pageable);
 
-    CatDescripcionProdResponseDTO crear(CatDescripcionProdRequestDTO dto);
+    CatDescripcionProdResponseDTO crear(CatDescripcionProdRequestDTO dto,  Long idTipoTramite);
 
-    CatDescripcionProdResponseDTO findById(Integer id);
+    CatDescripcionProdResponseDTO findById(Integer id, Long idTipoTramite);
 
     CatDescripcionProdResponseDTO update(Integer id, CatDescripcionProdRequestDTO dto);
 

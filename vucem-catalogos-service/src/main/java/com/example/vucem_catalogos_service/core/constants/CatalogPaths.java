@@ -486,8 +486,8 @@ public class CatalogPaths extends ConstPath{
 
     /*entidad CAT_DESCRIPCION_PROD */
     public static final String LIST_CATALOGO_DESC_PROD    = "/cat_descripcion_prod/list";
-    public static final String SAVE_CATALOGO_DESC_PROD    = "/cat_descripcion_prod/save";
-    public static final String FIND_CATALOGO_DESC_PROD    = "/cat_descripcion_prod/{id}";
+    public static final String SAVE_CATALOGO_DESC_PROD    = "/cat_descripcion_prod/save/{idTipoTramite}";
+    public static final String FIND_CATALOGO_DESC_PROD    = "/cat_descripcion_prod/{id}/{idTipoTramite}";
     public static final String UPDATE_CATALOGO_DESC_PROD  = "/cat_descripcion_prod/{id}";
     public static final String TIPO_TRAMITE_DESC_PROD     = "/cat_descripcion_prod/tipo_tramite";
 

@@ -19,21 +19,45 @@ public interface ICatDescripcionProdRepository extends JpaRepository<CatDescripc
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.DescripcionProd.CatDescripcionProdResponseDTO(
-                d.id,
-                d.descripcionProducto,
-                d.fecCaptura,
-                d.fecIniVigencia,
-                d.fecFinVigencia,
-                d.blnActivo
-            )
-            FROM CatDescripcionProd d
-            WHERE
-                (:search IS NULL OR LOWER(d.descripcionProducto) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                    d.id,
+                    d.descripcionProducto,
+                    d.fecCaptura,
+                    d.fecIniVigencia,
+                    d.fecFinVigencia,
+                    d.blnActivo,
+                    t.id,
+                    t.descModalidad
+                )
+                FROM CatTipoTramite t
+                JOIN CatFraccionTtra f
+                    ON f.idTipoTramite.id = t.id
+                JOIN CatFraccionTtraDescProd dp
+                    ON dp.idFraccionGob.id = f.id
+                JOIN CatDescripcionProd d
+                    ON d.id = dp.idDescripcionProd.id
+                 WHERE
+                (
+                   :search IS NULL OR
+                   LOWER(d.descripcionProducto) LIKE :search OR
+                   STR(d.id) LIKE :search
+                )
                 AND (:activo IS NULL OR d.blnActivo = :activo)
-            """)
+                AND (:idTipoTramite IS NULL OR t.id = :idTipoTramite)
+                GROUP BY
+                    d.id,
+                    d.descripcionProducto,
+                    d.fecCaptura,
+                    d.fecIniVigencia,
+                    d.fecFinVigencia,
+                    d.blnActivo,
+                    t.id,
+                    t.descModalidad
+                ORDER BY UPPER(TRIM(d.descripcionProducto)) ASC
+""")
     Page<CatDescripcionProdResponseDTO> search(
             @Param("search") String search,
             @Param("activo") Boolean activo,
+            @Param("idTipoTramite") Long idTipoTramite,
             Pageable pageable);
 
     @Query("""
@@ -51,4 +75,37 @@ public interface ICatDescripcionProdRepository extends JpaRepository<CatDescripc
 
     List<CatDescripcionProd> findAllByBlnActivoTrueOrderByDescripcionProductoAsc();
 
+    @Query("""
+            SELECT  new com.example.vucem_catalogos_service.model.dto.DescripcionProd.CatDescripcionProdResponseDTO(
+                    d.id,
+                    d.descripcionProducto,
+                    d.fecCaptura,
+                    d.fecIniVigencia,
+                    d.fecFinVigencia,
+                    d.blnActivo,
+                    t.id,
+                    t.descModalidad
+                )
+                FROM CatTipoTramite t
+                JOIN CatFraccionTtra f
+                    ON f.idTipoTramite.id = t.id
+                JOIN CatFraccionTtraDescProd dp
+                    ON dp.idFraccionGob.id = f.id
+                JOIN CatDescripcionProd d
+                    ON d.id = dp.idDescripcionProd.id
+                 WHERE
+                        d.id = :id AND t.id = :idTipoTramite
+               GROUP BY
+                    d.id,
+                    d.descripcionProducto,
+                    d.fecCaptura,
+                    d.fecIniVigencia,
+                    d.fecFinVigencia,
+                    d.blnActivo,
+                    t.id,
+                    t.descModalidad
+""")
+    CatDescripcionProdResponseDTO findByIdTipoTramite(
+            @Param("id") Integer id,
+            @Param("idTipoTramite") Long idTipoTramite);
 }

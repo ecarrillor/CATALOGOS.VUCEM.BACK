@@ -81,4 +81,8 @@ public interface ICatFraccionTtraRepository extends JpaRepository<CatFraccionTtr
             """)
     List<ClasifProductoTraDTO> listadoFraccionTtraByTipoTramite(@Param("idTipoTramite") Long idTipoTramite);
 
+    List<CatFraccionTtra> findByIdTipoTramiteId(Long id);
+
+    @Query("SELECT MAX(r.id) FROM CatFraccionTtraDescProd r")
+    Long findMaxId();
 }

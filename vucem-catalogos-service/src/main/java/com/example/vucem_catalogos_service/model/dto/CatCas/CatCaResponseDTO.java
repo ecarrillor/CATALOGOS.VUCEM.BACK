@@ -21,5 +21,5 @@ public class CatCaResponseDTO {
 
     private LocalDate fecFinVigencia;
 
-    private Short blActivo;
+    private Boolean blActivo;
 }
