@@ -509,7 +509,7 @@ public class CatalogPaths extends ConstPath{
 
     /*entidad CAT_CAS */
     public static final String LIST_CAT_CAS                  = "/cat_cas/list";
-    public static final String SAVE_CAT_CAS                  = "/cat_cas/save";
+    public static final String SAVE_CAT_CAS                  = "/cat_cas/save/{idTipoTramite}";
     public static final String FIND_CAT_CAS                  = "/cat_cas/{id}";
     public static final String UPDATE_CAT_CAS                = "/cat_cas/{id}";
     public static final String LIST_TIPO_TRAMITE_CAT_CAS     = "/cat_cas/tipo_tramite";

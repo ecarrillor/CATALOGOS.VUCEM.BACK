@@ -24,14 +24,15 @@ public class CatCasController {
     @GetMapping(CatalogPaths.LIST_CAT_CAS)
     public ResponseEntity<PageResponseDTO<CatCaResponseDTO>> listar(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long idTipoTramite,
             Pageable pageable) {
-        return ResponseEntity.ok(service.listAll(search, pageable));
+        return ResponseEntity.ok(service.listAll(search, idTipoTramite, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CAT_CAS)
-    public ResponseEntity<CatCaResponseDTO> crear(@RequestBody CatCaRequestDTO dto) {
+    public ResponseEntity<CatCaResponseDTO> crear(@RequestBody CatCaRequestDTO dto, @PathVariable Long idTipoTramite) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(service.crear(dto));
+                .body(service.crear(dto, idTipoTramite));
     }
 
     @GetMapping(CatalogPaths.FIND_CAT_CAS)

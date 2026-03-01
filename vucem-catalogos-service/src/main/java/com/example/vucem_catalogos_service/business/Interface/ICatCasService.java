@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface ICatCasService {
 
-    PageResponseDTO<CatCaResponseDTO> listAll(String search, Pageable pageable);
+    PageResponseDTO<CatCaResponseDTO> listAll(String search, Long idTipoTramite, Pageable pageable);
 
-    CatCaResponseDTO crear(CatCaRequestDTO dto);
+    CatCaResponseDTO crear(CatCaRequestDTO dto, Long idTipoTramite);
 
     CatCaResponseDTO findById(Short id);
 

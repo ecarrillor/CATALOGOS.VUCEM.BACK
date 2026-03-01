@@ -6,7 +6,14 @@ import com.example.vucem_catalogos_service.model.dto.CatCas.CatCaRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatCas.CatCaResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.entity.CatCasFraccionTtra;
+import com.example.vucem_catalogos_service.model.entity.CatFraccionTtra;
+import com.example.vucem_catalogos_service.model.entity.CatTipoTramite;
 import com.example.vucem_catalogos_service.persistence.repo.ICatCasRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatFraccionTtraRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepo;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,33 +22,47 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @Transactional
 public class CatCasServiceImpl implements ICatCasService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
     private ICatCasRepository repository;
 
+    @Autowired
+    private ICatTipoTramiteRepo catTipoTramiteRepo;
+
+    @Autowired
+    private ICatFraccionTtraRepository catFraccionTtraRepository;
+
     @Override
-    public PageResponseDTO<CatCaResponseDTO> listAll(String search, Pageable pageable) {
+    public PageResponseDTO<CatCaResponseDTO> listAll(String search, Long idTipoTramite,Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
         if (search != null && !search.isBlank()) {
+
             String s = search.trim().toLowerCase();
+
             if (s.equals("activo")) {
                 activo = true;
-            } else if (s.equals("inactivo")) {
-
+            }
+            else if (s.equals("inactivo")) {
                 activo = false;
-            } else {
-                texto = search;
+            }
+            else {
+                texto = "%" + search.trim().toLowerCase() + "%";
             }
         }
 
-        Page<CatCaResponseDTO> page = repository.search(texto, activo, pageable);
+
+        Page<CatCaResponseDTO> page = repository.search(texto, activo, idTipoTramite, pageable);
 
         return PageResponseDTO.<CatCaResponseDTO>builder()
                 .content(page.getContent())
@@ -54,8 +75,9 @@ public class CatCasServiceImpl implements ICatCasService {
     }
 
     @Override
-    public CatCaResponseDTO crear(CatCaRequestDTO dto) {
+    public CatCaResponseDTO crear(CatCaRequestDTO dto, Long idTipoTramite) {
 
+        // 1️⃣ Validar que no exista el CAS
         if (repository.existsById(dto.getId())) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
@@ -63,14 +85,57 @@ public class CatCasServiceImpl implements ICatCasService {
             );
         }
 
-        CatCa entity = new CatCa();
-        entity.setId(dto.getId());
-        entity.setDescCas(dto.getDescCas());
-        entity.setFecIniVigencia(dto.getFecIniVigencia());
-        entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setBlActivo(true);
+        // 2️⃣ Validar TipoTramite
+        CatTipoTramite tipoTramite = catTipoTramiteRepo.findById(idTipoTramite)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "No existe TipoTramite con id: " + idTipoTramite
+                ));
 
-        return toResponseDTO(repository.save(entity));
+
+        CatCa cas = new CatCa();
+        cas.setId(dto.getId());
+        cas.setDescCas(dto.getDescCas());
+        cas.setFecIniVigencia(dto.getFecIniVigencia());
+        cas.setFecFinVigencia(dto.getFecFinVigencia());
+        cas.setBlActivo(true);
+
+        entityManager.persist(cas);
+
+
+
+        List<CatFraccionTtra> fracciones =
+                catFraccionTtraRepository.findByIdTipoTramiteId(tipoTramite.getId());
+
+        if (fracciones.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El TipoTramite no tiene fracciones asociadas"
+            );
+        }
+
+        Short maxId = repository.findMaxId();
+        short nuevoId = (short) (maxId == null ? 1 : maxId + 1);
+
+        // 4️⃣ Crear relaciones
+        for (CatFraccionTtra fraccion : fracciones) {
+
+            CatCasFraccionTtra relacion = new CatCasFraccionTtra();
+
+            relacion.setId(nuevoId++);
+            relacion.setIdCas(cas);
+            relacion.setIdTipoTramite(tipoTramite); // 👈 obligatorio
+            relacion.setCveFraccion(fraccion.getCveFraccion()); // 👈 objeto completo
+            relacion.setBlnRotterdam(false);
+            relacion.setBlActivo(true);
+            relacion.setFecIniVigencia(LocalDate.now());
+
+            entityManager.persist(relacion);
+        }
+
+        entityManager.flush();
+
+        return toResponseDTO(cas);
     }
 
     @Override

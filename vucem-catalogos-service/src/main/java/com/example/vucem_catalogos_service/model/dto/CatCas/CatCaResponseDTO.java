@@ -22,4 +22,8 @@ public class CatCaResponseDTO {
     private LocalDate fecFinVigencia;
 
     private Boolean blActivo;
+
+    private Long idTipoTramite;
+
+    private String nombreTramite;
 }
