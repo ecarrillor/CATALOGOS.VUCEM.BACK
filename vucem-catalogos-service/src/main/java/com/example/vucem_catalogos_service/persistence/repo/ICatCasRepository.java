@@ -6,7 +6,6 @@ import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,8 +13,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ICatCasRepository extends JpaRepository<CatCa, Short>,
-        JpaSpecificationExecutor<CatCa> {
+public interface ICatCasRepository extends JpaRepository<CatCa, Short> {
+
 
     @Query("""
     SELECT a
@@ -24,6 +23,7 @@ public interface ICatCasRepository extends JpaRepository<CatCa, Short>,
     ORDER BY a.descCas ASC
 """)
     List<CatCa> findAllByBlActivoOrderByDescCasAsc(@Param("blActivo") Boolean blActivo);
+
 
     @Query("""
             SELECT new com.example.vucem_catalogos_service.model.dto.CatCas.CatCaResponseDTO(
@@ -57,4 +57,13 @@ public interface ICatCasRepository extends JpaRepository<CatCa, Short>,
             ORDER BY UPPER(TRIM(COALESCE(tt.descModalidad, tt.descSubservicio))) ASC
             """)
     List<ClasifProductoTraDTO> listadoTipoTramite();
+
+
+    @Query("""
+       SELECT c
+       FROM CatCa c
+       WHERE c.blActivo = :activo
+       ORDER BY c.descCas ASC
+       """)
+    List<CatCa> findAllActivos(@Param("activo") Boolean activo);
 }

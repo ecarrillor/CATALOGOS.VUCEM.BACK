@@ -200,7 +200,8 @@ public class CatCasFraccionTtraServiceImpl implements ICatCasFraccionTtraService
 
     @Override
     public List<SelectDTO> listadoCas() {
-        List<CatCa> lista = casRepository.findAllByBlActivoOrderByDescCasAsc(true);
+
+        List<CatCa> lista = casRepository.findAllActivos(true);
         List<SelectDTO> resultado = new ArrayList<>();
         for (CatCa c : lista) {
             SelectDTO dto = new SelectDTO();

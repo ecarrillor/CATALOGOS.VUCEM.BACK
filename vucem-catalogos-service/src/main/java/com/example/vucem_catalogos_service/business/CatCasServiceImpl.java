@@ -34,7 +34,8 @@ public class CatCasServiceImpl implements ICatCasService {
             if (s.equals("activo")) {
                 activo = true;
             } else if (s.equals("inactivo")) {
-                activo =  false;
+
+                activo = false;
             } else {
                 texto = search;
             }
