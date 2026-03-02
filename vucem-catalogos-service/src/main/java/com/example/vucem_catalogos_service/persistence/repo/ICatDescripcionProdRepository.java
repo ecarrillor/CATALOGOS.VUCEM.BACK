@@ -62,15 +62,21 @@ public interface ICatDescripcionProdRepository extends JpaRepository<CatDescripc
 
     @Query("""
             SELECT DISTINCT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(
-                t.id,
-                COALESCE(t.descModalidad, t.descSubservicio)
-            )
-            FROM CatClasifProducto cp
-            JOIN cp.idTipoTramite t
-            WHERE t.blnActivo = true
-              AND t.cveServicio = '26'
-            ORDER BY COALESCE(t.descModalidad, t.descSubservicio) ASC
-            """)
+               t.id,
+             t.descModalidad
+        END
+    )
+    FROM CatTipoTramite t
+    JOIN CatFraccionTtra f
+                    ON f.idTipoTramite.id = t.id
+                JOIN CatFraccionTtraDescProd dp
+                    ON dp.idFraccionGob.id = f.id
+                JOIN CatDescripcionProd d
+                    ON d.id = dp.idDescripcionProd.id
+    WHERE t.blnActivo = true
+      AND t.cveServicio IN ('23', '25')
+    ORDER BY 2 ASC
+""")
     List<ClasifProductoTraDTO> listadoTipoTramite();
 
     List<CatDescripcionProd> findAllByBlnActivoTrueOrderByDescripcionProductoAsc();
