@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ICatVidaSilvestreService {
 
-    PageResponseDTO<CatVidaSilvestreDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatVidaSilvestreDTO> list(String search, String tipo, Pageable pageable);
 
     CatVidaSilvestreDTO findById(Integer id);
 

@@ -26,7 +26,7 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
     private ICatEspecieRepository catEspecieRepository;
 
     @Override
-    public PageResponseDTO<CatVidaSilvestreDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatVidaSilvestreDTO> list(String search, String tipo, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -38,7 +38,7 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
             texto = search;
         }
 
-        Page<CatVidaSilvestreDTO> page = catVidaSilvestreRepository.search(texto, activo, pageable);
+        Page<CatVidaSilvestreDTO> page = catVidaSilvestreRepository.search(texto, tipo, activo, pageable);
 
         return PageResponseDTO.<CatVidaSilvestreDTO>builder()
                 .content(page.getContent())
