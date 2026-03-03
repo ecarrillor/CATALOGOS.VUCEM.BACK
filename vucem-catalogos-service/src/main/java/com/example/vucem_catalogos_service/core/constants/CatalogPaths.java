@@ -522,4 +522,10 @@ public class CatalogPaths extends ConstPath{
     public static final String LIST_TIPO_TRAMITE_CAS_FRACC   = "/cat_cas_fraccion_ttra/tipo_tramite";
     public static final String LIST_CAS_SELECT               = "/cat_cas_fraccion_ttra/cas";
 
+    /*entidad CAT_ESPECIE */
+    public static final String LIST_CAT_ESPECIE        = "/cat_especie/list";
+    public static final String SAVE_CAT_ESPECIE        = "/cat_especie/save";
+    public static final String FIND_CAT_ESPECIE        = "/cat_especie/{id}";
+    public static final String UPDATE_CAT_ESPECIE      = "/cat_especie/{id}";
+    public static final String LIST_TIPO_TRAMITE_ESPECIE   = "/cat_especie/tipo_tramite";
 }
