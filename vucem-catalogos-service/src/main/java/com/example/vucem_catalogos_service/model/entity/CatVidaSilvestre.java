@@ -52,6 +52,9 @@ public class CatVidaSilvestre {
     @Size(max = 100)
     @Column(name = "funcion_zootecnica", length = 100)
     private String funcionZootecnica;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_genero")
+    private CatGenero idGenero;
 
 
 }

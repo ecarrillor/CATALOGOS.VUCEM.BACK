@@ -5,6 +5,7 @@ import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
 import com.example.vucem_catalogos_service.model.dto.CasFraccionTtra.CatCasFraccionTtraRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CasFraccionTtra.CatCasFraccionTtraResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
+import com.example.vucem_catalogos_service.model.dto.FraccionAranceSearchDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,10 @@ public class CatCasFraccionTtraController {
     @GetMapping(CatalogPaths.LIST_CAS_SELECT)
     public ResponseEntity<List<SelectDTO>> listadoCas() {
         return ResponseEntity.ok(service.listadoCas());
+    }
+
+    @GetMapping(CatalogPaths.LIST_CAS_SELECT_FRACCION_AR)
+    public ResponseEntity<List<FraccionAranceSearchDTO>> listadoFraccionAr() {
+        return ResponseEntity.ok(service.listadoFraccionAr());
     }
 }

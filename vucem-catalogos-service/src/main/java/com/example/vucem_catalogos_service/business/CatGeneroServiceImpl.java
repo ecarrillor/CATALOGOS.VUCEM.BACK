@@ -1,6 +1,5 @@
 package com.example.vucem_catalogos_service.business;
 
-import com.example.vucem_catalogos_service.model.entity.CatEsquemaRegla8;
 import com.example.vucem_catalogos_service.model.entity.CatGenero;
 import com.example.vucem_catalogos_service.persistence.repo.ICatGeneroRepository;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;

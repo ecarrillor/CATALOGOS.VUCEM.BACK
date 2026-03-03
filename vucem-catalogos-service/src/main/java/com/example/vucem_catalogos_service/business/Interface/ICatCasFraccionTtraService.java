@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.business.Interface;
 import com.example.vucem_catalogos_service.model.dto.CasFraccionTtra.CatCasFraccionTtraRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CasFraccionTtra.CatCasFraccionTtraResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
+import com.example.vucem_catalogos_service.model.dto.FraccionAranceSearchDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,6 @@ public interface ICatCasFraccionTtraService {
     List<ClasifProductoTraDTO> listadoTipoTramite();
 
     List<SelectDTO> listadoCas();
+
+    List<FraccionAranceSearchDTO> listadoFraccionAr();
 }

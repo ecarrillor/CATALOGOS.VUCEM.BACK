@@ -23,4 +23,16 @@ public interface ICatFraccionArancelariaRepository extends JpaRepository<CatFrac
                 ORDER BY f.cveFraccion
             """)
     List<FraccionAranceSearchDTO> listadoArancelariaById(String term);
+
+
+    @Query("""
+                SELECT new com.example.vucem_catalogos_service.model.dto.FraccionAranceSearchDTO(
+                 c.cveFraccion,
+                 CONCAT(c.cveFraccion, ' ', c.descripcion)
+                 )
+                 FROM CatFraccionArancelaria c
+                 WHERE c.blnActivo = true
+                 ORDER BY c.descripcion ASC
+            """)
+    List<FraccionAranceSearchDTO> listadoFraccionAr();
 }

@@ -29,12 +29,15 @@ public interface ICatVidaSilvestreRepository extends JpaRepository<CatVidaSilves
                 e.funcionZootecnica
             )
             FROM CatVidaSilvestre e
+            LEFT JOIN e.idEspecie especie
+            LEFT JOIN e.idGenero gen
             WHERE (:search IS NULL OR LOWER(e.descNombreComun) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 OR LOWER(e.descNombreCientifico) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 OR LOWER(e.ideTipoVidaSilvestre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatVidaSilvestreDTO> search(@Param("search") String search,
+                                      @Param("tipo") String tipo,
                                       @Param("activo") Boolean activo,
                                       Pageable pageable);
 

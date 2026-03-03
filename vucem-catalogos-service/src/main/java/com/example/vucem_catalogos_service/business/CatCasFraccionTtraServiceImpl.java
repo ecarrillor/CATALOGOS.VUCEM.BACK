@@ -1,5 +1,6 @@
 package com.example.vucem_catalogos_service.business;
 
+import com.example.vucem_catalogos_service.model.dto.FraccionAranceSearchDTO;
 import com.example.vucem_catalogos_service.model.entity.CatCa;
 import com.example.vucem_catalogos_service.model.entity.CatCasFraccionTtra;
 import com.example.vucem_catalogos_service.business.Interface.ICatCasFraccionTtraService;
@@ -8,6 +9,7 @@ import com.example.vucem_catalogos_service.model.dto.CasFraccionTtra.CatCasFracc
 import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
+import com.example.vucem_catalogos_service.model.entity.CatFraccionArancelaria;
 import com.example.vucem_catalogos_service.persistence.repo.ICatCasRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatCasFraccionTtraRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatFraccionArancelariaRepository;
@@ -210,6 +212,12 @@ public class CatCasFraccionTtraServiceImpl implements ICatCasFraccionTtraService
             resultado.add(dto);
         }
         return resultado;
+    }
+
+    @Override
+    public List<FraccionAranceSearchDTO> listadoFraccionAr() {
+        return fraccionArancelariaRepository.listadoFraccionAr();
+
     }
 
     private CatCasFraccionTtraResponseDTO toResponseDTO(CatCasFraccionTtra entity) {
