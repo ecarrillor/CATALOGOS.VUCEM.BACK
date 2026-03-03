@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.controller;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatEspecieService;
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
+import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.dto.Especie.CatEspecieRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.Especie.CatEspecieResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.LeyendaTexto.CatLeyendaTextoRequestDTO;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(CatalogPaths.CONTROLLER)
@@ -46,9 +49,15 @@ public class CatEspecieController {
 
     @PutMapping(CatalogPaths.UPDATE_CAT_ESPECIE)
     public ResponseEntity<CatEspecieResponseDTO> update(
-            @PathVariable Long id,
-            @RequestBody CatLeyendaTextoRequestDTO dto) {
+            @PathVariable Integer id,
+            @RequestBody CatEspecieRequestDTO dto) {
 
         return ResponseEntity.ok(catEspecieService.update(id, dto));
+    }
+
+
+    @GetMapping(CatalogPaths.LIST_TIPO_TRAMITE_ESPECIE)
+    public ResponseEntity<List<ClasifProductoTraDTO>> listadoTipoTramite() {
+        return ResponseEntity.ok(catEspecieService.listadoTipoTramite());
     }
 }
