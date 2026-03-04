@@ -294,10 +294,11 @@ public class CatalogPaths extends ConstPath{
 
     /*entidad CAT_VIDA_SILVESTRE */
     public static final String LIST_VIDA_SILVESTRE   = "/cat_vida_silvestre/list";
-    public static final String SAVE_VIDA_SILVESTRE   = "/cat_vida_silvestre/save";
+    public static final String SAVE_VIDA_SILVESTRE   = "/cat_vida_silvestre/save/{tipo}";
     public static final String FIND_VIDA_SILVESTRE   = "/cat_vida_silvestre/{id}";
     public static final String UPDATE_VIDA_SILVESTRE = "/cat_vida_silvestre/{id}";
     public static final String LIST_ESPECIES_ACTIVAS = "/cat_vida_silvestre/especies";
+    public static final String LIST_TIPO_TRAMITE_VIDA_SILVESTRE     = "/cat_vida_silvestre/tipo_tramite";
 
     /*entidad CAT_ACTIVIDAD_ECONOMICA_SAT */
     public static final String LIST_ACTIVIDAD_ECONOMICA_SAT   = "/cat_activ_eco_sat/list";
@@ -523,7 +524,6 @@ public class CatalogPaths extends ConstPath{
     public static final String LIST_CAS_SELECT               = "/cat_cas_fraccion_ttra/cas";
     public static final String LIST_CAS_SELECT_FRACCION_AR   = "/cat_cas_fraccion_ttra/fraccionArr";
 
-    /*entidad CAT_GENERO */
 
     /*entidad VUC_REPO_FIRMA_GRAL_SE */
     public static final String LIST_VUC_REPO_FIRMA       = "/vuc_repo_firma_gral_se/list";
@@ -532,5 +532,11 @@ public class CatalogPaths extends ConstPath{
     public static final String UPDATE_VUC_REPO_FIRMA     = "/vuc_repo_firma_gral_se/{id}";
     public static final String LIST_TIPOS_FIRMA_VUC_REPO  = "/vuc_repo_firma_gral_se/tipos_firma";
     public static final String LIST_TIPOS_TRAMITE_VUC_REPO = "/vuc_repo_firma_gral_se/tipos_tramite";
+    /*entidad CAT_ESPECIE */
+    public static final String LIST_CAT_ESPECIE        = "/cat_especie/list";
+    public static final String SAVE_CAT_ESPECIE        = "/cat_especie/save/{tipo}";
+    public static final String FIND_CAT_ESPECIE        = "/cat_especie/{id}";
+    public static final String UPDATE_CAT_ESPECIE      = "/cat_especie/{id}";
+    public static final String LIST_TIPO_TRAMITE_ESPECIE   = "/cat_especie/tipo_tramite";
 
 }

@@ -9,8 +9,12 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDate;
 
 @Service
 @Transactional
@@ -55,27 +59,25 @@ public class CatTipoTramiteServiceImpl implements ICatTipoTramiteService {
 
     @Override
     public CatTipoTramiteDTO create(CatTipoTramiteDTO dto) {
+
+        if (catTipoTramiteRepo.existsById(dto.getId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
         CatTipoTramite entity = new CatTipoTramite();
+        entity.setId(dto.getId());
         entity.setCveServicio(dto.getCveServicio());
         entity.setDescServicio(dto.getDescServicio());
         entity.setCveSubservicio(dto.getCveSubservicio());
         entity.setDescSubservicio(dto.getDescSubservicio());
         entity.setCveModalidad(dto.getCveModalidad());
         entity.setDescModalidad(dto.getDescModalidad());
-        entity.setCveFlujo(dto.getCveFlujo());
-        entity.setDescFlujo(dto.getDescFlujo());
-        entity.setNivelServicio(dto.getNivelServicio());
-        entity.setNomServAxway(dto.getNomServAxway());
-        entity.setNomMensajeAxway(dto.getNomMensajeAxway());
-        entity.setUrlAxway(dto.getUrlAxway());
-        entity.setFecCaptura(dto.getFecCaptura());
+        entity.setFecCaptura(LocalDate.now());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setNombre(dto.getNombre());
-        entity.setBlnReplicaInfo(dto.getBlnReplicaInfo());
-        entity.setBlnAutomatico(dto.getBlnAutomatico());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setBlnActivo(dto.getBlnActivo());
-        entity.setBlnAsignacion(dto.getBlnAsignacion());
         entity.setCveModulo(dto.getCveModulo());
 
         if (dto.getIdDependencia() != null) {
