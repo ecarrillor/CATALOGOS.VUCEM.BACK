@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -51,6 +53,9 @@ public class CatCombinacionSg {
     @Size(max = 20)
     @Column(name = "ide_tipo_certificado_merc", length = 20)
     private String ideTipoCertificadoMerc;
+    @OneToMany
+    @JoinColumn(name = "id_combinacion_sg")
+    private Set<VucDatosGeneralesSol> vucDatosGeneralesSols = new LinkedHashSet<>();
 
 
 }

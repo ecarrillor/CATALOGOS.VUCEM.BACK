@@ -525,4 +525,12 @@ public class CatalogPaths extends ConstPath{
 
     /*entidad CAT_GENERO */
 
+    /*entidad VUC_REPO_FIRMA_GRAL_SE */
+    public static final String LIST_VUC_REPO_FIRMA       = "/vuc_repo_firma_gral_se/list";
+    public static final String SAVE_VUC_REPO_FIRMA       = "/vuc_repo_firma_gral_se/save";
+    public static final String FIND_VUC_REPO_FIRMA       = "/vuc_repo_firma_gral_se/{id}";
+    public static final String UPDATE_VUC_REPO_FIRMA     = "/vuc_repo_firma_gral_se/{id}";
+    public static final String LIST_TIPOS_FIRMA_VUC_REPO  = "/vuc_repo_firma_gral_se/tipos_firma";
+    public static final String LIST_TIPOS_TRAMITE_VUC_REPO = "/vuc_repo_firma_gral_se/tipos_tramite";
+
 }
