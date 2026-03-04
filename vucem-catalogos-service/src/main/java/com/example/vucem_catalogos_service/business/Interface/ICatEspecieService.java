@@ -9,9 +9,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ICatEspecieService {
-    PageResponseDTO<CatEspecieResponseDTO> listarEspecie(String search, Pageable pageable);
+    PageResponseDTO<CatEspecieResponseDTO> listarEspecie(String search, Long tipo, Pageable pageable);
 
-    CatEspecieResponseDTO crearEspecie(CatEspecieRequestDTO dto);
+    CatEspecieResponseDTO crearEspecie(CatEspecieRequestDTO dto, Long tipo);
 
     CatEspecieResponseDTO findById(Integer id);
 

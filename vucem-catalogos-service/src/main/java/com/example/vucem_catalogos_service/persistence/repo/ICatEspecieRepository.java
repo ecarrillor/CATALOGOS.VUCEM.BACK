@@ -18,28 +18,43 @@ public interface ICatEspecieRepository extends JpaRepository<CatEspecie, Integer
     List<CatEspecie> findByBlnActivoTrue();
 
     @Query("""
-            SELECT new com.example.vucem_catalogos_service.model.dto.Especie.CatEspecieResponseDTO(
-                a.id,
-                a.descEspecie,
-                a.fecIniVigencia,
-                a.fecFinVigencia,
-                a.blnActivo
+    SELECT new com.example.vucem_catalogos_service.model.dto.Especie.CatEspecieResponseDTO(
+        a.id,
+        a.descEspecie,
+        a.fecIniVigencia,
+        a.fecFinVigencia,
+        a.blnActivo
+    )
+    FROM CatEspecie a
+    WHERE
+        (
+            :search IS NULL OR
+            LOWER(a.descEspecie) LIKE :search OR
+            STR(a.id) LIKE :search
+        )
+        AND (:activo IS NULL OR a.blnActivo = :activo)
+        AND (
+            :tipo IS NULL OR
+            EXISTS (
+                SELECT 1
+                FROM CatVidaSilvestre vs
+                WHERE vs.idEspecie.id = a.id
+                AND (
+                    (:tipo IN (220101L,220201L,221601L) AND vs.ideTipoVidaSilvestre = 'TIVS.SGIZ') OR
+                    (:tipo IN (220102L,220402L) AND vs.ideTipoVidaSilvestre = 'TIVS.SGF') OR
+                    (:tipo IN (220202L,221602L) AND vs.ideTipoVidaSilvestre = 'TIVS.SGFC') OR
+                    (:tipo IN (230101L,230201L,230202L,250101L,250102L,250103L) AND vs.ideTipoVidaSilvestre = 'TIVS.SEM') OR
+                    (:tipo IN (230901L,230903L) AND vs.ideTipoVidaSilvestre = 'TIVS.SEMVS') OR
+                    (:tipo IN (230902L,230903L) AND vs.ideTipoVidaSilvestre = 'TIVS.SEMCI')
+                )
             )
-            FROM CatEspecie a
-            WHERE
-                            (
-                                        :search IS NULL OR
-                                        LOWER(a.descEspecie) LIKE :search OR
-                                        STR(a.id) LIKE :search
-                           )
-                           AND
-                           (
-                               :activo IS NULL OR a.blnActivo = :activo
-                           )
-            """)
+        )
+         ORDER BY a.id DESC
+""")
     Page<CatEspecieResponseDTO> search(
             @Param("search") String search,
             @Param("activo") Boolean activo,
+            @Param("tipo") Long tipo,
             Pageable pageable
     );
 
@@ -88,4 +103,5 @@ AND EXISTS (
 ORDER BY 2 ASC
 """)
     List<ClasifProductoTraDTO> listadoTipoTramite();
+
 }

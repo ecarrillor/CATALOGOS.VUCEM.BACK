@@ -54,7 +54,7 @@ public interface ICatDependenciaRepository extends JpaRepository<CatDependencia,
 
     @Query("""
         SELECT new com.example.vucem_catalogos_service.model.dto.Dependencia.CatDependenciaResponseDTO(
-             a.id,
+                a.id,
                 a.nombre,
                 a.acronimo,
                 b.nombre,

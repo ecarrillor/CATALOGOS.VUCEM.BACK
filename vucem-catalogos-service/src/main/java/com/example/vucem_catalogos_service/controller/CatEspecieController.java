@@ -28,16 +28,17 @@ public class CatEspecieController {
     @GetMapping(CatalogPaths.LIST_CAT_ESPECIE)
     public ResponseEntity<PageResponseDTO<CatEspecieResponseDTO>> listarEspecie(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long tipo,
             Pageable pageable) {
         return ResponseEntity.ok(
-                catEspecieService.listarEspecie(search, pageable));
+                catEspecieService.listarEspecie(search, tipo, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CAT_ESPECIE)
-    public ResponseEntity<CatEspecieResponseDTO> crear(@RequestBody CatEspecieRequestDTO dto) {
+    public ResponseEntity<CatEspecieResponseDTO> crear(@RequestBody CatEspecieRequestDTO dto, @PathVariable Long tipo) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(catEspecieService.crearEspecie(dto));
+                .body(catEspecieService.crearEspecie(dto, tipo));
     }
 
     @GetMapping(CatalogPaths.FIND_CAT_ESPECIE)

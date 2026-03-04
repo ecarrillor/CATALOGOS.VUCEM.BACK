@@ -180,11 +180,17 @@ public class CatDependenciaServiceImpl implements ICatDependenciaService {
         List<SelectDTO> resultado = new ArrayList<>();
 
         for (CatDependenciaResponseDTO producto : productos) {
-            SelectDTO dto = new SelectDTO();
-            dto.setId(producto.getCveDependencia());
-            dto.setNombre(producto.getNombreDependencia());
-            resultado.add(dto);
+
+            if (producto.getNombreDependencia() != null
+                    && !producto.getNombreDependencia().trim().isEmpty()) {
+
+                SelectDTO dto = new SelectDTO();
+                dto.setId(producto.getCveDependencia());
+                dto.setNombre(producto.getNombreDependencia());
+                resultado.add(dto);
+            }
         }
+
         return resultado;
     }
 }

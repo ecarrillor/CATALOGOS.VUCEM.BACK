@@ -9,7 +9,9 @@ import com.example.vucem_catalogos_service.model.dto.LeyendaTexto.CatLeyendaText
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatCategoriaTextil;
 import com.example.vucem_catalogos_service.model.entity.CatEspecie;
+import com.example.vucem_catalogos_service.model.entity.CatVidaSilvestre;
 import com.example.vucem_catalogos_service.persistence.repo.ICatEspecieRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatVidaSilvestreRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +29,11 @@ public class CatEspecieServiceImpl implements ICatEspecieService {
     @Autowired
     private ICatEspecieRepository iCatEspecieRepository;
 
+    @Autowired
+    private ICatVidaSilvestreRepository iCatVidaSilvestreRepository;
+
     @Override
-    public PageResponseDTO<CatEspecieResponseDTO> listarEspecie(String search, Pageable pageable) {
+    public PageResponseDTO<CatEspecieResponseDTO> listarEspecie(String search, Long tipo, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -48,7 +53,7 @@ public class CatEspecieServiceImpl implements ICatEspecieService {
         }
 
         Page<CatEspecieResponseDTO> page =
-                iCatEspecieRepository.search(texto, activo, pageable);
+                iCatEspecieRepository.search(texto, activo, tipo,pageable);
 
         return PageResponseDTO.<CatEspecieResponseDTO>builder()
                 .content(page.getContent())
@@ -61,30 +66,43 @@ public class CatEspecieServiceImpl implements ICatEspecieService {
     }
 
     @Override
-    public CatEspecieResponseDTO crearEspecie(CatEspecieRequestDTO dto) {
-        if (iCatEspecieRepository.existsById(dto.getNumEspecie())){
+    public CatEspecieResponseDTO crearEspecie(CatEspecieRequestDTO dto, Long tipo) {
+        if (iCatEspecieRepository.existsById(dto.getNumEspecie())) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "El id ya existe"
             );
         }
 
+        validarTipoTramite(tipo);
         CatEspecie entity = new CatEspecie();
-
         entity.setId(dto.getNumEspecie());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
         entity.setDescEspecie(dto.getDescripcionEspecie());
         entity.setBlnActivo(dto.getBlnActivo());
 
-        CatEspecie saved = iCatEspecieRepository.save(entity);
+        CatEspecie savedEspecie = iCatEspecieRepository.save(entity);
+
+        String tipoVida = obtenerTipoVidaPorTipoTramite(tipo);
+
+        CatVidaSilvestre vida = new CatVidaSilvestre();
+        vida.setIdeTipoVidaSilvestre(tipoVida);
+        vida.setIdEspecie(savedEspecie);
+
+        vida.setDescNombreComun("PENDIENTE");
+        vida.setDescNombreCientifico("PENDIENTE");
+        vida.setFecIniVigencia(dto.getFecIniVigencia());
+        vida.setBlnActivo(true);
+
+        iCatVidaSilvestreRepository.save(vida);
 
         return CatEspecieResponseDTO.builder()
-                .numEspecie(saved.getId())
-                .descripcionEspecie(saved.getDescEspecie())
-                .fecIniVigencia(saved.getFecIniVigencia())
-                .fecFinVigencia(saved.getFecFinVigencia())
-                .blnActivo(saved.getBlnActivo())
+                .numEspecie(savedEspecie.getId())
+                .descripcionEspecie(savedEspecie.getDescEspecie())
+                .fecIniVigencia(savedEspecie.getFecIniVigencia())
+                .fecFinVigencia(savedEspecie.getFecFinVigencia())
+                .blnActivo(savedEspecie.getBlnActivo())
                 .build();
     }
 
@@ -132,5 +150,35 @@ public class CatEspecieServiceImpl implements ICatEspecieService {
     @Override
     public List<ClasifProductoTraDTO> listadoTipoTramite() {
         return iCatEspecieRepository.listadoTipoTramite();
+    }
+
+    private void  validarTipoTramite(Long tipo) {
+
+        if (List.of(220101L,220201L,221601L).contains(tipo)) return;
+        if (List.of(220102L,220402L).contains(tipo)) return;
+        if (List.of(220202L,221602L).contains(tipo)) return;
+        if (List.of(230101L,230201L,230202L,250101L,250102L,250103L).contains(tipo)) return;
+        if (List.of(230901L,230903L).contains(tipo)) return;
+        if (List.of(230902L,230903L).contains(tipo)) return;
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "El idTipoTramite no corresponde a ningún tipo válido"
+        );
+    }
+
+    private String obtenerTipoVidaPorTipoTramite(Long tipo) {
+
+        if (List.of(220101L,220201L,221601L).contains(tipo)) return "TIVS.SGIZ";
+        if (List.of(220102L,220402L).contains(tipo)) return "TIVS.SGF";
+        if (List.of(220202L,221602L).contains(tipo)) return "TIVS.SGFC";
+        if (List.of(230101L,230201L,230202L,250101L,250102L,250103L).contains(tipo)) return "TIVS.SEM";
+        if (List.of(230901L,230903L).contains(tipo)) return "TIVS.SEMVS";
+        if (List.of(230902L,230903L).contains(tipo)) return "TIVS.SEMCI";
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "El idTipoTramite no corresponde a ningún tipo válido"
+        );
     }
 }
