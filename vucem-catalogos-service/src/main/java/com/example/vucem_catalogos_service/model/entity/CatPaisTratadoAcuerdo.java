@@ -6,6 +6,8 @@ import lombok.Data;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -41,6 +43,10 @@ public class CatPaisTratadoAcuerdo {
 
     @Column(name = "bln_envio_electronico")
     private Boolean blnEnvioElectronico;
+    @OneToMany
+    private Set<CatVigenciaServicio> catVigenciaServicios = new LinkedHashSet<>();
+    @OneToMany
+    private Set<CnfNormaPaisCriterio> cnfNormaPaisCriterios = new LinkedHashSet<>();
 
 
 }

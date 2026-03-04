@@ -30,13 +30,13 @@ public class CatVigenciaServicio {
     @Column(name = "ide_tipo_servicio_ceror", length = 20)
     private String ideTipoServicioCeror;
 
-    @JoinColumns({
+/*    @JoinColumns({
             @JoinColumn(name = "cve_pais",
                     referencedColumnName = "cve_pais"),
             @JoinColumn(name = "id_tratado_acuerdo",
                     referencedColumnName = "id_tratado_acuerdo")})
     @ManyToOne(fetch = FetchType.LAZY)
-    private CatPaisTratadoAcuerdo catPaisTratadoAcuerdo;
+    private CatPaisTratadoAcuerdo catPaisTratadoAcuerdo;*/
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_bloque", referencedColumnName = "id_tratado_acuerdo")
@@ -53,6 +53,17 @@ public class CatVigenciaServicio {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cve_criterio_origen")
     private CatCriterioOrigen cveCriterioOrigen;
+
+
+    @JoinColumns({
+            @JoinColumn(name = "fec_fin_vigencia",
+                    referencedColumnName = "fec_fin_vigencia"),
+            @JoinColumn(name = "cve_pais",
+                    referencedColumnName = "cve_pais"),
+            @JoinColumn(name = "id_tratado_acuerdo",
+                    referencedColumnName = "id_tratado_acuerdo")})
+    @ManyToOne(fetch = FetchType.LAZY)
+    private CatPaisTratadoAcuerdo catPaisTratadoAcuerdo;
 
 
 }

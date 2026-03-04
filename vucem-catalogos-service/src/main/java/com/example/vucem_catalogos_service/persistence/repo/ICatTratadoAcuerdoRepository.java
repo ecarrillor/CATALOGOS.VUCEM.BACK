@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -55,4 +56,12 @@ public interface ICatTratadoAcuerdoRepository extends JpaRepository<CatTratadoAc
             WHERE e.id = :id
             """)
     Optional<CatTratadoAcuerdoDTO> findByTratadoAcuerdoDTO(@Param("id") Short id);
+
+    @Query("SELECT t.id AS id, t.nombre AS nombre FROM CatTratadoAcuerdo t WHERE t.blnActivo = true ORDER BY t.nombre ASC")
+    List<ComboProyeccion> listadoTratadosActivos();
+
+    interface ComboProyeccion {
+        Short getId();
+        String getNombre();
+    }
 }
