@@ -1,11 +1,9 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatVidaSilvestreService;
-import com.example.vucem_catalogos_service.model.dto.CatVidaSilvestreDTO;
-import com.example.vucem_catalogos_service.model.dto.CatVidaSilvestreResponseDTO;
-import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
-import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.*;
 import com.example.vucem_catalogos_service.model.entity.CatEspecie;
+import com.example.vucem_catalogos_service.model.entity.CatGenero;
 import com.example.vucem_catalogos_service.model.entity.CatVidaSilvestre;
 import com.example.vucem_catalogos_service.persistence.repo.ICatEspecieRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatVidaSilvestreRepository;
@@ -68,7 +66,7 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
     }
 
     @Override
-    public CatVidaSilvestreDTO create(CatVidaSilvestreResponseDTO dto, Long tipo) {
+    public CatVidaSilvestreDTO create(CatVidaSilvestreRequestDTO dto, Long tipo) {
         if (catVidaSilvestreRepository.existsById(dto.getId())) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
@@ -76,30 +74,41 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
             );
         }
 
-        if (catVidaSilvestreRepository
-                .existsByDescNombreComunAndDescNombreCientifico(
-                        dto.getDescNombreComun(),
-                        dto.getDescNombreCientifico())) {
-
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Ya existe un registro con el mismo nombre común y nombre científico"
-            );
-        }
         CatVidaSilvestre entity = new CatVidaSilvestre();
-        String tipoVida = obtenerTipoVidaPorTipoTramite(dto.getIdTipoTramite());
 
+        // Tipo vida silvestre (mapeado por tipo trámite)
+        String tipoVida = obtenerTipoVidaPorTipoTramite(tipo);
         entity.setIdeTipoVidaSilvestre(tipoVida);
 
         entity.setId(dto.getId());
-        //entity.setIdeTipoVidaSilvestre(dto.getIdeTipoVidaSilvestre());
+
+        // CAMPOS OPCIONALES SEGÚN FORM
         entity.setDescNombreComun(dto.getDescNombreComun());
         entity.setDescNombreCientifico(dto.getDescNombreCientifico());
+        entity.setIdeClasifTaxonomica(dto.getIdeClasifTaxonomica());
+
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
         entity.setBlnActivo(dto.getBlnActivo());
 
+        // GENERO
+        if (dto.getIdGenero() != null) {
+            CatGenero genero = new CatGenero();
+            genero.setId(dto.getIdGenero());
+            entity.setIdGenero(genero);
+        }
+
+        // ESPECIE
+        if (dto.getIdEspecie() != null) {
+            CatEspecie especie = new CatEspecie();
+            especie.setId(dto.getIdEspecie());
+            entity.setIdEspecie(especie);
+        }
+
+        entity.setFuncionZootecnica(null);
+
         CatVidaSilvestre saved = catVidaSilvestreRepository.save(entity);
+
         return mapToDTO(saved);
     }
 
@@ -144,7 +153,7 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
         return CatVidaSilvestreDTO.builder()
                 .id(entity.getId())
                 .ideTipoVidaSilvestre(entity.getIdeTipoVidaSilvestre())
-                .idEspecie(entity.getIdEspecie() != null ? entity.getIdEspecie().getId() : null)
+                //.idEspecie(entity.getIdEspecie() != null ? entity.getIdEspecie().getId() : null)
                 .descEspecie(entity.getIdEspecie() != null ? entity.getIdEspecie().getDescEspecie() : null)
                 .descNombreComun(entity.getDescNombreComun())
                 .descNombreCientifico(entity.getDescNombreCientifico())
@@ -152,7 +161,7 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
                 .fecFinVigencia(entity.getFecFinVigencia())
                 .blnActivo(entity.getBlnActivo())
                 .ideClasifTaxonomica(entity.getIdeClasifTaxonomica())
-                .funcionZootecnica(entity.getFuncionZootecnica())
+                //.funcionZootecnica(entity.getFuncionZootecnica())
                 .build();
     }
 

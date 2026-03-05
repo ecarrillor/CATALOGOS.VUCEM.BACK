@@ -1,5 +1,6 @@
 package com.example.vucem_catalogos_service.model.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,15 +12,25 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CatVidaSilvestreDTO {
+public class CatVidaSilvestreRequestDTO {
+
     private Integer id;
-    private String ideTipoVidaSilvestre;
-    private String descGenero;
-    private String descEspecie;
+
+    private Long idTipoTramite;
+
+    private Integer idGenero;
+
+    private Integer idEspecie;
+
     private String descNombreComun;
+
     private String descNombreCientifico;
+
     private String ideClasifTaxonomica;
+
     private LocalDate fecIniVigencia;
+
     private LocalDate fecFinVigencia;
+
     private Boolean blnActivo;
 }

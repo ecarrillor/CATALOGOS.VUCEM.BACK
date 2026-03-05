@@ -152,6 +152,15 @@ public class CatEspecieServiceImpl implements ICatEspecieService {
         return iCatEspecieRepository.listadoTipoTramite();
     }
 
+    @Override
+    public ClasifProductoTraDTO lastEspecie() {
+        CatEspecie ultimo = iCatEspecieRepository.findTopByOrderByIdDesc();
+        ClasifProductoTraDTO clasifProductoTraDTO = new ClasifProductoTraDTO();
+        clasifProductoTraDTO.setId(Long.valueOf(ultimo.getId()));
+        clasifProductoTraDTO.setNombre(ultimo.getDescEspecie());
+        return clasifProductoTraDTO;
+    }
+
     private void  validarTipoTramite(Long tipo) {
 
         if (List.of(220101L,220201L,221601L).contains(tipo)) return;

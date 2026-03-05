@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.persistence.repo;
 import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.dto.Especie.CatEspecieResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatEspecie;
+import com.example.vucem_catalogos_service.model.entity.CatVidaSilvestre;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -104,4 +105,13 @@ ORDER BY 2 ASC
 """)
     List<ClasifProductoTraDTO> listadoTipoTramite();
 
+
+    @Query("""
+SELECT e.id
+FROM CatVidaSilvestre e
+ORDER BY e.id DESC
+""")
+    ClasifProductoTraDTO lastEspecie();
+
+    CatEspecie findTopByOrderByIdDesc();
 }

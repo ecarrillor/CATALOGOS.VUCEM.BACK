@@ -5,7 +5,11 @@ import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.RestriccionTtra.CatRestriccionTtraRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.RestriccionTtra.CatRestriccionTtraResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
+import com.example.vucem_catalogos_service.model.entity.CatCategoriaTextil;
 import com.example.vucem_catalogos_service.model.entity.CatRestriccionTtra;
+import com.example.vucem_catalogos_service.model.entity.CatUnidadMedida;
+import com.example.vucem_catalogos_service.persistence.repo.ICatCategoriaTextilRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatRestriccionTtraRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
 import jakarta.transaction.Transactional;
@@ -16,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +32,9 @@ public class CatRestriccionTtraServiceImpl implements ICatRestriccionTtraService
 
     @Autowired
     private ICatTipoTramiteRepository tipoTramiteRepository;
+
+    @Autowired
+    ICatCategoriaTextilRepository catCategoriaTextilRepository;
 
     @Override
     public PageResponseDTO<CatRestriccionTtraResponseDTO> listAll(String search, Long idTipoTramite, Pageable pageable) {
@@ -159,6 +167,7 @@ public class CatRestriccionTtraServiceImpl implements ICatRestriccionTtraService
     public List<ClasifProductoTraDTO> listadoTipoTramite() {
         return repository.listadoTipoTramite();
     }
+
 
     private CatRestriccionTtraResponseDTO toResponseDTO(CatRestriccionTtra entity) {
         String descTipoTramite = entity.getIdTipoTramite().getId() + " " +

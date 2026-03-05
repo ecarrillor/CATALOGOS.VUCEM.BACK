@@ -1,6 +1,8 @@
 package com.example.vucem_catalogos_service.persistence.repo;
 
 import com.example.vucem_catalogos_service.model.dto.CategoriaTextil.CatCategoriaTextilResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
+import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatCategoriaTextil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,4 +51,16 @@ public interface ICatCategoriaTextilRepository extends JpaRepository<CatCategori
     );
 
     List<CatCategoriaTextil> findAllByBlnActivoTrueOrderByDescripcionAsc();
-}
+
+    @Query("""
+   SELECT DISTINCT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(
+    x.id,
+    x.descripcion
+)
+FROM CatFraccionTtra y
+JOIN y.idCategoriaTextil x
+WHERE y.idTipoTramite.id = :id
+AND x.blnActivo = true
+ORDER BY x.descripcion ASC
+""")
+    List<ClasifProductoTraDTO> selectCategoriaTextil(@Param("id") Long id);}

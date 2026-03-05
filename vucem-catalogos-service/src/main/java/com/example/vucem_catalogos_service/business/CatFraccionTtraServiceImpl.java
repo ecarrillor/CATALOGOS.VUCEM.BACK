@@ -8,6 +8,7 @@ import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatCategoriaTextil;
 import com.example.vucem_catalogos_service.model.entity.CatFraccionTtra;
+import com.example.vucem_catalogos_service.model.entity.CatUnidadMedida;
 import com.example.vucem_catalogos_service.persistence.repo.ICatCategoriaTextilRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatFraccionArancelariaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatFraccionTtraRepository;
@@ -228,9 +229,26 @@ public class CatFraccionTtraServiceImpl implements ICatFraccionTtraService {
 
         List<SelectDTO> resultado = new ArrayList<>();
         for (CatCategoriaTextil c : categorias) {
-            SelectDTO dto = new SelectDTO();
-            dto.setId(c.getId());
-            dto.setNombre(c.getDescripcion());
+            if (c.getDescripcion() != null && !c.getDescripcion().trim().isEmpty()) {
+
+                SelectDTO dto = new SelectDTO();
+                dto.setId(c.getId());
+                dto.setNombre(c.getDescripcion());
+                resultado.add(dto);
+            }
+        }
+        return resultado;
+    }
+
+    @Override
+    public List<ClasifProductoTraDTO> selectCategoriaTextil(Long id) {
+        List<ClasifProductoTraDTO> productos = categoriaTextilRepository.selectCategoriaTextil(id);
+        List<ClasifProductoTraDTO> resultado = new ArrayList<>();
+
+        for (ClasifProductoTraDTO producto : productos) {
+            ClasifProductoTraDTO dto = new ClasifProductoTraDTO();
+            dto.setNombre(producto.getNombre());
+            dto.setId(producto.getId());
             resultado.add(dto);
         }
         return resultado;

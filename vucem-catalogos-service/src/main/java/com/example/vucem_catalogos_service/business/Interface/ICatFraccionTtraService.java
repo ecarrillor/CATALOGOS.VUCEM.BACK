@@ -22,4 +22,6 @@ public interface ICatFraccionTtraService {
     List<ClasifProductoTraDTO> listadoTipoTramite();
 
     List<SelectDTO> listadoCategoriaTextil();
+
+    List<ClasifProductoTraDTO> selectCategoriaTextil(Long id);
 }

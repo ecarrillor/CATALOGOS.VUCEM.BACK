@@ -14,7 +14,6 @@ import java.time.LocalDate;
 public class CatVidaSilvestreResponseDTO {
 
     private Integer id;
-    //private String ideTipoVidaSilvestre;
     private Integer idEspecie;
     private String descEspecie;
     private String descNombreComun;

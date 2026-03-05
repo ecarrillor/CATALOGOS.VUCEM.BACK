@@ -57,4 +57,9 @@ public class CatFraccionTtraController {
     public ResponseEntity<List<SelectDTO>> listadoCategoriaTextil() {
         return ResponseEntity.ok(service.listadoCategoriaTextil());
     }
+
+    @GetMapping(CatalogPaths.SELECT_CATEGORIA_TEXTIL)
+    public ResponseEntity<List<ClasifProductoTraDTO>> selectCategoriaTextil(@PathVariable Long id) {
+        return ResponseEntity.ok(service.selectCategoriaTextil(id));
+    }
 }

@@ -18,4 +18,6 @@ public interface ICatEspecieService {
     CatEspecieResponseDTO update(Integer id, CatEspecieRequestDTO dto);
 
     List<ClasifProductoTraDTO> listadoTipoTramite();
+
+    ClasifProductoTraDTO lastEspecie();
 }

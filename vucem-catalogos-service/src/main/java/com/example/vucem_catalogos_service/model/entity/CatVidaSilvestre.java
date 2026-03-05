@@ -23,7 +23,11 @@ public class CatVidaSilvestre {
     private String ideTipoVidaSilvestre;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_especie", referencedColumnName = "id_especie")
+    @JoinColumn(name = "id_genero")
+    private CatGenero idGenero;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_especie")
     private CatEspecie idEspecie;
 
     @Size(max = 256)
@@ -34,27 +38,22 @@ public class CatVidaSilvestre {
     @Column(name = "desc_nombre_cientifico", length = 256)
     private String descNombreCientifico;
 
-    @NotNull
+    @Size(max = 20)
+    @Column(name = "ide_clasif_taxonomica", length = 20)
+    private String ideClasifTaxonomica;
+
     @Column(name = "fec_ini_vigencia", nullable = false)
     private LocalDate fecIniVigencia;
 
     @Column(name = "fec_fin_vigencia")
     private LocalDate fecFinVigencia;
 
-    @NotNull
     @Column(name = "bln_activo", nullable = false)
     private Boolean blnActivo;
-
-    @Size(max = 20)
-    @Column(name = "ide_clasif_taxonomica", length = 20)
-    private String ideClasifTaxonomica;
 
     @Size(max = 100)
     @Column(name = "funcion_zootecnica", length = 100)
     private String funcionZootecnica;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_genero")
-    private CatGenero idGenero;
 
 
 }
