@@ -3,50 +3,44 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.business.Interface.ICatPaisTratadoAcuerdoService;
 import com.example.vucem_catalogos_service.model.dto.CatPaisTratadoAcuerdoRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatPaisTratadoAcuerdoResponseDTO;
-import com.example.vucem_catalogos_service.model.dto.CatPlazoTtraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
-import com.example.vucem_catalogos_service.model.entity.*;
+import com.example.vucem_catalogos_service.model.entity.CatPais;
+import com.example.vucem_catalogos_service.model.entity.CatPaisTratadoAcuerdo;
+import com.example.vucem_catalogos_service.model.entity.CatPaisTratadoAcuerdoId;
+import com.example.vucem_catalogos_service.model.entity.CatTratadoAcuerdo;
 import com.example.vucem_catalogos_service.persistence.repo.ICatPaisRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatPaisTratadoAcuerdoIdRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoAcuerdoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Transactional
 public class CatPaisTratadoAcuerdoServiceImpl implements ICatPaisTratadoAcuerdoService {
 
     @Autowired
-    private ICatPaisTratadoAcuerdoIdRepository iCatPaisTratadoAcuerdoIdRepository;
+    private ICatPaisTratadoAcuerdoIdRepository repository;
 
     @Autowired
-    private ICatTratadoAcuerdoRepository iCatTratadoAcuerdoRepository;
+    private ICatTratadoAcuerdoRepository catTratadoAcuerdoRepository;
 
     @Autowired
-    private ICatPaisRepository iCatPaisRepository;
+    private ICatPaisRepository catPaisRepository;
 
     @Override
-    public PageResponseDTO<CatPaisTratadoAcuerdoResponseDTO> list(String search, Pageable pageable) {
-        Boolean activo = null;
-        String texto = null;
+    public PageResponseDTO<CatPaisTratadoAcuerdoResponseDTO> list(
+            String cvePais, Short idTratadoAcuerdo, Boolean blnActivo, Pageable pageable) {
 
-        if ("activo".equalsIgnoreCase(search)) {
-            activo = true;
-        } else if ("inactivo".equalsIgnoreCase(search)) {
-            activo = false;
-        } else {
-            texto = search;
-        }
-
-        Page<CatPaisTratadoAcuerdoResponseDTO> page = iCatPaisTratadoAcuerdoIdRepository.search(texto, activo, pageable);
+        Page<CatPaisTratadoAcuerdoResponseDTO> page =
+                repository.search(cvePais, idTratadoAcuerdo, blnActivo, pageable);
 
         return PageResponseDTO.<CatPaisTratadoAcuerdoResponseDTO>builder()
                 .content(page.getContent())
@@ -59,76 +53,76 @@ public class CatPaisTratadoAcuerdoServiceImpl implements ICatPaisTratadoAcuerdoS
     }
 
     @Override
-    public CatPaisTratadoAcuerdoResponseDTO findById(String idPais, Short idTratado) {
-        return iCatPaisTratadoAcuerdoIdRepository.findByPaisTratado(idPais, idTratado)
+    public CatPaisTratadoAcuerdoResponseDTO findById(String cvePais, Short idTratadoAcuerdo) {
+        return repository.findByPaisTratado(cvePais, idTratadoAcuerdo)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,"Pais no encontrado para idPais=" + idPais + ", con Tratatdo acuerdo=" + idTratado));
+                        HttpStatus.NOT_FOUND,
+                        "Registro no encontrado: cvePais=" + cvePais + " idTratadoAcuerdo=" + idTratadoAcuerdo));
     }
 
     @Override
     public CatPaisTratadoAcuerdoResponseDTO create(CatPaisTratadoAcuerdoRequestDTO dto) {
-        CatPaisTratadoAcuerdoId id = new CatPaisTratadoAcuerdoId();
-        id.setIdTratadoAcuerdo(dto.getIdTratadoAcuerdo());
-        id.setCvePais(dto.getCvePais());
+        CatPaisTratadoAcuerdoId pk = new CatPaisTratadoAcuerdoId();
+        pk.setCvePais(dto.getCvePais());
+        pk.setIdTratadoAcuerdo(dto.getIdTratadoAcuerdo());
 
-        if (iCatPaisTratadoAcuerdoIdRepository.existsById(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Ya existe un registro con ese Pais y tipo de tratado"
-            );
+        if (repository.existsById(pk)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Ya existe un registro con cvePais=" + dto.getCvePais()
+                    + " e idTratadoAcuerdo=" + dto.getIdTratadoAcuerdo());
         }
 
+        CatPais pais = catPaisRepository.findById(dto.getCvePais())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "País no encontrado: " + dto.getCvePais()));
+
+        CatTratadoAcuerdo tratado = catTratadoAcuerdoRepository.findById(dto.getIdTratadoAcuerdo())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Tratado de acuerdo no encontrado: " + dto.getIdTratadoAcuerdo()));
 
         CatPaisTratadoAcuerdo entity = new CatPaisTratadoAcuerdo();
-        entity.setId(id);
-
-        CatTratadoAcuerdo tratadoAcuerdo =
-                iCatTratadoAcuerdoRepository.findById(dto.getIdTratadoAcuerdo())
-                        .orElseThrow(() -> new ResponseStatusException( HttpStatus.NOT_FOUND ,"Tratado Acuerdo no existe"));
-
-        CatPais pais =
-                iCatPaisRepository.findById(dto.getCvePais())
-                        .orElseThrow(() -> new ResponseStatusException( HttpStatus.NOT_FOUND ,"Pais no existe"));
-
+        entity.setId(pk);
         entity.setCvePais(pais);
-        entity.setIdTratadoAcuerdo(tratadoAcuerdo);
+        entity.setIdTratadoAcuerdo(tratado);
         entity.setFecIniVigencia(dto.getFecIniVigencia());
         entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setFecCaptura(LocalDate.now());
-        entity.setBlnActivo(dto.getBlnActivo());
+        entity.setFecCaptura(dto.getFecCaptura() != null ? dto.getFecCaptura() : LocalDate.now());
+        entity.setBlnActivo(dto.getBlnActivo() != null ? dto.getBlnActivo() : true);
 
-        CatPaisTratadoAcuerdo saved = iCatPaisTratadoAcuerdoIdRepository.save(entity);
-        return mapToDTO(saved);
+        repository.save(entity);
+        return findById(dto.getCvePais(), dto.getIdTratadoAcuerdo());
     }
 
     @Override
-    public CatPaisTratadoAcuerdoResponseDTO update(String idPais, Short idTratado, CatPaisTratadoAcuerdoRequestDTO dto) {
+    public CatPaisTratadoAcuerdoResponseDTO update(
+            String cvePais, Short idTratadoAcuerdo, CatPaisTratadoAcuerdoRequestDTO dto) {
+
         CatPaisTratadoAcuerdoId pk = new CatPaisTratadoAcuerdoId();
-        pk.setCvePais(idPais);
-        pk.setIdTratadoAcuerdo(idTratado);
+        pk.setCvePais(cvePais);
+        pk.setIdTratadoAcuerdo(idTratadoAcuerdo);
 
-        CatPaisTratadoAcuerdo entity = iCatPaisTratadoAcuerdoIdRepository.findById(pk)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,"Ya existe un registro con ese Pais y tipo de tratado"));
+        CatPaisTratadoAcuerdo entity = repository.findById(pk)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Registro no encontrado: cvePais=" + cvePais + " idTratadoAcuerdo=" + idTratadoAcuerdo));
 
+        if (dto.getFecIniVigencia() != null) entity.setFecIniVigencia(dto.getFecIniVigencia());
+        if (dto.getFecFinVigencia() != null) entity.setFecFinVigencia(dto.getFecFinVigencia());
+        if (dto.getFecCaptura()     != null) entity.setFecCaptura(dto.getFecCaptura());
+        if (dto.getBlnActivo()      != null) entity.setBlnActivo(dto.getBlnActivo());
 
-        entity.setFecIniVigencia(dto.getFecIniVigencia());
-        entity.setFecFinVigencia(dto.getFecFinVigencia());
-        entity.setBlnActivo(dto.getBlnActivo());
-
-        CatPaisTratadoAcuerdo saved = iCatPaisTratadoAcuerdoIdRepository.save(entity);
-        return mapToDTO(saved);
+        repository.save(entity);
+        return findById(cvePais, idTratadoAcuerdo);
     }
 
-    private CatPaisTratadoAcuerdoResponseDTO mapToDTO(CatPaisTratadoAcuerdo entity) {
-        return CatPaisTratadoAcuerdoResponseDTO.builder()
-                .cvePais(entity.getCvePais().getCvePais())
-                .NombrePais(entity.getCvePais().getNombre())
-                .idTratado(entity.getIdTratadoAcuerdo().getId())
-                .tratadoAcuerdo(entity.getIdTratadoAcuerdo().getCveTratadoAcuerdo())
-                .fecIniVigencia(entity.getFecIniVigencia())
-                .fecFinVigencia(entity.getFecFinVigencia())
-                .blnActivo(entity.getBlnActivo())
-                .build();
+
+
+    @Override
+    public List<ICatPaisRepository.ComboProyeccion> listadoPaises() {
+        return catPaisRepository.listadoPaisesActivos();
+    }
+
+    @Override
+    public List<ICatTratadoAcuerdoRepository.ComboProyeccion> listadoTratados() {
+        return catTratadoAcuerdoRepository.listadoTratadosActivos();
     }
 }

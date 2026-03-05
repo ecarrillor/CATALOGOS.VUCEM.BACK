@@ -111,7 +111,9 @@ public class CatalogPaths extends ConstPath{
     public static final String SAVE_CATALOGO_PAIS_TRATADO_ACUERDO = "/cat_pais_tratado_ac/save";
     public static final String FIND_CATALOGO_PAIS_TRATADO_ACUERDO = "/cat_pais_tratado_ac/{idPais}/{idTratado}";
     public static final String UPDATE_CATALOGO_PAIS_TRATADO_ACUERDO = "/cat_pais_tratado_ac/{idPais}/{idTratado}";
-    public static final String LIST_SELECT_TRATADO_ACUERDO = "/cat_pais_tratado_ac/tratados_acuerdo";
+    public static final String LIST_SELECT_TRATADO_ACUERDO          = "/cat_pais_tratado_ac/tratados_acuerdo";
+    public static final String COMBO_PAISES_PTA                     = "/cat_pais_tratado_ac/paises";
+    public static final String COMBO_TRATADOS_PTA                   = "/cat_pais_tratado_ac/tratados";
 
     /*entidad CAT_APROB_CERT_SE */
     public static final String LIST_CATALOGO_APROB_CERT = "/cat_aprobCert/list";

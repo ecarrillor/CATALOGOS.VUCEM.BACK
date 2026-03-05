@@ -62,6 +62,14 @@ public interface ICatPaisRepository extends JpaRepository<CatPais, String> {
     CatPaisSaveDTO findByPaisDTO(@Param("cvePais") String cvePais);
 
 
+    @Query("SELECT p.cvePais AS cvePais, p.nombre AS nombre FROM CatPais p WHERE p.blnActivo = true ORDER BY p.nombre ASC")
+    List<ComboProyeccion> listadoPaisesActivos();
+
+    interface ComboProyeccion {
+        String getCvePais();
+        String getNombre();
+    }
+
     @Query("""
                 SELECT new com.example.vucem_catalogos_service.model.dto.CatMuncipioDTO(
                     dm.cveDelegMun,
