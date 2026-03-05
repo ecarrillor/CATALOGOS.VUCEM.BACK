@@ -19,4 +19,6 @@ public interface ICatVidaSilvestreService {
     List<CatEspecie> listEspeciesActivas();
 
     List<ClasifProductoTraDTO> listadoTipoTramite();
+
+    List<ClasifProductoTraDTO> listadoGenero();
 }

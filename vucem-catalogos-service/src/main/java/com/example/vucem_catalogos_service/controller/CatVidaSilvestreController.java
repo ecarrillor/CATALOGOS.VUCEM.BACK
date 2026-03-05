@@ -53,4 +53,9 @@ public class CatVidaSilvestreController {
     public ResponseEntity<List<ClasifProductoTraDTO>> listadoTipoTramite() {
         return ResponseEntity.ok(service.listadoTipoTramite());
     }
+
+    @GetMapping(CatalogPaths.LIST_GENERO)
+    public ResponseEntity<List<ClasifProductoTraDTO>> listadoGenero() {
+        return ResponseEntity.ok(service.listadoGenero());
+    }
 }

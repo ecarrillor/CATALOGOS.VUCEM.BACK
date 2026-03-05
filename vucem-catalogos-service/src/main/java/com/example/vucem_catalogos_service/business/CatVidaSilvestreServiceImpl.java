@@ -6,6 +6,7 @@ import com.example.vucem_catalogos_service.model.entity.CatEspecie;
 import com.example.vucem_catalogos_service.model.entity.CatGenero;
 import com.example.vucem_catalogos_service.model.entity.CatVidaSilvestre;
 import com.example.vucem_catalogos_service.persistence.repo.ICatEspecieRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatGeneroRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatVidaSilvestreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,6 +28,9 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
 
     @Autowired
     private ICatEspecieRepository catEspecieRepository;
+
+    @Autowired
+    private ICatGeneroRepository catGeneroRepository;
 
     @Override
     public PageResponseDTO<CatVidaSilvestreDTO> list(String search, Long tipo, Pageable pageable) {
@@ -147,6 +152,20 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
     @Override
     public List<ClasifProductoTraDTO> listadoTipoTramite() {
         return catVidaSilvestreRepository.listadoTipoTramite();
+    }
+
+    @Override
+    public List<ClasifProductoTraDTO> listadoGenero() {
+        List<CatGenero> productos = catGeneroRepository.findByBlnActivoTrue();
+        List<ClasifProductoTraDTO> resultado = new ArrayList<>();
+
+        for (CatGenero producto : productos) {
+            ClasifProductoTraDTO dto = new ClasifProductoTraDTO();
+            dto.setNombre(producto.getDescGenero());
+            dto.setId(Long.valueOf(producto.getId()));
+            resultado.add(dto);
+        }
+        return resultado;
     }
 
     private CatVidaSilvestreDTO mapToDTO(CatVidaSilvestre entity) {

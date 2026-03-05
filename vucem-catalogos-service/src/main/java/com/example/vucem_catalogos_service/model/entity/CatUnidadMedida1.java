@@ -37,7 +37,7 @@ public class CatUnidadMedida1 {
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
-    private Short blnActivo;
+    private Boolean blnActivo;
 
     @Size(max = 20)
     @Column(name = "ide_origen_unidad_medida", length = 20)

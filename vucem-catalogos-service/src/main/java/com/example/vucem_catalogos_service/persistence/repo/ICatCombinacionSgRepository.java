@@ -62,4 +62,5 @@ public interface ICatCombinacionSgRepository extends JpaRepository<CatCombinacio
             WHERE e.id = :id
             """)
     Optional<CatCombinacionSgDTO> findByCombinacionSgDTO(@Param("id") Long id);
+
 }

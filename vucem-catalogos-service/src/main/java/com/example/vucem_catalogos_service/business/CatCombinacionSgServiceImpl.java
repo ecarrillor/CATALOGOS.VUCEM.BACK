@@ -61,6 +61,7 @@ public class CatCombinacionSgServiceImpl implements ICatCombinacionSgService {
 
     @Override
     public CatCombinacionSgDTO create(CatCombinacionSgDTO dto) {
+
         CatCombinacionSg entity = new CatCombinacionSg();
         entity.setId(dto.getId());
         entity.setFecIniVigencia(dto.getFecIniVigencia());
@@ -104,6 +105,7 @@ public class CatCombinacionSgServiceImpl implements ICatCombinacionSgService {
 
     @Override
     public CatCombinacionSgDTO update(Long id, CatCombinacionSgDTO dto) {
+
         CatCombinacionSg entity = catCombinacionSgRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("CatCombinacionSg no encontrado con id: " + id));
 
