@@ -61,4 +61,9 @@ public class CatEspecieController {
     public ResponseEntity<List<ClasifProductoTraDTO>> listadoTipoTramite() {
         return ResponseEntity.ok(catEspecieService.listadoTipoTramite());
     }
+
+    @GetMapping(CatalogPaths.LAST_ESPECIE)
+    public ResponseEntity<ClasifProductoTraDTO> lastEspecie() {
+        return ResponseEntity.ok(catEspecieService.lastEspecie());
+    }
 }

@@ -17,42 +17,41 @@ import java.util.Optional;
 public interface ICatVidaSilvestreRepository extends JpaRepository<CatVidaSilvestre, Integer> {
 
     @Query("""
-    SELECT new com.example.vucem_catalogos_service.model.dto.CatVidaSilvestreDTO(
+SELECT new com.example.vucem_catalogos_service.model.dto.CatVidaSilvestreDTO(
         e.id,
         e.ideTipoVidaSilvestre,
-        e.idEspecie.id,
-        e.idEspecie.descEspecie,
+        gen.descGenero,
+        especie.descEspecie,
         e.descNombreComun,
         e.descNombreCientifico,
+        e.ideClasifTaxonomica,
         e.fecIniVigencia,
         e.fecFinVigencia,
-        e.blnActivo,
-        e.ideClasifTaxonomica,
-        e.funcionZootecnica
-    )
-    FROM CatVidaSilvestre e
-    LEFT JOIN e.idEspecie especie
-    LEFT JOIN e.idGenero gen
-    WHERE
-        (
-             :search IS NULL OR
-             LOWER(e.descNombreComun) LIKE :search OR
-             LOWER(e.ideTipoVidaSilvestre) LIKE :search OR
-             LOWER(e.descNombreCientifico) LIKE :search OR
-             STR(e.ideTipoVidaSilvestre) LIKE :search
-        )
-        AND (:activo IS NULL OR e.blnActivo = :activo)
-  AND (
-         :tipo IS NULL OR
-         (
-             (:tipo IN (220101,220201,221601) AND e.ideTipoVidaSilvestre = 'TIVS.SGIZ') OR
-             (:tipo IN (220102,220402) AND e.ideTipoVidaSilvestre = 'TIVS.SGF') OR
-             (:tipo IN (220202,221602) AND e.ideTipoVidaSilvestre = 'TIVS.SGFC') OR
-             (:tipo IN (230101,230201,230202,250101,250102,250103) AND e.ideTipoVidaSilvestre = 'TIVS.SEM') OR
-             (:tipo IN (230901,230903) AND e.ideTipoVidaSilvestre = 'TIVS.SEMVS') OR
-             (:tipo IN (230902,230903) AND e.ideTipoVidaSilvestre = 'TIVS.SEMCI')
-        )
-    )
+        e.blnActivo
+)
+FROM CatVidaSilvestre e
+LEFT JOIN e.idEspecie especie
+LEFT JOIN e.idGenero gen
+WHERE
+(
+    :search IS NULL OR
+    LOWER(e.descNombreComun) LIKE :search OR
+    LOWER(e.ideTipoVidaSilvestre) LIKE :search OR
+    LOWER(e.descNombreCientifico) LIKE :search
+)
+AND (:activo IS NULL OR e.blnActivo = :activo)
+AND (
+       :tipo IS NULL OR
+       (
+           (:tipo IN (220101,220201,221601) AND e.ideTipoVidaSilvestre = 'TIVS.SGIZ') OR
+           (:tipo IN (220102,220402) AND e.ideTipoVidaSilvestre = 'TIVS.SGF') OR
+           (:tipo IN (220202,221602) AND e.ideTipoVidaSilvestre = 'TIVS.SGFC') OR
+           (:tipo IN (230101,230201,230202,250101,250102,250103) AND e.ideTipoVidaSilvestre = 'TIVS.SEM') OR
+           (:tipo IN (230901,230903) AND e.ideTipoVidaSilvestre = 'TIVS.SEMVS') OR
+           (:tipo IN (230902,230903) AND e.ideTipoVidaSilvestre = 'TIVS.SEMCI')
+       )
+)
+ORDER BY e.id ASC
 """)
     Page<CatVidaSilvestreDTO> search(@Param("search") String search,
                                       @Param("tipo") Long tipo,
@@ -63,16 +62,14 @@ public interface ICatVidaSilvestreRepository extends JpaRepository<CatVidaSilves
     SELECT new com.example.vucem_catalogos_service.model.dto.CatVidaSilvestreDTO(
         e.id,
         e.ideTipoVidaSilvestre,
-        especie.id,
+        gen.descGenero,
         especie.descEspecie,
         e.descNombreComun,
         e.descNombreCientifico,
+        e.ideClasifTaxonomica,
         e.fecIniVigencia,
         e.fecFinVigencia,
-        e.blnActivo,
-        e.ideClasifTaxonomica,
-        e.funcionZootecnica
-        
+        e.blnActivo
     )
     FROM CatVidaSilvestre e
     LEFT JOIN e.idEspecie especie

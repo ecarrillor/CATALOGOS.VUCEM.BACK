@@ -1,9 +1,6 @@
 package com.example.vucem_catalogos_service.business.Interface;
 
-import com.example.vucem_catalogos_service.model.dto.CatVidaSilvestreDTO;
-import com.example.vucem_catalogos_service.model.dto.CatVidaSilvestreResponseDTO;
-import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
-import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.*;
 import com.example.vucem_catalogos_service.model.entity.CatEspecie;
 import org.springframework.data.domain.Pageable;
 
@@ -15,11 +12,13 @@ public interface ICatVidaSilvestreService {
 
     CatVidaSilvestreDTO findById(Integer id);
 
-    CatVidaSilvestreDTO create(CatVidaSilvestreResponseDTO dto, Long tipo);
+    CatVidaSilvestreDTO create(CatVidaSilvestreRequestDTO dto, Long tipo);
 
     CatVidaSilvestreDTO update(Integer id, CatVidaSilvestreDTO dto);
 
     List<CatEspecie> listEspeciesActivas();
 
     List<ClasifProductoTraDTO> listadoTipoTramite();
+
+    List<ClasifProductoTraDTO> listadoGenero();
 }

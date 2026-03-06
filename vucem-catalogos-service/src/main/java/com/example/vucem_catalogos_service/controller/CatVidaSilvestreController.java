@@ -2,10 +2,7 @@ package com.example.vucem_catalogos_service.controller;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatVidaSilvestreService;
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
-import com.example.vucem_catalogos_service.model.dto.CatVidaSilvestreDTO;
-import com.example.vucem_catalogos_service.model.dto.CatVidaSilvestreResponseDTO;
-import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
-import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.*;
 import com.example.vucem_catalogos_service.model.entity.CatEspecie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +33,7 @@ public class CatVidaSilvestreController {
     }
 
     @PostMapping(CatalogPaths.SAVE_VIDA_SILVESTRE)
-    public ResponseEntity<CatVidaSilvestreDTO> create(@RequestBody CatVidaSilvestreResponseDTO dto, @PathVariable Long tipo) {
+    public ResponseEntity<CatVidaSilvestreDTO> create(@RequestBody CatVidaSilvestreRequestDTO dto, @PathVariable Long tipo) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto, tipo));
     }
 
@@ -55,5 +52,10 @@ public class CatVidaSilvestreController {
     @GetMapping(CatalogPaths.LIST_TIPO_TRAMITE_VIDA_SILVESTRE)
     public ResponseEntity<List<ClasifProductoTraDTO>> listadoTipoTramite() {
         return ResponseEntity.ok(service.listadoTipoTramite());
+    }
+
+    @GetMapping(CatalogPaths.LIST_GENERO)
+    public ResponseEntity<List<ClasifProductoTraDTO>> listadoGenero() {
+        return ResponseEntity.ok(service.listadoGenero());
     }
 }

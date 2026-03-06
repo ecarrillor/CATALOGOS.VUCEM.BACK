@@ -49,7 +49,7 @@ public class CatCatalogoD {
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
-    private Short blnActivo;
+    private Boolean blnActivo;
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cve_catalogo_h", nullable = false)

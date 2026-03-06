@@ -62,10 +62,10 @@ public class CnfNormaPaisCriterio {
 
     @NotNull
     @Column(name = "bln_activo", nullable = false)
-    private Short blnActivo;
+    private Boolean blnActivo;
 
     @Column(name = "bln_sentido_calificacion")
-    private Short blnSentidoCalificacion;
+    private Boolean blnSentidoCalificacion;
 
 
 }

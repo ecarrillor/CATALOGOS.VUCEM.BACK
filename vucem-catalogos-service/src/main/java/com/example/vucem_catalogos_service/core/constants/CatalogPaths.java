@@ -301,6 +301,7 @@ public class CatalogPaths extends ConstPath{
     public static final String UPDATE_VIDA_SILVESTRE = "/cat_vida_silvestre/{id}";
     public static final String LIST_ESPECIES_ACTIVAS = "/cat_vida_silvestre/especies";
     public static final String LIST_TIPO_TRAMITE_VIDA_SILVESTRE     = "/cat_vida_silvestre/tipo_tramite";
+    public static final String LIST_GENERO     = "/cat_vida_silvestre/genero";
 
     /*entidad CAT_ACTIVIDAD_ECONOMICA_SAT */
     public static final String LIST_ACTIVIDAD_ECONOMICA_SAT   = "/cat_activ_eco_sat/list";
@@ -485,7 +486,8 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_FRACCION_TTRA          = "/cat_fraccion_ttra/{id}";
     public static final String UPDATE_FRACCION_TTRA        = "/cat_fraccion_ttra/{id}";
     public static final String TIPO_TRAMITE_FRACCION_TTRA  = "/cat_fraccion_ttra/tipo_tramite";
-    public static final String CATEGORIA_TEXTIL_FRACCION   = "/cat_fraccion_ttra/categorias_textil";
+    public static final String CATEGORIA_TEXTIL_FRACCION   = "/cat_fraccion_ttra/categoria_textil";
+    public static final String SELECT_CATEGORIA_TEXTIL =  "/cat_fraccion_ttra/categorias_textil/{id}";
 
     /*entidad CAT_DESCRIPCION_PROD */
     public static final String LIST_CATALOGO_DESC_PROD    = "/cat_descripcion_prod/list";
@@ -551,5 +553,6 @@ public class CatalogPaths extends ConstPath{
     public static final String FIND_CAT_ESPECIE        = "/cat_especie/{id}";
     public static final String UPDATE_CAT_ESPECIE      = "/cat_especie/{id}";
     public static final String LIST_TIPO_TRAMITE_ESPECIE   = "/cat_especie/tipo_tramite";
+    public static final String LAST_ESPECIE   = "/cat_especie/ultimo_especie";
 
 }
