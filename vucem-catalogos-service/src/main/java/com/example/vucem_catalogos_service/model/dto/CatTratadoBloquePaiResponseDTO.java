@@ -11,15 +11,16 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CatPaisTratadoAcuerdoResponseDTO {
+public class CatTratadoBloquePaiResponseDTO {
 
     private String cvePais;
     private String nombrePais;
-    private Short idTratado;
-    private String tratadoAcuerdo;
+    private Short idTratadoAcuerdo;
+    private String cveTratadoAcuerdo;
+    private LocalDate fecCaptura;
     private LocalDate fecIniVigencia;
     private LocalDate fecFinVigencia;
-    private LocalDate fecCaptura;
     private Boolean blnActivo;
-    private Boolean blnActivoCorreo;
+    private Boolean blnEnvioElectronico;
+    private Boolean blnMuestraCertificado;
 }

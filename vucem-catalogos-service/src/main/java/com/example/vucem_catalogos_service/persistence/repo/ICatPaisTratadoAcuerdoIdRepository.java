@@ -24,7 +24,8 @@ public interface ICatPaisTratadoAcuerdoIdRepository extends JpaRepository<CatPai
                 a.fecIniVigencia,
                 a.fecFinVigencia,
                 a.fecCaptura,
-                a.blnActivo
+                a.blnActivo,
+                a.blnEnvioElectronico
             )
             FROM CatPaisTratadoAcuerdo a
             JOIN a.cvePais p
@@ -49,7 +50,8 @@ public interface ICatPaisTratadoAcuerdoIdRepository extends JpaRepository<CatPai
                 a.fecIniVigencia,
                 a.fecFinVigencia,
                 a.fecCaptura,
-                a.blnActivo
+                a.blnActivo,
+                a.blnEnvioElectronico
             )
             FROM CatPaisTratadoAcuerdo a
             JOIN a.cvePais p

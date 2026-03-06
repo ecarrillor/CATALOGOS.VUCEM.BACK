@@ -534,6 +534,17 @@ public class CatalogPaths extends ConstPath{
     public static final String UPDATE_VUC_REPO_FIRMA     = "/vuc_repo_firma_gral_se/{id}";
     public static final String LIST_TIPOS_FIRMA_VUC_REPO  = "/vuc_repo_firma_gral_se/tipos_firma";
     public static final String LIST_TIPOS_TRAMITE_VUC_REPO = "/vuc_repo_firma_gral_se/tipos_tramite";
+    /*entidad CAT_TRATADO_BLOQUE_PAIS */
+    public static final String LIST_TRATADO_BLOQUE_PAIS   = "/cat_tratado_bloque_pais/list";
+    public static final String SAVE_TRATADO_BLOQUE_PAIS   = "/cat_tratado_bloque_pais/save";
+        public static final String FIND_TRATADO_BLOQUE_PAIS   = "/cat_tratado_bloque_pais/{cvePais}/{idTratadoAcuerdo}";
+    public static final String UPDATE_TRATADO_BLOQUE_PAIS = "/cat_tratado_bloque_pais/{cvePais}/{idTratadoAcuerdo}";
+    public static final String DELETE_TRATADO_BLOQUE_PAIS = "/cat_tratado_bloque_pais/{cvePais}/{idTratadoAcuerdo}";
+    public static final String COMBO_PAISES_TBP           = "/cat_tratado_bloque_pais/paises";
+    public static final String COMBO_TRATADOS_TBP         = "/cat_tratado_bloque_pais/tratados";
+    public static final String PAISES_GUARDADOS_TBP       = "/cat_tratado_bloque_pais/paises_guardados";
+    public static final String TRATADOS_GUARDADOS_TBP     = "/cat_tratado_bloque_pais/tratados_guardados";
+
     /*entidad CAT_ESPECIE */
     public static final String LIST_CAT_ESPECIE        = "/cat_especie/list";
     public static final String SAVE_CAT_ESPECIE        = "/cat_especie/save/{tipo}";

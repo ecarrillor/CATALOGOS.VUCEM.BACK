@@ -1,25 +1,22 @@
 package com.example.vucem_catalogos_service.model.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CatPaisTratadoAcuerdoResponseDTO {
+public class CatTratadoBloquePaiRequestDTO {
 
     private String cvePais;
-    private String nombrePais;
-    private Short idTratado;
-    private String tratadoAcuerdo;
+    private Short idTratadoAcuerdo;
+    private LocalDate fecCaptura;
     private LocalDate fecIniVigencia;
     private LocalDate fecFinVigencia;
-    private LocalDate fecCaptura;
     private Boolean blnActivo;
-    private Boolean blnActivoCorreo;
+    private Boolean blnEnvioElectronico;
+    private Boolean blnMuestraCertificado;
 }
