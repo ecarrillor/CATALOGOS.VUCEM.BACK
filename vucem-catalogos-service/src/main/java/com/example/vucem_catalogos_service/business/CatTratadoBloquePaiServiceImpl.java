@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatTratadoBloquePaiService;
+import com.example.vucem_catalogos_service.model.dto.CatPaisesComboResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiMasivoRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiResponseDTO;
@@ -161,8 +162,11 @@ public class CatTratadoBloquePaiServiceImpl implements ICatTratadoBloquePaiServi
     }
 
     @Override
-    public List<ICatTratadoBloquePaiRepository.ComboProyeccion> paisesGuardadosByTratados(List<Short> idsTratado) {
-        return repository.findPaisesGuardadosByTratados(idsTratado);
+    public CatPaisesComboResponseDTO paisesComboByTratados(List<Short> idsTratado) {
+        return CatPaisesComboResponseDTO.builder()
+                .paisesGuardados(repository.findPaisesGuardadosByTratados(idsTratado))
+                .paisesNoGuardados(repository.findPaisesNoGuardadosByTratados(idsTratado))
+                .build();
     }
 
     @Override

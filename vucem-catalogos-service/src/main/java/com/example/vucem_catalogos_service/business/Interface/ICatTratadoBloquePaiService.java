@@ -1,5 +1,6 @@
 package com.example.vucem_catalogos_service.business.Interface;
 
+import com.example.vucem_catalogos_service.model.dto.CatPaisesComboResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiMasivoRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiResponseDTO;
@@ -27,7 +28,7 @@ public interface ICatTratadoBloquePaiService {
 
     List<ICatTratadoAcuerdoRepository.ComboProyeccion> listadoTratados();
 
-    List<ICatTratadoBloquePaiRepository.ComboProyeccion> paisesGuardadosByTratados(List<Short> idsTratado);
+    CatPaisesComboResponseDTO paisesComboByTratados(List<Short> idsTratado);
 
     List<ICatTratadoBloquePaiRepository.ComboProyeccion> tratadosGuardadosByPaises(List<String> clavePaises);
 }

@@ -94,6 +94,24 @@ public interface ICatTratadoBloquePaiRepository extends JpaRepository<CatTratado
     List<ComboProyeccion> findTratadosGuardadosByPaises(
             @Param("clavePaises") List<String> clavePaises);
 
+    @Query("""
+    SELECT DISTINCT cp.cvePais AS clave,
+           cp.nombre AS descripcion
+    FROM CatPaisTratadoAcuerdo pta
+    JOIN pta.cvePais cp
+    WHERE pta.idTratadoAcuerdo.id IN :idsTratado
+      AND pta.blnActivo = true
+      AND cp.cvePais NOT IN (
+            SELECT tbp.id.cvePais
+            FROM CatTratadoBloquePai tbp
+            WHERE tbp.tratadoAcuerdo.id IN :idsTratado
+              AND tbp.blnActivo = true
+      )
+    ORDER BY cp.nombre ASC
+""")
+    List<ComboProyeccion> findPaisesNoGuardadosByTratados(
+            @Param("idsTratado") List<Short> idsTratado);
+
     interface ComboProyeccion {
         String getClave();
 

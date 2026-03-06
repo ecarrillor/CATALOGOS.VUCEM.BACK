@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.controller;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatTratadoBloquePaiService;
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
+import com.example.vucem_catalogos_service.model.dto.CatPaisesComboResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiMasivoRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiResponseDTO;
@@ -73,9 +74,9 @@ public class CatTratadoBloquePaiController {
     }
 
     @GetMapping(CatalogPaths.PAISES_GUARDADOS_TBP)
-    public ResponseEntity<List<ICatTratadoBloquePaiRepository.ComboProyeccion>> paisesGuardados(
+    public ResponseEntity<CatPaisesComboResponseDTO> paisesCombo(
             @RequestParam List<Short> idsTratado) {
-        return ResponseEntity.ok(service.paisesGuardadosByTratados(idsTratado));
+        return ResponseEntity.ok(service.paisesComboByTratados(idsTratado));
     }
 
     @GetMapping(CatalogPaths.TRATADOS_GUARDADOS_TBP)
