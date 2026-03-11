@@ -69,46 +69,65 @@ public interface ICatTratadoBloquePaiRepository extends JpaRepository<CatTratado
             @Param("idTratadoAcuerdo") Short idTratadoAcuerdo);
 
     @Query("""
-                SELECT DISTINCT p.cvePais AS clave,
-                       p.nombre AS descripcion
-                FROM CatTratadoBloquePai tbp
-                JOIN tbp.pais p
-                WHERE tbp.id.idTratadoAcuerdo IN :idsTratado
-                  AND tbp.blnActivo = true
-                ORDER BY p.nombre ASC
-            """)
+        SELECT DISTINCT p.cvePais AS clave,
+               p.nombre AS descripcion
+        FROM CatTratadoBloquePai tbp
+        JOIN tbp.pais p
+        WHERE tbp.id.idTratadoAcuerdo IN :idsTratado
+          AND (p.fecFinVigencia IS NULL OR p.fecFinVigencia >= CURRENT_DATE)
+          AND p.blnActivo <> false
+          AND (tbp.fecFinVigencia IS NULL OR tbp.fecFinVigencia >= CURRENT_DATE)
+          AND tbp.blnActivo <> false
+        ORDER BY p.nombre ASC
+       """)
     List<ComboProyeccion> findPaisesGuardadosByTratados(
             @Param("idsTratado") List<Short> idsTratado);
 
     @Query("""
-    SELECT DISTINCT ta.id AS clave,
-           ta.cveTratadoAcuerdo AS descripcion
-    FROM CatTratadoBloquePai tbp
-    JOIN tbp.tratadoAcuerdo ta
-    WHERE ta.blnActivo = true
-      AND tbp.blnActivo = true
-      AND (ta.fecFinVigencia IS NULL OR ta.fecFinVigencia >= CURRENT_DATE)
-      AND tbp.id.cvePais IN :clavePaises
-    ORDER BY ta.cveTratadoAcuerdo ASC
-""")
+        SELECT DISTINCT ta.id AS clave,
+               ta.cveTratadoAcuerdo AS descripcion
+        FROM CatTratadoBloquePai tbp
+        JOIN tbp.tratadoAcuerdo ta
+        WHERE ta.blnActivo = true
+          AND tbp.blnActivo = true
+          AND (ta.fecFinVigencia IS NULL OR ta.fecFinVigencia >= CURRENT_DATE)
+          AND tbp.id.cvePais IN :clavePaises
+       """)
     List<ComboProyeccion> findTratadosGuardadosByPaises(
             @Param("clavePaises") List<String> clavePaises);
 
     @Query("""
-    SELECT DISTINCT cp.cvePais AS clave,
-           cp.nombre AS descripcion
-    FROM CatPaisTratadoAcuerdo pta
-    JOIN pta.cvePais cp
-    WHERE pta.idTratadoAcuerdo.id IN :idsTratado
-      AND pta.blnActivo = true
-      AND cp.cvePais NOT IN (
-            SELECT tbp.id.cvePais
-            FROM CatTratadoBloquePai tbp
-            WHERE tbp.tratadoAcuerdo.id IN :idsTratado
-              AND tbp.blnActivo = true
-      )
-    ORDER BY cp.nombre ASC
-""")
+        SELECT DISTINCT ta.id AS clave,
+               ta.cveTratadoAcuerdo AS descripcion
+        FROM CatPaisTratadoAcuerdo pta
+        JOIN pta.idTratadoAcuerdo ta
+        WHERE ta.blnActivo = true
+          AND pta.blnActivo = true
+          AND (ta.fecFinVigencia IS NULL OR ta.fecFinVigencia >= CURRENT_DATE)
+          AND pta.cvePais.cvePais IN :clavePaises
+          AND ta.id NOT IN (
+                SELECT tbp.tratadoAcuerdo.id
+                FROM CatTratadoBloquePai tbp
+                WHERE tbp.blnActivo = true
+                  AND tbp.id.cvePais IN :clavePaises
+          )
+        ORDER BY ta.cveTratadoAcuerdo ASC
+       """)
+    List<ComboProyeccion> findTratadosNoGuardadosByPaises(
+            @Param("clavePaises") List<String> clavePaises);
+
+    @Query("""
+        SELECT DISTINCT cp.cvePais AS clave,
+               cp.nombre AS descripcion
+        FROM CatPaisTratadoAcuerdo pta
+        JOIN pta.cvePais cp
+        WHERE pta.idTratadoAcuerdo.id IN :idsTratado
+          AND (cp.fecFinVigencia IS NULL OR cp.fecFinVigencia >= CURRENT_DATE)
+          AND cp.blnActivo <> false
+          AND (pta.fecFinVigencia IS NULL OR pta.fecFinVigencia >= CURRENT_DATE)
+          AND pta.blnActivo <> false
+        ORDER BY cp.nombre ASC
+       """)
     List<ComboProyeccion> findPaisesNoGuardadosByTratados(
             @Param("idsTratado") List<Short> idsTratado);
 

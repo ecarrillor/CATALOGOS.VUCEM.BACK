@@ -121,8 +121,5 @@ public class CatPaisTratadoAcuerdoServiceImpl implements ICatPaisTratadoAcuerdoS
         return catPaisRepository.listadoPaisesActivos();
     }
 
-    @Override
-    public List<ICatTratadoAcuerdoRepository.ComboProyeccion> listadoTratados() {
-        return catTratadoAcuerdoRepository.listadoTratadosActivos();
-    }
+
 }

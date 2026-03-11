@@ -1,14 +1,11 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatTratadoBloquePaiService;
-import com.example.vucem_catalogos_service.model.dto.CatPaisesComboResponseDTO;
-import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiMasivoRequestDTO;
-import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiRequestDTO;
-import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiResponseDTO;
-import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.*;
 import com.example.vucem_catalogos_service.model.entity.CatTratadoBloquePai;
 import com.example.vucem_catalogos_service.model.entity.CatTratadoBloquePaiId;
 import com.example.vucem_catalogos_service.persistence.repo.ICatPaisRepository;
+import com.example.vucem_catalogos_service.persistence.repo.ICatPaisTratadoAcuerdoIdRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoAcuerdoRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoBloquePaiRepository;
 import jakarta.transaction.Transactional;
@@ -35,6 +32,9 @@ public class CatTratadoBloquePaiServiceImpl implements ICatTratadoBloquePaiServi
 
     @Autowired
     private ICatTratadoAcuerdoRepository catTratadoAcuerdoRepository;
+
+    @Autowired
+    private ICatPaisTratadoAcuerdoIdRepository catPaisTratadoAcuerdoIdRepository;
 
     @Override
     public PageResponseDTO<CatTratadoBloquePaiResponseDTO> list(
@@ -158,7 +158,7 @@ public class CatTratadoBloquePaiServiceImpl implements ICatTratadoBloquePaiServi
 
     @Override
     public List<ICatTratadoAcuerdoRepository.ComboProyeccion> listadoTratados() {
-        return catTratadoAcuerdoRepository.listadoTratadosActivos();
+        return catPaisTratadoAcuerdoIdRepository.listadoTratadosActivos();
     }
 
     @Override
@@ -170,7 +170,10 @@ public class CatTratadoBloquePaiServiceImpl implements ICatTratadoBloquePaiServi
     }
 
     @Override
-    public List<ICatTratadoBloquePaiRepository.ComboProyeccion> tratadosGuardadosByPaises(List<String> clavePaises) {
-        return repository.findTratadosGuardadosByPaises(clavePaises);
+    public CatTratadoAcuerdoComboResponseDTO tratadosGuardadosByPaises(List<String> clavePaises) {
+        return CatTratadoAcuerdoComboResponseDTO.builder()
+                .tratadosGuardados(repository.findTratadosGuardadosByPaises(clavePaises))
+                .tratadosNoGuardados(repository.findTratadosNoGuardadosByPaises(clavePaises))
+                .build();
     }
 }

@@ -2,11 +2,7 @@ package com.example.vucem_catalogos_service.controller;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatTratadoBloquePaiService;
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
-import com.example.vucem_catalogos_service.model.dto.CatPaisesComboResponseDTO;
-import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiMasivoRequestDTO;
-import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiRequestDTO;
-import com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiResponseDTO;
-import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.*;
 import com.example.vucem_catalogos_service.persistence.repo.ICatPaisRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoAcuerdoRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoBloquePaiRepository;
@@ -80,7 +76,7 @@ public class CatTratadoBloquePaiController {
     }
 
     @GetMapping(CatalogPaths.TRATADOS_GUARDADOS_TBP)
-    public ResponseEntity<List<ICatTratadoBloquePaiRepository.ComboProyeccion>> tratadosGuardados(
+    public ResponseEntity<CatTratadoAcuerdoComboResponseDTO> tratadosGuardados(
             @RequestParam List<String> clavePaises) {
         return ResponseEntity.ok(service.tratadosGuardadosByPaises(clavePaises));
     }

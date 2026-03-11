@@ -73,8 +73,9 @@ public class CatEspecieServiceImpl implements ICatEspecieService {
                     "El id ya existe"
             );
         }
-
+        System.out.println("xc");
         validarTipoTramite(tipo);
+        System.out.println("xsc");
         CatEspecie entity = new CatEspecie();
         entity.setId(dto.getNumEspecie());
         entity.setFecIniVigencia(dto.getFecIniVigencia());

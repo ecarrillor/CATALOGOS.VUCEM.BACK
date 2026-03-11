@@ -59,8 +59,5 @@ public class CatPaisTratadoAcuerdoController {
         return ResponseEntity.ok(service.listadoPaises());
     }
 
-    @GetMapping(CatalogPaths.COMBO_TRATADOS_PTA)
-    public ResponseEntity<List<ICatTratadoAcuerdoRepository.ComboProyeccion>> listadoTratados() {
-        return ResponseEntity.ok(service.listadoTratados());
-    }
+
 }

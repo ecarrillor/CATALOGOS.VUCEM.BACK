@@ -57,8 +57,7 @@ public interface ICatTratadoAcuerdoRepository extends JpaRepository<CatTratadoAc
             """)
     Optional<CatTratadoAcuerdoDTO> findByTratadoAcuerdoDTO(@Param("id") Short id);
 
-    @Query("SELECT t.id AS id, t.nombre AS nombre FROM CatTratadoAcuerdo t WHERE t.blnActivo = true ORDER BY t.nombre ASC")
-    List<ComboProyeccion> listadoTratadosActivos();
+
 
     interface ComboProyeccion {
         Short getId();

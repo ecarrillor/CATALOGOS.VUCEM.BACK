@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -61,4 +62,16 @@ public interface ICatPaisTratadoAcuerdoIdRepository extends JpaRepository<CatPai
     Optional<CatPaisTratadoAcuerdoResponseDTO> findByPaisTratado(
             @Param("cvePais") String cvePais,
             @Param("idTratadoAcuerdo") Short idTratadoAcuerdo);
+
+
+    @Query("""
+       SELECT DISTINCT t.id AS id, t.cveTratadoAcuerdo AS nombre
+       FROM CatPaisTratadoAcuerdo pt
+       JOIN pt.idTratadoAcuerdo t
+       WHERE t.blnActivo = true
+         AND pt.blnActivo <> false
+         AND (t.fecFinVigencia IS NULL OR t.fecFinVigencia >= CURRENT_DATE)
+       ORDER BY t.cveTratadoAcuerdo ASC
+       """)
+    List<ICatTratadoAcuerdoRepository.ComboProyeccion> listadoTratadosActivos();
 }

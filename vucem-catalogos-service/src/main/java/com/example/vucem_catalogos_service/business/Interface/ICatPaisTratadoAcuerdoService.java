@@ -23,5 +23,4 @@ public interface ICatPaisTratadoAcuerdoService {
 
     List<ICatPaisRepository.ComboProyeccion> listadoPaises();
 
-    List<ICatTratadoAcuerdoRepository.ComboProyeccion> listadoTratados();
 }
