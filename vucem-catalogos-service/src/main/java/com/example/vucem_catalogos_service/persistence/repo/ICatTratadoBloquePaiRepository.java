@@ -126,6 +126,14 @@ public interface ICatTratadoBloquePaiRepository extends JpaRepository<CatTratado
           AND cp.blnActivo <> false
           AND (pta.fecFinVigencia IS NULL OR pta.fecFinVigencia >= CURRENT_DATE)
           AND pta.blnActivo <> false
+          AND NOT EXISTS (
+                SELECT 1
+                FROM CatTratadoBloquePai tbp
+                WHERE tbp.pais = cp
+                  AND tbp.id.idTratadoAcuerdo IN :idsTratado
+                  AND (tbp.fecFinVigencia IS NULL OR tbp.fecFinVigencia >= CURRENT_DATE)
+                  AND tbp.blnActivo <> false
+          )
         ORDER BY cp.nombre ASC
        """)
     List<ComboProyeccion> findPaisesNoGuardadosByTratados(

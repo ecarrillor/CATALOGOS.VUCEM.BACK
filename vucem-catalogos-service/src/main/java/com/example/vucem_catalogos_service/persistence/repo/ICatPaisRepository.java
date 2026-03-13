@@ -62,7 +62,17 @@ public interface ICatPaisRepository extends JpaRepository<CatPais, String> {
     CatPaisSaveDTO findByPaisDTO(@Param("cvePais") String cvePais);
 
 
-    @Query("SELECT p.cvePais AS cvePais, p.nombre AS nombre FROM CatPais p WHERE p.blnActivo = true ORDER BY p.nombre ASC")
+    @Query("""
+       SELECT DISTINCT p.cvePais AS cvePais,
+              p.nombre AS nombre
+       FROM CatPaisTratadoAcuerdo t1
+       JOIN t1.cvePais p
+       WHERE (p.fecFinVigencia IS NULL OR p.fecFinVigencia >= CURRENT_DATE)
+         AND p.blnActivo <> false
+         AND (t1.fecFinVigencia IS NULL OR t1.fecFinVigencia >= CURRENT_DATE)
+         AND t1.blnActivo <> false
+       ORDER BY p.nombre ASC
+       """)
     List<ComboProyeccion> listadoPaisesActivos();
 
     interface ComboProyeccion {
