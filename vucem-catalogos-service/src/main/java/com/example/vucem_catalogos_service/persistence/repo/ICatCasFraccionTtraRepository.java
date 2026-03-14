@@ -52,11 +52,11 @@ public interface ICatCasFraccionTtraRepository extends JpaRepository<CatCasFracc
                     LOWER(fra.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(CAST(tt.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(a.descFraccionAlt) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.cvnWasser) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.cvnArmas) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.cvnMontreal) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.cvnEstocolmo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.formaDesc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.cvnWasser AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))OR
+                    LOWER(CAST(a.cvnArmas AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))OR
+                    LOWER(CAST(a.cvnMontreal AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))OR
+                    LOWER(CAST(a.cvnEstocolmo AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))OR
+                    LOWER(CAST(a.formaDesc AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))OR
                     LOWER(a.ideIdentificadorRegla) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
