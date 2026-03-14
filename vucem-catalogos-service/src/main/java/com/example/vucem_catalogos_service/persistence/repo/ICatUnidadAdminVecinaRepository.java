@@ -26,8 +26,13 @@ public interface ICatUnidadAdminVecinaRepository extends JpaRepository<CatUnidad
                 e.blnActivo
             )
             FROM CatUnidadAdminVecina e
-            WHERE (:search IS NULL OR LOWER(e.cveUnidadAdministrativa.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
-                OR LOWER(e.cveEntidad.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR
+                LOWER(e.id.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.id.cveEntidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.cveUnidadAdministrativa.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.cveEntidad.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatUnidadAdminVecinaDTO> search(@Param("search") String search,

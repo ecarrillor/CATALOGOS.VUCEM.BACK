@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ICatPaisTratadoAcuerdoService {
 
-    PageResponseDTO<CatPaisTratadoAcuerdoResponseDTO> list(String cvePais, Short idTratadoAcuerdo, Boolean blnActivo, Pageable pageable);
+    PageResponseDTO<CatPaisTratadoAcuerdoResponseDTO> list(String cvePais, Short idTratadoAcuerdo, Boolean blnActivo, String search, Pageable pageable);
 
     CatPaisTratadoAcuerdoResponseDTO findById(String cvePais, Short idTratadoAcuerdo);
 

@@ -34,9 +34,19 @@ public interface ICatTipoRfcRepository extends JpaRepository<CatTipoRfc, CatTipo
         )
         FROM CatTipoRfc e
         LEFT JOIN e.cveUnidadAdministrativa ua
-        WHERE (:search IS NULL OR LOWER(e.id.rfc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) 
-        OR LOWER(e.razonSocial) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) 
-        OR LOWER(e.clave) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))) 
+        WHERE (:search IS NULL OR
+            LOWER(e.id.rfc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+            LOWER(e.id.ideTipoRfc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+            LOWER(e.razonSocial) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+            LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+            LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+            LOWER(e.direccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+            LOWER(e.telefono) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+            LOWER(e.clave) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+            LOWER(e.correoElectronico) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+            LOWER(e.fax) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+            LOWER(ua.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+            LOWER(ua.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
         AND (:activo IS NULL OR e.blnActivo = :activo) """)
     Page<CatTipoRfcDTO> search(@Param("search") String search,
                                @Param("activo") Boolean activo,

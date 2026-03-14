@@ -23,8 +23,12 @@ public interface ICatDeclaracionTramiteRepository extends JpaRepository<CatDecla
                 e.blnActivo
             )
             FROM CatDeclaracionTramite e
-            WHERE (:search IS NULL 
-                    OR LOWER(e.cveDeclaracion.descDeclaracion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+            WHERE (:search IS NULL OR
+                    LOWER(e.id.cveDeclaracion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.id.idTipoTramite AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(e.cveDeclaracion.descDeclaracion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )
                 AND (:activo IS NULL OR e.blnActivo = :activo)
             """)

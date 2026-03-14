@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatTipoDocumento;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoDocumentoRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -52,11 +53,12 @@ public class CatTipoDocumentoServiceImpl extends AbstractCatalogService<CatTipoD
         Specification<CatTipoDocumento> spec =
                 GenericSearchSpecification.<CatTipoDocumento>searchInFields(
                         search,
-                        List.of("nombre", "ideRangoResolucionImagen", "id")
+                        List.of("nombre", "ideRangoResolucionImagen")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
 
         return catTipoDocumentoRepository.findAll(spec, pageable);
     }

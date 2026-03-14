@@ -32,8 +32,14 @@ public interface ICatEquivMonedaRepository extends JpaRepository<CatEquivMoneda,
             JOIN e.cveMonedaDestino md
              WHERE
                 (:search IS NULL OR
+                    LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(mo.cveMoneda) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(mo.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(md.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(md.cveMoneda) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(md.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.valorConversion AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )
                 AND (
                     :activo IS NULL OR e.blnActivo = :activo

@@ -37,8 +37,13 @@ public interface ICatAprobCertSeRepository extends JpaRepository<CatAprobCertSe,
             WHERE
                 (
                     :search IS NULL OR
+                    LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(u.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.numAprobCert) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(a.ideTipoAprobCertSe) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(a.numAprobCert) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.fecEmision AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )
                 AND (
                     :activo IS NULL OR a.blnActivo = :activo

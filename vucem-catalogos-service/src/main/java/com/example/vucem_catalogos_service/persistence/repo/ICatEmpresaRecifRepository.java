@@ -28,8 +28,12 @@ public interface ICatEmpresaRecifRepository extends JpaRepository<CatEmpresaReci
              WHERE
                 (:search IS NULL OR
                     LOWER(e.recif) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(ua.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.razonSocial) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(e.rfc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(e.razonSocial) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(ua.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(ua.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )
                 AND (
                     :activo IS NULL OR e.blnActivo = :activo

@@ -17,7 +17,13 @@ public interface ICatSeccionTtraRepository extends JpaRepository<CatSeccionTtra,
             "e.descSeccion, e.fecIniVigencia, e.fecFinVigencia, e.blnActivo) " +
             "FROM CatSeccionTtra e " +
             "WHERE (:activo IS NULL OR e.blnActivo = :activo) " +
-            "AND (:search IS NULL OR :search = '' OR LOWER(e.descSeccion) LIKE LOWER(CONCAT('%', :search, '%')))")
+            "AND (:search IS NULL OR :search = '' " +
+            "OR LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(CAST(e.idTipoTramite.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(e.idTipoTramite.descServicio) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(e.descSeccion) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))")
     Page<CatSeccionTtraDTO> search(@Param("search") String search,
                                    @Param("activo") Boolean activo,
                                    Pageable pageable);

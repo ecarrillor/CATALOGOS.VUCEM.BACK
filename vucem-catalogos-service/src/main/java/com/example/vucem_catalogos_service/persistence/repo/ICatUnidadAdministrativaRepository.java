@@ -47,8 +47,20 @@ public interface ICatUnidadAdministrativaRepository extends JpaRepository<CatUni
             LEFT JOIN e.cveUnidadAdministrativaR parent
             LEFT JOIN e.cveEntidad ent
             JOIN e.idDependencia dep
-            WHERE (:search IS NULL OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
-                OR LOWER(e.acronimo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR
+                LOWER(e.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.ideTipoUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(parent.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.nivel AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.acronimo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(ent.cveEntidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(ent.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(dep.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(dep.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatUnidadAdministrativaDTO> search(@Param("search") String search,

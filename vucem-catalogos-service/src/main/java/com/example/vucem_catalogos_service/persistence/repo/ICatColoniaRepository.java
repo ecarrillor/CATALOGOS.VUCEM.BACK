@@ -39,9 +39,14 @@ public interface ICatColoniaRepository extends JpaRepository<CatColonia, String>
                     :search IS NULL OR
                     LOWER(cat.cveColonia) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(cat.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(loc.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(dm.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(cat.cp) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(loc.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(cat.cp) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(cat.fecCaptura AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(dm.cveDelegMun) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(pais.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )
                 AND (
                     :activo IS NULL OR cat.blnActivo = :activo

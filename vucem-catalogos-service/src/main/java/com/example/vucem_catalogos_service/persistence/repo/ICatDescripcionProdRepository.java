@@ -38,8 +38,13 @@ public interface ICatDescripcionProdRepository extends JpaRepository<CatDescripc
                  WHERE
                 (
                    :search IS NULL OR
-                   LOWER(d.descripcionProducto) LIKE :search OR
-                   STR(d.id) LIKE :search
+                   LOWER(CAST(d.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(d.descripcionProducto) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(d.fecCaptura AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(d.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(d.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(t.descModalidad) LIKE LOWER(CONCAT('%', :search, '%'))
                 )
                 AND (:activo IS NULL OR d.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR t.id = :idTipoTramite)

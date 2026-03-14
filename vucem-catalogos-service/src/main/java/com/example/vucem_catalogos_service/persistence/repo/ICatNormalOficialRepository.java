@@ -26,8 +26,17 @@ public interface ICatNormalOficialRepository extends JpaRepository<CatNormalOfic
             LEFT JOIN e.cvePais p
             LEFT JOIN e.idNormaOficialR r
             WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                 LOWER(e.claveNorma) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descNorma)  LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.descNorma) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecPublicacion AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecEntradaVigor AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.ideClasifNorma) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(p.cvePais) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(p.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(r.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
             )
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)

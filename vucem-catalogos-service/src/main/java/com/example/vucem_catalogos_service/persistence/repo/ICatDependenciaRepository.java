@@ -34,9 +34,13 @@ public interface ICatDependenciaRepository extends JpaRepository<CatDependencia,
             WHERE
                      (
                            :search IS NULL OR
-                           LOWER(a.nombre) LIKE :search OR
-                           LOWER(a.acronimo) LIKE :search OR
-                           STR(a.id) LIKE :search
+                           LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                           LOWER(a.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                           LOWER(a.acronimo) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                           LOWER(b.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                           LOWER(b.cveCalendario) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                           LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                           LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
                      )
                            AND
                            (

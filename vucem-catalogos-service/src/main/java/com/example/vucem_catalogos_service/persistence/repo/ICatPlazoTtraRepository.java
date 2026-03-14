@@ -29,8 +29,11 @@ public interface ICatPlazoTtraRepository extends JpaRepository<CatPlazoTtra, Cat
              WHERE
                             (
                                         :search IS NULL OR
-                                        LOWER(e.id.idePlazoVigencia) LIKE :search OR
-                                        LOWER(a.descModalidad) LIKE :search 
+                                        LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(e.id.idePlazoVigencia) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(a.descModalidad) LIKE LOWER(CONCAT('%', :search, '%'))
                            )
                                          AND
                            (

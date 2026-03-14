@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.model.entity.CatPuntoVerificacion;
 import com.example.vucem_catalogos_service.model.entity.CatUnidadMedida;
 import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadMedidaRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -53,12 +54,12 @@ public class CatUnidadMedidaServiceImpl extends AbstractCatalogService<CatUnidad
         Specification<CatUnidadMedida> spec =
                 GenericSearchSpecification.<CatUnidadMedida>searchInFields(
                         search,
-                        List.of("cveUnidadMedida","descripcion")
+                        List.of("cveUnidadMedida", "descripcion", "ideOrigenUnidadMedida", "sigla", "idOma", "siglaCbp")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
-
 
         return catUnidadMedidaRepository.findAll(spec, pageable);
     }

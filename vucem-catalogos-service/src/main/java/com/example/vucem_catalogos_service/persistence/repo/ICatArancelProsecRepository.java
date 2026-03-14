@@ -29,7 +29,11 @@ public interface ICatArancelProsecRepository extends JpaRepository<CatArancelPro
             WHERE
                 (:search IS NULL OR
                     LOWER(cat.cveFraccion.cveFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(sec.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(sec.cveSectorProsec) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(sec.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(cat.tasa AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )
                 AND (
                     :activo IS NULL OR cat.blnActivo = :activo

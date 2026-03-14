@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatPuntoVerificacion;
 import com.example.vucem_catalogos_service.persistence.repo.ICatPuntoVerificacionRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -55,9 +56,9 @@ public class CatPuntoVerificacionServiceImpl extends AbstractCatalogService<CatP
                         List.of("nomPuntoVerif")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
-
 
         return catPuntoVerificacionRepository.findAll(spec, pageable);
     }

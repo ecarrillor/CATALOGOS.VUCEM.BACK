@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatGenero;
 import com.example.vucem_catalogos_service.persistence.repo.ICatGeneroRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -54,9 +55,9 @@ public class CatGeneroServiceImpl extends AbstractCatalogService<CatGenero,Integ
                         List.of("descGenero")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
-
 
         return catGeneroRepository.findAll(spec, pageable);
     }

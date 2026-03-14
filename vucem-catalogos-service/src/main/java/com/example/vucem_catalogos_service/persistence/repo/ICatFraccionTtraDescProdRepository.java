@@ -35,9 +35,14 @@ public interface ICatFraccionTtraDescProdRepository extends JpaRepository<CatFra
             WHERE
                 (
                     :search IS NULL OR
+                    LOWER(CAST(dp.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(dp.idDescripcionProd.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(dp.idDescripcionProd.descripcionProducto) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(dp.idFraccionGob.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(fra.cveFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(fra.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(fra.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(dp.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(dp.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )
                 AND (:activo IS NULL OR dp.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR f.idTipoTramite.id = :idTipoTramite)

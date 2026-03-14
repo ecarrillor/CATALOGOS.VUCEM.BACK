@@ -26,7 +26,13 @@ public interface ICatClasifToxicologicaTtraRepository extends JpaRepository<CatC
             )
             FROM CatClasifToxicologicaTtra e
             JOIN e.idTipoTramite t
-            WHERE (:search IS NULL OR LOWER(e.descClasifToxicologica) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(t.descModalidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.descClasifToxicologica) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatClasifToxicologicaTtraDTO> search(@Param("search") String search,

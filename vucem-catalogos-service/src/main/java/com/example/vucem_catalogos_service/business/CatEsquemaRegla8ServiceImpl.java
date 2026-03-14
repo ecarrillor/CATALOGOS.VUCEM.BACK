@@ -4,6 +4,7 @@ import com.example.vucem_catalogos_service.model.entity.CatDeclaracion;
 import com.example.vucem_catalogos_service.model.entity.CatEsquemaRegla8;
 import com.example.vucem_catalogos_service.persistence.repo.ICatDeclaracionRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatEsquemaRegla8Repository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -55,9 +56,9 @@ public class CatEsquemaRegla8ServiceImpl extends AbstractCatalogService<CatEsque
                         List.of("nombre","descRequisito")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
-
 
         return catEsquemaRegla8Repository.findAll(spec, pageable);
     }

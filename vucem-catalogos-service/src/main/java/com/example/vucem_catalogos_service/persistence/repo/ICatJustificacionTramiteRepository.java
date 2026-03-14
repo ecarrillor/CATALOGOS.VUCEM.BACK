@@ -31,9 +31,13 @@ public interface ICatJustificacionTramiteRepository extends JpaRepository<CatJus
             WHERE
                    (
                           :search IS NULL OR
-                          LOWER(b.nombre) LIKE :search OR
-                          LOWER(a.descJustificacion) LIKE :search OR
-                          STR(a.id) LIKE :search
+                          LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                          LOWER(CAST(b.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                          LOWER(b.descServicio) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                          LOWER(a.descJustificacion) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                          LOWER(a.descContenidoJustificacion) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                          LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                          LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
                    )
                            AND
                            (

@@ -29,10 +29,13 @@ public interface ICatRegimenTtraRepository extends JpaRepository<CatRegimenTtra,
             FROM CatRegimenTtra e
             WHERE (
                         :search IS NULL OR
-                        LOWER(e.cveRegimen.nombre) LIKE :search OR
-                        LOWER(e.cveRegimen.cveRegimen) LIKE :search OR
-                        LOWER(e.idTipoTramite.descSubservicio) LIKE :search OR
-                        STR(e.id) LIKE :search
+                        LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                        LOWER(e.cveRegimen.cveRegimen) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                        LOWER(e.cveRegimen.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                        LOWER(CAST(e.idTipoTramite.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                        LOWER(e.idTipoTramite.descSubservicio) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                        LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                        LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
                         )
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)

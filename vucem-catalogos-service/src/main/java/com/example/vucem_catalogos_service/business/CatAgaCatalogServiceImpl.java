@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatAga;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAgaRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -56,6 +57,8 @@ public class CatAgaCatalogServiceImpl extends AbstractCatalogService<CatAga, Str
                         List.of("cveParametro", "descripcion", "valor")
                 ).and(
                         GenericFilterSpecification.<CatAga>byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 ).and(
                         (root, query, cb) -> cb.equal(root.get("blnActivo"), true)
                 );

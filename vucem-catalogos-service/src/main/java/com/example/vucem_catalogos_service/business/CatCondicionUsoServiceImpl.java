@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.model.entity.CatCapituloFraccion;
 import com.example.vucem_catalogos_service.model.entity.CatCondicionUso;
 import com.example.vucem_catalogos_service.persistence.repo.ICatCondicionUsoRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -55,9 +56,9 @@ public class CatCondicionUsoServiceImpl extends AbstractCatalogService<CatCondic
                         List.of("descripcion", "descripcionHtml")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
-
 
         return catCondicionUsoRepository.findAll(spec, pageable);
     }

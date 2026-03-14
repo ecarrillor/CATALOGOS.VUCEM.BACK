@@ -24,8 +24,13 @@ public interface ICatUnidadAdminAduanaRepository extends JpaRepository<CatUnidad
                 e.blnActivo
             )
             FROM CatUnidadAdminAduana e
-            WHERE (:search IS NULL OR CAST(e.id.cveUnidadAdministrativa AS string) LIKE CONCAT('%', CAST(:search AS string), '%'))
-            OR LOWER(e.cveUnidadAdministrativa.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+            WHERE (:search IS NULL OR
+                LOWER(e.id.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.id.cveAduana) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.cveUnidadAdministrativa.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.cveAduana.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatUnidadAdminAduanaDTO> search(

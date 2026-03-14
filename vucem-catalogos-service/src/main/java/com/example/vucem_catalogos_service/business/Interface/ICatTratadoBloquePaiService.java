@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ICatTratadoBloquePaiService {
 
-    PageResponseDTO<CatTratadoBloquePaiResponseDTO> list(String cvePais, Short idTratadoAcuerdo, Boolean blnActivo, Pageable pageable);
+    PageResponseDTO<CatTratadoBloquePaiResponseDTO> list(String cvePais, Short idTratadoAcuerdo, Boolean blnActivo, String search, Pageable pageable);
 
     CatTratadoBloquePaiResponseDTO findById(String cvePais, Short idTratadoAcuerdo);
 

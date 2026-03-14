@@ -27,13 +27,17 @@ public interface ICatDictamenTramiteRepository extends JpaRepository<CatDictamen
             WHERE
             (
                 :search IS NULL OR
+                    LOWER(CAST(tt.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(tt.descServicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(td.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(CAST(td.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(td.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+            )
             AND
             (
                 :activo IS NULL OR a.blnActivo = :activo
             )
-                        )
             """)
     Page<CatDictamenTramiteResponseDTO> search(
             @Param("search") String search,

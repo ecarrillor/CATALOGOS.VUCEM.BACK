@@ -24,7 +24,13 @@ public interface ICatSubpartidaFraccionRepository extends JpaRepository<CatSubpa
                 e.blnActivo
             )
             FROM CatSubpartidaFraccion e
-            WHERE (:search IS NULL OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR
+                LOWER(e.id.cveSubpartidaFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.id.cveCapituloFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.id.cvePartidaFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatSubpartidaFraccionDTO> search(

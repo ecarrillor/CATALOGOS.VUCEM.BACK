@@ -30,8 +30,15 @@ public interface ICatTratadoAcuerdoRepository extends JpaRepository<CatTratadoAc
                 e.blnEvaluarIndividual
             )
             FROM CatTratadoAcuerdo e
-            WHERE (:search IS NULL OR LOWER(e.cveTratadoAcuerdo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
-                OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.ideTipoTratadoAcuerdo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.cveTratadoAcuerdo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecCaptura AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.ideTipoCupoSaai) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatTratadoAcuerdoDTO> search(@Param("search") String search,

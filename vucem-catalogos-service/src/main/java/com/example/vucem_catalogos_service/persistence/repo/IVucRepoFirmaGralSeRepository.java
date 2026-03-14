@@ -34,7 +34,14 @@ public interface IVucRepoFirmaGralSeRepository extends JpaRepository<VucRepoFirm
             )
             FROM VucRepoFirmaGralSe r
             LEFT JOIN r.idTipoTramite t
-            WHERE (:search    IS NULL OR LOWER(r.rfc) LIKE :search)
+            WHERE (:search    IS NULL OR
+                LOWER(CAST(r.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                LOWER(r.ideTipoFirma) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                LOWER(r.rfc) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                LOWER(r.puesto) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                LOWER(CAST(r.fecIniVigenia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                LOWER(CAST(r.fecFinVigenia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))
               AND (:tipoFirma IS NULL OR r.ideTipoFirma = :tipoFirma)
               AND (:activo    IS NULL OR r.blnActivo = :activo)
             ORDER BY r.id ASC

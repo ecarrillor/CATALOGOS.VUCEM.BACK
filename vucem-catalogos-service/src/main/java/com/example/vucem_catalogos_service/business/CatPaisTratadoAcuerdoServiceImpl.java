@@ -37,10 +37,10 @@ public class CatPaisTratadoAcuerdoServiceImpl implements ICatPaisTratadoAcuerdoS
 
     @Override
     public PageResponseDTO<CatPaisTratadoAcuerdoResponseDTO> list(
-            String cvePais, Short idTratadoAcuerdo, Boolean blnActivo, Pageable pageable) {
+            String cvePais, Short idTratadoAcuerdo, Boolean blnActivo, String search, Pageable pageable) {
 
         Page<CatPaisTratadoAcuerdoResponseDTO> page =
-                repository.search(cvePais, idTratadoAcuerdo, blnActivo, pageable);
+                repository.search(cvePais, idTratadoAcuerdo, blnActivo, search, pageable);
 
         return PageResponseDTO.<CatPaisTratadoAcuerdoResponseDTO>builder()
                 .content(page.getContent())

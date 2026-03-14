@@ -25,7 +25,14 @@ public interface ICatTipoProductoTtraRepository extends JpaRepository<CatTipoPro
             )
             FROM CatTipoProductoTtra e
             JOIN e.idTipoTramite t
-            WHERE (:search IS NULL OR LOWER(e.descTipoProducto) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(t.descSubservicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.descTipoProducto) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.ideTipoCertificadoMerc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatTipoProductoTtraDTO> search(

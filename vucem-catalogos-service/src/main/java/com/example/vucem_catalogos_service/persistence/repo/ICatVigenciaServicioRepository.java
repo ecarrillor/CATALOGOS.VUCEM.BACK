@@ -31,7 +31,18 @@ public interface ICatVigenciaServicioRepository extends JpaRepository<CatVigenci
 )
 FROM CatVigenciaServicio e
 LEFT JOIN e.idBloque b
-            WHERE (:search IS NULL OR LOWER(e.numVigencia) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.numVigencia) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.ideTipoVigencia) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.ideTipoServicioCeror) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.catPaisTratadoAcuerdo.cvePais.cvePais) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.catPaisTratadoAcuerdo.cvePais.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.catPaisTratadoAcuerdo.idTratadoAcuerdo.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.idBloque.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.idBloque.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.cveCriterioOrigen.cveCriterioOrigen) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatVigenciaServicioDTO> search(@Param("search") String search,

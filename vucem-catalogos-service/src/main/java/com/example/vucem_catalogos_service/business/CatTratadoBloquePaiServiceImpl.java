@@ -18,7 +18,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -38,10 +40,10 @@ public class CatTratadoBloquePaiServiceImpl implements ICatTratadoBloquePaiServi
 
     @Override
     public PageResponseDTO<CatTratadoBloquePaiResponseDTO> list(
-            String cvePais, Short idTratadoAcuerdo, Boolean blnActivo, Pageable pageable) {
+            String cvePais, Short idTratadoAcuerdo, Boolean blnActivo, String search, Pageable pageable) {
 
         Page<CatTratadoBloquePaiResponseDTO> page =
-                repository.search(cvePais, idTratadoAcuerdo, blnActivo, pageable);
+                repository.search(cvePais, idTratadoAcuerdo, blnActivo, search, pageable);
 
         return PageResponseDTO.<CatTratadoBloquePaiResponseDTO>builder()
                 .content(page.getContent())
@@ -70,24 +72,45 @@ public class CatTratadoBloquePaiServiceImpl implements ICatTratadoBloquePaiServi
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Se requiere al menos un tratado");
         }
 
-        List<CatTratadoBloquePaiResponseDTO> resultado = new ArrayList<>();
-
+        // Validar existencia de todos los paises y tratados antes de modificar nada
         for (String cvePais : dto.getPaises()) {
             if (!catPaisRepository.existsById(cvePais)) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "País no encontrado: " + cvePais);
             }
-            for (Short idTratadoAcuerdo : dto.getTratados()) {
-                if (!catTratadoAcuerdoRepository.existsById(idTratadoAcuerdo)) {
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tratado no encontrado: " + idTratadoAcuerdo);
-                }
+        }
+        for (Short idTratadoAcuerdo : dto.getTratados()) {
+            if (!catTratadoAcuerdoRepository.existsById(idTratadoAcuerdo)) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tratado no encontrado: " + idTratadoAcuerdo);
+            }
+        }
 
+        Set<String> nuevoPaises = new HashSet<>(dto.getPaises());
+        Set<Short> nuevoTratados = new HashSet<>(dto.getTratados());
+
+        // Desactivar combinaciones que ya no están en la nueva selección
+        List<CatTratadoBloquePai> activosAfectados =
+                repository.findActivosByPaisesOrTratados(dto.getPaises(), dto.getTratados());
+        for (CatTratadoBloquePai activo : activosAfectados) {
+            String pais = activo.getId().getCvePais();
+            Short tratado = activo.getId().getIdTratadoAcuerdo();
+            if (!nuevoPaises.contains(pais) || !nuevoTratados.contains(tratado)) {
+                activo.setBlnActivo(false);
+                repository.save(activo);
+            }
+        }
+
+        // Crear o actualizar las combinaciones de la nueva selección
+        List<CatTratadoBloquePaiResponseDTO> resultado = new ArrayList<>();
+
+        for (String cvePais : dto.getPaises()) {
+            for (Short idTratadoAcuerdo : dto.getTratados()) {
                 CatTratadoBloquePaiId pk = new CatTratadoBloquePaiId();
                 pk.setCvePais(cvePais);
                 pk.setIdTratadoAcuerdo(idTratadoAcuerdo);
 
                 LocalDate fecIniVigencia = dto.getFecIniVigencia();
 
-                // Si ya existe un registro activo, se desactiva y se reutiliza su fecIniVigencia
+                // Si ya existe un registro activo, se reutiliza su fecIniVigencia
                 List<CatTratadoBloquePai> activos = repository.findActivosByPaisAndTratado(cvePais, idTratadoAcuerdo);
                 if (!activos.isEmpty()) {
                     CatTratadoBloquePai existente = activos.get(0);

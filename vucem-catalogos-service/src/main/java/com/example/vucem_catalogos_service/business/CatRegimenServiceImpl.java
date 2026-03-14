@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatRegimen;
 import com.example.vucem_catalogos_service.persistence.repo.ICatRegimenRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -53,12 +54,12 @@ public class CatRegimenServiceImpl extends AbstractCatalogService<CatRegimen, St
         Specification<CatRegimen> spec =
                 GenericSearchSpecification.<CatRegimen>searchInFields(
                         search,
-                        List.of("cveRegimen","nombre")
+                        List.of("cveRegimen", "nombre", "cveEnumeracion")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
-
 
         return catRegimenRepository.findAll(spec, pageable);
     }

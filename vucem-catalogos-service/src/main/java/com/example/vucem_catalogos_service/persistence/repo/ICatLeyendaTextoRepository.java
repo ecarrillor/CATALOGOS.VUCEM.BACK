@@ -25,8 +25,12 @@ public interface ICatLeyendaTextoRepository extends JpaRepository<CatLeyendaText
             WHERE
                             (
                                         :search IS NULL OR
-                                        LOWER(a.ideTipoLeyendaTexto) LIKE :search OR
-                                        STR(a.id) LIKE :search
+                                        LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(a.ideTipoLeyendaTexto) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(CAST(a.numAnio AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(a.leyenda) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
                            )
                            AND
                            (

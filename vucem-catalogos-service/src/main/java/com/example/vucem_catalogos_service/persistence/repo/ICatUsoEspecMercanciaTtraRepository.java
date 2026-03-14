@@ -17,7 +17,13 @@ public interface ICatUsoEspecMercanciaTtraRepository extends JpaRepository<CatUs
             "e.descUsoEspMercancia, e.fecIniVigencia, e.fecFinVigencia, e.blnActivo, e.blnReqRegistroSanitario) " +
             "FROM CatUsoEspecMercanciaTtra e " +
             "WHERE (:activo IS NULL OR e.blnActivo = :activo) " +
-            "AND (:search IS NULL OR LOWER(e.idTipoTramite.descServicio) LIKE :search OR LOWER(e.descUsoEspMercancia) LIKE :search OR STR(e.id) LIKE :search)")
+            "AND (:search IS NULL OR :search = '' " +
+            "OR LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(CAST(e.idTipoTramite.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(e.idTipoTramite.descServicio) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(e.descUsoEspMercancia) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))")
     Page<CatUsoEspecMercanciaTtraDTO> search(@Param("search") String search,
                                               @Param("activo") Boolean activo,
                                               Pageable pageable);

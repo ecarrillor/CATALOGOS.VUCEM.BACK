@@ -4,6 +4,7 @@ import com.example.vucem_catalogos_service.model.entity.CatAga;
 import com.example.vucem_catalogos_service.model.entity.CatBanco;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAgaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatBancoRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -57,6 +58,8 @@ public class CatBancoServiceImpl extends AbstractCatalogService<CatBanco, String
                         List.of("cveBanco", "nombre")
                 ).and(
                         GenericFilterSpecification.<CatBanco>byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 ).and(
                         (root, query, cb) -> cb.equal(root.get("blnActivo"), true)
                 );

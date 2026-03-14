@@ -29,7 +29,13 @@ public interface ICatEquivalenciaAelcRepository extends JpaRepository<CatEquival
             )
             FROM CatEquivalenciaAelc e
             JOIN e.moneda m
-            WHERE (:search IS NULL OR LOWER(e.id.cveMoneda) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.id.cveMoneda) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(m.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.valor AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecCaptura AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatEquivalenciaAelcDTO> search(@Param("search") String search,

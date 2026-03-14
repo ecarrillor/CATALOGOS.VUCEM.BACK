@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatCriterioDictaminacion;
 import com.example.vucem_catalogos_service.persistence.repo.ICatCriterioDictaminacionRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -54,6 +55,8 @@ public class CatCriterioDictaminacionServiceImpl extends AbstractCatalogService<
                         List.of("nombre")
                 ).and(
                         GenericFilterSpecification.<CatCriterioDictaminacion>byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
 
         return catCriterioDictaminacionRepository.findAll(spec, pageable);

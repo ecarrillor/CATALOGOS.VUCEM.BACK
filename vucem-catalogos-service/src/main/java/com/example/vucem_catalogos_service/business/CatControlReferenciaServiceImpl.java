@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.business;
 import com.example.vucem_catalogos_service.model.entity.CatCondicionUso;
 import com.example.vucem_catalogos_service.model.entity.CatControlReferencia;
 import com.example.vucem_catalogos_service.persistence.repo.ICatControlReferenciaRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -52,12 +53,12 @@ public class CatControlReferenciaServiceImpl extends AbstractCatalogService<CatC
         Specification<CatControlReferencia> spec =
                 GenericSearchSpecification.<CatControlReferencia>searchInFields(
                         search,
-                        List.of("descripcion", "descripcionHtml")
+                        List.of("ideTipoPresentacion", "ideSubtipoPresentacion")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
-
 
         return catControlReferenciaRepository.findAll(spec, pageable);
     }

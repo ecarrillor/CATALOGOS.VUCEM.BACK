@@ -16,8 +16,12 @@ public interface ICatServicioImmexRepository extends JpaRepository<CatServicioIm
             "e.id, e.nombre, e.fecIniVigencia, e.ideTipoServicioImmex, e.fecFinVigencia, e.blnActivo) " +
             "FROM CatServicioImmex e " +
             "WHERE (:activo IS NULL OR e.blnActivo = :activo) " +
-            "AND (:search IS NULL OR :search = '' OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(e.ideTipoServicioImmex) LIKE LOWER(CONCAT('%', :search, '%')))")
+            "AND (:search IS NULL OR :search = '' " +
+            "OR LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(e.ideTipoServicioImmex) LIKE LOWER(CONCAT('%', :search, '%')) " +
+            "OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))")
     Page<CatServicioImmexDTO> search(@Param("search") String search,
                                      @Param("activo") Boolean activo,
                                      Pageable pageable);

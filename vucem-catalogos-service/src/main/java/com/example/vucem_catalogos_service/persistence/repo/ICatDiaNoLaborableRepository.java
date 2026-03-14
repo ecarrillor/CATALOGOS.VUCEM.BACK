@@ -28,9 +28,13 @@ public interface ICatDiaNoLaborableRepository extends JpaRepository<CatDiaNoLabo
                 e.blnActivo
             )
             FROM CatDiaNoLaborable e
-            WHERE (:search IS NULL OR LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
-                OR LOWER(e.id.cveCalendario) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
-                OR LOWER(e.cveCalendario.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id.fecNoLaborable AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.id.cveCalendario) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.cveCalendario.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatDiaNoLaborableDTO> search(@Param("search") String search,

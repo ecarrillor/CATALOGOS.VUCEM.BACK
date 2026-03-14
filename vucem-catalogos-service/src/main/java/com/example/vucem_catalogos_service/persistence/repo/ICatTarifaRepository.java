@@ -28,7 +28,14 @@ public interface ICatTarifaRepository extends JpaRepository<CatTarifa, CatTarifa
             )
             FROM CatTarifa e
             JOIN e.idTipoTramite t
-            WHERE (:search IS NULL OR LOWER(t.descServicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR
+                LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(t.descSubservicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(t.descServicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.id.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.id.ideTipoTarifa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.tarifa AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatTarifaDTO> search(

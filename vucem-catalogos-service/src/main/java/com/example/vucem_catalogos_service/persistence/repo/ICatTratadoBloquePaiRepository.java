@@ -29,17 +29,27 @@ public interface ICatTratadoBloquePaiRepository extends JpaRepository<CatTratado
                 tbp.blnEnvioElectronico,
                 tbp.blnMuestraCertificado
             )
-            FROM CatTratadoBloquePai tbp, CatPais p, CatTratadoAcuerdo t
-            WHERE tbp.id.cvePais = p.cvePais AND tbp.id.idTratadoAcuerdo = t.id
-              AND (:cvePais IS NULL OR tbp.id.cvePais = :cvePais)
+            FROM CatTratadoBloquePai tbp
+            JOIN CatPais p ON tbp.id.cvePais = p.cvePais
+            JOIN CatTratadoAcuerdo t ON tbp.id.idTratadoAcuerdo = t.id
+            WHERE (:cvePais IS NULL OR tbp.id.cvePais = :cvePais)
               AND (:idTratadoAcuerdo IS NULL OR tbp.id.idTratadoAcuerdo = :idTratadoAcuerdo)
               AND (:blnActivo IS NULL OR tbp.blnActivo = :blnActivo)
+              AND (:search IS NULL OR
+                   LOWER(tbp.id.cvePais) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(p.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(tbp.id.idTratadoAcuerdo AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(t.cveTratadoAcuerdo) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(tbp.fecCaptura AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(tbp.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(tbp.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))
             ORDER BY tbp.id.cvePais ASC, t.cveTratadoAcuerdo ASC
             """)
     Page<CatTratadoBloquePaiResponseDTO> search(
             @Param("cvePais") String cvePais,
             @Param("idTratadoAcuerdo") Short idTratadoAcuerdo,
             @Param("blnActivo") Boolean blnActivo,
+            @Param("search") String search,
             Pageable pageable);
 
     @Query("""
@@ -67,6 +77,11 @@ public interface ICatTratadoBloquePaiRepository extends JpaRepository<CatTratado
     List<CatTratadoBloquePai> findActivosByPaisAndTratado(
             @Param("cvePais") String cvePais,
             @Param("idTratadoAcuerdo") Short idTratadoAcuerdo);
+
+    @Query("SELECT tbp FROM CatTratadoBloquePai tbp WHERE (tbp.id.cvePais IN :cvePaises OR tbp.id.idTratadoAcuerdo IN :idsTratado) AND tbp.blnActivo = true")
+    List<CatTratadoBloquePai> findActivosByPaisesOrTratados(
+            @Param("cvePaises") List<String> cvePaises,
+            @Param("idsTratado") List<Short> idsTratado);
 
     @Query("""
         SELECT DISTINCT p.cvePais AS clave,

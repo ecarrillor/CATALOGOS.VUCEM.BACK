@@ -35,9 +35,15 @@ LEFT JOIN e.idGenero gen
 WHERE
 (
     :search IS NULL OR
-    LOWER(e.descNombreComun) LIKE :search OR
-    LOWER(e.ideTipoVidaSilvestre) LIKE :search OR
-    LOWER(e.descNombreCientifico) LIKE :search
+    LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+    LOWER(e.ideTipoVidaSilvestre) LIKE LOWER(CONCAT('%', :search, '%')) OR
+    LOWER(gen.descGenero) LIKE LOWER(CONCAT('%', :search, '%')) OR
+    LOWER(especie.descEspecie) LIKE LOWER(CONCAT('%', :search, '%')) OR
+    LOWER(e.descNombreComun) LIKE LOWER(CONCAT('%', :search, '%')) OR
+    LOWER(e.descNombreCientifico) LIKE LOWER(CONCAT('%', :search, '%')) OR
+    LOWER(e.ideClasifTaxonomica) LIKE LOWER(CONCAT('%', :search, '%')) OR
+    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
 )
 AND (:activo IS NULL OR e.blnActivo = :activo)
 AND (

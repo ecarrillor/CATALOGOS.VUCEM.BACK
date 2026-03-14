@@ -27,8 +27,10 @@ public interface ICatFundamentoDictamanRepository extends JpaRepository<CatFunda
             FROM CatFundamentoDictamen a
            WHERE (
                       :search IS NULL OR
-                      LOWER(a.descripcion) LIKE :search OR
-                      STR(a.id) LIKE :search
+                      LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                      LOWER(a.descripcion) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                      LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                      LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
                 )
                            AND
                            (

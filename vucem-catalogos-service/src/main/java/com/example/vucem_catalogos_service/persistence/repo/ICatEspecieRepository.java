@@ -30,8 +30,10 @@ public interface ICatEspecieRepository extends JpaRepository<CatEspecie, Integer
     WHERE
         (
             :search IS NULL OR
-            LOWER(a.descEspecie) LIKE :search OR
-            STR(a.id) LIKE :search
+            LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+            LOWER(a.descEspecie) LIKE LOWER(CONCAT('%', :search, '%')) OR
+            LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+            LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
         )
         AND (:activo IS NULL OR a.blnActivo = :activo)
         AND (

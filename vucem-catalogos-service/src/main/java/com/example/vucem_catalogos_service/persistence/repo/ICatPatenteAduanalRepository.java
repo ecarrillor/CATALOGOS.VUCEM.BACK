@@ -24,8 +24,10 @@ public interface ICatPatenteAduanalRepository extends JpaRepository<CatPatenteAd
             FROM CatPatenteAduanal e
             WHERE (:search IS NULL OR
                 LOWER(e.cvePatenteAduanal) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.rfc)               LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideEstPatenteAut)  LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                LOWER(e.rfc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.ideEstPatenteAut) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
             )
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)

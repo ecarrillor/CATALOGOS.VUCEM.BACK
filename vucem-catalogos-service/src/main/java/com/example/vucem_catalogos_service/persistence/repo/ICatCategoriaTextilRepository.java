@@ -35,9 +35,14 @@ public interface ICatCategoriaTextilRepository extends JpaRepository<CatCategori
             WHERE
                             (
                                         :search IS NULL OR
-                                        LOWER(a.descripcion) LIKE :search OR
-                                        LOWER(a.codCategoriaTextil) LIKE :search OR
-                                        STR(a.id) LIKE :search
+                                        LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(a.descripcion) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(a.codCategoriaTextil) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(CAST(a.factConversion AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(b.descripcion) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(c.descripcion) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
                            )
                            AND
                            (

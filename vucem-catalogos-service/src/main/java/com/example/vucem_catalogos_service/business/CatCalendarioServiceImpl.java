@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatCalendario;
 import com.example.vucem_catalogos_service.persistence.repo.ICatCalendarioRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -52,11 +53,12 @@ public class CatCalendarioServiceImpl extends AbstractCatalogService<CatCalendar
         Specification<CatCalendario> spec =
                 GenericSearchSpecification.<CatCalendario>searchInFields(
                         search,
-                        List.of("nombre", "fecIniVigencia")
+                        List.of("cveCalendario", "nombre")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
 
         return catCalendarioRepository.findAll(spec, pageable);
     }

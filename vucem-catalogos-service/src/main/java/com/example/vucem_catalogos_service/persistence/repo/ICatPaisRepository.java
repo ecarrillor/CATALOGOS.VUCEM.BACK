@@ -34,6 +34,9 @@ public interface ICatPaisRepository extends JpaRepository<CatPais, String> {
                     LOWER(cat.cvePais) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(cat.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(mon.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(cat.cvePaisWco) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(cat.nombreAlterno) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )
                 AND (

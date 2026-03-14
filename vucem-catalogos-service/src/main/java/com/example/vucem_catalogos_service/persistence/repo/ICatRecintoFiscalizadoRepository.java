@@ -36,10 +36,19 @@ public interface ICatRecintoFiscalizadoRepository extends JpaRepository<CatRecin
             WHERE
                                        (
                                                    :search IS NULL OR
-                                                   LOWER(e.nombre) LIKE :search OR
-                                                   LOWER(e.rfc) LIKE :search OR
-                                                   LOWER(e.descUrl) LIKE :search OR
-                                                   STR(e.id) LIKE :search
+                                                   LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(e.cveAduana.cveAduana) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(e.cveAduana.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(e.ideTipoRecintoFiscalizado) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(e.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(e.rfc) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(e.numAutorizacion) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(e.codCamir) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(e.correoElectronico) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(e.descUrl) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                                   LOWER(e.tipo) LIKE LOWER(CONCAT('%', :search, '%'))
                                       )
             """)
     Page<CatRecintoFiscalizadoDTO> search(@Param("search") String search,

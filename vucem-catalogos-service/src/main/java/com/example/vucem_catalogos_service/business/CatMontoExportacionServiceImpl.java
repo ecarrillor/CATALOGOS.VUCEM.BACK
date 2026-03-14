@@ -6,6 +6,7 @@ import com.example.vucem_catalogos_service.model.dto.LeyendaTexto.CatLeyendaText
 import com.example.vucem_catalogos_service.model.entity.*;
 import com.example.vucem_catalogos_service.persistence.repo.ICatMonedaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatMontoExportacionRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -58,11 +59,12 @@ public class CatMontoExportacionServiceImpl extends AbstractCatalogService<CatMo
         Specification<CatMontoExportacion> spec =
                 GenericSearchSpecification.<CatMontoExportacion>searchInFields(
                         search,
-                        List.of("razonSocial", "monto")
+                        List.of("razonSocial")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
 
         return catMontoExportacionRepository.findAll(spec, pageable);
     }

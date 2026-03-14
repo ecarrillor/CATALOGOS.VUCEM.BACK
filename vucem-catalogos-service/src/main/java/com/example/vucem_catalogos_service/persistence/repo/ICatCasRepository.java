@@ -41,8 +41,12 @@ public interface ICatCasRepository extends JpaRepository<CatCa, Short> {
     WHERE
                 (
                    :search IS NULL OR
-                   LOWER(cas.descCas) LIKE :search OR
-                   STR(cas.id) LIKE :search
+                   LOWER(CAST(cas.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(cas.descCas) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(cas.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(cas.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(tt.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(tt.descModalidad) LIKE LOWER(CONCAT('%', :search, '%'))
                 )
                 AND (:activo IS NULL OR cas.blActivo = :activo)
                 AND (:idTipoTramite IS NULL OR tt.id = :idTipoTramite)

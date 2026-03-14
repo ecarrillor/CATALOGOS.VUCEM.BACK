@@ -6,6 +6,7 @@ import com.example.vucem_catalogos_service.model.dto.FundamentoDictamen.CatFunda
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatFundamentoDictamen;
 import com.example.vucem_catalogos_service.persistence.repo.ICatFundamentoDictamanRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -61,9 +62,9 @@ public class CatFundamentoDictamanServiceImpl extends AbstractCatalogService<Cat
                         List.of("descripcion")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
-
 
         return catFundamentoDictamanRepository.findAll(spec, pageable);
     }

@@ -27,7 +27,14 @@ public interface ICatAduanaClasifProdRepository extends JpaRepository<CatAduanaC
                 e.blnActivo
             )
             FROM CatAduanaClasifProd e
-            WHERE (:texto IS NULL OR (e.aduana IS NOT NULL AND LOWER(e.aduana.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))))
+            WHERE (:texto IS NULL OR
+                (e.aduana IS NOT NULL AND LOWER(e.aduana.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))) OR
+                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
+                (e.aduana IS NOT NULL AND LOWER(e.aduana.cveAduana) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))) OR
+                (e.idClasifProducto IS NOT NULL AND LOWER(CAST(e.idClasifProducto.idClasifProduct AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))) OR
+                (e.idClasifProducto IS NOT NULL AND LOWER(e.idClasifProducto.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')))
             AND (:activo IS NULL OR e.blnActivo = :activo)
             AND (:idClasifProducto IS NULL OR (e.idClasifProducto IS NOT NULL AND e.idClasifProducto.idClasifProduct = :idClasifProducto))
             """)

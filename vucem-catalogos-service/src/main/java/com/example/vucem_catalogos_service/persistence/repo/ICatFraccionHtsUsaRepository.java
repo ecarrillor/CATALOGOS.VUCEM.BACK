@@ -30,9 +30,15 @@ public interface ICatFraccionHtsUsaRepository extends JpaRepository<CatFraccionH
             LEFT JOIN e.cveUnidadMedida um
              WHERE
                 (:search IS NULL OR
-                    LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(e.cveFraccionHtsUsa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.cveUnidadMedida.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.fecCaptura AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(e.ideTipoBienFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(um.cveUnidadMedida) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(um.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 )
                 AND (
                     :activo IS NULL OR e.blnActivo = :activo

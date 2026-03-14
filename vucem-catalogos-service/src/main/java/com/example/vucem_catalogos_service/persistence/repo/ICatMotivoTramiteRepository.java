@@ -29,10 +29,14 @@ public interface ICatMotivoTramiteRepository extends JpaRepository<CatMotivoTtra
             WHERE
                             (
                                         :search IS NULL OR
-                                        LOWER(a.ideTipoMotivoTtra) LIKE :search OR
-                                        LOWER(b.descModalidad) LIKE :search OR
-                                        LOWER(a.descMotivo) LIKE :search OR
-                                        STR(a.id) LIKE :search
+                                        LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(CAST(b.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(b.descModalidad) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(a.ideTipoMotivoTtra) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(a.descMotivo) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(a.descContenidoMotivo) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                                        LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
                            )
                            AND
                            (

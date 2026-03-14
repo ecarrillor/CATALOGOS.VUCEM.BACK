@@ -54,7 +54,7 @@ public class CatSemanaLaboralServiceImpl extends AbstractCatalogService<CatSeman
         Specification<CatSemanaLaboral> spec =
                 GenericSearchSpecification.<CatSemanaLaboral>searchInFields(
                         search,
-                        List.of("cveRegimen","nombre")
+                        List.of("descripcion")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
                 );

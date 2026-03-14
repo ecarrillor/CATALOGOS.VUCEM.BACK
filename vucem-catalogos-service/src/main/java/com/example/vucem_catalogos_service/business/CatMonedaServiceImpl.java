@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatMoneda;
 import com.example.vucem_catalogos_service.persistence.repo.ICatMonedaRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -55,9 +56,9 @@ public class CatMonedaServiceImpl extends AbstractCatalogService<CatMoneda, Stri
                         List.of("cveMoneda","nombre")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
-
 
         return catMonedaRepository.findAll(spec, pageable);
     }

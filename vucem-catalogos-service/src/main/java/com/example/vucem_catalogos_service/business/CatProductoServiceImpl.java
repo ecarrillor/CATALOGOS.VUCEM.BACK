@@ -4,6 +4,7 @@ import com.example.vucem_catalogos_service.model.entity.CatMontoExportacion;
 import com.example.vucem_catalogos_service.model.entity.CatMontoExportacionId;
 import com.example.vucem_catalogos_service.model.entity.CatProducto;
 import com.example.vucem_catalogos_service.persistence.repo.ICatProductoRepository;
+import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
 import jakarta.transaction.Transactional;
@@ -54,12 +55,12 @@ public class CatProductoServiceImpl extends AbstractCatalogService<CatProducto,S
         Specification<CatProducto> spec =
                 GenericSearchSpecification.<CatProducto>searchInFields(
                         search,
-                        List.of("nomPuntoVerif","sigla","nombre","descripcion")
+                        List.of("cveProducto", "sigla", "nombre", "descripcion")
                 ).and(
                         GenericFilterSpecification.byFilters(filters)
+                ).and(
+                        GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
-
-
 
         return catProductoRepository.findAll(spec, pageable);
     }

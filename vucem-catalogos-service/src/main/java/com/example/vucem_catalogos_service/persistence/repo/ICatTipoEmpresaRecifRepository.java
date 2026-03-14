@@ -28,7 +28,13 @@ public interface ICatTipoEmpresaRecifRepository extends JpaRepository<CatTipoEmp
                 e.blnActivo
             )
             FROM CatTipoEmpresaRecif e
-            WHERE (:search IS NULL OR LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR
+                LOWER(e.cveTipoEmpresaRecif) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.cveTipoEmpresaRecifR.cveTipoEmpresaRecif AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.cveTipoEmpresaRecifR.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatTipoEmpresaRecifDTO> search(
