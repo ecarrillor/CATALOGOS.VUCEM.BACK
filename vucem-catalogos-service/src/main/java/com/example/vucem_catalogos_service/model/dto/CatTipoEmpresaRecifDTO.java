@@ -1,0 +1,23 @@
+package com.example.vucem_catalogos_service.model.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.Instant;
+import java.time.LocalDate;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class CatTipoEmpresaRecifDTO {
+    private String cveTipoEmpresaRecif;
+    private String cveTipoEmpresaRecifR;
+    private String descripcionPadre;
+    private String descripcion;
+    private LocalDate fecIniVigencia;
+    private LocalDate fecFinVigencia;
+    private Boolean blnActivo;
+}

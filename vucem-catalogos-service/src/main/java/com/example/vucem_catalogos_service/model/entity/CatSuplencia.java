@@ -1,0 +1,41 @@
+package com.example.vucem_catalogos_service.model.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.Instant;
+import java.time.LocalDate;
+
+@Data
+@Entity
+@Table(name = "cat_suplencia")
+public class CatSuplencia {
+    @Id
+    @Column(name = "id_suplencia", nullable = false)
+    private Short id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_dependencia", referencedColumnName = "id_dependencia")
+    private CatDependencia idDependencia;
+
+    @Size(max = 2000)
+    @Column(name = "texto", length = 2000)
+    private String texto;
+
+    @NotNull
+    @Column(name = "fec_ini_vigencia", nullable = false)
+    private LocalDate fecIniVigencia;
+
+    @Column(name = "fec_fin_vigencia")
+    private LocalDate fecFinVigencia;
+
+    @NotNull
+    @Column(name = "bln_activo", nullable = false)
+    private Boolean blnActivo;
+
+
+}
