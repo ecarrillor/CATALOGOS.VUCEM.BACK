@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ICatFraccionTtraDescProdRepository extends JpaRepository<CatFraccionTtraDescProd, Long>,
@@ -67,4 +68,5 @@ public interface ICatFraccionTtraDescProdRepository extends JpaRepository<CatFra
             """)
     List<ClasifProductoTraDTO> listadoTipoTramite();
 
+    Optional<CatFraccionTtraDescProd> findTopByOrderByIdDesc();
 }

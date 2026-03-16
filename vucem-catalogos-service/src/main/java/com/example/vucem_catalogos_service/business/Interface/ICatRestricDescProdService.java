@@ -24,4 +24,6 @@ public interface ICatRestricDescProdService {
     List<ClasifProductoTraDTO> listadoRestriccionTtra(Long idTipoTramite);
 
     List<SelectDTO> listadoDescripcionProd();
+
+    ClasifProductoTraDTO lastRestricDescProd();
 }

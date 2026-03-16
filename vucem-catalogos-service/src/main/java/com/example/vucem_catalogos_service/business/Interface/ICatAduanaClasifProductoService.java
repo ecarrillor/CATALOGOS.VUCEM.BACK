@@ -24,4 +24,6 @@ public interface ICatAduanaClasifProductoService {
     List<ClasifProductoTraDTO> listadoClasificacionProducto(Long idTipoTramite);
 
     List<ClasifProductoTraDTO> listadoClasifTram();
+
+    ClasifProductoTraDTO lastAduanaClasifProd();
 }

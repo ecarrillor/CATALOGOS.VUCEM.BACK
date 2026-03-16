@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ICatDescripcionProdRepository extends JpaRepository<CatDescripcionProd, Integer>,
@@ -85,6 +86,8 @@ public interface ICatDescripcionProdRepository extends JpaRepository<CatDescripc
     List<ClasifProductoTraDTO> listadoTipoTramite();
 
     List<CatDescripcionProd> findAllByBlnActivoTrueOrderByDescripcionProductoAsc();
+
+    Optional<CatDescripcionProd> findTopByOrderByIdDesc();
 
     @Query("""
             SELECT  new com.example.vucem_catalogos_service.model.dto.DescripcionProd.CatDescripcionProdResponseDTO(

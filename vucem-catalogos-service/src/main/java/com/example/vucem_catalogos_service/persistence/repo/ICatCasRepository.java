@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ICatCasRepository extends JpaRepository<CatCa, Short> {
@@ -89,4 +90,6 @@ public interface ICatCasRepository extends JpaRepository<CatCa, Short> {
 
     @Query("SELECT MAX(c.id) FROM CatCasFraccionTtra c")
     Short findMaxId();
+
+    Optional<CatCa> findTopByOrderByIdDesc();
 }

@@ -25,4 +25,6 @@ public interface ICatCasFraccionTtraService {
     List<SelectDTO> listadoCas();
 
     List<FraccionAranceSearchDTO> listadoFraccionAr();
+
+    ClasifProductoTraDTO lastCasFraccionTtra();
 }

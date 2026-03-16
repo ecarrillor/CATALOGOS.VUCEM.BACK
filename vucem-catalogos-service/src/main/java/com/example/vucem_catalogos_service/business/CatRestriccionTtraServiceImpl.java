@@ -189,4 +189,12 @@ public class CatRestriccionTtraServiceImpl implements ICatRestriccionTtraService
                 .ideMotivoRechazoDict(entity.getIdeMotivoRechazoDict())
                 .build();
     }
+
+    @Override
+    public ClasifProductoTraDTO lastRestriccionTtra() {
+        return repository.findTopByOrderByIdDesc()
+                .map(e -> new ClasifProductoTraDTO(e.getId().longValue(), e.getDescRestriccion()))
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "No existen registros en Restricción Trámite"));
+    }
 }

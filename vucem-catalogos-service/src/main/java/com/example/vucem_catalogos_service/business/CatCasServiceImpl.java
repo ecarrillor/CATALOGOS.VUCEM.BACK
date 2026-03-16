@@ -186,4 +186,12 @@ public class CatCasServiceImpl implements ICatCasService {
                 .blActivo(entity.getBlActivo())
                 .build();
     }
+
+    @Override
+    public ClasifProductoTraDTO lastCas() {
+        return repository.findTopByOrderByIdDesc()
+                .map(e -> new ClasifProductoTraDTO(e.getId().longValue(), e.getDescCas()))
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "No existen registros en Chemical Abstracts Service"));
+    }
 }

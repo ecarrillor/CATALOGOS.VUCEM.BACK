@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ICatRestriccionTtraRepository extends JpaRepository<CatRestriccionTtra, Short>,
@@ -89,4 +90,5 @@ public interface ICatRestriccionTtraRepository extends JpaRepository<CatRestricc
 
     List<CatRestriccionTtra> findByBlnActivoTrueAndIdTipoTramiteId(Long idTipoTramite);
 
+    Optional<CatRestriccionTtra> findTopByOrderByIdDesc();
 }

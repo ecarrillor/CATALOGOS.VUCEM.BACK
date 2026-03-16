@@ -21,4 +21,6 @@ public interface ICatVidaSilvestreService {
     List<ClasifProductoTraDTO> listadoTipoTramite();
 
     List<ClasifProductoTraDTO> listadoGenero();
+
+    ClasifProductoTraDTO lastVidaSilvestre();
 }

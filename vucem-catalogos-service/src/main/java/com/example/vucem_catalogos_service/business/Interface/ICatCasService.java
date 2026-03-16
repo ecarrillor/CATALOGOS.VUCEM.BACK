@@ -19,4 +19,6 @@ public interface ICatCasService {
     CatCaResponseDTO update(Short id, CatCaRequestDTO dto);
 
     List<ClasifProductoTraDTO> listadoTipoTramite();
+
+    ClasifProductoTraDTO lastCas();
 }

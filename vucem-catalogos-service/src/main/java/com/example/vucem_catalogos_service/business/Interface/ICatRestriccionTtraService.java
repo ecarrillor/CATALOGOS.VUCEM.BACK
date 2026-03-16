@@ -21,4 +21,5 @@ public interface ICatRestriccionTtraService {
 
     List<ClasifProductoTraDTO> listadoTipoTramite();
 
+    ClasifProductoTraDTO lastRestriccionTtra();
 }

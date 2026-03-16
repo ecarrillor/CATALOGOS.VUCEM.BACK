@@ -97,4 +97,6 @@ public interface ICatClasifProductoRepository extends JpaRepository<CatClasifPro
             """)
     List<ClasifProductoTraDTO> listadoClasifPrR(
             @Param("idTipoTramite") Long idTipoTramite);
+
+    Optional<CatClasifProducto> findTopByOrderByIdClasifProductDesc();
 }

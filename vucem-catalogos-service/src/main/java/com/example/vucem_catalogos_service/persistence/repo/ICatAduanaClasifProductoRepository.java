@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ICatAduanaClasifProductoRepository extends JpaRepository<CatAduanaClasifProd, Long>, JpaSpecificationExecutor<CatAduanaClasifProd> {
@@ -90,5 +91,5 @@ public interface ICatAduanaClasifProductoRepository extends JpaRepository<CatAdu
             """)
     List<ClasifProductoTraDTO> listadoClasifPrR();
 
-
+    Optional<CatAduanaClasifProd> findTopByOrderByIdDesc();
 }

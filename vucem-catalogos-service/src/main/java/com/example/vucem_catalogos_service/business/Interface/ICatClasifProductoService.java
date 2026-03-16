@@ -16,4 +16,6 @@ public interface ICatClasifProductoService {
     List<ClasifProductoTraDTO> listadoTipoTramite();
 
     List<ClasifProductoTraDTO> listadoClasifPrR(Long idTipoTramite);
+
+    ClasifProductoTraDTO lastClasifProducto();
 }

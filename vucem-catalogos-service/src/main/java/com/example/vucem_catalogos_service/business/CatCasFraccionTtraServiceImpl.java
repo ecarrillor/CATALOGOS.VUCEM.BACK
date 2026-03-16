@@ -247,4 +247,12 @@ public class CatCasFraccionTtraServiceImpl implements ICatCasFraccionTtraService
                 .ideIdentificadorRegla(entity.getIdeIdentificadorRegla())
                 .build();
     }
+
+    @Override
+    public ClasifProductoTraDTO lastCasFraccionTtra() {
+        return repository.findTopByOrderByIdDesc()
+                .map(e -> new ClasifProductoTraDTO(e.getId().longValue(), e.getDescFraccionAlt()))
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "No existen registros en CAS Fracción Trámite"));
+    }
 }

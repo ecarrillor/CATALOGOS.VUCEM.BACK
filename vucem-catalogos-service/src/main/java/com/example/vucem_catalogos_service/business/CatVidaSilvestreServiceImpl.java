@@ -199,4 +199,12 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
                 "El idTipoTramite no corresponde a ningún tipo de vida silvestre"
         );
     }
+
+    @Override
+    public ClasifProductoTraDTO lastVidaSilvestre() {
+        return catVidaSilvestreRepository.findTopByOrderByIdDesc()
+                .map(e -> new ClasifProductoTraDTO(e.getId().longValue(), e.getDescNombreComun()))
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "No existen registros en Vida Silvestre"));
+    }
 }

@@ -19,4 +19,6 @@ public interface ICatDescripcionProdService {
     CatDescripcionProdResponseDTO update(Integer id, CatDescripcionProdRequestDTO dto);
 
     List<ClasifProductoTraDTO> listadoTipoTramite();
+
+    ClasifProductoTraDTO lastDescripcionProd();
 }

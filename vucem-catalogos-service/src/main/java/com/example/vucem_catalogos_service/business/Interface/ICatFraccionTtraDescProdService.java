@@ -24,4 +24,6 @@ public interface ICatFraccionTtraDescProdService {
     List<ClasifProductoTraDTO> listadoFraccionTtra(Long idTipoTramite);
 
     List<SelectDTO> listadoDescripcionProd();
+
+    ClasifProductoTraDTO lastFraccionTtraDescProd();
 }

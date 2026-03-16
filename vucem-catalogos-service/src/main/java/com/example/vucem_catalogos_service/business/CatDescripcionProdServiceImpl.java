@@ -204,4 +204,12 @@ public class CatDescripcionProdServiceImpl implements ICatDescripcionProdService
                 .blnActivo(entity.getBlnActivo())
                 .build();
     }
+
+    @Override
+    public ClasifProductoTraDTO lastDescripcionProd() {
+        return repository.findTopByOrderByIdDesc()
+                .map(e -> new ClasifProductoTraDTO(e.getId().longValue(), e.getDescripcionProducto()))
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "No existen registros en Descripción Producto"));
+    }
 }

@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ICatCasFraccionTtraRepository extends JpaRepository<CatCasFraccionTtra, Short>,
@@ -82,4 +83,6 @@ public interface ICatCasFraccionTtraRepository extends JpaRepository<CatCasFracc
             ORDER BY COALESCE(tt.descModalidad, tt.descSubservicio) ASC
             """)
     List<ClasifProductoTraDTO> listadoTipoTramite();
+
+    Optional<CatCasFraccionTtra> findTopByOrderByIdDesc();
 }

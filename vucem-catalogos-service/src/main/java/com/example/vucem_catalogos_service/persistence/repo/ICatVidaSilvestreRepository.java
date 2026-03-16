@@ -117,4 +117,6 @@ ORDER BY 2 ASC
 
     @Query("SELECT COALESCE(MAX(v.id),0) + 1 FROM CatVidaSilvestre v")
     Integer getNextId();
+
+    Optional<CatVidaSilvestre> findTopByOrderByIdDesc();
 }
