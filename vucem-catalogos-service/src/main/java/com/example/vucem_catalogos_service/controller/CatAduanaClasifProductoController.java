@@ -73,5 +73,9 @@ public class CatAduanaClasifProductoController {
         return ResponseEntity.ok(lista);
     }
 
+    @GetMapping(CatalogPaths.LAST_ADUANA_CLASIF_PROD)
+    public ResponseEntity<ClasifProductoTraDTO> lastAduanaClasifProd() {
+        return ResponseEntity.ok(service.lastAduanaClasifProd());
+    }
 
 }

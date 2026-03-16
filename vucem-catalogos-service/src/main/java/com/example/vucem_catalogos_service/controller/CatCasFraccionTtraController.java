@@ -63,4 +63,9 @@ public class CatCasFraccionTtraController {
     public ResponseEntity<List<FraccionAranceSearchDTO>> listadoFraccionAr() {
         return ResponseEntity.ok(service.listadoFraccionAr());
     }
+
+    @GetMapping(CatalogPaths.LAST_CAS_FRACCION_TTRA)
+    public ResponseEntity<ClasifProductoTraDTO> lastCasFraccionTtra() {
+        return ResponseEntity.ok(service.lastCasFraccionTtra());
+    }
 }

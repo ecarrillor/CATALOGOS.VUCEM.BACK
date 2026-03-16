@@ -58,4 +58,9 @@ public class CatVidaSilvestreController {
     public ResponseEntity<List<ClasifProductoTraDTO>> listadoGenero() {
         return ResponseEntity.ok(service.listadoGenero());
     }
+
+    @GetMapping(CatalogPaths.LAST_VIDA_SILVESTRE)
+    public ResponseEntity<ClasifProductoTraDTO> lastVidaSilvestre() {
+        return ResponseEntity.ok(service.lastVidaSilvestre());
+    }
 }

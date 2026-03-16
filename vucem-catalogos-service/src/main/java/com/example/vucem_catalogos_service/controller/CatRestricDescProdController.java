@@ -62,4 +62,9 @@ public class CatRestricDescProdController {
     public ResponseEntity<List<SelectDTO>> listadoDescripcionProd() {
         return ResponseEntity.ok(service.listadoDescripcionProd());
     }
+
+    @GetMapping(CatalogPaths.LAST_RESTRIC_DESC_PROD)
+    public ResponseEntity<ClasifProductoTraDTO> lastRestricDescProd() {
+        return ResponseEntity.ok(service.lastRestricDescProd());
+    }
 }

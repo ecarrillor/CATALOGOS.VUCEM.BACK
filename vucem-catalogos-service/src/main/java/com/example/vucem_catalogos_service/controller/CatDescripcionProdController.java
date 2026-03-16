@@ -51,4 +51,9 @@ public class CatDescripcionProdController {
     public ResponseEntity<List<ClasifProductoTraDTO>> listadoTipoTramite() {
         return ResponseEntity.ok(service.listadoTipoTramite());
     }
+
+    @GetMapping(CatalogPaths.LAST_DESCRIPCION_PROD)
+    public ResponseEntity<ClasifProductoTraDTO> lastDescripcionProd() {
+        return ResponseEntity.ok(service.lastDescripcionProd());
+    }
 }

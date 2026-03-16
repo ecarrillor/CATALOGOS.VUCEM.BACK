@@ -58,4 +58,9 @@ public class CatClasifProductoController {
         return ResponseEntity.ok(service.listadoClasifPrR(idTipoTramite));
     }
 
+    @GetMapping(CatalogPaths.LAST_CLASIF_PRODUCTO)
+    public ResponseEntity<ClasifProductoTraDTO> lastClasifProducto() {
+        return ResponseEntity.ok(service.lastClasifProducto());
+    }
+
 }

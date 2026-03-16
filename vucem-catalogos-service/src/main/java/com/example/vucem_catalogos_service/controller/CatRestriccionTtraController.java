@@ -52,4 +52,9 @@ public class CatRestriccionTtraController {
     public ResponseEntity<List<ClasifProductoTraDTO>> listadoTipoTramite() {
         return ResponseEntity.ok(service.listadoTipoTramite());
     }
+
+    @GetMapping(CatalogPaths.LAST_RESTRICCION_TTRA)
+    public ResponseEntity<ClasifProductoTraDTO> lastRestriccionTtra() {
+        return ResponseEntity.ok(service.lastRestriccionTtra());
+    }
 }

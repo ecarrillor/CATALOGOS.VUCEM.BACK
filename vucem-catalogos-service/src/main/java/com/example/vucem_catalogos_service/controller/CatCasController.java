@@ -51,4 +51,9 @@ public class CatCasController {
     public ResponseEntity<List<ClasifProductoTraDTO>> listadoTipoTramite() {
         return ResponseEntity.ok(service.listadoTipoTramite());
     }
+
+    @GetMapping(CatalogPaths.LAST_CAT_CAS)
+    public ResponseEntity<ClasifProductoTraDTO> lastCas() {
+        return ResponseEntity.ok(service.lastCas());
+    }
 }

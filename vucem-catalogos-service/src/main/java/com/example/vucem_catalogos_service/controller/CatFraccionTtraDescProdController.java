@@ -62,4 +62,9 @@ public class CatFraccionTtraDescProdController {
     public ResponseEntity<List<SelectDTO>> listadoDescripcionProd() {
         return ResponseEntity.ok(service.listadoDescripcionProd());
     }
+
+    @GetMapping(CatalogPaths.LAST_FRACCION_TTRA_DESC_PROD)
+    public ResponseEntity<ClasifProductoTraDTO> lastFraccionTtraDescProd() {
+        return ResponseEntity.ok(service.lastFraccionTtraDescProd());
+    }
 }
