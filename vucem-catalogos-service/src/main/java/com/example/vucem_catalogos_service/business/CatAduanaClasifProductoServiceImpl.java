@@ -207,7 +207,7 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
     @Override
     public ClasifProductoTraDTO lastAduanaClasifProd() {
         return repository.findTopByOrderByIdDesc()
-                .map(e -> new ClasifProductoTraDTO(e.getId(), null))
+                .map(e -> new ClasifProductoTraDTO(e.getId(), e.getAduana().getNombre()))
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "No existen registros en Aduana Clasificación Producto"));
     }

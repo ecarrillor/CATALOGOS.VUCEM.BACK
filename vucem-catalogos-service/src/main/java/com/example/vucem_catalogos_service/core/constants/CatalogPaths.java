@@ -566,8 +566,6 @@ public class CatalogPaths extends ConstPath{
     public static final String LAST_DESCRIPCION_PROD          = "/cat_descripcion_prod/ultimo_descripcion_prod";
     public static final String LAST_FRACCION_TTRA_DESC_PROD   = "/cat_fraccion_ttra_desc_prod/ultimo_fraccion_ttra_desc_prod";
     public static final String LAST_GENERO                    = "/cat_genero/ultimo_genero";
-    public static final String LAST_ISOTOPO_FRACCION          = "/cat_isotopo_fraccion/ultimo_isotopo_fraccion";
-    public static final String LAST_ISOTOPO_TTRA              = "/cat_isotopo_ttra/ultimo_isotopo_ttra";
     public static final String LAST_RESTRIC_DESC_PROD         = "/cat_restric_desc_prod/ultimo_restric_desc_prod";
     public static final String LAST_RESTRICCION_TTRA          = "/cat_restriccion_ttra/ultimo_restriccion_ttra";
     public static final String LAST_VIDA_SILVESTRE            = "/cat_vida_silvestre/ultimo_vida_silvestre";

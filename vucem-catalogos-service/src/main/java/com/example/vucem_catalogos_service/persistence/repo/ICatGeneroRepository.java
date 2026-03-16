@@ -1,14 +1,18 @@
 package com.example.vucem_catalogos_service.persistence.repo;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.example.vucem_catalogos_service.model.entity.CatGenero;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ICatGeneroRepository extends JpaRepository<CatGenero, Integer> ,
         JpaSpecificationExecutor<CatGenero> {
     List<CatGenero> findByBlnActivoTrue();
+
+    Optional<CatGenero> findTopByOrderByIdDesc();
 }

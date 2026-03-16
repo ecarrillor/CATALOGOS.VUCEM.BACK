@@ -197,7 +197,7 @@ public class CatFraccionTtraDescProdServiceImpl implements ICatFraccionTtraDescP
     @Override
     public ClasifProductoTraDTO lastFraccionTtraDescProd() {
         return repository.findTopByOrderByIdDesc()
-                .map(e -> new ClasifProductoTraDTO(e.getId(), null))
+                .map(e -> new ClasifProductoTraDTO(e.getId(), e.getIdDescripcionProd().getDescripcionProducto()))
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "No existen registros en Fracción Trámite Descripción Producto"));
     }

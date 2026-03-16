@@ -204,7 +204,7 @@ public class CatRestricDescProdServiceImpl implements ICatRestricDescProdService
     @Override
     public ClasifProductoTraDTO lastRestricDescProd() {
         return repository.findTopByOrderByIdDesc()
-                .map(e -> new ClasifProductoTraDTO(e.getId(), null))
+                .map(e -> new ClasifProductoTraDTO(e.getId(), e.getIdDescripcionProd().getDescripcionProducto()))
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "No existen registros en Restricciones Descripción Producto"));
     }
