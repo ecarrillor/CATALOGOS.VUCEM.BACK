@@ -35,7 +35,7 @@ public class VucRepoFirmaGralSeResponseDTO {
 
     private Boolean tieneKey;
 
-    private Boolean tieneFacsimil;
+    private byte[] tieneFacsimil;
 
-    private Boolean tieneSello;
+    private byte[] tieneSello;
 }

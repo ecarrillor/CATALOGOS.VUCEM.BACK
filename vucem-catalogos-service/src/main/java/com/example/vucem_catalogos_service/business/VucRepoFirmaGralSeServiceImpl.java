@@ -208,8 +208,8 @@ public class VucRepoFirmaGralSeServiceImpl implements IVucRepoFirmaGralSeService
                 .blnActivo(entity.getBlnActivo())
                 .tieneCert(entity.getCert()     != null)
                 .tieneKey(entity.getKey()       != null)
-                .tieneFacsimil(entity.getFacsimil() != null)
-                .tieneSello(entity.getSello()   != null)
+                .tieneFacsimil(entity.getFacsimil())
+                .tieneSello(entity.getSello())
                 .build();
     }
 
