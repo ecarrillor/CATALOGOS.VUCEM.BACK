@@ -28,9 +28,8 @@ public interface IVucRepoFirmaGralSeRepository extends JpaRepository<VucRepoFirm
                 r.fecFinVigenia,
                 r.blnActivo,
                 CASE WHEN r.cert     IS NOT NULL THEN TRUE ELSE FALSE END,
-                CASE WHEN r.key      IS NOT NULL THEN TRUE ELSE FALSE END,
-                r.facsimil ,
-                 r.sello
+                CASE WHEN r.key      IS NOT NULL THEN TRUE ELSE FALSE END
+            
             )
             FROM VucRepoFirmaGralSe r
             LEFT JOIN r.idTipoTramite t
