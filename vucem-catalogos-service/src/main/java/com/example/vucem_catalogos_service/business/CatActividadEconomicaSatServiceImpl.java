@@ -13,8 +13,10 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoEmpresaRecif
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -63,6 +65,13 @@ public class CatActividadEconomicaSatServiceImpl implements ICatActividadEconomi
     @Override
     public CatActividadEconomicaSatDTO create(CatActividadEconomicaSatDTO dto) {
         CatActividadEconomicaSat entity = new CatActividadEconomicaSat();
+
+        if (catActividadEconomicaSatRepository.existsById(dto.getId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El id ya existe"
+            );
+        }
         entity.setId(dto.getId());
         entity.setDescripcion(dto.getDescripcion());
         entity.setDescScian(dto.getDescScian());
@@ -162,7 +171,7 @@ public class CatActividadEconomicaSatServiceImpl implements ICatActividadEconomi
 
     @Override
     public List<SelectDTO> listadoAcDesc() {
-        List<CatActividadEconomicaSat> tipoEmpresaRecifs = catActividadEconomicaSatRepository.findByBlnActivoTrue();
+        List<CatActividadEconomicaSat> tipoEmpresaRecifs = catActividadEconomicaSatRepository.findByBlnActivoTrueOrderByDescripcionAsc();
         List<SelectDTO> resultado = new ArrayList<>();
 
         for (CatActividadEconomicaSat catActividadEconomicaSat : tipoEmpresaRecifs) {

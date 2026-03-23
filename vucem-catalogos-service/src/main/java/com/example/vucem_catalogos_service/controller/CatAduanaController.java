@@ -32,14 +32,8 @@ public class CatAduanaController {
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_ADUANA)
     public ResponseEntity<CatAduana> crear(@RequestBody CatAduana aduana) {
-        try {
-            CatAduana nueva = service.crearAduana(aduana);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.crearAduana(aduana));
 
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST).body(aduana);
-        }
     }
 
     @GetMapping(CatalogPaths.FIND_CATALOGO_ADUANA)
