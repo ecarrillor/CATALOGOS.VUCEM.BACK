@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatPlazoMaximoAutTramiteService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatPlazoMaximoAutTramiteDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatPlazoMaximoAutTramite;
@@ -11,15 +12,24 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepos
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatPlazoMaximoAutTramiteServiceImpl implements ICatPlazoMaximoAutTramiteService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "descServicio", "idTipoTramite.descServicio",
+            "plazo", "plazo",
+            "plazoAnios", "plazoAnios"
+    );
 
     @Autowired
     private ICatPlazoMaximoAutTramiteRepository catPlazoMaximoAutTramiteRepository;
@@ -28,7 +38,7 @@ public class CatPlazoMaximoAutTramiteServiceImpl implements ICatPlazoMaximoAutTr
     private ICatTipoTramiteRepository catTipoTramiteRepository;
 
     @Override
-    public PageResponseDTO<CatPlazoMaximoAutTramiteDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatPlazoMaximoAutTramiteDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
         if (search != null && !search.isBlank()) {
@@ -41,8 +51,14 @@ public class CatPlazoMaximoAutTramiteServiceImpl implements ICatPlazoMaximoAutTr
                 texto = search;
             }
         }
+
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "idTipoTramite.descServicio"));
+
         Page<CatPlazoMaximoAutTramiteDTO> page =
-                catPlazoMaximoAutTramiteRepository.search(texto, activo, pageable);
+                catPlazoMaximoAutTramiteRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatPlazoMaximoAutTramiteDTO>builder()
                 .content(page.getContent())

@@ -12,15 +12,19 @@ import com.example.vucem_catalogos_service.model.entity.CatEspecie;
 import com.example.vucem_catalogos_service.model.entity.CatVidaSilvestre;
 import com.example.vucem_catalogos_service.persistence.repo.ICatEspecieRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatVidaSilvestreRepository;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -32,8 +36,13 @@ public class CatEspecieServiceImpl implements ICatEspecieService {
     @Autowired
     private ICatVidaSilvestreRepository iCatVidaSilvestreRepository;
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "numEspecie", "a.id",
+            "descripcionEspecie", "a.descEspecie"
+    );
+
     @Override
-    public PageResponseDTO<CatEspecieResponseDTO> listarEspecie(String search, Long tipo, Pageable pageable) {
+    public PageResponseDTO<CatEspecieResponseDTO> listarEspecie(String search, Long tipo, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -52,8 +61,12 @@ public class CatEspecieServiceImpl implements ICatEspecieService {
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isUnsorted() ? pageable
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
         Page<CatEspecieResponseDTO> page =
-                iCatEspecieRepository.search(texto, activo, tipo,pageable);
+                iCatEspecieRepository.search(texto, activo, tipo, sortedPageable);
 
         return PageResponseDTO.<CatEspecieResponseDTO>builder()
                 .content(page.getContent())

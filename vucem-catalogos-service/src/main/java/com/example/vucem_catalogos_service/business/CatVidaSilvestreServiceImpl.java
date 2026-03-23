@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatVidaSilvestreService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.*;
 import com.example.vucem_catalogos_service.model.entity.CatEspecie;
 import com.example.vucem_catalogos_service.model.entity.CatGenero;
@@ -10,7 +11,9 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatGeneroRepository
 import com.example.vucem_catalogos_service.persistence.repo.ICatVidaSilvestreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +21,24 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
+
+    // Columnas permitidas para ordenamiento.
+    // Clave: nombre que envía el frontend | Valor: ruta de entidad JPA para el ORDER BY
+    // NO se permite ordenar por: fecIniVigencia, fecFinVigencia, blnActivo
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id",                    "id",
+            "ideTipoVidaSilvestre",  "ideTipoVidaSilvestre",
+            "descGenero",            "idGenero.descGenero",
+            "descEspecie",           "idEspecie.descEspecie",
+            "descNombreComun",       "descNombreComun",
+            "descNombreCientifico",  "descNombreCientifico",
+            "ideClasifTaxonomica",   "ideClasifTaxonomica"
+    );
 
     @Autowired
     private ICatVidaSilvestreRepository catVidaSilvestreRepository;
@@ -33,7 +50,7 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
     private ICatGeneroRepository catGeneroRepository;
 
     @Override
-    public PageResponseDTO<CatVidaSilvestreDTO> list(String search, Long tipo, Pageable pageable) {
+    public PageResponseDTO<CatVidaSilvestreDTO> list(String search, Long tipo, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -52,7 +69,15 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
             }
         }
 
-        Page<CatVidaSilvestreDTO> page = catVidaSilvestreRepository.search(texto, tipo, activo, pageable);
+        // Pre-resolver tipo Long → tipoVida String para evitar problema de tipos null en PostgreSQL
+        String tipoVida = resolverTipoVidaParaFiltro(tipo);
+
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable pageableWithSort = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
+        Page<CatVidaSilvestreDTO> page = catVidaSilvestreRepository.search(texto, tipoVida, activo, pageableWithSort);
 
         return PageResponseDTO.<CatVidaSilvestreDTO>builder()
                 .content(page.getContent())
@@ -198,6 +223,18 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
                 HttpStatus.BAD_REQUEST,
                 "El idTipoTramite no corresponde a ningún tipo de vida silvestre"
         );
+    }
+
+    // Variante para filtro de listado: retorna null si tipo es null o no reconocido (sin lanzar excepción)
+    private String resolverTipoVidaParaFiltro(Long tipo) {
+        if (tipo == null) return null;
+        if (List.of(220101L,220201L,221601L).contains(tipo)) return "TIVS.SGIZ";
+        if (List.of(220102L,220402L).contains(tipo)) return "TIVS.SGF";
+        if (List.of(220202L,221602L).contains(tipo)) return "TIVS.SGFC";
+        if (List.of(230101L,230201L,230202L,250101L,250102L,250103L).contains(tipo)) return "TIVS.SEM";
+        if (List.of(230901L,230903L).contains(tipo)) return "TIVS.SEMVS";
+        if (List.of(230902L,230903L).contains(tipo)) return "TIVS.SEMCI";
+        return null;
     }
 
     @Override

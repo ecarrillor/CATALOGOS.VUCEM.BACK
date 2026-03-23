@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ICatFundamentoTtraService {
-    PageResponseDTO<CatFundamentoTtraDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatFundamentoTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
     CatFundamentoTtraDTO findById(Short id);
     CatFundamentoTtraDTO create(CatFundamentoTtraDTO dto);
     CatFundamentoTtraDTO update(Short id, CatFundamentoTtraDTO dto);

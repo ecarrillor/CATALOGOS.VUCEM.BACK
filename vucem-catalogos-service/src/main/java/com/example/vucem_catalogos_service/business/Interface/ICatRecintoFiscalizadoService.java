@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatRecintoFiscalizadoService {
 
-    PageResponseDTO<CatRecintoFiscalizadoDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatRecintoFiscalizadoDTO> list(String search, int page, int size, String sortBy, String sortDir);
 
     CatRecintoFiscalizadoDTO findById(Long id);
 

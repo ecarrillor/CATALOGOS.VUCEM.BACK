@@ -25,8 +25,10 @@ public class CatDiaNoLaborableController {
     @GetMapping(CatalogPaths.LIST_DIA_NO_LABORABLE)
     public ResponseEntity<PageResponseDTO<CatDiaNoLaborableDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_DIA_NO_LABORABLE)

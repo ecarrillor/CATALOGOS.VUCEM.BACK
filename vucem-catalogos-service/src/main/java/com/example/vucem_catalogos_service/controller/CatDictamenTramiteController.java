@@ -25,9 +25,11 @@ public class CatDictamenTramiteController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_DICTAMEN_TRAMITE)
     public ResponseEntity<PageResponseDTO<CatDictamenTramiteResponseDTO>> listarDictamenTramite(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                iCaTDictamenTramiteService.listarDictamenTramite(search, pageable));
+                iCaTDictamenTramiteService.listarDictamenTramite(search, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_DICTAMEN_TRAMITE)

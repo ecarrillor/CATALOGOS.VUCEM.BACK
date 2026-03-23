@@ -6,21 +6,32 @@ import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatAduana;
 import com.example.vucem_catalogos_service.model.entity.InfAdicionalAduana;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAduanaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.IInfAdicionalAduanaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class InfAdicionalAduanaServiceImpl implements IInfAdicionalAduanaService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveAduana", "cveAduana",
+            "nombreAduana", "catAduana.nombre",
+            "correoNotificacion", "correoNotificacion",
+            "tagAduana", "tagAduana"
+    );
 
     @Autowired
     private IInfAdicionalAduanaRepository infAdicionalAduanaRepository;
@@ -29,10 +40,15 @@ public class InfAdicionalAduanaServiceImpl implements IInfAdicionalAduanaService
     private ICatAduanaRepository catAduanaRepository;
 
     @Override
-    public PageResponseDTO<InfAdicionalAduanaDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<InfAdicionalAduanaDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         String texto = (search != null && !search.isBlank()) ? search : null;
 
-        Page<InfAdicionalAduanaDTO> page = infAdicionalAduanaRepository.search(texto, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "cveAduana"));
+
+        Page<InfAdicionalAduanaDTO> page = infAdicionalAduanaRepository.search(texto, sortedPageable);
 
         return PageResponseDTO.<InfAdicionalAduanaDTO>builder()
                 .content(page.getContent())

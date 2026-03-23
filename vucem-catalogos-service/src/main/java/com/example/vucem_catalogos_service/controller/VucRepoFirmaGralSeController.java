@@ -36,8 +36,10 @@ public class VucRepoFirmaGralSeController {
     public ResponseEntity<PageResponseDTO<VucRepoFirmaGralSeResponseDTO>> listar(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String tipoFirma,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.listAll(search, tipoFirma, pageable));
+        return ResponseEntity.ok(service.listAll(search, tipoFirma, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_VUC_REPO_FIRMA)

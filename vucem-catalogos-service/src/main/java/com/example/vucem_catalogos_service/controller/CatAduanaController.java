@@ -25,9 +25,11 @@ public class CatAduanaController {
     public Page<CatAduana> listarCatAduana(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(required = false) String search) {
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir) {
 
-        return service.catAduanaListAll(page, size, search);
+        return service.catAduanaListAll(page, size, search, sortBy, sortDir);
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_ADUANA)

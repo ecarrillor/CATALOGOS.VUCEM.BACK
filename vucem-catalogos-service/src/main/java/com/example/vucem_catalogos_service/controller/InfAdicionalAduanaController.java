@@ -23,8 +23,10 @@ public class InfAdicionalAduanaController {
     @GetMapping(CatalogPaths.LIST_INF_ADICIONAL_ADUANA)
     public ResponseEntity<PageResponseDTO<InfAdicionalAduanaDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_INF_ADICIONAL_ADUANA)

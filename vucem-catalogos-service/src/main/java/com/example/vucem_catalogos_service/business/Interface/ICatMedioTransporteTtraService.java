@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatMedioTransporteTtraService {
 
-    PageResponseDTO<CatMedioTransporteTtraDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatMedioTransporteTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatMedioTransporteTtraDTO findById(Integer id);
 

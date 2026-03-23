@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 
 public interface ICatParametroService {
-    PageResponseDTO<CatParametroResponseDTO> listarParametro(String search, Pageable pageable);
+    PageResponseDTO<CatParametroResponseDTO> listarParametro(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatParametroResponseDTO crearParametro(CatParametroRequestDTO dto);
 

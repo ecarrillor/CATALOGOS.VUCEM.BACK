@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatRestriccionTtraService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.RestriccionTtra.CatRestriccionTtraRequestDTO;
@@ -15,13 +16,16 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepos
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -36,8 +40,18 @@ public class CatRestriccionTtraServiceImpl implements ICatRestriccionTtraService
     @Autowired
     ICatCategoriaTextilRepository catCategoriaTextilRepository;
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "idRestriccionTtra", "rt.id",
+            "descTipoTramite", "rt.idTipoTramite.descModalidad",
+            "descRestriccion", "rt.descRestriccion",
+            "descContenidoRestriccion", "rt.descContenidoRestriccion",
+            "ideSentDictamen", "rt.ideSentDictamen",
+            "ideTipoRestriccionTtra", "rt.ideTipoRestriccionTtra",
+            "ideMotivoRechazoDict", "rt.ideMotivoRechazoDict"
+    );
+
     @Override
-    public PageResponseDTO<CatRestriccionTtraResponseDTO> listAll(String search, Long idTipoTramite, Pageable pageable) {
+    public PageResponseDTO<CatRestriccionTtraResponseDTO> listAll(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -52,8 +66,13 @@ public class CatRestriccionTtraServiceImpl implements ICatRestriccionTtraService
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable pageableWithSort = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
         Page<CatRestriccionTtraResponseDTO> page =
-                repository.search(texto, activo, idTipoTramite, pageable);
+                repository.search(texto, activo, idTipoTramite, pageableWithSort);
 
         return PageResponseDTO.<CatRestriccionTtraResponseDTO>builder()
                 .content(page.getContent())

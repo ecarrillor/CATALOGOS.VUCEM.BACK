@@ -5,19 +5,31 @@ import com.example.vucem_catalogos_service.model.dto.CatTratadoBloqueDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatTratadoBloque;
 import com.example.vucem_catalogos_service.model.entity.CatTratadoBloqueId;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoAcuerdoRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoBloqueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Map;
+
 @Service
 @Transactional
 public class CatTratadoBloqueServiceImpl implements ICatTratadoBloqueService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "idTratadoAcuerdo", "id.idTratadoAcuerdo",
+            "idBloque", "id.idBloque",
+            "nombreTratadoAcuerdo", "idTratadoAcuerdo.nombre",
+            "nombreBloque", "idBloque.nombre"
+    );
 
     @Autowired
     private ICatTratadoBloqueRepository catTratadoBloqueRepository;
@@ -26,7 +38,7 @@ public class CatTratadoBloqueServiceImpl implements ICatTratadoBloqueService {
     private ICatTratadoAcuerdoRepository catTratadoAcuerdoRepository;
 
     @Override
-    public PageResponseDTO<CatTratadoBloqueDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatTratadoBloqueDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -38,7 +50,12 @@ public class CatTratadoBloqueServiceImpl implements ICatTratadoBloqueService {
             texto = search;
         }
 
-        Page<CatTratadoBloqueDTO> page = catTratadoBloqueRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id.idTratadoAcuerdo"));
+
+        Page<CatTratadoBloqueDTO> page = catTratadoBloqueRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatTratadoBloqueDTO>builder()
                 .content(page.getContent())

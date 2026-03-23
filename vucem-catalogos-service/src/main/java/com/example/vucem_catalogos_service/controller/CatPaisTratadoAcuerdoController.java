@@ -28,8 +28,10 @@ public class CatPaisTratadoAcuerdoController {
             @RequestParam(required = false) Short idTratadoAcuerdo,
             @RequestParam(required = false) Boolean blnActivo,
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(cvePais, idTratadoAcuerdo, blnActivo, search, pageable));
+        return ResponseEntity.ok(service.list(cvePais, idTratadoAcuerdo, blnActivo, search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_CATALOGO_PAIS_TRATADO_ACUERDO)

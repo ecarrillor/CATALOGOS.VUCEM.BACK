@@ -21,8 +21,10 @@ public class CatRecintoFiscalizadoController {
     public ResponseEntity<PageResponseDTO<CatRecintoFiscalizadoDTO>> list(
             @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(service.list(search, PageRequest.of(page, size)));
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir) {
+        return ResponseEntity.ok(service.list(search, page, size, sortBy, sortDir));
     }
 
     @GetMapping(CatalogPaths.FIND_RECINTO_FISCALIZADO)

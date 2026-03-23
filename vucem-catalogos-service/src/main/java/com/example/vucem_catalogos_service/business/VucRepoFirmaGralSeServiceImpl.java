@@ -8,6 +8,7 @@ import com.example.vucem_catalogos_service.model.dto.VucRepoFirmaGralSe.VucRepoF
 import com.example.vucem_catalogos_service.model.dto.VucRepoFirmaGralSe.VucRepoFirmaGralSeResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatTipoTramite;
 import com.example.vucem_catalogos_service.model.entity.VucRepoFirmaGralSe;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.persistence.repo.IVucRepoFirmaGralSeRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -16,7 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +32,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -38,6 +42,17 @@ public class VucRepoFirmaGralSeServiceImpl implements IVucRepoFirmaGralSeService
     private static final String TIFR_MASIVA = "TIFR.TFMSV";
     private static final String TIFR_FACS   = "TIFR.TFFCS";
     private static final int    MAX_IMG_DIM  = 600;
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "id",
+            "ideTipoFirma", "ideTipoFirma",
+            "idTipoTramite", "idTipoTramite.id",
+            "descTipoTramite", "idTipoTramite.descModalidad",
+            "rfc", "rfc",
+            "puesto", "puesto",
+            "fecIniVigenia", "fecIniVigenia",
+            "fecFinVigenia", "fecFinVigenia"
+    );
 
     @Autowired
     private IVucRepoFirmaGralSeRepository repository;
@@ -51,7 +66,7 @@ public class VucRepoFirmaGralSeServiceImpl implements IVucRepoFirmaGralSeService
 
     @Override
     @Transactional(Transactional.TxType.SUPPORTS)
-    public PageResponseDTO<VucRepoFirmaGralSeResponseDTO> listAll(String search, String tipoFirma, Pageable pageable) {
+    public PageResponseDTO<VucRepoFirmaGralSeResponseDTO> listAll(String search, String tipoFirma, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -68,7 +83,12 @@ public class VucRepoFirmaGralSeServiceImpl implements IVucRepoFirmaGralSeService
 
         log.info("listAll_vuc_repo_firma search={} tipoFirma={} activo={}", texto, tipoFirma, activo);
 
-        Page<VucRepoFirmaGralSeResponseDTO> page = repository.search(texto, tipoFirma, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
+        Page<VucRepoFirmaGralSeResponseDTO> page = repository.search(texto, tipoFirma, activo, sortedPageable);
 
         return PageResponseDTO.<VucRepoFirmaGralSeResponseDTO>builder()
                 .content(page.getContent())

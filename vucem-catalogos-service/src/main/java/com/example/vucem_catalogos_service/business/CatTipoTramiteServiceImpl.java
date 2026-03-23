@@ -4,21 +4,38 @@ import com.example.vucem_catalogos_service.business.Interface.ICatTipoTramiteSer
 import com.example.vucem_catalogos_service.model.dto.CatTipoTramiteDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatTipoTramite;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.persistence.repo.ICatDependenciaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatTipoTramiteServiceImpl implements ICatTipoTramiteService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "id",
+            "cveServicio", "cveServicio",
+            "descServicio", "descServicio",
+            "cveSubservicio", "cveSubservicio",
+            "descSubservicio", "descSubservicio",
+            "cveModalidad", "cveModalidad",
+            "descModalidad", "descModalidad",
+            "nombre", "nombre",
+            "cveModulo", "cveModulo",
+            "nombreDependencia", "idDependencia.nombre"
+    );
 
     @Autowired
     private ICatTipoTramiteRepo catTipoTramiteRepo;
@@ -27,7 +44,7 @@ public class CatTipoTramiteServiceImpl implements ICatTipoTramiteService {
     private ICatDependenciaRepository catDependenciaRepository;
 
     @Override
-    public PageResponseDTO<CatTipoTramiteDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatTipoTramiteDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -39,7 +56,12 @@ public class CatTipoTramiteServiceImpl implements ICatTipoTramiteService {
             texto = search;
         }
 
-        Page<CatTipoTramiteDTO> page = catTipoTramiteRepo.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
+        Page<CatTipoTramiteDTO> page = catTipoTramiteRepo.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatTipoTramiteDTO>builder()
                 .content(page.getContent())

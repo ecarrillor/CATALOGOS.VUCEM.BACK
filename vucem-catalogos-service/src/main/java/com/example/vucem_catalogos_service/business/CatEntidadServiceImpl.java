@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatEntidadService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatEntidad;
 import com.example.vucem_catalogos_service.model.entity.CatPais;
@@ -11,14 +12,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class CatEntidadServiceImpl implements ICatEntidadService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveEntidad", "e.cveEntidad",
+            "nombre", "e.nombre",
+            "codEntidadIdc", "e.codEntidadIdc"
+    );
 
     @Autowired
     private ICatEntidadRepository repository;
@@ -28,8 +37,11 @@ public class CatEntidadServiceImpl implements ICatEntidadService {
 
 
     @Override
-    public Page<CatEntidad> catEntidadListAll(int page, int size, String search) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<CatEntidad> catEntidadListAll(int page, int size, String search, String sortBy, String sortDir) {
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable pageable = sort.isSorted()
+                ? PageRequest.of(page, size, sort)
+                : PageRequest.of(page, size);
         if (search == null || search.isEmpty()) {
             return repository.findAll(pageable);
         }

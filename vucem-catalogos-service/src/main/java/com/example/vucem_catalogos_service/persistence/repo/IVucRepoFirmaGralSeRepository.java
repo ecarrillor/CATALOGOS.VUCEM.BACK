@@ -16,7 +16,7 @@ import java.util.List;
 public interface IVucRepoFirmaGralSeRepository extends JpaRepository<VucRepoFirmaGralSe, Integer> {
 
 
-    @Query("""
+    @Query(value = """
             SELECT DISTINCT new com.example.vucem_catalogos_service.model.dto.VucRepoFirmaGralSe.VucRepoFirmaGralSeResponseDTO(
                 r.id,
                 r.ideTipoFirma,
@@ -45,7 +45,23 @@ public interface IVucRepoFirmaGralSeRepository extends JpaRepository<VucRepoFirm
                   )
               AND (:tipoFirma IS NULL OR r.ideTipoFirma = :tipoFirma)
               AND (:activo    IS NULL OR r.blnActivo = :activo)
-            ORDER BY r.id ASC
+            """,
+            countQuery = """
+            SELECT COUNT(DISTINCT r.id)
+            FROM VucRepoFirmaGralSe r
+            LEFT JOIN r.idTipoTramite t
+            WHERE (
+                        :search IS NULL OR
+                  CAST(r.id AS string) LIKE :search OR
+                  CAST(t.id AS string) LIKE :search OR
+                  LOWER(r.ideTipoFirma) LIKE :search OR
+                  LOWER(r.rfc) LIKE :search OR
+                  LOWER(r.puesto) LIKE :search OR
+                  CAST(r.fecIniVigenia AS string) LIKE :search OR
+                  CAST(r.fecFinVigenia AS string) LIKE :search
+                  )
+              AND (:tipoFirma IS NULL OR r.ideTipoFirma = :tipoFirma)
+              AND (:activo    IS NULL OR r.blnActivo = :activo)
             """)
     Page<VucRepoFirmaGralSeResponseDTO> search(
             @Param("search") String search,

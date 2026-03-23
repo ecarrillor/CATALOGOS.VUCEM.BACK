@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatPaisRestriccionTtraService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatPaisRestriccionTtraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatPaisRestriccionTtra;
@@ -10,14 +11,22 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepos
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Map;
+
 @Service
 @Transactional
 public class CatPaisRestriccionTtraServiceImpl implements ICatPaisRestriccionTtraService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "id"
+    );
 
     @Autowired
     private ICatPaisRestriccionTtraRepository catPaisRestriccionTtraRepository;
@@ -29,7 +38,7 @@ public class CatPaisRestriccionTtraServiceImpl implements ICatPaisRestriccionTtr
     private ICatPaisRepository catPaisRepository;
 
     @Override
-    public PageResponseDTO<CatPaisRestriccionTtraDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatPaisRestriccionTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -44,7 +53,12 @@ public class CatPaisRestriccionTtraServiceImpl implements ICatPaisRestriccionTtr
             }
         }
 
-        Page<CatPaisRestriccionTtraDTO> page = catPaisRestriccionTtraRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
+        Page<CatPaisRestriccionTtraDTO> page = catPaisRestriccionTtraRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatPaisRestriccionTtraDTO>builder()
                 .content(page.getContent())

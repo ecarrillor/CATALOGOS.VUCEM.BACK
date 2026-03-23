@@ -25,9 +25,11 @@ public class CatDependenciaController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_DEPENDENCIA)
     public ResponseEntity<PageResponseDTO<CatDependenciaResponseDTO>> listarDependencia(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                iCatDependenciaService.listarDependencia(search, pageable));
+                iCatDependenciaService.listarDependencia(search, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_DEPENDENCIA)

@@ -29,9 +29,11 @@ public class CatEspecieController {
     public ResponseEntity<PageResponseDTO<CatEspecieResponseDTO>> listarEspecie(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Long tipo,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                catEspecieService.listarEspecie(search, tipo, pageable));
+                catEspecieService.listarEspecie(search, tipo, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CAT_ESPECIE)

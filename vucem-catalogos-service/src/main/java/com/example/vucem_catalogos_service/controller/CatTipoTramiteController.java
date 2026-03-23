@@ -20,8 +20,10 @@ public class CatTipoTramiteController {
     @GetMapping(CatalogPaths.LIST_TIPO_TRAMITE)
     public ResponseEntity<PageResponseDTO<CatTipoTramiteDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_TIPO_TRAMITE)

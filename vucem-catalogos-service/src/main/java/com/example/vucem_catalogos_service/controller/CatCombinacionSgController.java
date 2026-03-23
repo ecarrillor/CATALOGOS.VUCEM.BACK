@@ -21,8 +21,10 @@ public class CatCombinacionSgController {
     @GetMapping(CatalogPaths.LIST_COMBINACION_SG)
     public ResponseEntity<PageResponseDTO<CatCombinacionSgDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_COMBINACION_SG)

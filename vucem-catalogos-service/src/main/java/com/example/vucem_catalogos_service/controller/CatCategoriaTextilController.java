@@ -25,9 +25,11 @@ public class CatCategoriaTextilController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_CATEGORIA_TEXTIL)
     public ResponseEntity<PageResponseDTO<CatCategoriaTextilResponseDTO>> listarCategoriaTextil(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                iCatCategoriaTextilService.listarCategoriaTextil(search, pageable));
+                iCatCategoriaTextilService.listarCategoriaTextil(search, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_CATEGORIA_TEXTIL)

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ICatUnidadAdminVecinaService {
-    PageResponseDTO<CatUnidadAdminVecinaDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatUnidadAdminVecinaDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
     CatUnidadAdminVecinaDTO findById(String cveUnidadAdministrativa, String cveEntidad);
     CatUnidadAdminVecinaDTO create(CatUnidadAdminVecinaDTO dto);
     CatUnidadAdminVecinaDTO update(String cveUnidadAdministrativa, String cveEntidad, CatUnidadAdminVecinaDTO dto);

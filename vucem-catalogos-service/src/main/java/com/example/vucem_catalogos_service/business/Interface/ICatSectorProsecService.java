@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatSectorProsecService {
 
-    PageResponseDTO<CatSectorProsecDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatSectorProsecDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatSectorProsecDTO findById(String cveSectorProsec);
 

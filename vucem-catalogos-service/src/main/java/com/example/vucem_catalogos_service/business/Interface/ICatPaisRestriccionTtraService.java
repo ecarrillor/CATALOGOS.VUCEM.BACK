@@ -5,7 +5,7 @@ import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import org.springframework.data.domain.Pageable;
 
 public interface ICatPaisRestriccionTtraService {
-    PageResponseDTO<CatPaisRestriccionTtraDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatPaisRestriccionTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
     CatPaisRestriccionTtraDTO findById(Integer id);
     CatPaisRestriccionTtraDTO create(CatPaisRestriccionTtraDTO dto);
     CatPaisRestriccionTtraDTO update(Integer id, CatPaisRestriccionTtraDTO dto);

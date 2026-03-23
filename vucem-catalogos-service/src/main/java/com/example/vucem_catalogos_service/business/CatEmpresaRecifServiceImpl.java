@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatEmpresaRecifService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatEmpresaRecifDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
@@ -11,15 +12,25 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadAdministra
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatEmpresaRecifServiceImpl implements ICatEmpresaRecifService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "recif", "e.recif",
+            "rfc", "e.rfc",
+            "razonSocial", "e.razonSocial",
+            "nombreUnidadAdministrativa", "ua.nombre"
+    );
 
     @Autowired
     private ICatEmpresaRecifRepository iCatEmpresaRecifRepository;
@@ -28,7 +39,7 @@ public class CatEmpresaRecifServiceImpl implements ICatEmpresaRecifService {
     private ICatUnidadAdministrativaRepository iCatUnidadAdministrativaRepository;
 
     @Override
-    public PageResponseDTO<CatEmpresaRecifDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatEmpresaRecifDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -43,8 +54,13 @@ public class CatEmpresaRecifServiceImpl implements ICatEmpresaRecifService {
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
         Page<CatEmpresaRecifDTO> page =
-                iCatEmpresaRecifRepository.search(texto, activo, pageable);
+                iCatEmpresaRecifRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatEmpresaRecifDTO>builder()
                 .content(page.getContent())

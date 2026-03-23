@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatEquivMonedaService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatEquivMonedaDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
@@ -11,15 +12,27 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatMonedaRepository
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatEquivMonedaServiceImpl implements ICatEquivMonedaService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "e.id",
+            "cveMonedaOrigen", "mo.cveMoneda",
+            "nombreMonedaOrigen", "mo.nombre",
+            "cveMonedaDestino", "md.cveMoneda",
+            "nombreMonedaDestino", "md.nombre",
+            "valorConversion", "e.valorConversion"
+    );
 
     @Autowired
     private ICatEquivMonedaRepository iCatEquivMonedaRepository;
@@ -28,7 +41,7 @@ public class CatEquivMonedaServiceImpl implements ICatEquivMonedaService {
     private ICatMonedaRepository iCatMonedaRepository;
 
     @Override
-    public PageResponseDTO<CatEquivMonedaDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatEquivMonedaDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -43,8 +56,13 @@ public class CatEquivMonedaServiceImpl implements ICatEquivMonedaService {
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
         Page<CatEquivMonedaDTO> page =
-                iCatEquivMonedaRepository.search(texto, activo, pageable);
+                iCatEquivMonedaRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatEquivMonedaDTO>builder()
                 .content(page.getContent())

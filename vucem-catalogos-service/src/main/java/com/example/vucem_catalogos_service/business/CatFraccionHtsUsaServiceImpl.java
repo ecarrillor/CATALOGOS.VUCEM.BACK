@@ -8,14 +8,18 @@ import com.example.vucem_catalogos_service.model.entity.CatFraccionHtsUsa;
 import com.example.vucem_catalogos_service.model.entity.CatUnidadMedida;
 import com.example.vucem_catalogos_service.persistence.repo.ICatFraccionHtsUsaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadMedidaRepository;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -27,8 +31,17 @@ public class CatFraccionHtsUsaServiceImpl implements ICatFraccionHtsUsaService {
     @Autowired
     private ICatUnidadMedidaRepository iCatUnidadMedidaRepository;
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "e.id",
+            "cveFraccionHtsUsa", "e.cveFraccionHtsUsa",
+            "descripcion", "e.descripcion",
+            "ideTipoBienFraccion", "e.ideTipoBienFraccion",
+            "cveUnidadMedida", "e.cveUnidadMedida.cveUnidadMedida",
+            "nombreUnidadMedida", "e.cveUnidadMedida.nombre"
+    );
+
     @Override
-    public PageResponseDTO<CatFraccionHtsUsaDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatFraccionHtsUsaDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -43,8 +56,12 @@ public class CatFraccionHtsUsaServiceImpl implements ICatFraccionHtsUsaService {
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isUnsorted() ? pageable
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
         Page<CatFraccionHtsUsaDTO> page =
-                iCatFraccionHtsUsaRepository.search(texto, activo, pageable);
+                iCatFraccionHtsUsaRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatFraccionHtsUsaDTO>builder()
                 .content(page.getContent())

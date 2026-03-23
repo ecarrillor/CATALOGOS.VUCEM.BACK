@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface ICatVidaSilvestreRepository extends JpaRepository<CatVidaSilvestre, Integer> {
 
-    @Query("""
+    @Query(value = """
 SELECT new com.example.vucem_catalogos_service.model.dto.CatVidaSilvestreDTO(
         e.id,
         e.ideTipoVidaSilvestre,
@@ -35,32 +35,42 @@ LEFT JOIN e.idGenero gen
 WHERE
 (
     :search IS NULL OR
-    LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-    LOWER(e.ideTipoVidaSilvestre) LIKE LOWER(CONCAT('%', :search, '%')) OR
-    LOWER(gen.descGenero) LIKE LOWER(CONCAT('%', :search, '%')) OR
-    LOWER(especie.descEspecie) LIKE LOWER(CONCAT('%', :search, '%')) OR
-    LOWER(e.descNombreComun) LIKE LOWER(CONCAT('%', :search, '%')) OR
-    LOWER(e.descNombreCientifico) LIKE LOWER(CONCAT('%', :search, '%')) OR
-    LOWER(e.ideClasifTaxonomica) LIKE LOWER(CONCAT('%', :search, '%')) OR
-    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
+    LOWER(CAST(e.id AS string)) LIKE :search OR
+    LOWER(e.ideTipoVidaSilvestre) LIKE :search OR
+    LOWER(gen.descGenero) LIKE :search OR
+    LOWER(especie.descEspecie) LIKE :search OR
+    LOWER(e.descNombreComun) LIKE :search OR
+    LOWER(e.descNombreCientifico) LIKE :search OR
+    LOWER(e.ideClasifTaxonomica) LIKE :search OR
+    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
 )
 AND (:activo IS NULL OR e.blnActivo = :activo)
-AND (
-       :tipo IS NULL OR
-       (
-           (:tipo IN (220101,220201,221601) AND e.ideTipoVidaSilvestre = 'TIVS.SGIZ') OR
-           (:tipo IN (220102,220402) AND e.ideTipoVidaSilvestre = 'TIVS.SGF') OR
-           (:tipo IN (220202,221602) AND e.ideTipoVidaSilvestre = 'TIVS.SGFC') OR
-           (:tipo IN (230101,230201,230202,250101,250102,250103) AND e.ideTipoVidaSilvestre = 'TIVS.SEM') OR
-           (:tipo IN (230901,230903) AND e.ideTipoVidaSilvestre = 'TIVS.SEMVS') OR
-           (:tipo IN (230902,230903) AND e.ideTipoVidaSilvestre = 'TIVS.SEMCI')
-       )
+AND (:tipoVida IS NULL OR e.ideTipoVidaSilvestre = :tipoVida)
+""",
+            countQuery = """
+SELECT COUNT(e)
+FROM CatVidaSilvestre e
+LEFT JOIN e.idEspecie especie
+LEFT JOIN e.idGenero gen
+WHERE
+(
+    :search IS NULL OR
+    LOWER(CAST(e.id AS string)) LIKE :search OR
+    LOWER(e.ideTipoVidaSilvestre) LIKE :search OR
+    LOWER(gen.descGenero) LIKE :search OR
+    LOWER(especie.descEspecie) LIKE :search OR
+    LOWER(e.descNombreComun) LIKE :search OR
+    LOWER(e.descNombreCientifico) LIKE :search OR
+    LOWER(e.ideClasifTaxonomica) LIKE :search OR
+    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
 )
-ORDER BY e.id ASC
+AND (:activo IS NULL OR e.blnActivo = :activo)
+AND (:tipoVida IS NULL OR e.ideTipoVidaSilvestre = :tipoVida)
 """)
     Page<CatVidaSilvestreDTO> search(@Param("search") String search,
-                                      @Param("tipo") Long tipo,
+                                      @Param("tipoVida") String tipoVida,
                                       @Param("activo") Boolean activo,
                                       Pageable pageable);
 

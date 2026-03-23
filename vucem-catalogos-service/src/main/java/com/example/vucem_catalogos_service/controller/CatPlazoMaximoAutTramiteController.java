@@ -25,8 +25,10 @@ public class CatPlazoMaximoAutTramiteController {
     @GetMapping(CatalogPaths.LIST_PLAZO_MAX_TTRA)
     public ResponseEntity<PageResponseDTO<CatPlazoMaximoAutTramiteDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_PLAZO_MAX_TTRA)

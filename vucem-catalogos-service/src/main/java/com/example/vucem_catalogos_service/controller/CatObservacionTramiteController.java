@@ -22,9 +22,11 @@ public class CatObservacionTramiteController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_OBSERVACION_TRAMITE)
     public ResponseEntity<PageResponseDTO<CatObservacionTramiteResponseDTO>> listarObservacionTramite(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                iCatObservacionTramiteService.listarObservacionTramite(search, pageable));
+                iCatObservacionTramiteService.listarObservacionTramite(search, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_OBSERVACION_TRAMITE)

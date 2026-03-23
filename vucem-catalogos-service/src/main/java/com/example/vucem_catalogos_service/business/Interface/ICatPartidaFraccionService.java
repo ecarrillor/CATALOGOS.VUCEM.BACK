@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ICatPartidaFraccionService {
-    PageResponseDTO<CatPartidaFraccionDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatPartidaFraccionDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
     CatPartidaFraccionDTO findById(String cveCapituloFraccion, String cvePartidaFraccion);
     CatPartidaFraccionDTO create(CatPartidaFraccionDTO dto);
     CatPartidaFraccionDTO update(String cveCapituloFraccion, String cvePartidaFraccion, CatPartidaFraccionDTO dto);

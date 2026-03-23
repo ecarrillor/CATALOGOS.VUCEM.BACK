@@ -23,8 +23,10 @@ public class CatActividadEconomicaSatController {
     @GetMapping(CatalogPaths.LIST_ACTIVIDAD_ECONOMICA_SAT)
     public ResponseEntity<PageResponseDTO<CatActividadEconomicaSatDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_ACTIVIDAD_ECONOMICA_SAT)

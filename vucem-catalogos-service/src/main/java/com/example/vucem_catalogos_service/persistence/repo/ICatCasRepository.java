@@ -26,7 +26,7 @@ public interface ICatCasRepository extends JpaRepository<CatCa, Short> {
     List<CatCa> findAllByBlActivoOrderByDescCasAsc(@Param("blActivo") Boolean blActivo);
 
 
-    @Query("""
+    @Query(value = """
     SELECT DISTINCT new com.example.vucem_catalogos_service.model.dto.CatCas.CatCaResponseDTO(
         cas.id,
         cas.descCas,
@@ -42,18 +42,36 @@ public interface ICatCasRepository extends JpaRepository<CatCa, Short> {
     WHERE
                 (
                    :search IS NULL OR
-                   LOWER(CAST(cas.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(cas.descCas) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(cas.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(cas.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(tt.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(tt.descModalidad) LIKE LOWER(CONCAT('%', :search, '%'))
+                   LOWER(CAST(cas.id AS string)) LIKE :search OR
+                   LOWER(cas.descCas) LIKE :search OR
+                   LOWER(CAST(cas.fecIniVigencia AS string)) LIKE :search OR
+                   LOWER(CAST(cas.fecFinVigencia AS string)) LIKE :search OR
+                   LOWER(CAST(tt.id AS string)) LIKE :search OR
+                   LOWER(tt.descModalidad) LIKE :search
                 )
                 AND (:activo IS NULL OR cas.blActivo = :activo)
                 AND (:idTipoTramite IS NULL OR tt.id = :idTipoTramite)
         AND tt.cveServicio IN ('23','26')
-    ORDER BY cas.id ASC
-""")
+    """,
+    countQuery = """
+    SELECT COUNT(DISTINCT cas.id)
+    FROM CatCa cas
+    JOIN CatCasFraccionTtra cf ON cf.idCas.id = cas.id
+    JOIN CatTipoTramite tt ON tt.id = cf.idTipoTramite.id
+    WHERE
+                (
+                   :search IS NULL OR
+                   LOWER(CAST(cas.id AS string)) LIKE :search OR
+                   LOWER(cas.descCas) LIKE :search OR
+                   LOWER(CAST(cas.fecIniVigencia AS string)) LIKE :search OR
+                   LOWER(CAST(cas.fecFinVigencia AS string)) LIKE :search OR
+                   LOWER(CAST(tt.id AS string)) LIKE :search OR
+                   LOWER(tt.descModalidad) LIKE :search
+                )
+                AND (:activo IS NULL OR cas.blActivo = :activo)
+                AND (:idTipoTramite IS NULL OR tt.id = :idTipoTramite)
+        AND tt.cveServicio IN ('23','26')
+    """)
     Page<CatCaResponseDTO> search(
             @Param("search") String search,
             @Param("activo") Boolean activo,

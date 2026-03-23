@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ICatCategoriaTextilService {
-    PageResponseDTO<CatCategoriaTextilResponseDTO> listarCategoriaTextil(String search, Pageable pageable);
+    PageResponseDTO<CatCategoriaTextilResponseDTO> listarCategoriaTextil(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatCategoriaTextilResponseDTO crearCategoriaTextil(CatCategoriaTextilRequestDTO dto);
 

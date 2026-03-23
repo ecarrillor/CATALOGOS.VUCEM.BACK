@@ -22,9 +22,11 @@ public class CatMotivoTramiteController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_MOTIVO_TRAMITE)
     public ResponseEntity<PageResponseDTO<CatMotivoTramiteResponseDTO>> listarMotivoTramite(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                iCatMotivoTramiteService.listarMotivoTramite(search, pageable));
+                iCatMotivoTramiteService.listarMotivoTramite(search, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_MOTIVO_TRAMITE)

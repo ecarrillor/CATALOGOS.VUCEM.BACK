@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ICatArancelProsecService {
-    PageResponseDTO<CatArancelProsecDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatArancelProsecDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatArancelProsecDTO findById(String id, String cveSectorProsec);
 

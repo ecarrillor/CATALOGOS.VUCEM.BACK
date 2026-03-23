@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ICatEntidadService {
 
-    Page<CatEntidad> catEntidadListAll(int page, int size, String search);
+    Page<CatEntidad> catEntidadListAll(int page, int size, String search, String sortBy, String sortDir);
 
     CatEntidad crearEntidad(CatEntidad entidad);
 

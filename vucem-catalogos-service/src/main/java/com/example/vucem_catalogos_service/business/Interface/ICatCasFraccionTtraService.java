@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ICatCasFraccionTtraService {
 
-    PageResponseDTO<CatCasFraccionTtraResponseDTO> listAll(String search, Long idTipoTramite, Pageable pageable);
+    PageResponseDTO<CatCasFraccionTtraResponseDTO> listAll(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable);
 
     CatCasFraccionTtraResponseDTO crear(CatCasFraccionTtraRequestDTO dto);
 

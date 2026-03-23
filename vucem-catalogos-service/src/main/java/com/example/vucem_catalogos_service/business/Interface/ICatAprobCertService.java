@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ICatAprobCertService {
-    PageResponseDTO<CatAprobCertSeResponseDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatAprobCertSeResponseDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatAprobCertSeResponseDTO findById(Short id);
 

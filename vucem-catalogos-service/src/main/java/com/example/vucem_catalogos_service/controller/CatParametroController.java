@@ -29,9 +29,11 @@ public class CatParametroController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_PARAMETRO)
     public ResponseEntity<PageResponseDTO<CatParametroResponseDTO>> listarParametro(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                iCatParametroService.listarParametro(search, pageable));
+                iCatParametroService.listarParametro(search, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_PARAMETRO)

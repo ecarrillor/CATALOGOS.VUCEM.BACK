@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface ICatTratadoBloquePaiRepository extends JpaRepository<CatTratadoBloquePai, CatTratadoBloquePaiId> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatTratadoBloquePaiResponseDTO(
                 tbp.id.cvePais,
                 p.nombre,
@@ -43,7 +43,23 @@ public interface ICatTratadoBloquePaiRepository extends JpaRepository<CatTratado
                    LOWER(CAST(tbp.fecCaptura AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
                    LOWER(CAST(tbp.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
                    LOWER(CAST(tbp.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))
-            ORDER BY tbp.id.cvePais ASC, t.cveTratadoAcuerdo ASC
+            """,
+            countQuery = """
+            SELECT COUNT(tbp)
+            FROM CatTratadoBloquePai tbp
+            JOIN CatPais p ON tbp.id.cvePais = p.cvePais
+            JOIN CatTratadoAcuerdo t ON tbp.id.idTratadoAcuerdo = t.id
+            WHERE (:cvePais IS NULL OR tbp.id.cvePais = :cvePais)
+              AND (:idTratadoAcuerdo IS NULL OR tbp.id.idTratadoAcuerdo = :idTratadoAcuerdo)
+              AND (:blnActivo IS NULL OR tbp.blnActivo = :blnActivo)
+              AND (:search IS NULL OR
+                   LOWER(tbp.id.cvePais) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(p.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(tbp.id.idTratadoAcuerdo AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(t.cveTratadoAcuerdo) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(tbp.fecCaptura AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(tbp.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(tbp.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))
             """)
     Page<CatTratadoBloquePaiResponseDTO> search(
             @Param("cvePais") String cvePais,

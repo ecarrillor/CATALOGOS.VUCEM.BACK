@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ICatAduanaService {
 
-    Page<CatAduana> catAduanaListAll(int page, int size, String search);
+    Page<CatAduana> catAduanaListAll(int page, int size, String search, String sortBy, String sortDir);
     CatAduana crearAduana (CatAduana catAduana);
 
     CatAduana findByCveAduana(String cveAduana);

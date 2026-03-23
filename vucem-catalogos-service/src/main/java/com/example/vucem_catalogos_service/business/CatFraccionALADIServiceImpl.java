@@ -6,13 +6,18 @@ import com.example.vucem_catalogos_service.model.dto.FraccionALADI.CatFraccionAL
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatFraccionAladi;
 import com.example.vucem_catalogos_service.persistence.repo.ICatFraccionAladiRepository;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Map;
 
 @Service
 @Transactional
@@ -21,8 +26,15 @@ public class CatFraccionALADIServiceImpl implements ICatFraccionALADIService {
     @Autowired
     private ICatFraccionAladiRepository iCatFraccionAladiRepository;
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "idFraccionAladi", "e.id",
+            "cveTipoFraccion", "e.cveTipoFraccion",
+            "cveFraccionAladi", "e.cveFraccionAladi",
+            "descripcion", "e.descripcion"
+    );
+
     @Override
-    public PageResponseDTO<CatFraccionALADIResponseDTO> listarFraccionAladi(String search, Pageable pageable) {
+    public PageResponseDTO<CatFraccionALADIResponseDTO> listarFraccionAladi(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -38,8 +50,12 @@ public class CatFraccionALADIServiceImpl implements ICatFraccionALADIService {
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isUnsorted() ? pageable
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
         Page<CatFraccionALADIResponseDTO> page =
-                iCatFraccionAladiRepository.search(texto, activo, pageable);
+                iCatFraccionAladiRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatFraccionALADIResponseDTO>builder()
                 .content(page.getContent())

@@ -4,18 +4,31 @@ import com.example.vucem_catalogos_service.business.Interface.ICatUnidadMedidaTt
 import com.example.vucem_catalogos_service.model.dto.CatUnidadMedidaTtraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatUnidadMedidaTtra;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadMedidaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadMedidaTtraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatUnidadMedidaTtraServiceImpl implements ICatUnidadMedidaTtraService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "id",
+            "cveUnidadMedida", "cveUnidadMedida.cveUnidadMedida",
+            "descripcionUnidadMedida", "cveUnidadMedida.descripcion",
+            "idTipoTramite", "idTipoTramite.id",
+            "nombreTipoTramite", "idTipoTramite.descModalidad"
+    );
 
     @Autowired
     private ICatUnidadMedidaTtraRepository catUnidadMedidaTtraRepository;
@@ -27,7 +40,7 @@ public class CatUnidadMedidaTtraServiceImpl implements ICatUnidadMedidaTtraServi
     private ICatTipoTramiteRepository catTipoTramiteRepository;
 
     @Override
-    public PageResponseDTO<CatUnidadMedidaTtraDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatUnidadMedidaTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -46,7 +59,12 @@ public class CatUnidadMedidaTtraServiceImpl implements ICatUnidadMedidaTtraServi
             }
         }
 
-        Page<CatUnidadMedidaTtraDTO> page = catUnidadMedidaTtraRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
+        Page<CatUnidadMedidaTtraDTO> page = catUnidadMedidaTtraRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatUnidadMedidaTtraDTO>builder()
                 .content(page.getContent())

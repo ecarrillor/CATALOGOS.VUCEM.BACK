@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ICatRestricDescProdService {
 
-    PageResponseDTO<CatRestricDescProdResponseDTO> listAll(String search, Long idTipoTramite, Pageable pageable);
+    PageResponseDTO<CatRestricDescProdResponseDTO> listAll(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable);
 
     CatRestricDescProdResponseDTO crear(CatRestricDescProdRequestDTO dto);
 

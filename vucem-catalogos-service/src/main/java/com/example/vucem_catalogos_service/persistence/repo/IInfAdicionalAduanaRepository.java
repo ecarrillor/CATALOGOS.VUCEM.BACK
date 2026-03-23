@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface IInfAdicionalAduanaRepository extends JpaRepository<InfAdicionalAduana, String> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.InfAdicionalAduanaDTO(
                 e.cveAduana,
                 e.catAduana.nombre,
@@ -22,6 +22,14 @@ public interface IInfAdicionalAduanaRepository extends JpaRepository<InfAdiciona
                 e.blnCuentaRni,
                 e.tagAduana
             )
+            FROM InfAdicionalAduana e
+            WHERE (:texto IS NULL
+                OR LOWER(e.catAduana.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))
+                OR LOWER(e.correoNotificacion) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))
+                OR LOWER(e.tagAduana) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')))
+            """,
+            countQuery = """
+            SELECT COUNT(e)
             FROM InfAdicionalAduana e
             WHERE (:texto IS NULL
                 OR LOWER(e.catAduana.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))

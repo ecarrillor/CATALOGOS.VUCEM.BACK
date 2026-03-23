@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface ICatCasFraccionTtraRepository extends JpaRepository<CatCasFraccionTtra, Short>,
         JpaSpecificationExecutor<CatCasFraccionTtra> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CasFraccionTtra.CatCasFraccionTtraResponseDTO(
                 a.id,
                 cas.id,
@@ -53,11 +53,39 @@ public interface ICatCasFraccionTtraRepository extends JpaRepository<CatCasFracc
                     LOWER(fra.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(CAST(tt.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(a.descFraccionAlt) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.cvnWasser AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))OR
-                    LOWER(CAST(a.cvnArmas AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))OR
-                    LOWER(CAST(a.cvnMontreal AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))OR
-                    LOWER(CAST(a.cvnEstocolmo AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))OR
-                    LOWER(CAST(a.formaDesc AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))OR
+                    LOWER(CAST(a.cvnWasser AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.cvnArmas AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.cvnMontreal AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.cvnEstocolmo AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.formaDesc AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(a.ideIdentificadorRegla) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                )
+                AND (:activo IS NULL OR a.blActivo = :activo)
+                AND (:idTipoTramite IS NULL OR tt.id = :idTipoTramite)
+            """,
+            countQuery = """
+            SELECT COUNT(a.id)
+            FROM CatCasFraccionTtra a
+            JOIN a.idCas cas
+            JOIN a.cveFraccion fra
+            JOIN a.idTipoTramite tt
+            WHERE
+                (
+                    :search IS NULL OR
+                    LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(cas.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(cas.descCas) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(fra.cveFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(fra.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(tt.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(a.descFraccionAlt) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.cvnWasser AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.cvnArmas AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.cvnMontreal AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.cvnEstocolmo AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.formaDesc AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(a.ideIdentificadorRegla) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
                     LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))

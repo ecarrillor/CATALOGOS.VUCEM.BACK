@@ -23,8 +23,10 @@ public class CatVidaSilvestreController {
     public ResponseEntity<PageResponseDTO<CatVidaSilvestreDTO>> list(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Long tipo,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, tipo,  pageable));
+        return ResponseEntity.ok(service.list(search, tipo, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_VIDA_SILVESTRE)

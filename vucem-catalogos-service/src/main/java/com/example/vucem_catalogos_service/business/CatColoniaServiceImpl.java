@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatColoniaService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.*;
 import com.example.vucem_catalogos_service.model.entity.CatColonia;
 import com.example.vucem_catalogos_service.persistence.repo.ICatColoniaRepository;
@@ -10,15 +11,26 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatPaisRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatColoniaServiceImpl implements ICatColoniaService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveColonia", "cat.cveColonia",
+            "nombre", "cat.nombre",
+            "municipio", "dm.nombre",
+            "localidad", "loc.nombre",
+            "cp", "cat.cp"
+    );
 
     @Autowired
     private ICatColoniaRepository catColoniaRepository;
@@ -33,7 +45,7 @@ public class CatColoniaServiceImpl implements ICatColoniaService {
     private ICatPaisRepository paisRepository;
 
     @Override
-    public PageResponseDTO<CatColoniaDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatColoniaDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -48,7 +60,12 @@ public class CatColoniaServiceImpl implements ICatColoniaService {
             }
         }
 
-        Page<CatColoniaDTO> page = catColoniaRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
+        Page<CatColoniaDTO> page = catColoniaRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatColoniaDTO>builder()
                 .content(page.getContent())

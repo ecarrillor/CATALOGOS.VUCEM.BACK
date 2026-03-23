@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ICatRegimenTtraService {
-    PageResponseDTO<CatRegimenTtraDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatRegimenTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
     CatRegimenTtraDTO findById(Short id);
     CatRegimenTtraDTO create(CatRegimenTtraDTO dto);
     CatRegimenTtraDTO update(Short id, CatRegimenTtraDTO dto);

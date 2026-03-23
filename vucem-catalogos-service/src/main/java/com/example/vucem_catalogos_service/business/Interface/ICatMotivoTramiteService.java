@@ -6,7 +6,7 @@ import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import org.springframework.data.domain.Pageable;
 
 public interface ICatMotivoTramiteService {
-    PageResponseDTO<CatMotivoTramiteResponseDTO> listarMotivoTramite(String search, Pageable pageable);
+    PageResponseDTO<CatMotivoTramiteResponseDTO> listarMotivoTramite(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatMotivoTramiteResponseDTO crearCategoriaTextil(CatMotivoTramiteRequestDTO dto);
 

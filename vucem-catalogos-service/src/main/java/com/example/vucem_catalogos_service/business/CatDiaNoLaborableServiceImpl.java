@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatDiaNoLaborableService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatDiaNoLaborableDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
@@ -11,7 +12,9 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatDiaNoLaborableRe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +23,19 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class CatDiaNoLaborableServiceImpl implements ICatDiaNoLaborableService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "fecNoLaborable", "e.id.fecNoLaborable",
+            "cveCalendario", "e.id.cveCalendario",
+            "nombreCalendario", "e.cveCalendario.nombre",
+            "descripcion", "e.descripcion"
+    );
 
     @Autowired
     private ICatDiaNoLaborableRepository catDiaNoLaborableRepository;
@@ -33,7 +44,7 @@ public class CatDiaNoLaborableServiceImpl implements ICatDiaNoLaborableService {
     private ICatCalendarioRepository catCalendarioRepository;
 
     @Override
-    public PageResponseDTO<CatDiaNoLaborableDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatDiaNoLaborableDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -45,7 +56,12 @@ public class CatDiaNoLaborableServiceImpl implements ICatDiaNoLaborableService {
             texto = search;
         }
 
-        Page<CatDiaNoLaborableDTO> page = catDiaNoLaborableRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
+        Page<CatDiaNoLaborableDTO> page = catDiaNoLaborableRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatDiaNoLaborableDTO>builder()
                 .content(page.getContent())

@@ -24,8 +24,10 @@ public class CatPartidaFraccionController {
     @GetMapping(CatalogPaths.LIST_PARTIDA_FRACCION)
     public ResponseEntity<PageResponseDTO<CatPartidaFraccionDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_PARTIDA_FRACCION)

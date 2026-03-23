@@ -20,8 +20,10 @@ public class CatPaisRestriccionTtraController {
     @GetMapping(CatalogPaths.LIST_PAIS_RESTRICCION_TTRA)
     public ResponseEntity<PageResponseDTO<CatPaisRestriccionTtraDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_PAIS_RESTRICCION_TTRA)

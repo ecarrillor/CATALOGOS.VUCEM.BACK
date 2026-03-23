@@ -20,8 +20,10 @@ public class CatUnidadAdminAduanaController {
     @GetMapping(CatalogPaths.LIST_UNIDAD_ADMIN_ADUANA)
     public ResponseEntity<PageResponseDTO<CatUnidadAdminAduanaDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_UNIDAD_ADMIN_ADUANA)

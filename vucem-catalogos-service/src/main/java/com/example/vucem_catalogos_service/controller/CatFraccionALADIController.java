@@ -25,9 +25,11 @@ public class CatFraccionALADIController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_FRACCION_ALADI)
     public ResponseEntity<PageResponseDTO<CatFraccionALADIResponseDTO>> listarFraccionAladi(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                iCatFraccionALADIService.listarFraccionAladi(search, pageable));
+                iCatFraccionALADIService.listarFraccionAladi(search, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_FRACCION_ALADI)

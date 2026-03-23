@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface ICatFraccionTtraDescProdRepository extends JpaRepository<CatFraccionTtraDescProd, Long>,
         JpaSpecificationExecutor<CatFraccionTtraDescProd> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.FraccionTtraDescProd.CatFraccionTtraDescProdResponseDTO(
                 dp.id,
                 dp.idDescripcionProd.id,
@@ -30,6 +30,26 @@ public interface ICatFraccionTtraDescProdRepository extends JpaRepository<CatFra
                 dp.fecFinVigencia,
                 dp.blnActivo
             )
+            FROM CatFraccionTtraDescProd dp
+            JOIN dp.idFraccionGob f
+            JOIN f.cveFraccion fra
+            WHERE
+                (
+                    :search IS NULL OR
+                    LOWER(CAST(dp.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(dp.idDescripcionProd.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(dp.idDescripcionProd.descripcionProducto) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(dp.idFraccionGob.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(fra.cveFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(fra.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(dp.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(dp.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                )
+                AND (:activo IS NULL OR dp.blnActivo = :activo)
+                AND (:idTipoTramite IS NULL OR f.idTipoTramite.id = :idTipoTramite)
+            """,
+            countQuery = """
+            SELECT COUNT(dp.id)
             FROM CatFraccionTtraDescProd dp
             JOIN dp.idFraccionGob f
             JOIN f.cveFraccion fra

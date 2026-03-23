@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatPaisService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatPaisDTO;
 import com.example.vucem_catalogos_service.model.dto.CatPaisSaveDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
@@ -12,16 +13,25 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatPaisRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class CatPaisServiceImpl implements ICatPaisService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cvePais", "cvePais",
+            "nombre", "nombre",
+            "cvePaisWco", "cvePaisWco"
+    );
 
     @Autowired
     private ICatPaisRepository catPaisRepository;
@@ -30,7 +40,7 @@ public class CatPaisServiceImpl implements ICatPaisService {
     private ICatMonedaRepository catMonedaRepository;
 
     @Override
-    public PageResponseDTO<CatPaisDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatPaisDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -45,7 +55,12 @@ public class CatPaisServiceImpl implements ICatPaisService {
             }
         }
 
-        Page<CatPaisDTO> page = catPaisRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "nombre"));
+
+        Page<CatPaisDTO> page = catPaisRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatPaisDTO>builder()
                 .content(page.getContent())

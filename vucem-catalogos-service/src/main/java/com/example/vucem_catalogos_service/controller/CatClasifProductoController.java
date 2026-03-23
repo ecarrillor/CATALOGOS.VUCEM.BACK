@@ -25,8 +25,10 @@ public class CatClasifProductoController {
     public ResponseEntity<PageResponseDTO<CatClasifProductoDTO>> list(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Long idTipoTramite,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, idTipoTramite, pageable));
+        return ResponseEntity.ok(service.list(search, idTipoTramite, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_CLASIF_PRODUCTO)

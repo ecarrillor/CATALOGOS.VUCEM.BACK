@@ -5,18 +5,30 @@ import com.example.vucem_catalogos_service.model.dto.CatUnidadAdminAduanaDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatUnidadAdminAduana;
 import com.example.vucem_catalogos_service.model.entity.CatUnidadAdminAduanaId;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAduanaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadAdminAduanaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadAdministrativaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatUnidadAdminAduanaServiceImpl implements ICatUnidadAdminAduanaService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveUnidadAdministrativa", "id.cveUnidadAdministrativa",
+            "cveAduana", "id.cveAduana",
+            "nombreUnidadAdministrativa", "cveUnidadAdministrativa.nombre",
+            "nombreAduana", "cveAduana.nombre"
+    );
 
     @Autowired
     private ICatUnidadAdminAduanaRepository catUnidadAdminAduanaRepository;
@@ -28,7 +40,7 @@ public class CatUnidadAdminAduanaServiceImpl implements ICatUnidadAdminAduanaSer
     private ICatAduanaRepository catAduanaRepository;
 
     @Override
-    public PageResponseDTO<CatUnidadAdminAduanaDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatUnidadAdminAduanaDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -40,7 +52,12 @@ public class CatUnidadAdminAduanaServiceImpl implements ICatUnidadAdminAduanaSer
             texto = search;
         }
 
-        Page<CatUnidadAdminAduanaDTO> page = catUnidadAdminAduanaRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id.cveUnidadAdministrativa"));
+
+        Page<CatUnidadAdminAduanaDTO> page = catUnidadAdminAduanaRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatUnidadAdminAduanaDTO>builder()
                 .content(page.getContent())

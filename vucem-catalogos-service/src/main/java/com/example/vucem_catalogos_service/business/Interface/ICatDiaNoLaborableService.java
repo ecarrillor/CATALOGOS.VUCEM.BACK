@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ICatDiaNoLaborableService {
 
-    PageResponseDTO<CatDiaNoLaborableDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatDiaNoLaborableDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatDiaNoLaborableDTO findById(LocalDate fecNoLaborable, String cveCalendario);
 

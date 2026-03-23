@@ -24,8 +24,10 @@ public class CatTipoEmpresaRecifController {
     @GetMapping(CatalogPaths.LIST_TIPO_EMPRESA_RECIF)
     public ResponseEntity<PageResponseDTO<CatTipoEmpresaRecifDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_TIPO_EMPRESA_RECIF)

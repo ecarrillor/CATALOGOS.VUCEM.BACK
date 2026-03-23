@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatAduanaService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.entity.CatAduana;
 import com.example.vucem_catalogos_service.model.entity.CatAduanaClasifProd;
 import com.example.vucem_catalogos_service.model.entity.CatEntidad;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,13 @@ import java.util.Map;
 @Transactional
 public class CatAduanaServiceImpl implements ICatAduanaService {
 
+    // NO se permite ordenar por: fecCaptura, fecIniVigencia, fecFinVigencia, blnActivo
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveAduana",         "cveAduana",
+            "nombre",            "nombre",
+            "correoElectronico", "correoElectronico"
+    );
+
     @Autowired
     private ICatAduanaRepository repository;
 
@@ -39,8 +48,12 @@ public class CatAduanaServiceImpl implements ICatAduanaService {
 
 
     @Override
-    public Page<CatAduana> catAduanaListAll(int page, int size, String search) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<CatAduana> catAduanaListAll(int page, int size, String search, String sortBy, String sortDir) {
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable pageable = sort.isSorted()
+                ? PageRequest.of(page, size, sort)
+                : PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "nombre"));
+
         if (search == null || search.isEmpty()) {
             return repository.findAll(pageable);
         }

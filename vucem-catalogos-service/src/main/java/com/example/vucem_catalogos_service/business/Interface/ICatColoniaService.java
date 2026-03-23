@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ICatColoniaService {
-    PageResponseDTO<CatColoniaDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatColoniaDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
     CatColoniaDTO findById(String cveColonia);
     CatColoniaDTO create(CatColoniaDTO dto);
     CatColoniaDTO update(String cveColonia, CatColoniaDTO dto);

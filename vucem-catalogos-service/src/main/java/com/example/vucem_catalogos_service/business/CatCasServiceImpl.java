@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatCa;
 import com.example.vucem_catalogos_service.business.Interface.ICatCasService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatCas.CatCaRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatCas.CatCaResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
@@ -17,13 +18,16 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -41,8 +45,14 @@ public class CatCasServiceImpl implements ICatCasService {
     @Autowired
     private ICatFraccionTtraRepository catFraccionTtraRepository;
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "cas.id",
+            "descCas", "cas.descCas",
+            "nombreTramite", "tt.descModalidad"
+    );
+
     @Override
-    public PageResponseDTO<CatCaResponseDTO> listAll(String search, Long idTipoTramite,Pageable pageable) {
+    public PageResponseDTO<CatCaResponseDTO> listAll(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -61,8 +71,12 @@ public class CatCasServiceImpl implements ICatCasService {
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable pageableWithSort = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
 
-        Page<CatCaResponseDTO> page = repository.search(texto, activo, idTipoTramite, pageable);
+        Page<CatCaResponseDTO> page = repository.search(texto, activo, idTipoTramite, pageableWithSort);
 
         return PageResponseDTO.<CatCaResponseDTO>builder()
                 .content(page.getContent())

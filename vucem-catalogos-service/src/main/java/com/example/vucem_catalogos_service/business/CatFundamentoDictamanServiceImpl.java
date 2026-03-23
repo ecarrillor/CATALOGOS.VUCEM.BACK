@@ -9,10 +9,13 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatFundamentoDictam
 import com.example.vucem_catalogos_service.persistence.specification.GenericDateRangeSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericFilterSpecification;
 import com.example.vucem_catalogos_service.persistence.specification.GenericSearchSpecification;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
@@ -71,8 +74,13 @@ public class CatFundamentoDictamanServiceImpl extends AbstractCatalogService<Cat
 
 
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS_DICTAMEN = Map.of(
+            "cveFundamentoDictamen", "e.id",
+            "descripcion", "e.descripcion"
+    );
+
     @Override
-    public PageResponseDTO<CatFundamentoDictamenResponseDTO> listarFundamentoDictamen(String search, Pageable pageable) {
+    public PageResponseDTO<CatFundamentoDictamenResponseDTO> listarFundamentoDictamen(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -91,8 +99,12 @@ public class CatFundamentoDictamanServiceImpl extends AbstractCatalogService<Cat
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS_DICTAMEN);
+        Pageable sortedPageable = sort.isUnsorted() ? pageable
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
         Page<CatFundamentoDictamenResponseDTO> page =
-                catFundamentoDictamanRepository.search(texto, activo, pageable);
+                catFundamentoDictamanRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatFundamentoDictamenResponseDTO>builder()
                 .content(page.getContent())

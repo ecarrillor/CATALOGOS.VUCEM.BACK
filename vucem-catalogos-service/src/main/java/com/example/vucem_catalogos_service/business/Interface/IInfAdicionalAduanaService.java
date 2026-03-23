@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface IInfAdicionalAduanaService {
-    PageResponseDTO<InfAdicionalAduanaDTO> list(String search, Pageable pageable);
+    PageResponseDTO<InfAdicionalAduanaDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
     InfAdicionalAduanaDTO findById(String cveAduana);
     InfAdicionalAduanaDTO create(InfAdicionalAduanaDTO dto);
     InfAdicionalAduanaDTO update(String cveAduana, InfAdicionalAduanaDTO dto);

@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ICatRestriccionTtraService {
 
-    PageResponseDTO<CatRestriccionTtraResponseDTO> listAll(String search, Long idTipoTramite, Pageable pageable);
+    PageResponseDTO<CatRestriccionTtraResponseDTO> listAll(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable);
 
     CatRestriccionTtraResponseDTO crear(CatRestriccionTtraRequestDTO dto);
 

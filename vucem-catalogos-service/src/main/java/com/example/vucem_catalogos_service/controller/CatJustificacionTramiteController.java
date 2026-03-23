@@ -22,9 +22,11 @@ public class CatJustificacionTramiteController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_JUSTIFICACION_TRAMITE)
     public ResponseEntity<PageResponseDTO<CatJustificacionTramiteResponseDTO>> listarJustificacionTramite(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                iCatJustificacionTramiteService.listarJustificacionTramite(search, pageable));
+                iCatJustificacionTramiteService.listarJustificacionTramite(search, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_JUSTIFICACION_TRAMITE)

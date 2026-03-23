@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface IVucRepoFirmaGralSeService {
 
-    PageResponseDTO<VucRepoFirmaGralSeResponseDTO> listAll(String search, String tipoFirma, Pageable pageable);
+    PageResponseDTO<VucRepoFirmaGralSeResponseDTO> listAll(String search, String tipoFirma, String sortBy, String sortDir, Pageable pageable);
 
     VucRepoFirmaGralSeResponseDTO findById(Integer id);
 

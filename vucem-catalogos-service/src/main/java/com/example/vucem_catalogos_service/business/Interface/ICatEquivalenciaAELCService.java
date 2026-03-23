@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 public interface ICatEquivalenciaAELCService {
 
-    PageResponseDTO<CatEquivalenciaAelcDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatEquivalenciaAelcDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatEquivalenciaAelcDTO findById(LocalDate fecIniVigencia, String cveMoneda);
 

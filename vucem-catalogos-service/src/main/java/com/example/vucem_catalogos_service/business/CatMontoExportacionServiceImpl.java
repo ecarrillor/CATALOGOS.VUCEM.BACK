@@ -1,8 +1,10 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatMontoExportacionService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatMontoExportacionDTO;
 import com.example.vucem_catalogos_service.model.dto.LeyendaTexto.CatLeyendaTextoResponseDTO;
+import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.*;
 import com.example.vucem_catalogos_service.persistence.repo.ICatMonedaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatMontoExportacionRepository;
@@ -12,7 +14,9 @@ import com.example.vucem_catalogos_service.persistence.specification.GenericSear
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,12 @@ import java.util.Map;
 @Transactional
 @Service
 public class CatMontoExportacionServiceImpl extends AbstractCatalogService<CatMontoExportacion, CatMontoExportacionId> implements ICatMontoExportacionService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "razonSocial", "razonSocial",
+            "monto", "monto"
+    );
+
     @Autowired
     private ICatMontoExportacionRepository catMontoExportacionRepository;
 
@@ -48,6 +58,39 @@ public class CatMontoExportacionServiceImpl extends AbstractCatalogService<CatMo
         return CatMontoExportacionId.class;
     }
 
+
+    @Override
+    public PageResponseDTO<CatMontoExportacionDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
+        Boolean activo = null;
+        String texto = null;
+
+        if (search != null && !search.isBlank()) {
+            String s = search.trim().toLowerCase();
+            if (s.equals("activo")) {
+                activo = true;
+            } else if (s.equals("inactivo")) {
+                activo = false;
+            } else {
+                texto = search.trim();
+            }
+        }
+
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "razonSocial"));
+
+        Page<CatMontoExportacionDTO> page = catMontoExportacionRepository.search(texto, activo, sortedPageable);
+
+        return PageResponseDTO.<CatMontoExportacionDTO>builder()
+                .content(page.getContent())
+                .page(page.getNumber())
+                .size(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .last(page.isLast())
+                .build();
+    }
 
     @Override
     public Page<CatMontoExportacion> findAll(

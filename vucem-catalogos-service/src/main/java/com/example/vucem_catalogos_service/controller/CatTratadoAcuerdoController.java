@@ -24,8 +24,10 @@ public class CatTratadoAcuerdoController {
     @GetMapping(CatalogPaths.LIST_TRATADO_ACUERDO)
     public ResponseEntity<PageResponseDTO<CatTratadoAcuerdoDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_TRATADO_ACUERDO)

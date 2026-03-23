@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatClasifToxicologicaTtraService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatClasifToxicologicaTtraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatClasifToxicologicaTtra;
@@ -8,15 +9,26 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatClasifToxicologi
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Map;
+
 @Service
 @Transactional
 public class CatClasifToxicologicaTtraServiceImpl implements ICatClasifToxicologicaTtraService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "e.id",
+            "idTipoTramite", "t.id",
+            "nombreTipoTramite", "t.descModalidad",
+            "descClasifToxicologica", "e.descClasifToxicologica"
+    );
 
     @Autowired
     private ICatClasifToxicologicaTtraRepository catClasifToxicologicaTtraRepository;
@@ -25,7 +37,7 @@ public class CatClasifToxicologicaTtraServiceImpl implements ICatClasifToxicolog
     private ICatTipoTramiteRepository catTipoTramiteRepository;
 
     @Override
-    public PageResponseDTO<CatClasifToxicologicaTtraDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatClasifToxicologicaTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -37,7 +49,12 @@ public class CatClasifToxicologicaTtraServiceImpl implements ICatClasifToxicolog
             texto = search;
         }
 
-        Page<CatClasifToxicologicaTtraDTO> page = catClasifToxicologicaTtraRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
+        Page<CatClasifToxicologicaTtraDTO> page = catClasifToxicologicaTtraRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatClasifToxicologicaTtraDTO>builder()
                 .content(page.getContent())

@@ -27,8 +27,10 @@ public class CatCasFraccionTtraController {
     public ResponseEntity<PageResponseDTO<CatCasFraccionTtraResponseDTO>> listar(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Long idTipoTramite,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.listAll(search, idTipoTramite, pageable));
+        return ResponseEntity.ok(service.listAll(search, idTipoTramite, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CAS_FRACCION_TTRA)

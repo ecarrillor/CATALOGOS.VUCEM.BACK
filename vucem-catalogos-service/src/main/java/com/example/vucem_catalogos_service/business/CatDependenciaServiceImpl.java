@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatDependenciaService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.Dependencia.CatDependenciaRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.Dependencia.CatDependenciaResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
@@ -12,17 +13,27 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatDependenciaRepos
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatDependenciaServiceImpl implements ICatDependenciaService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveDependencia", "a.id",
+            "nombreDependencia", "a.nombre",
+            "acronimo", "a.acronimo",
+            "nombreCalendario", "b.nombre"
+    );
 
     @Autowired
     private ICatDependenciaRepository iCatDependenciaRepository;
@@ -31,7 +42,7 @@ public class CatDependenciaServiceImpl implements ICatDependenciaService {
     private ICatCalendarioRepository iCatCalendarioRepository;
 
     @Override
-    public PageResponseDTO<CatDependenciaResponseDTO> listarDependencia(String search, Pageable pageable) {
+    public PageResponseDTO<CatDependenciaResponseDTO> listarDependencia(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -50,8 +61,13 @@ public class CatDependenciaServiceImpl implements ICatDependenciaService {
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
         Page<CatDependenciaResponseDTO> page =
-                iCatDependenciaRepository.search(texto, activo, pageable);
+                iCatDependenciaRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatDependenciaResponseDTO>builder()
                 .content(page.getContent())

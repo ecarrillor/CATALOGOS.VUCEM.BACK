@@ -23,9 +23,11 @@ public class CatFundamentoDictamenController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_FUNDAMENTO_DICTAMEN)
     public ResponseEntity<PageResponseDTO<CatFundamentoDictamenResponseDTO>> listarFundamentoDictamen(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                iCatFundamentoDictamenService.listarFundamentoDictamen(search, pageable));
+                iCatFundamentoDictamenService.listarFundamentoDictamen(search, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_FUNDAMENTO_DICTAMEN)

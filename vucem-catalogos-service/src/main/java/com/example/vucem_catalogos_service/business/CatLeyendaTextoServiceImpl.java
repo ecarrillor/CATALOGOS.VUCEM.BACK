@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatLeyendaTextoService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.LeyendaTexto.CatLeyendaTextoRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.LeyendaTexto.CatLeyendaTextoResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
@@ -9,20 +10,30 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatLeyendaTextoRepo
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatLeyendaTextoServiceImpl implements ICatLeyendaTextoService {
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveLeyenda", "id",
+            "leyenda", "leyenda",
+            "numAnio", "numAnio"
+    );
+
     @Autowired
     private ICatLeyendaTextoRepository iCatLeyendaTextoRepository;
 
     @Override
-    public PageResponseDTO<CatLeyendaTextoResponseDTO> listarLeyendaTexto(String search, Pageable pageable) {
+    public PageResponseDTO<CatLeyendaTextoResponseDTO> listarLeyendaTexto(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -41,8 +52,13 @@ public class CatLeyendaTextoServiceImpl implements ICatLeyendaTextoService {
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
         Page<CatLeyendaTextoResponseDTO> page =
-                iCatLeyendaTextoRepository.search(texto, activo, pageable);
+                iCatLeyendaTextoRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatLeyendaTextoResponseDTO>builder()
                 .content(page.getContent())

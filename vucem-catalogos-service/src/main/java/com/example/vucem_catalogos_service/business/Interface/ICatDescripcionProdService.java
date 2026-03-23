@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ICatDescripcionProdService {
 
-    PageResponseDTO<CatDescripcionProdResponseDTO> listAll(String search,Long idTipoTramite, Pageable pageable);
+    PageResponseDTO<CatDescripcionProdResponseDTO> listAll(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable);
 
     CatDescripcionProdResponseDTO crear(CatDescripcionProdRequestDTO dto,  Long idTipoTramite);
 

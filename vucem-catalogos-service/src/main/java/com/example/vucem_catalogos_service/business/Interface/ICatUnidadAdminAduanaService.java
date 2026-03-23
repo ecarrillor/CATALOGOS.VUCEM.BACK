@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatUnidadAdminAduanaService {
 
-    PageResponseDTO<CatUnidadAdminAduanaDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatUnidadAdminAduanaDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatUnidadAdminAduanaDTO findById(String cveUnidadAdministrativa, String cveAduana);
 

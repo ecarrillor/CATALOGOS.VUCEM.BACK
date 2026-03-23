@@ -23,8 +23,10 @@ public class CatVigenciaServicioController {
     @GetMapping(CatalogPaths.LIST_VIGENCIA_SERVICIO)
     public ResponseEntity<PageResponseDTO<CatVigenciaServicioDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_VIGENCIA_SERVICIO)

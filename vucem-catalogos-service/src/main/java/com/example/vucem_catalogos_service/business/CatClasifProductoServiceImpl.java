@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatClasifProductoService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatClasifProductoDTO;
 import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
@@ -11,13 +12,16 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatClasifProductoRe
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,8 +34,16 @@ public class CatClasifProductoServiceImpl implements ICatClasifProductoService {
     @Autowired
     private ICatTipoTramiteRepository catTipoTramiteRepository;
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "idClasifProduct", "e.idClasifProduct",
+            "nombreTipoTramite", "t.descModalidad",
+            "nombreClasifProductoR", "r.nombre",
+            "nombre", "e.nombre",
+            "ideTipoClasifProducto", "e.ideTipoClasifProducto"
+    );
+
     @Override
-    public PageResponseDTO<CatClasifProductoDTO> list(String search, Long idTipoTramite, Pageable pageable) {
+    public PageResponseDTO<CatClasifProductoDTO> list(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -43,7 +55,12 @@ public class CatClasifProductoServiceImpl implements ICatClasifProductoService {
             texto = search;
         }
 
-        Page<CatClasifProductoDTO> page = catClasifProductoRepository.search(texto, activo, idTipoTramite, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable pageableWithSort = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
+        Page<CatClasifProductoDTO> page = catClasifProductoRepository.search(texto, activo, idTipoTramite, pageableWithSort);
 
         return PageResponseDTO.<CatClasifProductoDTO>builder()
                 .content(page.getContent())

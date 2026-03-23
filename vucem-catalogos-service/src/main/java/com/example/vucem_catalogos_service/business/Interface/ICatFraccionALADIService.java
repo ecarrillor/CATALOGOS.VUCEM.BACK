@@ -6,7 +6,7 @@ import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import org.springframework.data.domain.Pageable;
 
 public interface ICatFraccionALADIService {
-    PageResponseDTO<CatFraccionALADIResponseDTO> listarFraccionAladi(String search, Pageable pageable);
+    PageResponseDTO<CatFraccionALADIResponseDTO> listarFraccionAladi(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatFraccionALADIResponseDTO crearFraacionAladi(CatFraccionALADIRequestDTO dto);
 

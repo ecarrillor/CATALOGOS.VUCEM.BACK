@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 public interface ICatPlazoMaximoAutTramiteService {
-    PageResponseDTO<CatPlazoMaximoAutTramiteDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatPlazoMaximoAutTramiteDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
     CatPlazoMaximoAutTramiteDTO findById(Long idTipoTramite, LocalDate fecIniVigencia);
     CatPlazoMaximoAutTramiteDTO create(CatPlazoMaximoAutTramiteDTO dto);
     CatPlazoMaximoAutTramiteDTO update(Long idTipoTramite, LocalDate fecIniVigencia, CatPlazoMaximoAutTramiteDTO dto);

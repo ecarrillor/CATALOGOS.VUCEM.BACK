@@ -8,15 +8,19 @@ import com.example.vucem_catalogos_service.model.entity.CatFundamentoTtra;
 import com.example.vucem_catalogos_service.model.entity.CatTipoTramite;
 import com.example.vucem_catalogos_service.persistence.repo.ICatFundamentoTtraRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -28,8 +32,16 @@ public class CatFundamentoTtraServiceImpl implements ICatFundamentoTtraService {
     @Autowired
     private ICatTipoTramiteRepository catTipoTramiteRepository;
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "e.id",
+            "idTipoTramite", "e.idTipoTramite.id",
+            "nombreTipoTramite", "e.idTipoTramite.descSubservicio",
+            "ideTipoFundamentoTtra", "e.ideTipoFundamentoTtra",
+            "descFundamento", "e.descFundamento"
+    );
+
     @Override
-    public PageResponseDTO<CatFundamentoTtraDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatFundamentoTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -41,7 +53,11 @@ public class CatFundamentoTtraServiceImpl implements ICatFundamentoTtraService {
             texto = search;
         }
 
-        Page<CatFundamentoTtraDTO> page = catFundamentoTtraRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isUnsorted() ? pageable
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
+        Page<CatFundamentoTtraDTO> page = catFundamentoTtraRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatFundamentoTtraDTO>builder()
                 .content(page.getContent())

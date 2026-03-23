@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatClasifToxicologicaTtraService {
 
-    PageResponseDTO<CatClasifToxicologicaTtraDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatClasifToxicologicaTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatClasifToxicologicaTtraDTO findById(Short id);
 

@@ -6,7 +6,7 @@ import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import org.springframework.data.domain.Pageable;
 
 public interface ICatLeyendaTextoService {
-    PageResponseDTO<CatLeyendaTextoResponseDTO> listarLeyendaTexto(String search, Pageable pageable);
+    PageResponseDTO<CatLeyendaTextoResponseDTO> listarLeyendaTexto(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatLeyendaTextoResponseDTO crearLeyendaTexto(CatLeyendaTextoRequestDTO dto);
 

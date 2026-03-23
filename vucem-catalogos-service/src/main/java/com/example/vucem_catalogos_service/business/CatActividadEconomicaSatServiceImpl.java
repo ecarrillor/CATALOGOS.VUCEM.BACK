@@ -7,12 +7,15 @@ import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatActividadEconomicaSat;
 import com.example.vucem_catalogos_service.model.entity.CatCalendario;
 import com.example.vucem_catalogos_service.model.entity.CatTipoEmpresaRecif;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.persistence.repo.ICatActividadEconomicaSatRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatEmpresaRecifRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoEmpresaRecifRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +24,23 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatActividadEconomicaSatServiceImpl implements ICatActividadEconomicaSatService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "id",
+            "descripcion", "descripcion",
+            "descScian", "descScian",
+            "descNotas", "descNotas",
+            "cveTipoIndustriaIdc", "cveTipoIndustriaIdc",
+            "descActividadEconomicaR", "idActividadEconomicaR.descripcion",
+            "cveTipoEmpresaRecif", "cveTipoEmpresaRecif.cveTipoEmpresaRecif",
+            "descEmpresaRecif", "cveTipoEmpresaRecif.descripcion",
+            "fecActualizacion", "fecActualizacion"
+    );
 
     @Autowired
     private ICatActividadEconomicaSatRepository catActividadEconomicaSatRepository;
@@ -32,7 +48,7 @@ public class CatActividadEconomicaSatServiceImpl implements ICatActividadEconomi
     private ICatTipoEmpresaRecifRepository catTipoEmpresaRecifRepository;
 
     @Override
-    public PageResponseDTO<CatActividadEconomicaSatDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatActividadEconomicaSatDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -44,7 +60,12 @@ public class CatActividadEconomicaSatServiceImpl implements ICatActividadEconomi
             texto = search;
         }
 
-        Page<CatActividadEconomicaSatDTO> page = catActividadEconomicaSatRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
+        Page<CatActividadEconomicaSatDTO> page = catActividadEconomicaSatRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatActividadEconomicaSatDTO>builder()
                 .content(page.getContent())

@@ -24,8 +24,10 @@ public class CatDeclaracionTramiteController {
     @GetMapping(CatalogPaths.LIST_DECLARACION_TRAMITE)
     public ResponseEntity<PageResponseDTO<CatDeclaracionTramiteDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_DECLARACION_TRAMITE)

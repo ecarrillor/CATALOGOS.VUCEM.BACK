@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatEquivalenciaAELCService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatEquivalenciaAelcDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatEquivalenciaAelc;
@@ -9,7 +10,9 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatEquivalenciaAelc
 import com.example.vucem_catalogos_service.persistence.repo.ICatMonedaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +20,17 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatEquivalenciaAELCServiceImpl implements ICatEquivalenciaAELCService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveMoneda", "e.id.cveMoneda",
+            "nombreMoneda", "m.nombre",
+            "valor", "e.valor"
+    );
 
     @Autowired
     private ICatEquivalenciaAelcRepository catEquivalenciaAelcRepository;
@@ -29,7 +39,7 @@ public class CatEquivalenciaAELCServiceImpl implements ICatEquivalenciaAELCServi
     private ICatMonedaRepository iCatMonedaRepository;
 
     @Override
-    public PageResponseDTO<CatEquivalenciaAelcDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatEquivalenciaAelcDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -41,7 +51,12 @@ public class CatEquivalenciaAELCServiceImpl implements ICatEquivalenciaAELCServi
             texto = search;
         }
 
-        Page<CatEquivalenciaAelcDTO> page = catEquivalenciaAelcRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
+        Page<CatEquivalenciaAelcDTO> page = catEquivalenciaAelcRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatEquivalenciaAelcDTO>builder()
                 .content(page.getContent())

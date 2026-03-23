@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ICatUnidadAdministrativaService {
     List<CatUnidadAdministrativaNameDTO> findByAll();
-    PageResponseDTO<CatUnidadAdministrativaDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatUnidadAdministrativaDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
     CatUnidadAdministrativaDTO findById(String cveUnidadAdministrativa);
     CatUnidadAdministrativaDTO create(CatUnidadAdministrativaDTO dto);
     CatUnidadAdministrativaDTO update(String cveUnidadAdministrativa, CatUnidadAdministrativaDTO dto);

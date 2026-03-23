@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatCombinacionSgService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.*;
 import com.example.vucem_catalogos_service.model.entity.CatCatalogoD;
 import com.example.vucem_catalogos_service.model.entity.CatCatalogoDTr;
@@ -11,15 +12,26 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatCombinacionSgRep
 import com.example.vucem_catalogos_service.persistence.repo.ICatPaisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatCombinacionSgServiceImpl implements ICatCombinacionSgService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "e.id",
+            "ideTipoCertificadoMerc", "e.ideTipoCertificadoMerc",
+            "descEspecie", "e.cvcEspecie.descGenerica1",
+            "descNombreComun", "e.cvcNombreComun.descGenerica1",
+            "nombrePais", "e.cvePais.nombre"
+    );
 
     @Autowired
     private ICatCombinacionSgRepository catCombinacionSgRepository;
@@ -31,7 +43,7 @@ public class CatCombinacionSgServiceImpl implements ICatCombinacionSgService {
     private ICatPaisRepository catPaisRepository;
 
     @Override
-    public PageResponseDTO<CatCombinacionSgDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatCombinacionSgDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Short activo = null;
         String texto = null;
 
@@ -43,7 +55,12 @@ public class CatCombinacionSgServiceImpl implements ICatCombinacionSgService {
             texto = search;
         }
 
-        Page<CatCombinacionSgDTO> page = catCombinacionSgRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
+        Page<CatCombinacionSgDTO> page = catCombinacionSgRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatCombinacionSgDTO>builder()
                 .content(page.getContent())

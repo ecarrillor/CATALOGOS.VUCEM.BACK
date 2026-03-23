@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ICatTipoProductoTtraService {
 
-    PageResponseDTO<CatTipoProductoTtraDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatTipoProductoTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatTipoProductoTtraDTO findById(Short id);
 

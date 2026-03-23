@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatSubpartidaFraccionService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatSubpartidaFraccionDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectCatPartidaFraccion;
@@ -11,7 +12,9 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatSubpartidaFracci
 import com.example.vucem_catalogos_service.persistence.repo.ICatPartidaFraccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +22,16 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatSubpartidaFraccionServiceImpl implements ICatSubpartidaFraccionService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveSubpartidaFraccion", "id.cveSubpartidaFraccion",
+            "nombrePartidaFraccion", "nombre"
+    );
 
     @Autowired
     private ICatSubpartidaFraccionRepository catSubpartidaFraccionRepository;
@@ -34,7 +43,7 @@ public class CatSubpartidaFraccionServiceImpl implements ICatSubpartidaFraccionS
     private ICatCapituloFraccionRepository catCapituloFraccionRepository;
 
     @Override
-    public PageResponseDTO<CatSubpartidaFraccionDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatSubpartidaFraccionDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -46,7 +55,12 @@ public class CatSubpartidaFraccionServiceImpl implements ICatSubpartidaFraccionS
             texto = search;
         }
 
-        Page<CatSubpartidaFraccionDTO> page = catSubpartidaFraccionRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id.cveSubpartidaFraccion"));
+
+        Page<CatSubpartidaFraccionDTO> page = catSubpartidaFraccionRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatSubpartidaFraccionDTO>builder()
                 .content(page.getContent())

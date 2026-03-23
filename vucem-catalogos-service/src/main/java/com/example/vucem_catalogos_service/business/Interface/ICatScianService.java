@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatScianService {
 
-    PageResponseDTO<CatScianDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatScianDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatScianDTO findById(String cveScian);
 

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatUnidadMedidaTtraService {
 
-    PageResponseDTO<CatUnidadMedidaTtraDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatUnidadMedidaTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatUnidadMedidaTtraDTO findById(Integer id);
 

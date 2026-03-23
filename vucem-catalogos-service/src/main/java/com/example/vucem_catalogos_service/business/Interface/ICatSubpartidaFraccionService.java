@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ICatSubpartidaFraccionService {
 
-    PageResponseDTO<CatSubpartidaFraccionDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatSubpartidaFraccionDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatSubpartidaFraccionDTO findById(String cveSubpartidaFraccion, String cveCapituloFraccion, String cvePartidaFraccion);
 

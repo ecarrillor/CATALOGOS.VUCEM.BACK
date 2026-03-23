@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatTratadoBloqueService {
 
-    PageResponseDTO<CatTratadoBloqueDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatTratadoBloqueDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatTratadoBloqueDTO findById(Short idTratadoAcuerdo, Short idBloque);
 

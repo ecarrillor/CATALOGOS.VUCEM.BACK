@@ -20,8 +20,10 @@ public class CatTratamientoEspecialController {
     @GetMapping(CatalogPaths.LIST_TRATAMIENTO_ESPECIAL)
     public ResponseEntity<PageResponseDTO<CatTratamientoEspecialDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_TRATAMIENTO_ESPECIAL)

@@ -6,7 +6,7 @@ import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import org.springframework.data.domain.Pageable;
 
 public interface ICatJustificacionTramiteService {
-    PageResponseDTO<CatJustificacionTramiteResponseDTO> listarJustificacionTramite(String search, Pageable pageable);
+    PageResponseDTO<CatJustificacionTramiteResponseDTO> listarJustificacionTramite(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatJustificacionTramiteResponseDTO crearJustificacionTramite(CatJustificacionTramiteRequestDTO dto);
 

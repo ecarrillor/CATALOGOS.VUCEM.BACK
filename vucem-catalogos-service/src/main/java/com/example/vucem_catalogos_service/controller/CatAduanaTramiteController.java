@@ -27,9 +27,11 @@ public class CatAduanaTramiteController {
     @GetMapping(CatalogPaths.LIST_ADUANA_TRAMITE)
     public ResponseEntity<PageResponseDTO<CatAduanaTramiteResponseDTO>> listarAduanaTramite(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                service.listarAduanaTramite(search, pageable));
+                service.listarAduanaTramite(search, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_ADUANA_TRAMITE)

@@ -18,7 +18,7 @@ import java.util.Optional;
 @Repository
 public interface ICatAduanaClasifProductoRepository extends JpaRepository<CatAduanaClasifProd, Long>, JpaSpecificationExecutor<CatAduanaClasifProd> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.AduanaClasifProducto.CatAduanaClasifProdResponseDTO(
                 a.id,
                 a.aduana.cveAduana,
@@ -29,6 +29,24 @@ public interface ICatAduanaClasifProductoRepository extends JpaRepository<CatAdu
                 a.fecFinVigencia,
                 a.blnActivo
             )
+            FROM CatAduanaClasifProd a
+            JOIN a.idClasifProducto cp
+            JOIN cp.idTipoTramite tr
+            WHERE
+                (
+                    :search IS NULL OR
+                    LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(a.aduana.cveAduana) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(a.aduana.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.idClasifProducto.idClasifProduct AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(a.idClasifProducto.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) )
+                AND (:activo IS NULL OR a.blnActivo = :activo)
+                AND (:idTipoTramite IS NULL OR (tr.id IS NOT NULL AND tr.id = :idTipoTramite))
+            """,
+            countQuery = """
+            SELECT COUNT(a.id)
             FROM CatAduanaClasifProd a
             JOIN a.idClasifProducto cp
             JOIN cp.idTipoTramite tr

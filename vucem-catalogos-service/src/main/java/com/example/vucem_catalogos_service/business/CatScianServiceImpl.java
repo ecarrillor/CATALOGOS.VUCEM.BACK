@@ -1,27 +1,38 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatScianService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatScianDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatScian;
 import com.example.vucem_catalogos_service.persistence.repo.ICatScianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Map;
+
 @Service
 @Transactional
 public class CatScianServiceImpl implements ICatScianService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveScian", "cveScian",
+            "descScian", "descScian",
+            "giro", "giro"
+    );
 
     @Autowired
     private ICatScianRepository catScianRepository;
 
     @Override
-    public PageResponseDTO<CatScianDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatScianDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -33,7 +44,12 @@ public class CatScianServiceImpl implements ICatScianService {
             texto = search;
         }
 
-        Page<CatScianDTO> page = catScianRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "cveScian"));
+
+        Page<CatScianDTO> page = catScianRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatScianDTO>builder()
                 .content(page.getContent())

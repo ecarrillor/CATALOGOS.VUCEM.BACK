@@ -22,9 +22,11 @@ public class CatLeyendaTextoController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_LEYENDA_TEXTO)
     public ResponseEntity<PageResponseDTO<CatLeyendaTextoResponseDTO>> listarLeyendaTexto(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                iCatLeyendaTextoService.listarLeyendaTexto(search, pageable));
+                iCatLeyendaTextoService.listarLeyendaTexto(search, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_LEYENDA_TEXTO)

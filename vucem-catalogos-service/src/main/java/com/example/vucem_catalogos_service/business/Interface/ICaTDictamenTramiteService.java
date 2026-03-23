@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ICaTDictamenTramiteService {
-    PageResponseDTO<CatDictamenTramiteResponseDTO> listarDictamenTramite(String search, Pageable pageable);
+    PageResponseDTO<CatDictamenTramiteResponseDTO> listarDictamenTramite(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatDictamenTramiteResponseDTO crearDictamenTramite(CatDictamenTramiteRequestDTO dto);
 

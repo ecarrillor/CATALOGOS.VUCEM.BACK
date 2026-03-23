@@ -20,8 +20,10 @@ public class CatPatenteAduanalController {
     @GetMapping(CatalogPaths.LIST_PATENTE_ADUANAL)
     public ResponseEntity<PageResponseDTO<CatPatenteAduanalDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_PATENTE_ADUANAL)

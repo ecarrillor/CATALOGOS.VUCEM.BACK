@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatDelegMunService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatDelegMunDTO;
 import com.example.vucem_catalogos_service.model.dto.CatDelegMunSaveDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
@@ -11,14 +12,23 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatEntidadRepositor
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatDelegMunServiceImpl implements ICatDelegMunService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveDelegMun", "cat.cveDelegMun",
+            "nombre", "cat.nombre",
+            "entidad", "cat.cveEntidad.nombre"
+    );
 
     @Autowired
     private ICatDelegMunRepository catDelegMunRepository;
@@ -26,7 +36,7 @@ public class CatDelegMunServiceImpl implements ICatDelegMunService {
     private ICatEntidadRepository catEntidadRepository;
 
     @Override
-    public PageResponseDTO<CatDelegMunDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatDelegMunDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -41,7 +51,12 @@ public class CatDelegMunServiceImpl implements ICatDelegMunService {
             }
         }
 
-        Page<CatDelegMunDTO> page = catDelegMunRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
+        Page<CatDelegMunDTO> page = catDelegMunRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatDelegMunDTO>builder()
                 .content(page.getContent())

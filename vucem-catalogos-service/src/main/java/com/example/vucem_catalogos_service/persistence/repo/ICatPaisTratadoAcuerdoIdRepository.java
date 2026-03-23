@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface ICatPaisTratadoAcuerdoIdRepository extends JpaRepository<CatPaisTratadoAcuerdo, CatPaisTratadoAcuerdoId> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatPaisTratadoAcuerdoResponseDTO(
                 a.id.cvePais,
                 p.nombre,
@@ -42,7 +42,23 @@ public interface ICatPaisTratadoAcuerdoIdRepository extends JpaRepository<CatPai
                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
                    LOWER(CAST(a.fecCaptura AS string)) LIKE LOWER(CONCAT('%', :search, '%')))
-            ORDER BY a.id.cvePais ASC, t.cveTratadoAcuerdo ASC
+            """,
+            countQuery = """
+            SELECT COUNT(a)
+            FROM CatPaisTratadoAcuerdo a
+            JOIN a.cvePais p
+            JOIN a.idTratadoAcuerdo t
+            WHERE (:cvePais IS NULL OR a.id.cvePais = :cvePais)
+              AND (:idTratadoAcuerdo IS NULL OR a.id.idTratadoAcuerdo = :idTratadoAcuerdo)
+              AND (:blnActivo IS NULL OR a.blnActivo = :blnActivo)
+              AND (:search IS NULL OR
+                   LOWER(a.id.cvePais) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(p.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(t.cveTratadoAcuerdo) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
+                   LOWER(CAST(a.fecCaptura AS string)) LIKE LOWER(CONCAT('%', :search, '%')))
             """)
     Page<CatPaisTratadoAcuerdoResponseDTO> search(
             @Param("cvePais") String cvePais,

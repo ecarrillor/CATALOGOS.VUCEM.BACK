@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ICatFraccionTtraDescProdService {
 
-    PageResponseDTO<CatFraccionTtraDescProdResponseDTO> listAll(String search, Long idTipoTramite, Pageable pageable);
+    PageResponseDTO<CatFraccionTtraDescProdResponseDTO> listAll(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable);
 
     CatFraccionTtraDescProdResponseDTO crear(CatFraccionTtraDescProdRequestDTO dto);
 

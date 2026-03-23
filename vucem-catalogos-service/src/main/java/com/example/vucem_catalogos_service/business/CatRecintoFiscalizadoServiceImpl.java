@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatRecintoFiscalizadoService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatRecintoFiscalizadoDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatRecintoFiscalizado;
@@ -8,15 +9,26 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatAduanaRepository
 import com.example.vucem_catalogos_service.persistence.repo.ICatRecintoFiscalizadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Map;
+
 @Service
 @Transactional
 public class CatRecintoFiscalizadoServiceImpl implements ICatRecintoFiscalizadoService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "id",
+            "nombre", "nombre",
+            "rfc", "rfc",
+            "numAutorizacion", "numAutorizacion"
+    );
 
     @Autowired
     private ICatRecintoFiscalizadoRepository catRecintoFiscalizadoRepository;
@@ -25,7 +37,7 @@ public class CatRecintoFiscalizadoServiceImpl implements ICatRecintoFiscalizadoS
     private ICatAduanaRepository catAduanaRepository;
 
     @Override
-    public PageResponseDTO<CatRecintoFiscalizadoDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatRecintoFiscalizadoDTO> list(String search, int page, int size, String sortBy, String sortDir) {
         Boolean activo = null;
         String texto = null;
 
@@ -44,15 +56,20 @@ public class CatRecintoFiscalizadoServiceImpl implements ICatRecintoFiscalizadoS
             }
         }
 
-        Page<CatRecintoFiscalizadoDTO> page = catRecintoFiscalizadoRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(page, size, sort)
+                : PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "nombre"));
+
+        Page<CatRecintoFiscalizadoDTO> pageResult = catRecintoFiscalizadoRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatRecintoFiscalizadoDTO>builder()
-                .content(page.getContent())
-                .page(page.getNumber())
-                .size(page.getSize())
-                .totalElements(page.getTotalElements())
-                .totalPages(page.getTotalPages())
-                .last(page.isLast())
+                .content(pageResult.getContent())
+                .page(pageResult.getNumber())
+                .size(pageResult.getSize())
+                .totalElements(pageResult.getTotalElements())
+                .totalPages(pageResult.getTotalPages())
+                .last(pageResult.isLast())
                 .build();
     }
 

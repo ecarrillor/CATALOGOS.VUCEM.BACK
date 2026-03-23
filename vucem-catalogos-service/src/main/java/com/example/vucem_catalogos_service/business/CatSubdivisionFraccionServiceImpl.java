@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatSubdivisionFraccionService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatSubdivisionFraccionDTO;
 import com.example.vucem_catalogos_service.model.dto.FraccionAranceSearchDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
@@ -12,16 +13,25 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatFraccionArancela
 import com.example.vucem_catalogos_service.persistence.repo.ICatSubdivisionFraccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatSubdivisionFraccionServiceImpl implements ICatSubdivisionFraccionService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveSubdivision", "cveSubdivision",
+            "descripcionSubdivision", "descripcion",
+            "codSubdivision", "codSubdivision"
+    );
 
     @Autowired
     private ICatSubdivisionFraccionRepository catSubdivisionFraccionRepository;
@@ -30,7 +40,7 @@ public class CatSubdivisionFraccionServiceImpl implements ICatSubdivisionFraccio
     private ICatFraccionArancelariaRepository catFraccionArancelariaRepository;
 
     @Override
-    public PageResponseDTO<CatSubdivisionFraccionDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatSubdivisionFraccionDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -42,7 +52,12 @@ public class CatSubdivisionFraccionServiceImpl implements ICatSubdivisionFraccio
             texto = search;
         }
 
-        Page<CatSubdivisionFraccionDTO> page = catSubdivisionFraccionRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "cveSubdivision"));
+
+        Page<CatSubdivisionFraccionDTO> page = catSubdivisionFraccionRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatSubdivisionFraccionDTO>builder()
                 .content(page.getContent())

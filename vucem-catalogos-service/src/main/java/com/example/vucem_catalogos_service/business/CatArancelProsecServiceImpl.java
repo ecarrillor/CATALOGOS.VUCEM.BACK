@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatArancelProsecService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.*;
 import com.example.vucem_catalogos_service.model.entity.*;
 import com.example.vucem_catalogos_service.persistence.repo.ICatArancelProsecRepository;
@@ -9,15 +10,25 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatSectorProsecRepo
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatArancelProsecServiceImpl implements ICatArancelProsecService {
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveFraccion", "cat.cveFraccion.cveFraccion",
+            "cveSectorProsec", "sec.cveSectorProsec",
+            "sectorProsec", "sec.nombre",
+            "tasa", "cat.tasa"
+    );
+
     @Autowired
     private ICatArancelProsecRepository catArancelProsecRepository;
     @Autowired
@@ -29,7 +40,7 @@ public class CatArancelProsecServiceImpl implements ICatArancelProsecService {
     private ICatFraccionArancelariaRepository iCatFraccionArancelariaRepository;
 
     @Override
-    public PageResponseDTO<CatArancelProsecDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatArancelProsecDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
         if (search != null && !search.isBlank()) {
@@ -43,8 +54,14 @@ public class CatArancelProsecServiceImpl implements ICatArancelProsecService {
                 texto = search;
             }
         }
+
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
         Page<CatArancelProsecDTO> page =
-                catArancelProsecRepository.search(texto, activo, pageable);
+                catArancelProsecRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatArancelProsecDTO>builder()
                 .content(page.getContent())

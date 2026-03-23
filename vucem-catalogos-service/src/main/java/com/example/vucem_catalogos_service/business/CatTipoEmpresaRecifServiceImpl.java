@@ -1,27 +1,36 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatTipoEmpresaRecifService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatTipoEmpresaRecifDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatTipoEmpresaRecif;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoEmpresaRecifRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatTipoEmpresaRecifServiceImpl implements ICatTipoEmpresaRecifService {
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveTipoEmpresaRecif", "cveTipoEmpresaRecif",
+            "descripcion", "descripcion"
+    );
+
     @Autowired
     private ICatTipoEmpresaRecifRepository catTipoEmpresaRecifRepository;
 
     @Override
-    public PageResponseDTO<CatTipoEmpresaRecifDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatTipoEmpresaRecifDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -33,7 +42,12 @@ public class CatTipoEmpresaRecifServiceImpl implements ICatTipoEmpresaRecifServi
             texto = search;
         }
 
-        Page<CatTipoEmpresaRecifDTO> page = catTipoEmpresaRecifRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "cveTipoEmpresaRecif"));
+
+        Page<CatTipoEmpresaRecifDTO> page = catTipoEmpresaRecifRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatTipoEmpresaRecifDTO>builder()
                 .content(page.getContent())

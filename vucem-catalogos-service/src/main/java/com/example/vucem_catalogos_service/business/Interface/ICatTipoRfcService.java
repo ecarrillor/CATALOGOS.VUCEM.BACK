@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatTipoRfcService {
 
-    PageResponseDTO<CatTipoRfcDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatTipoRfcDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatTipoRfcDTO findById(String rfc, String ideTipoRfc);
 

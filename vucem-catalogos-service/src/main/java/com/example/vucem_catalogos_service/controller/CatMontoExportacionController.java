@@ -4,7 +4,9 @@ import com.example.vucem_catalogos_service.business.Interface.ICatMontoExportaci
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
 import com.example.vucem_catalogos_service.model.dto.CatDiaNoLaborableDTO;
 import com.example.vucem_catalogos_service.model.dto.CatMontoExportacionDTO;
+import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,14 @@ public class CatMontoExportacionController {
     @Autowired
     private ICatMontoExportacionService iCatMontoExportacionService;
 
+    @GetMapping(CatalogPaths.LIST_MONTO_EXPORTACION)
+    public ResponseEntity<PageResponseDTO<CatMontoExportacionDTO>> list(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
+            Pageable pageable) {
+        return ResponseEntity.ok(iCatMontoExportacionService.list(search, sortBy, sortDir, pageable));
+    }
 
     @GetMapping(CatalogPaths.FIND_BY_DATE_ID)
     public ResponseEntity<CatMontoExportacionDTO> findMontoExportacion(

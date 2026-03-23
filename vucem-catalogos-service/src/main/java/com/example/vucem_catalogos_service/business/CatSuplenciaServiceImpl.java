@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatSuplenciaService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatSuplenciaDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
@@ -11,15 +12,23 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatSuplenciaReposit
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatSuplenciaServiceImpl implements ICatSuplenciaService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "id",
+            "texto", "texto"
+    );
 
     @Autowired
     private ICatSuplenciaRepository catSuplenciaRepository;
@@ -28,7 +37,7 @@ public class CatSuplenciaServiceImpl implements ICatSuplenciaService {
     private ICatDependenciaRepository catDependenciaRepository;
 
     @Override
-    public PageResponseDTO<CatSuplenciaDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatSuplenciaDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
         if (search != null && !search.isBlank()) {
@@ -41,7 +50,13 @@ public class CatSuplenciaServiceImpl implements ICatSuplenciaService {
                 texto = search;
             }
         }
-        Page<CatSuplenciaDTO> page = catSuplenciaRepository.search(texto, activo, pageable);
+
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
+        Page<CatSuplenciaDTO> page = catSuplenciaRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatSuplenciaDTO>builder()
                 .content(page.getContent())

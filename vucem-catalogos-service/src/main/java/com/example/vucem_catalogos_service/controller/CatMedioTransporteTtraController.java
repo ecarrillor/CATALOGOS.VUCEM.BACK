@@ -20,8 +20,10 @@ public class CatMedioTransporteTtraController {
     @GetMapping(CatalogPaths.LIST_MEDIO_TRANSPORTE_TTRA)
     public ResponseEntity<PageResponseDTO<CatMedioTransporteTtraDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_MEDIO_TRANSPORTE_TTRA)

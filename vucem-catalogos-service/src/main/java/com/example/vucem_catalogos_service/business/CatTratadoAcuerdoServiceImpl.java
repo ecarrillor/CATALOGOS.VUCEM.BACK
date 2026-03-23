@@ -5,26 +5,38 @@ import com.example.vucem_catalogos_service.model.dto.CatTratadoAcuerdoDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatTratadoAcuerdo;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoAcuerdoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class CatTratadoAcuerdoServiceImpl implements ICatTratadoAcuerdoService {
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "id",
+            "ideTipoTratadoAcuerdo", "ideTipoTratadoAcuerdo",
+            "cveTratadoAcuerdo", "cveTratadoAcuerdo",
+            "nombre", "nombre",
+            "ideTipoCupoSaai", "ideTipoCupoSaai"
+    );
+
     @Autowired
     private ICatTratadoAcuerdoRepository catTratadoAcuerdoRepository;
 
     @Override
-    public PageResponseDTO<CatTratadoAcuerdoDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatTratadoAcuerdoDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -36,7 +48,12 @@ public class CatTratadoAcuerdoServiceImpl implements ICatTratadoAcuerdoService {
             texto = search;
         }
 
-        Page<CatTratadoAcuerdoDTO> page = catTratadoAcuerdoRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
+        Page<CatTratadoAcuerdoDTO> page = catTratadoAcuerdoRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatTratadoAcuerdoDTO>builder()
                 .content(page.getContent())

@@ -13,20 +13,32 @@ import com.example.vucem_catalogos_service.model.entity.CatTipoTramite;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAduanaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAduanaTtraRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatAduanaTramiteServiceImpl implements ICatAduanaTramiteService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "idAduanaTramite", "a.id",
+            "cveAduana", "u.cveAduana",
+            "aduana", "u.nombre",
+            "nombreTipoTramite", "b.descServicio",
+            "aliasAduana", "a.aliasAduana"
+    );
 
     @Autowired
     private ICatAduanaTtraRepository iCatAduanaTtraRepository;
@@ -38,7 +50,7 @@ public class CatAduanaTramiteServiceImpl implements ICatAduanaTramiteService {
     private ICatTipoTramiteRepository iCatTipoTramiteRepository;
 
     @Override
-    public PageResponseDTO<CatAduanaTramiteResponseDTO> listarAduanaTramite(String search, Pageable pageable) {
+    public PageResponseDTO<CatAduanaTramiteResponseDTO> listarAduanaTramite(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -54,8 +66,13 @@ public class CatAduanaTramiteServiceImpl implements ICatAduanaTramiteService {
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
         Page<CatAduanaTramiteResponseDTO> page =
-                iCatAduanaTtraRepository.search(texto, activo, pageable);
+                iCatAduanaTtraRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatAduanaTramiteResponseDTO>builder()
                 .content(page.getContent())

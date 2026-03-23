@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatPartidaFraccionService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatPartidaFraccionDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatCapituloFraccion;
@@ -11,14 +12,22 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatPartidaFraccionR
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatPartidaFraccionServiceImpl implements ICatPartidaFraccionService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cvePartidaFraccion", "id.cvePartidaFraccion",
+            "nombre", "nombre"
+    );
 
     @Autowired
     private ICatPartidaFraccionRepository catPartidaFraccionRepository;
@@ -27,7 +36,7 @@ public class CatPartidaFraccionServiceImpl implements ICatPartidaFraccionService
     private ICatCapituloFraccionRepository catCapituloFraccionRepository;
 
     @Override
-    public PageResponseDTO<CatPartidaFraccionDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatPartidaFraccionDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -42,7 +51,12 @@ public class CatPartidaFraccionServiceImpl implements ICatPartidaFraccionService
             }
         }
 
-        Page<CatPartidaFraccionDTO> page = catPartidaFraccionRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id.cvePartidaFraccion"));
+
+        Page<CatPartidaFraccionDTO> page = catPartidaFraccionRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatPartidaFraccionDTO>builder()
                 .content(page.getContent())

@@ -27,10 +27,11 @@ public class CatAduanaClasifProductoController {
     public ResponseEntity<PageResponseDTO<CatAduanaClasifProdResponseDTO>> listarCatAduanaClasif(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Long idTipoTramite,
-
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
         return ResponseEntity.ok(
-                service.catAduanaListAll(search,idTipoTramite, pageable));
+                service.catAduanaListAll(search, idTipoTramite, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_ADUANA_CLASIF_PRODUCTO)

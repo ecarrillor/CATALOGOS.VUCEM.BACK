@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.model.entity.CatFraccionTtraDescProd;
 import com.example.vucem_catalogos_service.business.Interface.ICatFraccionTtraDescProdService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.dto.FraccionTtraDescProd.CatFraccionTtraDescProdRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.FraccionTtraDescProd.CatFraccionTtraDescProdResponseDTO;
@@ -14,13 +15,16 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatFraccionTtraRepo
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -35,8 +39,15 @@ public class CatFraccionTtraDescProdServiceImpl implements ICatFraccionTtraDescP
     @Autowired
     private ICatFraccionTtraRepository fraccionTtraRepository;
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "idFraccionTtraDescProd", "dp.id",
+            "descripcionProducto", "dp.idDescripcionProd.descripcionProducto",
+            "cveFraccion", "fra.cveFraccion",
+            "descripcionFraccion", "fra.descripcion"
+    );
+
     @Override
-    public PageResponseDTO<CatFraccionTtraDescProdResponseDTO> listAll(String search, Long idTipoTramite, Pageable pageable) {
+    public PageResponseDTO<CatFraccionTtraDescProdResponseDTO> listAll(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -51,8 +62,13 @@ public class CatFraccionTtraDescProdServiceImpl implements ICatFraccionTtraDescP
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable pageableWithSort = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
+
         Page<CatFraccionTtraDescProdResponseDTO> page =
-                repository.search(texto, activo, idTipoTramite, pageable);
+                repository.search(texto, activo, idTipoTramite, pageableWithSort);
 
         return PageResponseDTO.<CatFraccionTtraDescProdResponseDTO>builder()
                 .content(page.getContent())

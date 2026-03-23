@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatSeccionTtraService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatSeccionTtraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatSeccionTtra;
@@ -10,12 +11,21 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepos
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatSeccionTtraServiceImpl implements ICatSeccionTtraService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "id",
+            "descSeccion", "descSeccion"
+    );
 
     @Autowired
     private ICatSeccionTtraRepository catSeccionTtraRepository;
@@ -24,7 +34,7 @@ public class CatSeccionTtraServiceImpl implements ICatSeccionTtraService {
     private ICatTipoTramiteRepository catTipoTramiteRepository;
 
     @Override
-    public PageResponseDTO<CatSeccionTtraDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatSeccionTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
         if (search != null && !search.isBlank()) {
@@ -37,7 +47,13 @@ public class CatSeccionTtraServiceImpl implements ICatSeccionTtraService {
                 texto = search;
             }
         }
-        Page<CatSeccionTtraDTO> page = catSeccionTtraRepository.search(texto, activo, pageable);
+
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
+        Page<CatSeccionTtraDTO> page = catSeccionTtraRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatSeccionTtraDTO>builder()
                 .content(page.getContent())

@@ -470,6 +470,7 @@ public class CatalogPaths extends ConstPath{
     public static final String UPDATE_INF_ADICIONAL_ADUANA = "/inf_adicional_aduana/{cveAduana}";
     public static final String LIST_ADUANA_INF_ADICIONAL   = "/inf_adicional_aduana/aduanas";
 
+    public static final String LIST_MONTO_EXPORTACION   = "/cat_monto_exportacion/list";
     public static final String FIND_BY_DATE_ID = "/cat_monto_exportacion/{id}/{fecha}";
     public static final String UPDATE_BY_DATE_ID = "/cat_monto_exportacion/{id}/{fecha}";
 

@@ -21,8 +21,10 @@ public class CatSeccionTtraController {
     @GetMapping(CatalogPaths.LIST_SECCION_TTRA)
     public ResponseEntity<PageResponseDTO<CatSeccionTtraDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_SECCION_TTRA)

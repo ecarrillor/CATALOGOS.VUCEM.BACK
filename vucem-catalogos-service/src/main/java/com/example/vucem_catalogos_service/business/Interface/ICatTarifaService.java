@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 public interface ICatTarifaService {
 
-    PageResponseDTO<CatTarifaDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatTarifaDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatTarifaDTO findById(Long idTipoTramite, LocalDate fecIniVigencia, String ideTipoTarifa);
 

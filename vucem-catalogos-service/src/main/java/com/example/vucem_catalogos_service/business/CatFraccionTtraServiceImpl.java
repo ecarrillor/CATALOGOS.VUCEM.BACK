@@ -14,16 +14,20 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatCategoriaTextilR
 import com.example.vucem_catalogos_service.persistence.repo.ICatFraccionArancelariaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatFraccionTtraRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -41,8 +45,16 @@ public class CatFraccionTtraServiceImpl implements ICatFraccionTtraService {
     @Autowired
     private ICatCategoriaTextilRepository categoriaTextilRepository;
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "e.id",
+            "cveFraccion", "e.cveFraccionArancelaria.cveFraccionArancelaria",
+            "descripcionFraccion", "e.cveFraccionArancelaria.descripcion",
+            "idTipoTramite", "e.idTipoTramite.id",
+            "descTipoTramite", "e.idTipoTramite.descSubservicio"
+    );
+
     @Override
-    public PageResponseDTO<CatFraccionTtraResponseDTO> listAll(String search, Long idTipoTramite, Pageable pageable) {
+    public PageResponseDTO<CatFraccionTtraResponseDTO> listAll(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -57,8 +69,12 @@ public class CatFraccionTtraServiceImpl implements ICatFraccionTtraService {
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isUnsorted() ? pageable
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
         Page<CatFraccionTtraResponseDTO> page =
-                repository.search(texto, activo, idTipoTramite, pageable);
+                repository.search(texto, activo, idTipoTramite, sortedPageable);
 
         return PageResponseDTO.<CatFraccionTtraResponseDTO>builder()
                 .content(page.getContent())

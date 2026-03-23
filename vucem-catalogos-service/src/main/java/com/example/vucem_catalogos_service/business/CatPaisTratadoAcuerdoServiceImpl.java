@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatPaisTratadoAcuerdoService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatPaisTratadoAcuerdoRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.CatPaisTratadoAcuerdoResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
@@ -14,13 +15,16 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTratadoAcuerdoRe
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -35,12 +39,23 @@ public class CatPaisTratadoAcuerdoServiceImpl implements ICatPaisTratadoAcuerdoS
     @Autowired
     private ICatPaisRepository catPaisRepository;
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cvePais", "a.id.cvePais",
+            "nombrePais", "p.nombre",
+            "tratadoAcuerdo", "t.cveTratadoAcuerdo"
+    );
+
     @Override
     public PageResponseDTO<CatPaisTratadoAcuerdoResponseDTO> list(
-            String cvePais, Short idTratadoAcuerdo, Boolean blnActivo, String search, Pageable pageable) {
+            String cvePais, Short idTratadoAcuerdo, Boolean blnActivo, String search, String sortBy, String sortDir, Pageable pageable) {
+
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable pageableWithSort = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : pageable;
 
         Page<CatPaisTratadoAcuerdoResponseDTO> page =
-                repository.search(cvePais, idTratadoAcuerdo, blnActivo, search, pageable);
+                repository.search(cvePais, idTratadoAcuerdo, blnActivo, search, pageableWithSort);
 
         return PageResponseDTO.<CatPaisTratadoAcuerdoResponseDTO>builder()
                 .content(page.getContent())

@@ -23,10 +23,12 @@ public class CatArancelProsecController {
     @GetMapping(CatalogPaths.LIST_ARANCEL_PROSEC)
     public ResponseEntity<PageResponseDTO<CatArancelProsecDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
 
         return ResponseEntity.ok(
-                service.list(search, pageable));
+                service.list(search, sortBy, sortDir, pageable));
     }
 
 

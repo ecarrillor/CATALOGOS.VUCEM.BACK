@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatTarifaService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatTarifaDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatTarifa;
@@ -9,7 +10,9 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTarifaRepository
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,11 @@ import java.util.Map;
 @Transactional
 public class CatTarifaServiceImpl implements ICatTarifaService {
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveTipoTramite", "idTipoTramite.descSubservicio",
+            "tarifa", "tarifa"
+    );
+
     @Autowired
     private ICatTarifaRepository catTarifaRepository;
 
@@ -31,7 +39,7 @@ public class CatTarifaServiceImpl implements ICatTarifaService {
     private ICatTipoTramiteRepository catTipoTramiteRepository;
 
     @Override
-    public PageResponseDTO<CatTarifaDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatTarifaDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -43,7 +51,12 @@ public class CatTarifaServiceImpl implements ICatTarifaService {
             texto = search;
         }
 
-        Page<CatTarifaDTO> page = catTarifaRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "idTipoTramite.descSubservicio"));
+
+        Page<CatTarifaDTO> page = catTarifaRepository.search(texto, activo, sortedPageable);
 
         List<CatTarifaDTO> contentTransformado =
                 page.getContent().stream()

@@ -23,8 +23,10 @@ public class CatUnidadAdminVecinaController {
     @GetMapping(CatalogPaths.LIST_UNIDAD_ADMIN_VECINA)
     public ResponseEntity<PageResponseDTO<CatUnidadAdminVecinaDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_UNIDAD_ADMIN_VECINA)

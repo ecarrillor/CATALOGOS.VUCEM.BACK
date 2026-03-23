@@ -8,6 +8,7 @@ import com.example.vucem_catalogos_service.model.dto.SelectDTO;
 import com.example.vucem_catalogos_service.model.entity.CatDependencia;
 import com.example.vucem_catalogos_service.model.entity.CatEntidad;
 import com.example.vucem_catalogos_service.model.entity.CatUnidadAdministrativa;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.persistence.repo.ICatAprobCertSeRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatDependenciaRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatEntidadRepository;
@@ -15,15 +16,29 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatUnidadAdministra
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatUnidadAdministrativaServiceImpl implements ICatUnidadAdministrativaService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "cveUnidadAdministrativa", "cveUnidadAdministrativa",
+            "ideTipoUnidadAdministrativa", "ideTipoUnidadAdministrativa",
+            "nombre", "nombre",
+            "acronimo", "acronimo",
+            "descripcion", "descripcion",
+            "nivel", "nivel",
+            "nombreEntidad", "cveEntidad.nombre",
+            "nombreDependencia", "idDependencia.nombre"
+    );
 
     @Autowired
     private ICatAprobCertSeRepository catAprobCertSeRepository;
@@ -43,7 +58,7 @@ public class CatUnidadAdministrativaServiceImpl implements ICatUnidadAdministrat
     }
 
     @Override
-    public PageResponseDTO<CatUnidadAdministrativaDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatUnidadAdministrativaDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -58,8 +73,13 @@ public class CatUnidadAdministrativaServiceImpl implements ICatUnidadAdministrat
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "cveUnidadAdministrativa"));
+
         Page<CatUnidadAdministrativaDTO> page =
-                iCatUnidadAdministrativaRepository.search(texto, activo, pageable);
+                iCatUnidadAdministrativaRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatUnidadAdministrativaDTO>builder()
                 .content(page.getContent())

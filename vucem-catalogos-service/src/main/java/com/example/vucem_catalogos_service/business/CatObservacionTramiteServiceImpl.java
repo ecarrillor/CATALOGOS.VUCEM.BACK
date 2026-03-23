@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatObservacionTramiteService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CategoriaTextil.CatCategoriaTextilResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.ObservacionTramite.CatObservacionTramiteRequestDTO;
 import com.example.vucem_catalogos_service.model.dto.ObservacionTramite.CatObservacionTramiteResponseDTO;
@@ -12,14 +13,23 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepos
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Map;
+
 @Service
 @Transactional
 public class CatObservacionTramiteServiceImpl implements ICatObservacionTramiteService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "numObservacionTramite", "id",
+            "descripcionObservacion", "descObservacionDict"
+    );
 
     @Autowired
     private ICatObservacionTtraRepository observacionTtraRepository;
@@ -28,7 +38,7 @@ public class CatObservacionTramiteServiceImpl implements ICatObservacionTramiteS
     private ICatTipoTramiteRepository iCatTipoTramiteRepository;
 
     @Override
-    public PageResponseDTO<CatObservacionTramiteResponseDTO> listarObservacionTramite(String search, Pageable pageable) {
+    public PageResponseDTO<CatObservacionTramiteResponseDTO> listarObservacionTramite(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -47,8 +57,13 @@ public class CatObservacionTramiteServiceImpl implements ICatObservacionTramiteS
             }
         }
 
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
         Page<CatObservacionTramiteResponseDTO> page =
-                observacionTtraRepository.search(texto, activo, pageable);
+                observacionTtraRepository.search(texto, activo, sortedPageable);
 
         return PageResponseDTO.<CatObservacionTramiteResponseDTO>builder()
                 .content(page.getContent())

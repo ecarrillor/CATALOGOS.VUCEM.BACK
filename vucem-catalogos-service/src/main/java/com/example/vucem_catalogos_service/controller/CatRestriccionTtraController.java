@@ -26,8 +26,10 @@ public class CatRestriccionTtraController {
     public ResponseEntity<PageResponseDTO<CatRestriccionTtraResponseDTO>> listar(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Long idTipoTramite,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.listAll(search, idTipoTramite, pageable));
+        return ResponseEntity.ok(service.listAll(search, idTipoTramite, sortBy, sortDir, pageable));
     }
 
     @PostMapping(CatalogPaths.SAVE_CATALOGO_RESTRICCION_TTRA)

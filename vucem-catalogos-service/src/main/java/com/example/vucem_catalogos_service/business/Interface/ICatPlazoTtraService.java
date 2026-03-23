@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatPlazoTtraService {
 
-    PageResponseDTO<CatPlazoTtraDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatPlazoTtraDTO> list(String search, int page, int size, String sortBy, String sortDir);
 
     CatPlazoTtraDTO findById(Long idTipoTramite, String idePlazoVigencia);
 

@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatTipoTramiteService {
 
-    PageResponseDTO<CatTipoTramiteDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatTipoTramiteDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatTipoTramiteDTO findById(Long id);
 

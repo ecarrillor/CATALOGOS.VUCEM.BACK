@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface ICatDescripcionProdRepository extends JpaRepository<CatDescripcionProd, Integer>,
         JpaSpecificationExecutor<CatDescripcionProd> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.DescripcionProd.CatDescripcionProdResponseDTO(
                     d.id,
                     d.descripcionProducto,
@@ -39,13 +39,13 @@ public interface ICatDescripcionProdRepository extends JpaRepository<CatDescripc
                  WHERE
                 (
                    :search IS NULL OR
-                   LOWER(CAST(d.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(d.descripcionProducto) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(d.fecCaptura AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(d.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(d.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(t.descModalidad) LIKE LOWER(CONCAT('%', :search, '%'))
+                   LOWER(CAST(d.id AS string)) LIKE :search OR
+                   LOWER(d.descripcionProducto) LIKE :search OR
+                   LOWER(CAST(d.fecCaptura AS string)) LIKE :search OR
+                   LOWER(CAST(d.fecIniVigencia AS string)) LIKE :search OR
+                   LOWER(CAST(d.fecFinVigencia AS string)) LIKE :search OR
+                   LOWER(CAST(t.id AS string)) LIKE :search OR
+                   LOWER(t.descModalidad) LIKE :search
                 )
                 AND (:activo IS NULL OR d.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR t.id = :idTipoTramite)
@@ -58,8 +58,30 @@ public interface ICatDescripcionProdRepository extends JpaRepository<CatDescripc
                     d.blnActivo,
                     t.id,
                     t.descModalidad
-                ORDER BY UPPER(TRIM(d.descripcionProducto)) ASC
-""")
+            """,
+            countQuery = """
+                SELECT COUNT(DISTINCT d.id)
+                FROM CatTipoTramite t
+                JOIN CatFraccionTtra f
+                    ON f.idTipoTramite.id = t.id
+                JOIN CatFraccionTtraDescProd dp
+                    ON dp.idFraccionGob.id = f.id
+                JOIN CatDescripcionProd d
+                    ON d.id = dp.idDescripcionProd.id
+                WHERE
+                (
+                   :search IS NULL OR
+                   LOWER(CAST(d.id AS string)) LIKE :search OR
+                   LOWER(d.descripcionProducto) LIKE :search OR
+                   LOWER(CAST(d.fecCaptura AS string)) LIKE :search OR
+                   LOWER(CAST(d.fecIniVigencia AS string)) LIKE :search OR
+                   LOWER(CAST(d.fecFinVigencia AS string)) LIKE :search OR
+                   LOWER(CAST(t.id AS string)) LIKE :search OR
+                   LOWER(t.descModalidad) LIKE :search
+                )
+                AND (:activo IS NULL OR d.blnActivo = :activo)
+                AND (:idTipoTramite IS NULL OR t.id = :idTipoTramite)
+            """)
     Page<CatDescripcionProdResponseDTO> search(
             @Param("search") String search,
             @Param("activo") Boolean activo,
@@ -69,19 +91,15 @@ public interface ICatDescripcionProdRepository extends JpaRepository<CatDescripc
     @Query("""
             SELECT DISTINCT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(
                t.id,
-             t.descModalidad
-        END
-    )
-    FROM CatTipoTramite t
-    JOIN CatFraccionTtra f
-                    ON f.idTipoTramite.id = t.id
-                JOIN CatFraccionTtraDescProd dp
-                    ON dp.idFraccionGob.id = f.id
-                JOIN CatDescripcionProd d
-                    ON d.id = dp.idDescripcionProd.id
-    WHERE t.blnActivo = true
-      AND t.cveServicio IN ('23', '25')
-    ORDER BY 2 ASC
+               t.descModalidad
+            )
+            FROM CatTipoTramite t
+            JOIN CatFraccionTtra f ON f.idTipoTramite.id = t.id
+            JOIN CatFraccionTtraDescProd dp ON dp.idFraccionGob.id = f.id
+            JOIN CatDescripcionProd d ON d.id = dp.idDescripcionProd.id
+            WHERE t.blnActivo = true
+              AND t.cveServicio IN ('23', '25')
+            ORDER BY t.descModalidad ASC
 """)
     List<ClasifProductoTraDTO> listadoTipoTramite();
 

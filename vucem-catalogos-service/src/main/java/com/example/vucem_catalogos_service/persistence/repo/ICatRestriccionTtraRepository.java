@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface ICatRestriccionTtraRepository extends JpaRepository<CatRestriccionTtra, Short>,
         JpaSpecificationExecutor<CatRestriccionTtra> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.RestriccionTtra.CatRestriccionTtraResponseDTO(
                 rt.id,
                 rt.idTipoTramite.id,
@@ -32,6 +32,25 @@ public interface ICatRestriccionTtraRepository extends JpaRepository<CatRestricc
                 rt.ideTipoRestriccionTtra,
                 rt.ideMotivoRechazoDict
             )
+            FROM CatRestriccionTtra rt
+            WHERE
+                (
+                    :search IS NULL OR
+                    LOWER(CAST(rt.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(rt.idTipoTramite.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(rt.descRestriccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(rt.descContenidoRestriccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(rt.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(CAST(rt.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(rt.ideSentDictamen) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(rt.ideTipoRestriccionTtra) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
+                    LOWER(rt.ideMotivoRechazoDict) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                )
+                AND (:activo IS NULL OR rt.blnActivo = :activo)
+                AND (:idTipoTramite IS NULL OR rt.idTipoTramite.id = :idTipoTramite)
+            """,
+            countQuery = """
+            SELECT COUNT(rt.id)
             FROM CatRestriccionTtra rt
             WHERE
                 (

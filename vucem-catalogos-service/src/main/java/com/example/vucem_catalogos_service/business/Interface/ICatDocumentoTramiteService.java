@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ICatDocumentoTramiteService {
 
-    PageResponseDTO<CatDocumentoTramiteDTO> list(String search, Pageable pageable);
+    PageResponseDTO<CatDocumentoTramiteDTO> list(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatDocumentoTramiteDTO findById(Short idTipoDoc, Long idTipoTramite);
 

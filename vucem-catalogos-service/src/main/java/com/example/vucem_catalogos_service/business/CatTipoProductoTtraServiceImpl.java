@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatTipoProductoTtraService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatTipoProductoTtraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.dto.SelectDTO;
@@ -10,7 +11,9 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatTipoProductoTtra
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,12 @@ import java.util.Map;
 @Transactional
 public class CatTipoProductoTtraServiceImpl implements ICatTipoProductoTtraService {
 
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "id",
+            "descTipoProducto", "descTipoProducto",
+            "nombreTipoTramite", "idTipoTramite.descSubservicio"
+    );
+
     @Autowired
     private ICatTipoProductoTtraRepository catTipoProductoTtraRepository;
 
@@ -33,7 +42,7 @@ public class CatTipoProductoTtraServiceImpl implements ICatTipoProductoTtraServi
     private ICatTipoCertificado catTipoCertificado;
 
     @Override
-    public PageResponseDTO<CatTipoProductoTtraDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatTipoProductoTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -45,7 +54,12 @@ public class CatTipoProductoTtraServiceImpl implements ICatTipoProductoTtraServi
             texto = search;
         }
 
-        Page<CatTipoProductoTtraDTO> page = catTipoProductoTtraRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
+        Page<CatTipoProductoTtraDTO> page = catTipoProductoTtraRepository.search(texto, activo, sortedPageable);
 
         // 🔥 Transformar IDs a descripción
         List<CatTipoProductoTtraDTO> contentTransformado =

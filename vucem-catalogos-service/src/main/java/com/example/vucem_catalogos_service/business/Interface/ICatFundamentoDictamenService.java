@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ICatFundamentoDictamenService {
 
-    PageResponseDTO<CatFundamentoDictamenResponseDTO> listarFundamentoDictamen(String search, Pageable pageable);
+    PageResponseDTO<CatFundamentoDictamenResponseDTO> listarFundamentoDictamen(String search, String sortBy, String sortDir, Pageable pageable);
 
     CatFundamentoDictamenResponseDTO crearFundamentoDictamen(CatFundamentoDictamenRequestDTO dto);
 

@@ -20,8 +20,10 @@ public class CatUsoMercanciaTtraController {
     @GetMapping(CatalogPaths.LIST_USO_MERCANCIA_TTRA)
     public ResponseEntity<PageResponseDTO<CatUsoMercanciaTtraDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_USO_MERCANCIA_TTRA)

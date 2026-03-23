@@ -1,6 +1,7 @@
 package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatMedioTransporteTtraService;
+import com.example.vucem_catalogos_service.core.util.SortValidator;
 import com.example.vucem_catalogos_service.model.dto.CatMedioTransporteTtraDTO;
 import com.example.vucem_catalogos_service.model.dto.PageResponseDTO;
 import com.example.vucem_catalogos_service.model.entity.CatMedioTransporteTtra;
@@ -8,17 +9,24 @@ import com.example.vucem_catalogos_service.persistence.repo.ICatMedioTransporteT
 import com.example.vucem_catalogos_service.persistence.repo.ICatTipoTramiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public class CatMedioTransporteTtraServiceImpl implements ICatMedioTransporteTtraService {
+
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
+            "id", "id"
+    );
 
     @Autowired
     private ICatMedioTransporteTtraRepository catMedioTransporteTtraRepository;
@@ -27,7 +35,7 @@ public class CatMedioTransporteTtraServiceImpl implements ICatMedioTransporteTtr
     private ICatTipoTramiteRepository catTipoTramiteRepository;
 
     @Override
-    public PageResponseDTO<CatMedioTransporteTtraDTO> list(String search, Pageable pageable) {
+    public PageResponseDTO<CatMedioTransporteTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
         String texto = null;
 
@@ -39,7 +47,12 @@ public class CatMedioTransporteTtraServiceImpl implements ICatMedioTransporteTtr
             texto = search;
         }
 
-        Page<CatMedioTransporteTtraDTO> page = catMedioTransporteTtraRepository.search(texto, activo, pageable);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Pageable sortedPageable = sort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+
+        Page<CatMedioTransporteTtraDTO> page = catMedioTransporteTtraRepository.search(texto, activo, sortedPageable);
 
         List<CatMedioTransporteTtraDTO> contentTransformado =
                 page.getContent().stream()

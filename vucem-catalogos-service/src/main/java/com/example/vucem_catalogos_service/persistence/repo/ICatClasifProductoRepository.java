@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public interface ICatClasifProductoRepository extends JpaRepository<CatClasifProducto, Long> {
 
-    @Query("""
+    @Query(value = """
                 SELECT new com.example.vucem_catalogos_service.model.dto.CatClasifProductoDTO(
                     e.idClasifProduct,
                     t.id,
@@ -30,6 +30,24 @@ public interface ICatClasifProductoRepository extends JpaRepository<CatClasifPro
                     e.fecFinVigencia,
                     e.blnActivo
                 )
+                FROM CatClasifProducto e
+                LEFT JOIN e.idTipoTramite t
+                LEFT JOIN e.idClasifProductoR r
+                WHERE (:texto IS NULL OR
+                    LOWER(CAST(e.idClasifProduct AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
+                    LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
+                    LOWER(t.descModalidad) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
+                    LOWER(CAST(r.idClasifProduct AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
+                    LOWER(r.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
+                    LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
+                    LOWER(e.ideTipoClasifProducto) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')))
+                AND (:activo IS NULL OR e.blnActivo = :activo)
+                AND (:idTipoTramite IS NULL OR t.id = :idTipoTramite)
+            """,
+            countQuery = """
+                SELECT COUNT(e.idClasifProduct)
                 FROM CatClasifProducto e
                 LEFT JOIN e.idTipoTramite t
                 LEFT JOIN e.idClasifProductoR r

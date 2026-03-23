@@ -21,8 +21,10 @@ public class CatDelegMunController {
     @GetMapping(CatalogPaths.LIST_CATALOGO_DELEG_MUN)
     public ResponseEntity<PageResponseDTO<CatDelegMunDTO>> list(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir,
             Pageable pageable) {
-        return ResponseEntity.ok(service.list(search, pageable));
+        return ResponseEntity.ok(service.list(search, sortBy, sortDir, pageable));
     }
 
     @GetMapping(CatalogPaths.FIND_CATALOGO_DELEG_MUN)
