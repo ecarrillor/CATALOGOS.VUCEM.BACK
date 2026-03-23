@@ -2,6 +2,7 @@ package com.example.vucem_catalogos_service.business;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatAduanaService;
 import com.example.vucem_catalogos_service.core.util.SortValidator;
+import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.entity.CatAduana;
 import com.example.vucem_catalogos_service.model.entity.CatAduanaClasifProd;
 import com.example.vucem_catalogos_service.model.entity.CatEntidad;
@@ -152,5 +153,13 @@ public class CatAduanaServiceImpl implements ICatAduanaService {
     @Override
     public List<CatEntidad> getAllEntidades() {
         return entidadRepository.findAll();
+    }
+
+    @Override
+    public ClasifProductoTraDTO lastCveAduana() {
+        return repository.findTopByOrderByCveAduanaDesc()
+                .map(e -> new ClasifProductoTraDTO(null, e.getCveAduana()))
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "No existen registros en Aduana"));
     }
 }
