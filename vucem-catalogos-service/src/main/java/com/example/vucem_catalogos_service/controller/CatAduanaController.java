@@ -3,6 +3,7 @@ package com.example.vucem_catalogos_service.controller;
 
 import com.example.vucem_catalogos_service.business.Interface.ICatAduanaService;
 import com.example.vucem_catalogos_service.core.constants.CatalogPaths;
+import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.entity.CatAduana;
 import com.example.vucem_catalogos_service.model.entity.CatEntidad;
 import com.example.vucem_catalogos_service.model.entity.CatTipoAduana;
@@ -64,5 +65,10 @@ public class CatAduanaController {
     public ResponseEntity<List<CatEntidad>> getAllEntidades() {
         List<CatEntidad> entidades = service.getAllEntidades();
         return ResponseEntity.ok(entidades);
+    }
+
+    @GetMapping(CatalogPaths.ULTIMO_ID_ADUANA)
+    public ResponseEntity<ClasifProductoTraDTO> lastCveAduana() {
+        return ResponseEntity.ok(service.lastCveAduana());
     }
 }

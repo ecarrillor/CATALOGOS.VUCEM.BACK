@@ -25,6 +25,7 @@ public class CatalogPaths extends ConstPath{
     public static final String UPDATE_CATALOGO_ADUANA = "/cat_aduana/{cveAduana}";
     public static final String LIST_TIPOS_ADUANA = "/cat_aduana/tipos_aduana";
     public static final String LIST_ENTIDADES = "/cat_aduana/entidades";
+    public static final String ULTIMO_ID_ADUANA = "/cat_aduana/ultimo_id";
 
     /*entidad CAT_ADUANA_CLASIF_PRODUCTO */
     public static final String LIST_CATALOGO_ADUANA_CLASIF_PRODUCTO = "/cat_aduana_clasif/list";

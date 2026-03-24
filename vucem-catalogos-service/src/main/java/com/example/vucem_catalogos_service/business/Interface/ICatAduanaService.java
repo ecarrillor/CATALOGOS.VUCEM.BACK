@@ -1,5 +1,6 @@
 package com.example.vucem_catalogos_service.business.Interface;
 
+import com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO;
 import com.example.vucem_catalogos_service.model.entity.CatAduana;
 import com.example.vucem_catalogos_service.model.entity.CatEntidad;
 import com.example.vucem_catalogos_service.model.entity.CatTipoAduana;
@@ -19,4 +20,6 @@ public interface ICatAduanaService {
     List<CatTipoAduana> getAllTiposAduana();
 
     List<CatEntidad> getAllEntidades();
+
+    ClasifProductoTraDTO lastCveAduana();
 }

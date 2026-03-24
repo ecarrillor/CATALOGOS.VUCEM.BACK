@@ -125,8 +125,10 @@ ORDER BY 2 ASC
 """)
     List<ClasifProductoTraDTO> listadoTipoTramite();
 
-    @Query("SELECT COALESCE(MAX(v.id),0) + 1 FROM CatVidaSilvestre v")
-    Integer getNextId();
+    @Query("""
+    SELECT LPAD(CAST(COALESCE(MAX(CAST(c.cveAduana AS integer)), 0) + 1 AS string), 3, '0')
+    FROM CatAduana c
+""")    Integer getNextId();
 
     Optional<CatVidaSilvestre> findTopByOrderByIdDesc();
 }
