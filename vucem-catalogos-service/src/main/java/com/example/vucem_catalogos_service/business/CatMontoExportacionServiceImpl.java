@@ -99,6 +99,11 @@ public class CatMontoExportacionServiceImpl extends AbstractCatalogService<CatMo
             boolean includeSubcatalogs,
             Pageable pageable) {
 
+        Sort validatedSort = buildValidatedSortFindAll(pageable.getSort());
+        Pageable sortedPageable = validatedSort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), validatedSort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "razonSocial"));
+
         Specification<CatMontoExportacion> spec =
                 GenericSearchSpecification.<CatMontoExportacion>searchInFields(
                         search,
@@ -109,7 +114,14 @@ public class CatMontoExportacionServiceImpl extends AbstractCatalogService<CatMo
                         GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
 
-        return catMontoExportacionRepository.findAll(spec, pageable);
+        return catMontoExportacionRepository.findAll(spec, sortedPageable);
+    }
+
+    private Sort buildValidatedSortFindAll(Sort incoming) {
+        if (incoming == null || incoming.isUnsorted()) return Sort.unsorted();
+        Sort.Order order = incoming.stream().findFirst().orElse(null);
+        if (order == null) return Sort.unsorted();
+        return SortValidator.buildSort(order.getProperty(), order.getDirection().name(), ALLOWED_SORT_COLUMNS);
     }
 
     @Override

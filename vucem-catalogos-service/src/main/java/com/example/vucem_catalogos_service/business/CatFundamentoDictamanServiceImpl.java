@@ -52,12 +52,23 @@ public class CatFundamentoDictamanServiceImpl extends AbstractCatalogService<Cat
     }
 
 
+    // Allowed columns for the generic findAll (Specification-based)
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS_FINDALL = Map.of(
+            "id",          "id",
+            "descripcion", "descripcion"
+    );
+
     @Override
     public Page<CatFundamentoDictamen> findAll(
             String search,
             Map<String, String> filters,
             boolean includeSubcatalogs,
             Pageable pageable) {
+
+        Sort validatedSort = buildValidatedSortFindAll(pageable.getSort());
+        Pageable sortedPageable = validatedSort.isSorted()
+                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), validatedSort)
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "descripcion"));
 
         Specification<CatFundamentoDictamen> spec =
                 GenericSearchSpecification.<CatFundamentoDictamen>searchInFields(
@@ -69,7 +80,14 @@ public class CatFundamentoDictamanServiceImpl extends AbstractCatalogService<Cat
                         GenericDateRangeSpecification.byDateRange(filters, "fecIniVigencia")
                 );
 
-        return catFundamentoDictamanRepository.findAll(spec, pageable);
+        return catFundamentoDictamanRepository.findAll(spec, sortedPageable);
+    }
+
+    private Sort buildValidatedSortFindAll(Sort incoming) {
+        if (incoming == null || incoming.isUnsorted()) return Sort.unsorted();
+        Sort.Order order = incoming.stream().findFirst().orElse(null);
+        if (order == null) return Sort.unsorted();
+        return SortValidator.buildSort(order.getProperty(), order.getDirection().name(), ALLOWED_SORT_COLUMNS_FINDALL);
     }
 
 

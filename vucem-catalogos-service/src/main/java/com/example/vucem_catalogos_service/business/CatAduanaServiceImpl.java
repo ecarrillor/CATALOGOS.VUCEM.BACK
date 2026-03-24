@@ -34,6 +34,8 @@ public class CatAduanaServiceImpl implements ICatAduanaService {
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cveAduana",         "cveAduana",
             "nombre",            "nombre",
+            "tipoAduana.nombre", "tipoAduana.nombre",
+            "entidad.nombre", "entidad.nombre",
             "correoElectronico", "correoElectronico"
     );
 

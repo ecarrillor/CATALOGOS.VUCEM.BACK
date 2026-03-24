@@ -47,22 +47,22 @@ public interface IVucRepoFirmaGralSeRepository extends JpaRepository<VucRepoFirm
               AND (:activo    IS NULL OR r.blnActivo = :activo)
             """,
             countQuery = """
-            SELECT COUNT(DISTINCT r.id)
-            FROM VucRepoFirmaGralSe r
-            LEFT JOIN r.idTipoTramite t
-            WHERE (
-                        :search IS NULL OR
-                  CAST(r.id AS string) LIKE :search OR
-                  CAST(t.id AS string) LIKE :search OR
-                  LOWER(r.ideTipoFirma) LIKE :search OR
-                  LOWER(r.rfc) LIKE :search OR
-                  LOWER(r.puesto) LIKE :search OR
-                  CAST(r.fecIniVigenia AS string) LIKE :search OR
-                  CAST(r.fecFinVigenia AS string) LIKE :search
-                  )
-              AND (:tipoFirma IS NULL OR r.ideTipoFirma = :tipoFirma)
-              AND (:activo    IS NULL OR r.blnActivo = :activo)
-            """)
+                    SELECT COUNT(DISTINCT r.id)
+                    FROM VucRepoFirmaGralSe r
+                    LEFT JOIN r.idTipoTramite t
+                    WHERE (
+                                :search IS NULL OR
+                          CAST(r.id AS string) LIKE :search OR
+                          CAST(t.id AS string) LIKE :search OR
+                          LOWER(r.ideTipoFirma) LIKE :search OR
+                          LOWER(r.rfc) LIKE :search OR
+                          LOWER(r.puesto) LIKE :search OR
+                          CAST(r.fecIniVigenia AS string) LIKE :search OR
+                          CAST(r.fecFinVigenia AS string) LIKE :search
+                          )
+                      AND (:tipoFirma IS NULL OR r.ideTipoFirma = :tipoFirma)
+                      AND (:activo    IS NULL OR r.blnActivo = :activo)
+                    """)
     Page<VucRepoFirmaGralSeResponseDTO> search(
             @Param("search") String search,
             @Param("tipoFirma") String tipoFirma,
@@ -88,16 +88,16 @@ public interface IVucRepoFirmaGralSeRepository extends JpaRepository<VucRepoFirm
      * Tipos de firma desde cat_enumeracion_d_tr (grupo ENU_TIPO_FIRMA_REPOSITORIO).
      */
     @Query(value = """
-        SELECT tr.cve_enumeracion AS clave,
-               tr.descripcion     AS descripcion
-        FROM cat_enumeracion_h h
-        JOIN cat_enumeracion_d d
-              ON h.cve_enumeracion_h = d.cve_enumeracion_h
-        JOIN cat_enumeracion_d_tr tr
-              ON tr.cve_enumeracion = d.cve_enumeracion
-        WHERE h.cve_enumeracion_h = 'ENU_TIPO_FIRMA_REPOSITORIO'
-        ORDER BY tr.descripcion ASC
-        """, nativeQuery = true)
+            SELECT tr.cve_enumeracion AS clave,
+                   tr.descripcion     AS descripcion
+            FROM cat_enumeracion_h h
+            JOIN cat_enumeracion_d d
+                  ON h.cve_enumeracion_h = d.cve_enumeracion_h
+            JOIN cat_enumeracion_d_tr tr
+                  ON tr.cve_enumeracion = d.cve_enumeracion
+            WHERE h.cve_enumeracion_h = 'ENU_TIPO_FIRMA_REPOSITORIO'
+            ORDER BY tr.descripcion ASC
+            """, nativeQuery = true)
     List<ComboProyeccion> obtenerTiposFirma();
 
     /**
@@ -107,21 +107,23 @@ public interface IVucRepoFirmaGralSeRepository extends JpaRepository<VucRepoFirm
     @Query("""
             SELECT DISTINCT new com.example.vucem_catalogos_service.model.dto.ClasifProductoTraDTO(
                 t.id,
-                CONCAT(CAST(t.id AS string), '  ', COALESCE(t.descModalidad, t.descSubservicio))
+                COALESCE(t.descModalidad, t.descSubservicio)
             )
             FROM CatTipoTramite t
             WHERE t.blnActivo = true
-              AND t.cveServicio IN ('23', '26')
-            ORDER BY 2 ASC
+            ORDER BY COALESCE(t.descModalidad, t.descSubservicio) ASC
             """)
     List<ClasifProductoTraDTO> obtenerTiposTramite();
 
     @Query("SELECT MAX(r.id) FROM VucRepoFirmaGralSe r")
     Integer findMaxId();
 
-    /** Proyección para la native query de tipos de firma */
+    /**
+     * Proyección para la native query de tipos de firma
+     */
     interface ComboProyeccion {
         String getClave();
+
         String getDescripcion();
     }
 }
