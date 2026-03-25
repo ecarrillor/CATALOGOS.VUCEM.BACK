@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface ICatUnidadAdminVecinaRepository extends JpaRepository<CatUnidadAdminVecina, CatUnidadAdminVecinaId> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatUnidadAdminVecinaDTO(
                 e.id.cveUnidadAdministrativa,
                 e.id.cveEntidad,
@@ -27,12 +27,24 @@ public interface ICatUnidadAdminVecinaRepository extends JpaRepository<CatUnidad
             )
             FROM CatUnidadAdminVecina e
             WHERE (:search IS NULL OR
-                LOWER(e.id.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.id.cveEntidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveUnidadAdministrativa.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveEntidad.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(e.id.cveUnidadAdministrativa) LIKE :search OR
+                LOWER(e.id.cveEntidad) LIKE :search OR
+                LOWER(e.cveUnidadAdministrativa.nombre) LIKE :search OR
+                LOWER(e.cveEntidad.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatUnidadAdminVecina e
+            WHERE (:search IS NULL OR
+                LOWER(e.id.cveUnidadAdministrativa) LIKE :search OR
+                LOWER(e.id.cveEntidad) LIKE :search OR
+                LOWER(e.cveUnidadAdministrativa.nombre) LIKE :search OR
+                LOWER(e.cveEntidad.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatUnidadAdminVecinaDTO> search(@Param("search") String search,

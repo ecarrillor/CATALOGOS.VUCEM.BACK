@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface ICatMotivoTramiteRepository extends JpaRepository<CatMotivoTtra, Long> {
 
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.MotivoTramite.CatMotivoTramiteResponseDTO(
                 a.id,
                 b.id,
@@ -29,14 +29,35 @@ public interface ICatMotivoTramiteRepository extends JpaRepository<CatMotivoTtra
             WHERE
                             (
                                         :search IS NULL OR
-                                        LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(CAST(b.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(b.descModalidad) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(a.ideTipoMotivoTtra) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(a.descMotivo) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(a.descContenidoMotivo) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
+                                        LOWER(CAST(a.id AS string)) LIKE :search OR
+                                        LOWER(CAST(b.id AS string)) LIKE :search OR
+                                        LOWER(b.descModalidad) LIKE :search OR
+                                        LOWER(a.ideTipoMotivoTtra) LIKE :search OR
+                                        LOWER(a.descMotivo) LIKE :search OR
+                                        LOWER(a.descContenidoMotivo) LIKE :search OR
+                                        LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                                        LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
+                           )
+                           AND
+                           (
+                               :activo IS NULL OR a.blnActivo = :activo
+                           )
+            """,
+            countQuery = """
+            SELECT COUNT(a)
+            FROM CatMotivoTtra a
+            JOIN a.idTipoTramite b
+            WHERE
+                            (
+                                        :search IS NULL OR
+                                        LOWER(CAST(a.id AS string)) LIKE :search OR
+                                        LOWER(CAST(b.id AS string)) LIKE :search OR
+                                        LOWER(b.descModalidad) LIKE :search OR
+                                        LOWER(a.ideTipoMotivoTtra) LIKE :search OR
+                                        LOWER(a.descMotivo) LIKE :search OR
+                                        LOWER(a.descContenidoMotivo) LIKE :search OR
+                                        LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                                        LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
                            )
                            AND
                            (

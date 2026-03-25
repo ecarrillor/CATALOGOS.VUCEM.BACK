@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface ICatVigenciaServicioRepository extends JpaRepository<CatVigenciaServicio, Short> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatVigenciaServicioDTO(
   e.id,
     e.numVigencia,
@@ -32,17 +32,35 @@ public interface ICatVigenciaServicioRepository extends JpaRepository<CatVigenci
 FROM CatVigenciaServicio e
 LEFT JOIN e.idBloque b
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.numVigencia) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideTipoVigencia) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideTipoServicioCeror) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.catPaisTratadoAcuerdo.cvePais.cvePais) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.catPaisTratadoAcuerdo.cvePais.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.catPaisTratadoAcuerdo.idTratadoAcuerdo.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.idBloque.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.idBloque.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveCriterioOrigen.cveCriterioOrigen) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(e.numVigencia) LIKE :search OR
+                LOWER(e.ideTipoVigencia) LIKE :search OR
+                LOWER(e.ideTipoServicioCeror) LIKE :search OR
+                LOWER(e.catPaisTratadoAcuerdo.cvePais.cvePais) LIKE :search OR
+                LOWER(e.catPaisTratadoAcuerdo.cvePais.nombre) LIKE :search OR
+                LOWER(CAST(e.catPaisTratadoAcuerdo.idTratadoAcuerdo.id AS string)) LIKE :search OR
+                LOWER(CAST(e.idBloque.id AS string)) LIKE :search OR
+                LOWER(e.idBloque.nombre) LIKE :search OR
+                LOWER(e.cveCriterioOrigen.cveCriterioOrigen) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+FROM CatVigenciaServicio e
+LEFT JOIN e.idBloque b
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(e.numVigencia) LIKE :search OR
+                LOWER(e.ideTipoVigencia) LIKE :search OR
+                LOWER(e.ideTipoServicioCeror) LIKE :search OR
+                LOWER(e.catPaisTratadoAcuerdo.cvePais.cvePais) LIKE :search OR
+                LOWER(e.catPaisTratadoAcuerdo.cvePais.nombre) LIKE :search OR
+                LOWER(CAST(e.catPaisTratadoAcuerdo.idTratadoAcuerdo.id AS string)) LIKE :search OR
+                LOWER(CAST(e.idBloque.id AS string)) LIKE :search OR
+                LOWER(e.idBloque.nombre) LIKE :search OR
+                LOWER(e.cveCriterioOrigen.cveCriterioOrigen) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatVigenciaServicioDTO> search(@Param("search") String search,

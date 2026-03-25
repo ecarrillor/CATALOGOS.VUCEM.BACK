@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface ICatSectorProsecRepository extends JpaRepository<CatSectorProsec, String> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatSectorProsecDTO(
                 e.cveSectorProsec,
                 e.nombre,
@@ -26,8 +26,15 @@ public interface ICatSectorProsecRepository extends JpaRepository<CatSectorProse
                 e.blnActivo
             )
             FROM CatSectorProsec e
-            WHERE (:search IS NULL OR LOWER(e.cveSectorProsec) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
-                OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR LOWER(e.cveSectorProsec) LIKE :search
+                OR LOWER(e.nombre) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatSectorProsec e
+            WHERE (:search IS NULL OR LOWER(e.cveSectorProsec) LIKE :search
+                OR LOWER(e.nombre) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatSectorProsecDTO> search(@Param("search") String search,

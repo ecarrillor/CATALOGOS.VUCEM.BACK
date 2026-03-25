@@ -17,7 +17,7 @@ import java.util.List;
 @Repository
 public interface ICatCategoriaTextilRepository extends JpaRepository<CatCategoriaTextil, Long>, JpaSpecificationExecutor<CatCategoriaTextil> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CategoriaTextil.CatCategoriaTextilResponseDTO(
                 a.id,
                 a.descripcion,
@@ -33,21 +33,37 @@ public interface ICatCategoriaTextilRepository extends JpaRepository<CatCategori
             JOIN a.cveUnidadMedida b
             JOIN a.cveUnidadMedidaEquivalente c
             WHERE
-                            (
-                                        :search IS NULL OR
-                                        LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(a.descripcion) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(a.codCategoriaTextil) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(CAST(a.factConversion AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(b.descripcion) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(c.descripcion) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
-                           )
-                           AND
-                           (
-                               :activo IS NULL OR a.blnActivo = :activo
-                           )
+                (
+                    :search IS NULL OR
+                    LOWER(CAST(a.id AS string)) LIKE :search OR
+                    LOWER(a.descripcion) LIKE :search OR
+                    LOWER(a.codCategoriaTextil) LIKE :search OR
+                    LOWER(CAST(a.factConversion AS string)) LIKE :search OR
+                    LOWER(b.descripcion) LIKE :search OR
+                    LOWER(c.descripcion) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
+                )
+                AND (:activo IS NULL OR a.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(a)
+            FROM CatCategoriaTextil a
+            JOIN a.cveUnidadMedida b
+            JOIN a.cveUnidadMedidaEquivalente c
+            WHERE
+                (
+                    :search IS NULL OR
+                    LOWER(CAST(a.id AS string)) LIKE :search OR
+                    LOWER(a.descripcion) LIKE :search OR
+                    LOWER(a.codCategoriaTextil) LIKE :search OR
+                    LOWER(CAST(a.factConversion AS string)) LIKE :search OR
+                    LOWER(b.descripcion) LIKE :search OR
+                    LOWER(c.descripcion) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
+                )
+                AND (:activo IS NULL OR a.blnActivo = :activo)
             """)
     Page<CatCategoriaTextilResponseDTO> search(
             @Param("search") String search,

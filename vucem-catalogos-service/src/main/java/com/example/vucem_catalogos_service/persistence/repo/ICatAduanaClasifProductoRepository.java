@@ -35,13 +35,13 @@ public interface ICatAduanaClasifProductoRepository extends JpaRepository<CatAdu
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.aduana.cveAduana) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.aduana.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.idClasifProducto.idClasifProduct AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.idClasifProducto.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) )
+                    LOWER(CAST(a.id AS string)) LIKE :search OR
+                    LOWER(a.aduana.cveAduana) LIKE :search OR
+                    LOWER(a.aduana.nombre) LIKE :search OR
+                    LOWER(CAST(a.idClasifProducto.idClasifProduct AS string)) LIKE :search OR
+                    LOWER(a.idClasifProducto.nombre) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search )
                 AND (:activo IS NULL OR a.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR (tr.id IS NOT NULL AND tr.id = :idTipoTramite))
             """,
@@ -53,13 +53,13 @@ public interface ICatAduanaClasifProductoRepository extends JpaRepository<CatAdu
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.aduana.cveAduana) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.aduana.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.idClasifProducto.idClasifProduct AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.idClasifProducto.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) )
+                    LOWER(CAST(a.id AS string)) LIKE :search OR
+                    LOWER(a.aduana.cveAduana) LIKE :search OR
+                    LOWER(a.aduana.nombre) LIKE :search OR
+                    LOWER(CAST(a.idClasifProducto.idClasifProduct AS string)) LIKE :search OR
+                    LOWER(a.idClasifProducto.nombre) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search )
                 AND (:activo IS NULL OR a.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR (tr.id IS NOT NULL AND tr.id = :idTipoTramite))
             """)

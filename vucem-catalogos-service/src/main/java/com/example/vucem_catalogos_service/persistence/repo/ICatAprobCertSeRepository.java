@@ -17,7 +17,7 @@ import java.util.List;
 @Repository
 public interface ICatAprobCertSeRepository extends JpaRepository<CatAprobCertSe, Short> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatAprobCertSeResponseDTO(
                 a.id,
                 u.nombre,
@@ -37,13 +37,32 @@ public interface ICatAprobCertSeRepository extends JpaRepository<CatAprobCertSe,
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(u.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.ideTipoAprobCertSe) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.numAprobCert) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecEmision AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(CAST(a.id AS string)) LIKE :search OR
+                    LOWER(u.nombre) LIKE :search OR
+                    LOWER(a.ideTipoAprobCertSe) LIKE :search OR
+                    LOWER(a.numAprobCert) LIKE :search OR
+                    LOWER(CAST(a.fecEmision AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
+                )
+                AND (
+                    :activo IS NULL OR a.blnActivo = :activo
+                )
+            """,
+            countQuery = """
+            SELECT COUNT(a)
+            FROM CatAprobCertSe a
+            JOIN a.cveUnidadAdministrativa u
+            WHERE
+                (
+                    :search IS NULL OR
+                    LOWER(CAST(a.id AS string)) LIKE :search OR
+                    LOWER(u.nombre) LIKE :search OR
+                    LOWER(a.ideTipoAprobCertSe) LIKE :search OR
+                    LOWER(a.numAprobCert) LIKE :search OR
+                    LOWER(CAST(a.fecEmision AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
                 )
                 AND (
                     :activo IS NULL OR a.blnActivo = :activo

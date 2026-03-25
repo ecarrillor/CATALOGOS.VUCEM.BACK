@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface ICatPlazoTtraRepository extends JpaRepository<CatPlazoTtra, CatPlazoTtraId> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatPlazoTtraDTO(
                 a.id,
                 e.id.idePlazoVigencia,
@@ -29,11 +29,29 @@ public interface ICatPlazoTtraRepository extends JpaRepository<CatPlazoTtra, Cat
              WHERE
                             (
                                         :search IS NULL OR
-                                        LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(e.id.idePlazoVigencia) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(a.descModalidad) LIKE LOWER(CONCAT('%', :search, '%'))
+                                        LOWER(CAST(a.id AS string)) LIKE :search OR
+                                        LOWER(e.id.idePlazoVigencia) LIKE :search OR
+                                        LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                                        LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                                        LOWER(a.descModalidad) LIKE :search
+                           )
+                                         AND
+                           (
+                               :activo IS NULL OR a.blnActivo = :activo
+                           )
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatPlazoTtra e
+                        JOIN e.tipoTramite a
+             WHERE
+                            (
+                                        :search IS NULL OR
+                                        LOWER(CAST(a.id AS string)) LIKE :search OR
+                                        LOWER(e.id.idePlazoVigencia) LIKE :search OR
+                                        LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                                        LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                                        LOWER(a.descModalidad) LIKE :search
                            )
                                          AND
                            (

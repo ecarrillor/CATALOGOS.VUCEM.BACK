@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public interface ICatCombinacionSgRepository extends JpaRepository<CatCombinacionSg, Long> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatCombinacionSgDTO(
                 e.id,
                 e.cvcEspecie.cveCatalogo,
@@ -37,20 +37,40 @@ public interface ICatCombinacionSgRepository extends JpaRepository<CatCombinacio
             )
             FROM CatCombinacionSg e
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cvcEspecie.cveCatalogo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cvcEspecie.descGenerica1) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cvcFuncionZootecnica.cveCatalogo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cvcFuncionZootecnica.descGenerica1) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cvcNombreComun.cveCatalogo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cvcNombreComun.descGenerica1) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cvcTipoProducto.cveCatalogo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cvcTipoProducto.descGenerica1) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cvePais.cvePais) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cvePais.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideTipoCertificadoMerc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(e.cvcEspecie.cveCatalogo) LIKE :search OR
+                LOWER(e.cvcEspecie.descGenerica1) LIKE :search OR
+                LOWER(e.cvcFuncionZootecnica.cveCatalogo) LIKE :search OR
+                LOWER(e.cvcFuncionZootecnica.descGenerica1) LIKE :search OR
+                LOWER(e.cvcNombreComun.cveCatalogo) LIKE :search OR
+                LOWER(e.cvcNombreComun.descGenerica1) LIKE :search OR
+                LOWER(e.cvcTipoProducto.cveCatalogo) LIKE :search OR
+                LOWER(e.cvcTipoProducto.descGenerica1) LIKE :search OR
+                LOWER(e.cvePais.cvePais) LIKE :search OR
+                LOWER(e.cvePais.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideTipoCertificadoMerc) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatCombinacionSg e
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(e.cvcEspecie.cveCatalogo) LIKE :search OR
+                LOWER(e.cvcEspecie.descGenerica1) LIKE :search OR
+                LOWER(e.cvcFuncionZootecnica.cveCatalogo) LIKE :search OR
+                LOWER(e.cvcFuncionZootecnica.descGenerica1) LIKE :search OR
+                LOWER(e.cvcNombreComun.cveCatalogo) LIKE :search OR
+                LOWER(e.cvcNombreComun.descGenerica1) LIKE :search OR
+                LOWER(e.cvcTipoProducto.cveCatalogo) LIKE :search OR
+                LOWER(e.cvcTipoProducto.descGenerica1) LIKE :search OR
+                LOWER(e.cvePais.cvePais) LIKE :search OR
+                LOWER(e.cvePais.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideTipoCertificadoMerc) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatCombinacionSgDTO> search(@Param("search") String search,

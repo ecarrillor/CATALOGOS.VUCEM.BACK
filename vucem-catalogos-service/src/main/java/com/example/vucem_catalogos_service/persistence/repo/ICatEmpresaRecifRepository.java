@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatEmpresaRecifRepository extends JpaRepository<CatEmpresaRecif, String> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatEmpresaRecifDTO(
                 e.recif,
                 e.rfc,
@@ -27,13 +27,31 @@ public interface ICatEmpresaRecifRepository extends JpaRepository<CatEmpresaReci
             LEFT JOIN e.cveUnidadAdministrativa ua
              WHERE
                 (:search IS NULL OR
-                    LOWER(e.recif) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.rfc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.razonSocial) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(ua.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(ua.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(e.recif) LIKE :search OR
+                    LOWER(e.rfc) LIKE :search OR
+                    LOWER(e.razonSocial) LIKE :search OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(ua.cveUnidadAdministrativa) LIKE :search OR
+                    LOWER(ua.nombre) LIKE :search
+                )
+                AND (
+                    :activo IS NULL OR e.blnActivo = :activo
+                )
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatEmpresaRecif e
+            LEFT JOIN e.cveUnidadAdministrativa ua
+             WHERE
+                (:search IS NULL OR
+                    LOWER(e.recif) LIKE :search OR
+                    LOWER(e.rfc) LIKE :search OR
+                    LOWER(e.razonSocial) LIKE :search OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(ua.cveUnidadAdministrativa) LIKE :search OR
+                    LOWER(ua.nombre) LIKE :search
                 )
                 AND (
                     :activo IS NULL OR e.blnActivo = :activo

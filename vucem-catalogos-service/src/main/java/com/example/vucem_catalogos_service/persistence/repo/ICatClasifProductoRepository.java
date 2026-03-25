@@ -34,15 +34,15 @@ public interface ICatClasifProductoRepository extends JpaRepository<CatClasifPro
                 LEFT JOIN e.idTipoTramite t
                 LEFT JOIN e.idClasifProductoR r
                 WHERE (:texto IS NULL OR
-                    LOWER(CAST(e.idClasifProduct AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(t.descModalidad) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(CAST(r.idClasifProduct AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(r.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(e.ideTipoClasifProducto) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')))
+                    LOWER(CAST(e.idClasifProduct AS string)) LIKE :texto OR
+                    LOWER(CAST(t.id AS string)) LIKE :texto OR
+                    LOWER(t.descModalidad) LIKE :texto OR
+                    LOWER(CAST(r.idClasifProduct AS string)) LIKE :texto OR
+                    LOWER(r.nombre) LIKE :texto OR
+                    LOWER(e.nombre) LIKE :texto OR
+                    LOWER(e.ideTipoClasifProducto) LIKE :texto OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :texto OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :texto)
                 AND (:activo IS NULL OR e.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR t.id = :idTipoTramite)
             """,
@@ -52,15 +52,15 @@ public interface ICatClasifProductoRepository extends JpaRepository<CatClasifPro
                 LEFT JOIN e.idTipoTramite t
                 LEFT JOIN e.idClasifProductoR r
                 WHERE (:texto IS NULL OR
-                    LOWER(CAST(e.idClasifProduct AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(t.descModalidad) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(CAST(r.idClasifProduct AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(r.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(e.ideTipoClasifProducto) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')))
+                    LOWER(CAST(e.idClasifProduct AS string)) LIKE :texto OR
+                    LOWER(CAST(t.id AS string)) LIKE :texto OR
+                    LOWER(t.descModalidad) LIKE :texto OR
+                    LOWER(CAST(r.idClasifProduct AS string)) LIKE :texto OR
+                    LOWER(r.nombre) LIKE :texto OR
+                    LOWER(e.nombre) LIKE :texto OR
+                    LOWER(e.ideTipoClasifProducto) LIKE :texto OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :texto OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :texto)
                 AND (:activo IS NULL OR e.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR t.id = :idTipoTramite)
             """)

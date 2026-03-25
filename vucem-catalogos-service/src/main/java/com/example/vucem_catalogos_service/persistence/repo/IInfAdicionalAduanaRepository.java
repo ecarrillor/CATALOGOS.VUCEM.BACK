@@ -24,17 +24,17 @@ public interface IInfAdicionalAduanaRepository extends JpaRepository<InfAdiciona
             )
             FROM InfAdicionalAduana e
             WHERE (:texto IS NULL
-                OR LOWER(e.catAduana.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))
-                OR LOWER(e.correoNotificacion) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))
-                OR LOWER(e.tagAduana) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')))
+                OR LOWER(e.catAduana.nombre) LIKE :texto
+                OR LOWER(e.correoNotificacion) LIKE :texto
+                OR LOWER(e.tagAduana) LIKE :texto)
             """,
             countQuery = """
             SELECT COUNT(e)
             FROM InfAdicionalAduana e
             WHERE (:texto IS NULL
-                OR LOWER(e.catAduana.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))
-                OR LOWER(e.correoNotificacion) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))
-                OR LOWER(e.tagAduana) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')))
+                OR LOWER(e.catAduana.nombre) LIKE :texto
+                OR LOWER(e.correoNotificacion) LIKE :texto
+                OR LOWER(e.tagAduana) LIKE :texto)
             """)
     Page<InfAdicionalAduanaDTO> search(@Param("texto") String texto, Pageable pageable);
 

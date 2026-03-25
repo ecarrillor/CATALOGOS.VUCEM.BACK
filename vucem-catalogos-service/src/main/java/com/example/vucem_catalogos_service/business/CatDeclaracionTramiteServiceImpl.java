@@ -55,7 +55,7 @@ public class CatDeclaracionTramiteServiceImpl implements ICatDeclaracionTramiteS
             } else if (s.equals("inactivo")) {
                 activo = false;
             } else {
-                texto = search;
+                texto = "%" + search.trim().toLowerCase() + "%";
             }
         }
 

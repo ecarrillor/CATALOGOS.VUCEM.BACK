@@ -35,19 +35,19 @@ public interface ICatActividadEconomicaSatRepository extends JpaRepository<CatAc
             FROM CatActividadEconomicaSat e
             LEFT JOIN e.cveTipoEmpresaRecif c
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                (e.idActividadEconomicaR IS NOT NULL AND LOWER(CAST(e.idActividadEconomicaR.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))) OR
-                (e.idActividadEconomicaR IS NOT NULL AND LOWER(e.idActividadEconomicaR.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))) OR
-                LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descScian) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descNotas) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(c.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(c.cveTipoEmpresaRecif) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecCaptura AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecActualizacion AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveTipoIndustriaIdc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                (e.idActividadEconomicaR IS NOT NULL AND LOWER(CAST(e.idActividadEconomicaR.id AS string)) LIKE :search) OR
+                (e.idActividadEconomicaR IS NOT NULL AND LOWER(e.idActividadEconomicaR.descripcion) LIKE :search) OR
+                LOWER(e.descripcion) LIKE :search OR
+                LOWER(e.descScian) LIKE :search OR
+                LOWER(e.descNotas) LIKE :search OR
+                LOWER(c.descripcion) LIKE :search OR
+                LOWER(c.cveTipoEmpresaRecif) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecCaptura AS string)) LIKE :search OR
+                LOWER(CAST(e.fecActualizacion AS string)) LIKE :search OR
+                LOWER(e.cveTipoIndustriaIdc) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """,
             countQuery = """
@@ -55,19 +55,19 @@ public interface ICatActividadEconomicaSatRepository extends JpaRepository<CatAc
             FROM CatActividadEconomicaSat e
             LEFT JOIN e.cveTipoEmpresaRecif c
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                (e.idActividadEconomicaR IS NOT NULL AND LOWER(CAST(e.idActividadEconomicaR.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))) OR
-                (e.idActividadEconomicaR IS NOT NULL AND LOWER(e.idActividadEconomicaR.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))) OR
-                LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descScian) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descNotas) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(c.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(c.cveTipoEmpresaRecif) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecCaptura AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecActualizacion AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveTipoIndustriaIdc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                (e.idActividadEconomicaR IS NOT NULL AND LOWER(CAST(e.idActividadEconomicaR.id AS string)) LIKE :search) OR
+                (e.idActividadEconomicaR IS NOT NULL AND LOWER(e.idActividadEconomicaR.descripcion) LIKE :search) OR
+                LOWER(e.descripcion) LIKE :search OR
+                LOWER(e.descScian) LIKE :search OR
+                LOWER(e.descNotas) LIKE :search OR
+                LOWER(c.descripcion) LIKE :search OR
+                LOWER(c.cveTipoEmpresaRecif) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecCaptura AS string)) LIKE :search OR
+                LOWER(CAST(e.fecActualizacion AS string)) LIKE :search OR
+                LOWER(e.cveTipoIndustriaIdc) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatActividadEconomicaSatDTO> search(@Param("search") String search,

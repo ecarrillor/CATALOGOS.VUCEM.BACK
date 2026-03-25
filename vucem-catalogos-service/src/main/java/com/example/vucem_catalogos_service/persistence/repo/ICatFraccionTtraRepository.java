@@ -17,7 +17,7 @@ import java.util.List;
 public interface ICatFraccionTtraRepository extends JpaRepository<CatFraccionTtra, Long>,
         JpaSpecificationExecutor<CatFraccionTtra> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.FraccionTtra.CatFraccionTtraResponseDTO(
                 a.id,
                 fra.cveFraccion,
@@ -44,20 +44,47 @@ public interface ICatFraccionTtraRepository extends JpaRepository<CatFraccionTtr
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(fra.cveFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(fra.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(tt.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.descFraccionAlt) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.ideClasifPartida) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(cat.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(cat.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.factorConversion AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.valorEquivalencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.cveUnidadMedida) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.reglaAplicable) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(CAST(a.id AS string)) LIKE :search OR
+                    LOWER(fra.cveFraccion) LIKE :search OR
+                    LOWER(fra.descripcion) LIKE :search OR
+                    LOWER(CAST(tt.id AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(a.descFraccionAlt) LIKE :search OR
+                    LOWER(a.ideClasifPartida) LIKE :search OR
+                    LOWER(CAST(cat.id AS string)) LIKE :search OR
+                    LOWER(cat.descripcion) LIKE :search OR
+                    LOWER(CAST(a.factorConversion AS string)) LIKE :search OR
+                    LOWER(CAST(a.valorEquivalencia AS string)) LIKE :search OR
+                    LOWER(a.cveUnidadMedida) LIKE :search OR
+                    LOWER(a.reglaAplicable) LIKE :search
+                )
+                AND (:activo IS NULL OR a.blnActivo = :activo)
+                AND (:idTipoTramite IS NULL OR tt.id = :idTipoTramite)
+            """,
+            countQuery = """
+            SELECT COUNT(a)
+            FROM CatFraccionTtra a
+            JOIN a.cveFraccion fra
+            JOIN a.idTipoTramite tt
+            LEFT JOIN a.idCategoriaTextil cat
+            WHERE
+                (
+                    :search IS NULL OR
+                    LOWER(CAST(a.id AS string)) LIKE :search OR
+                    LOWER(fra.cveFraccion) LIKE :search OR
+                    LOWER(fra.descripcion) LIKE :search OR
+                    LOWER(CAST(tt.id AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(a.descFraccionAlt) LIKE :search OR
+                    LOWER(a.ideClasifPartida) LIKE :search OR
+                    LOWER(CAST(cat.id AS string)) LIKE :search OR
+                    LOWER(cat.descripcion) LIKE :search OR
+                    LOWER(CAST(a.factorConversion AS string)) LIKE :search OR
+                    LOWER(CAST(a.valorEquivalencia AS string)) LIKE :search OR
+                    LOWER(a.cveUnidadMedida) LIKE :search OR
+                    LOWER(a.reglaAplicable) LIKE :search
                 )
                 AND (:activo IS NULL OR a.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR tt.id = :idTipoTramite)

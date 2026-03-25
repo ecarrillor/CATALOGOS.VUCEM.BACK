@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ICatTipoTramiteRepo extends JpaRepository<CatTipoTramite, Long> {
 
-    @Query("""
+    @Query(value = """
         SELECT new com.example.vucem_catalogos_service.model.dto.CatTipoTramiteDTO(
             e.id,
             e.cveServicio,
@@ -43,24 +43,51 @@ public interface ICatTipoTramiteRepo extends JpaRepository<CatTipoTramite, Long>
         WHERE
         (
             :search IS NULL OR
-            LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.cveServicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.descServicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.cveSubservicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.descSubservicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.cveModalidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.descModalidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.cveFlujo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.descFlujo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(CAST(e.nivelServicio AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.nomServAxway) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.nomMensajeAxway) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.urlAxway) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(CAST(e.fecCaptura AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(CAST(e.cveModulo AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+            LOWER(CAST(e.id AS string)) LIKE :search OR
+            LOWER(e.cveServicio) LIKE :search OR
+            LOWER(e.descServicio) LIKE :search OR
+            LOWER(e.cveSubservicio) LIKE :search OR
+            LOWER(e.descSubservicio) LIKE :search OR
+            LOWER(e.cveModalidad) LIKE :search OR
+            LOWER(e.descModalidad) LIKE :search OR
+            LOWER(e.cveFlujo) LIKE :search OR
+            LOWER(e.descFlujo) LIKE :search OR
+            LOWER(CAST(e.nivelServicio AS string)) LIKE :search OR
+            LOWER(e.nomServAxway) LIKE :search OR
+            LOWER(e.nomMensajeAxway) LIKE :search OR
+            LOWER(e.urlAxway) LIKE :search OR
+            LOWER(CAST(e.fecCaptura AS string)) LIKE :search OR
+            LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+            LOWER(e.nombre) LIKE :search OR
+            LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+            LOWER(CAST(e.cveModulo AS string)) LIKE :search
+        )
+        AND (:activo IS NULL OR e.blnActivo = :activo)
+        """,
+            countQuery = """
+            SELECT COUNT(e)
+        FROM CatTipoTramite e
+        WHERE
+        (
+            :search IS NULL OR
+            LOWER(CAST(e.id AS string)) LIKE :search OR
+            LOWER(e.cveServicio) LIKE :search OR
+            LOWER(e.descServicio) LIKE :search OR
+            LOWER(e.cveSubservicio) LIKE :search OR
+            LOWER(e.descSubservicio) LIKE :search OR
+            LOWER(e.cveModalidad) LIKE :search OR
+            LOWER(e.descModalidad) LIKE :search OR
+            LOWER(e.cveFlujo) LIKE :search OR
+            LOWER(e.descFlujo) LIKE :search OR
+            LOWER(CAST(e.nivelServicio AS string)) LIKE :search OR
+            LOWER(e.nomServAxway) LIKE :search OR
+            LOWER(e.nomMensajeAxway) LIKE :search OR
+            LOWER(e.urlAxway) LIKE :search OR
+            LOWER(CAST(e.fecCaptura AS string)) LIKE :search OR
+            LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+            LOWER(e.nombre) LIKE :search OR
+            LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+            LOWER(CAST(e.cveModulo AS string)) LIKE :search
         )
         AND (:activo IS NULL OR e.blnActivo = :activo)
         """)

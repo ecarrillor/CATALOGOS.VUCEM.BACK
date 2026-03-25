@@ -36,15 +36,15 @@ public interface ICatRestriccionTtraRepository extends JpaRepository<CatRestricc
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(CAST(rt.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(rt.idTipoTramite.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(rt.descRestriccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(rt.descContenidoRestriccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(rt.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(rt.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(rt.ideSentDictamen) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(rt.ideTipoRestriccionTtra) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(rt.ideMotivoRechazoDict) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(CAST(rt.id AS string)) LIKE :search OR
+                    LOWER(CAST(rt.idTipoTramite.id AS string)) LIKE :search OR
+                    LOWER(rt.descRestriccion) LIKE :search OR
+                    LOWER(rt.descContenidoRestriccion) LIKE :search OR
+                    LOWER(CAST(rt.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(rt.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(rt.ideSentDictamen) LIKE :search OR
+                    LOWER(rt.ideTipoRestriccionTtra) LIKE :search OR
+                    LOWER(rt.ideMotivoRechazoDict) LIKE :search
                 )
                 AND (:activo IS NULL OR rt.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR rt.idTipoTramite.id = :idTipoTramite)
@@ -55,15 +55,15 @@ public interface ICatRestriccionTtraRepository extends JpaRepository<CatRestricc
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(CAST(rt.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(rt.idTipoTramite.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(rt.descRestriccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(rt.descContenidoRestriccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(rt.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(rt.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(rt.ideSentDictamen) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(rt.ideTipoRestriccionTtra) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(rt.ideMotivoRechazoDict) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(CAST(rt.id AS string)) LIKE :search OR
+                    LOWER(CAST(rt.idTipoTramite.id AS string)) LIKE :search OR
+                    LOWER(rt.descRestriccion) LIKE :search OR
+                    LOWER(rt.descContenidoRestriccion) LIKE :search OR
+                    LOWER(CAST(rt.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(rt.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(rt.ideSentDictamen) LIKE :search OR
+                    LOWER(rt.ideTipoRestriccionTtra) LIKE :search OR
+                    LOWER(rt.ideMotivoRechazoDict) LIKE :search
                 )
                 AND (:activo IS NULL OR rt.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR rt.idTipoTramite.id = :idTipoTramite)

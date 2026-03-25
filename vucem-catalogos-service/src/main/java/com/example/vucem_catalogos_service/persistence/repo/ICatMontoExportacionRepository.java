@@ -30,8 +30,8 @@ public interface ICatMontoExportacionRepository extends JpaRepository<CatMontoEx
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(e.razonSocial) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                    LOWER(CAST(e.monto AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
+                    LOWER(e.razonSocial) LIKE :search OR
+                    LOWER(CAST(e.monto AS string)) LIKE :search
                 )
                 AND (:activo IS NULL OR e.blnActivo = :activo)
             """,
@@ -41,8 +41,8 @@ public interface ICatMontoExportacionRepository extends JpaRepository<CatMontoEx
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(e.razonSocial) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                    LOWER(CAST(e.monto AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
+                    LOWER(e.razonSocial) LIKE :search OR
+                    LOWER(CAST(e.monto AS string)) LIKE :search
                 )
                 AND (:activo IS NULL OR e.blnActivo = :activo)
             """)

@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface ICatTratadoBloqueRepository extends JpaRepository<CatTratadoBloque, CatTratadoBloqueId> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatTratadoBloqueDTO(
                 e.id.idTratadoAcuerdo,
                 e.id.idBloque,
@@ -25,12 +25,24 @@ public interface ICatTratadoBloqueRepository extends JpaRepository<CatTratadoBlo
             )
             FROM CatTratadoBloque e
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id.idTratadoAcuerdo AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.id.idBloque AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.idTratadoAcuerdo.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.idBloque.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id.idTratadoAcuerdo AS string)) LIKE :search OR
+                LOWER(CAST(e.id.idBloque AS string)) LIKE :search OR
+                LOWER(e.idTratadoAcuerdo.nombre) LIKE :search OR
+                LOWER(e.idBloque.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
+              AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatTratadoBloque e
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id.idTratadoAcuerdo AS string)) LIKE :search OR
+                LOWER(CAST(e.id.idBloque AS string)) LIKE :search OR
+                LOWER(e.idTratadoAcuerdo.nombre) LIKE :search OR
+                LOWER(e.idBloque.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatTratadoBloqueDTO> search(

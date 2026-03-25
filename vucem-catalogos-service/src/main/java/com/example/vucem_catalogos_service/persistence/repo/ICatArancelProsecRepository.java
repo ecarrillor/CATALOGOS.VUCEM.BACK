@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface ICatArancelProsecRepository extends JpaRepository<CatArancelProsec, CatArancelProsecId> {
 
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatArancelProsecDTO(
                 cat.cveFraccion.cveFraccion,
                 sec.cveSectorProsec,
@@ -28,12 +28,29 @@ public interface ICatArancelProsecRepository extends JpaRepository<CatArancelPro
             JOIN cat.cveSectorProsec sec
             WHERE
                 (:search IS NULL OR
-                    LOWER(cat.cveFraccion.cveFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(sec.cveSectorProsec) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(sec.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(cat.tasa AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(cat.cveFraccion.cveFraccion) LIKE :search OR
+                    LOWER(sec.cveSectorProsec) LIKE :search OR
+                    LOWER(sec.nombre) LIKE :search OR
+                    LOWER(CAST(cat.tasa AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE :search
+                )
+                AND (
+                    :activo IS NULL OR cat.blnActivo = :activo
+                )
+            """,
+            countQuery = """
+            SELECT COUNT(cat)
+            FROM CatArancelProsec cat
+            JOIN cat.cveSectorProsec sec
+            WHERE
+                (:search IS NULL OR
+                    LOWER(cat.cveFraccion.cveFraccion) LIKE :search OR
+                    LOWER(sec.cveSectorProsec) LIKE :search OR
+                    LOWER(sec.nombre) LIKE :search OR
+                    LOWER(CAST(cat.tasa AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE :search
                 )
                 AND (
                     :activo IS NULL OR cat.blnActivo = :activo

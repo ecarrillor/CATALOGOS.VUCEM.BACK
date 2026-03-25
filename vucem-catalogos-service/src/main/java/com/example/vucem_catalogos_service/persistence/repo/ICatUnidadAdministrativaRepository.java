@@ -25,7 +25,7 @@ public interface ICatUnidadAdministrativaRepository extends JpaRepository<CatUni
             """)
     List<CatUnidadAdministrativaNameDTO> findByName();
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatUnidadAdministrativaDTO(
                 e.cveUnidadAdministrativa,
                 e.ideTipoUnidadAdministrativa,
@@ -48,19 +48,41 @@ public interface ICatUnidadAdministrativaRepository extends JpaRepository<CatUni
             LEFT JOIN e.cveEntidad ent
             JOIN e.idDependencia dep
             WHERE (:search IS NULL OR
-                LOWER(e.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideTipoUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(parent.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.nivel AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.acronimo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(ent.cveEntidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(ent.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(dep.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(dep.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(e.cveUnidadAdministrativa) LIKE :search OR
+                LOWER(e.ideTipoUnidadAdministrativa) LIKE :search OR
+                LOWER(parent.cveUnidadAdministrativa) LIKE :search OR
+                LOWER(CAST(e.nivel AS string)) LIKE :search OR
+                LOWER(e.acronimo) LIKE :search OR
+                LOWER(e.nombre) LIKE :search OR
+                LOWER(e.descripcion) LIKE :search OR
+                LOWER(ent.cveEntidad) LIKE :search OR
+                LOWER(ent.nombre) LIKE :search OR
+                LOWER(CAST(dep.id AS string)) LIKE :search OR
+                LOWER(dep.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatUnidadAdministrativa e
+            LEFT JOIN e.cveUnidadAdministrativaR parent
+            LEFT JOIN e.cveEntidad ent
+            JOIN e.idDependencia dep
+            WHERE (:search IS NULL OR
+                LOWER(e.cveUnidadAdministrativa) LIKE :search OR
+                LOWER(e.ideTipoUnidadAdministrativa) LIKE :search OR
+                LOWER(parent.cveUnidadAdministrativa) LIKE :search OR
+                LOWER(CAST(e.nivel AS string)) LIKE :search OR
+                LOWER(e.acronimo) LIKE :search OR
+                LOWER(e.nombre) LIKE :search OR
+                LOWER(e.descripcion) LIKE :search OR
+                LOWER(ent.cveEntidad) LIKE :search OR
+                LOWER(ent.nombre) LIKE :search OR
+                LOWER(CAST(dep.id AS string)) LIKE :search OR
+                LOWER(dep.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatUnidadAdministrativaDTO> search(@Param("search") String search,

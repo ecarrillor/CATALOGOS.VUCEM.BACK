@@ -23,19 +23,26 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
 public class CatCategoriaTextilServiceImpl implements ICatCategoriaTextilService {
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "idCategoriaTextil", "a.id",
-            "descripcion", "a.descripcion",
-            "codigoCategoriaTextil", "a.codCategoriaTextil",
-            "factorConversion", "a.factConversion",
-            "unidadMedida", "b.descripcion",
+            "idCategoriaTextil",       "a.id",
+            "descripcion",             "a.descripcion",
+            "codigoCategoriaTextil",   "a.codCategoriaTextil",
+            "factorConversion",        "a.factConversion",
+            "unidadMedida",            "b.descripcion",
             "unidadMedidaEquivalente", "c.descripcion"
     );
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+            "descripcion", "unidadMedida", "unidadMedidaEquivalente"
+    );
+
+    private static final String DEFAULT_SORT_KEY = "idCategoriaTextil";
 
     @Autowired
     private ICatCategoriaTextilRepository iCatCategoriaTextilRepository;
@@ -63,10 +70,8 @@ public class CatCategoriaTextilServiceImpl implements ICatCategoriaTextilService
             }
         }
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
-        Pageable sortedPageable = sort.isSorted()
-                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
-                : pageable;
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS, DEFAULT_SORT_KEY);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 
         Page<CatCategoriaTextilResponseDTO> page =
                 iCatCategoriaTextilRepository.search(texto, activo, sortedPageable);

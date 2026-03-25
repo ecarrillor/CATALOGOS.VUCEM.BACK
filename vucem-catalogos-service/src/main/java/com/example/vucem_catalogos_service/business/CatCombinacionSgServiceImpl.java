@@ -47,12 +47,15 @@ public class CatCombinacionSgServiceImpl implements ICatCombinacionSgService {
         Short activo = null;
         String texto = null;
 
-        if ("activo".equalsIgnoreCase(search)) {
-            activo = 1;
-        } else if ("inactivo".equalsIgnoreCase(search)) {
-            activo = 0;
-        } else {
-            texto = search;
+        if (search != null && !search.isBlank()) {
+            String s = search.trim().toLowerCase();
+            if (s.equals("activo")) {
+                activo = 1;
+            } else if (s.equals("inactivo")) {
+                activo = 0;
+            } else {
+                texto = "%" + s + "%";
+            }
         }
 
         Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);

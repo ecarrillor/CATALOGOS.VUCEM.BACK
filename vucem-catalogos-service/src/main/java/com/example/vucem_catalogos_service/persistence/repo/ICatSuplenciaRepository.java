@@ -12,17 +12,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatSuplenciaRepository extends JpaRepository<CatSuplencia, Short> {
 
-    @Query("SELECT new com.example.vucem_catalogos_service.model.dto.CatSuplenciaDTO(" +
+    @Query(value = "SELECT new com.example.vucem_catalogos_service.model.dto.CatSuplenciaDTO(" +
             "e.id, e.idDependencia.id, e.idDependencia.nombre, e.texto, e.fecIniVigencia, e.fecFinVigencia, e.blnActivo) " +
             "FROM CatSuplencia e " +
             "WHERE (:activo IS NULL OR e.blnActivo = :activo) " +
             "AND (:search IS NULL OR :search = '' " +
-            "OR LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(CAST(e.idDependencia.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(e.idDependencia.nombre) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(e.texto) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))")
+            "OR LOWER(CAST(e.id AS string)) LIKE :search " +
+            "OR LOWER(CAST(e.idDependencia.id AS string)) LIKE :search " +
+            "OR LOWER(e.idDependencia.nombre) LIKE :search " +
+            "OR LOWER(e.texto) LIKE :search " +
+            "OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search " +
+            "OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)",
+            countQuery = "SELECT COUNT(e) FROM CatSuplencia e  WHERE (:activo IS NULL OR e.blnActivo = :activo)  AND (:search IS NULL OR :search = ''  OR LOWER(CAST(e.id AS string)) LIKE :search  OR LOWER(CAST(e.idDependencia.id AS string)) LIKE :search  OR LOWER(e.idDependencia.nombre) LIKE :search  OR LOWER(e.texto) LIKE :search  OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search  OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)")
     Page<CatSuplenciaDTO> search(@Param("search") String search,
                                  @Param("activo") Boolean activo,
                                  Pageable pageable);

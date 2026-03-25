@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface ICatNormalOficialRepository extends JpaRepository<CatNormalOficial, Integer> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatNormalOficialDTO(
                 e.id, e.claveNorma, e.fecIniVigencia, e.fecFinVigencia, e.blnActivo,
                 e.descNorma, e.fecPublicacion, e.fecEntradaVigor, e.ideClasifNorma,
@@ -26,17 +26,37 @@ public interface ICatNormalOficialRepository extends JpaRepository<CatNormalOfic
             LEFT JOIN e.cvePais p
             LEFT JOIN e.idNormaOficialR r
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.claveNorma) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descNorma) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecPublicacion AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecEntradaVigor AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideClasifNorma) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(p.cvePais) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(p.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(r.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(e.claveNorma) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.descNorma) LIKE :search OR
+                LOWER(CAST(e.fecPublicacion AS string)) LIKE :search OR
+                LOWER(CAST(e.fecEntradaVigor AS string)) LIKE :search OR
+                LOWER(e.ideClasifNorma) LIKE :search OR
+                LOWER(p.cvePais) LIKE :search OR
+                LOWER(p.nombre) LIKE :search OR
+                LOWER(CAST(r.id AS string)) LIKE :search
+            )
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatNormalOficial e
+            LEFT JOIN e.cvePais p
+            LEFT JOIN e.idNormaOficialR r
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(e.claveNorma) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.descNorma) LIKE :search OR
+                LOWER(CAST(e.fecPublicacion AS string)) LIKE :search OR
+                LOWER(CAST(e.fecEntradaVigor AS string)) LIKE :search OR
+                LOWER(e.ideClasifNorma) LIKE :search OR
+                LOWER(p.cvePais) LIKE :search OR
+                LOWER(p.nombre) LIKE :search OR
+                LOWER(CAST(r.id AS string)) LIKE :search
             )
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)

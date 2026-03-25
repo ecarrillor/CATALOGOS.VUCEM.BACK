@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface ICatSubpartidaFraccionRepository extends JpaRepository<CatSubpartidaFraccion, CatSubpartidaFraccionId> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatSubpartidaFraccionDTO(
                 e.id.cveSubpartidaFraccion,
                 e.id.cveCapituloFraccion,
@@ -25,12 +25,24 @@ public interface ICatSubpartidaFraccionRepository extends JpaRepository<CatSubpa
             )
             FROM CatSubpartidaFraccion e
             WHERE (:search IS NULL OR
-                LOWER(e.id.cveSubpartidaFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.id.cveCapituloFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.id.cvePartidaFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(e.id.cveSubpartidaFraccion) LIKE :search OR
+                LOWER(e.id.cveCapituloFraccion) LIKE :search OR
+                LOWER(e.id.cvePartidaFraccion) LIKE :search OR
+                LOWER(e.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
+              AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatSubpartidaFraccion e
+            WHERE (:search IS NULL OR
+                LOWER(e.id.cveSubpartidaFraccion) LIKE :search OR
+                LOWER(e.id.cveCapituloFraccion) LIKE :search OR
+                LOWER(e.id.cvePartidaFraccion) LIKE :search OR
+                LOWER(e.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatSubpartidaFraccionDTO> search(

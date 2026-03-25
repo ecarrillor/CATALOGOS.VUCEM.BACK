@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatDelegMunRepository extends JpaRepository<CatDelegMun, String> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatDelegMunDTO(
                 cat.cveDelegMun,
                 cat.nombre,
@@ -25,11 +25,27 @@ public interface ICatDelegMunRepository extends JpaRepository<CatDelegMun, Strin
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(cat.cveDelegMun) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(cat.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(cat.cveEntidad.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(cat.cveDelegMun) LIKE :search OR
+                    LOWER(cat.nombre) LIKE :search OR
+                    LOWER(cat.cveEntidad.nombre) LIKE :search OR
+                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE :search
+                )
+                AND (
+                    :activo IS NULL OR cat.blnActivo = :activo
+                )
+            """,
+            countQuery = """
+            SELECT COUNT(cat)
+            FROM CatDelegMun cat
+            WHERE
+                (
+                    :search IS NULL OR
+                    LOWER(cat.cveDelegMun) LIKE :search OR
+                    LOWER(cat.nombre) LIKE :search OR
+                    LOWER(cat.cveEntidad.nombre) LIKE :search OR
+                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE :search
                 )
                 AND (
                     :activo IS NULL OR cat.blnActivo = :activo

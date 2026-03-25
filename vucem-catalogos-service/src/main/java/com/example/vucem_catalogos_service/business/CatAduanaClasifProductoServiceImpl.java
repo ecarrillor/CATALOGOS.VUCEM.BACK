@@ -58,7 +58,7 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
             } else if (s.equals("inactivo")) {
                 activo = false;
             } else {
-                texto = search;
+                texto = "%" + search.trim().toLowerCase() + "%";
             }
         }
 

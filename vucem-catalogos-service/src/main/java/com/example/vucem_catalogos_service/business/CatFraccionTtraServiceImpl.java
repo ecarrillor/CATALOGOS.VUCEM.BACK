@@ -65,7 +65,7 @@ public class CatFraccionTtraServiceImpl implements ICatFraccionTtraService {
             } else if (s.equals("inactivo")) {
                 activo = false;
             } else {
-                texto = search;
+                texto = "%" + search.trim().toLowerCase() + "%";
             }
         }
 

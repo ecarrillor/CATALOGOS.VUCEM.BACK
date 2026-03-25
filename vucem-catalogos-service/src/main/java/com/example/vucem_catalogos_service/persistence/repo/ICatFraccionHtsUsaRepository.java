@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatFraccionHtsUsaRepository extends JpaRepository<CatFraccionHtsUsa, Long> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatFraccionHtsUsaDTO(
                 e.id,
                 e.cveFraccionHtsUsa,
@@ -30,15 +30,35 @@ public interface ICatFraccionHtsUsaRepository extends JpaRepository<CatFraccionH
             LEFT JOIN e.cveUnidadMedida um
              WHERE
                 (:search IS NULL OR
-                    LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.cveFraccionHtsUsa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(e.fecCaptura AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.ideTipoBienFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(um.cveUnidadMedida) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(um.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(CAST(e.id AS string)) LIKE :search OR
+                    LOWER(e.cveFraccionHtsUsa) LIKE :search OR
+                    LOWER(e.descripcion) LIKE :search OR
+                    LOWER(CAST(e.fecCaptura AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(e.ideTipoBienFraccion) LIKE :search OR
+                    LOWER(um.cveUnidadMedida) LIKE :search OR
+                    LOWER(um.descripcion) LIKE :search
+                )
+                AND (
+                    :activo IS NULL OR e.blnActivo = :activo
+                )
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatFraccionHtsUsa e
+            LEFT JOIN e.cveUnidadMedida um
+             WHERE
+                (:search IS NULL OR
+                    LOWER(CAST(e.id AS string)) LIKE :search OR
+                    LOWER(e.cveFraccionHtsUsa) LIKE :search OR
+                    LOWER(e.descripcion) LIKE :search OR
+                    LOWER(CAST(e.fecCaptura AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(e.ideTipoBienFraccion) LIKE :search OR
+                    LOWER(um.cveUnidadMedida) LIKE :search OR
+                    LOWER(um.descripcion) LIKE :search
                 )
                 AND (
                     :activo IS NULL OR e.blnActivo = :activo

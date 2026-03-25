@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface ICatColoniaRepository extends JpaRepository<CatColonia, String> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatColoniaDTO(
                 cat.cveColonia,
                 cat.nombre,
@@ -37,16 +37,41 @@ public interface ICatColoniaRepository extends JpaRepository<CatColonia, String>
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(cat.cveColonia) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(cat.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(dm.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(loc.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(cat.cp) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(cat.fecCaptura AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(dm.cveDelegMun) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(pais.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(cat.cveColonia) LIKE :search OR
+                    LOWER(cat.nombre) LIKE :search OR
+                    LOWER(dm.nombre) LIKE :search OR
+                    LOWER(loc.nombre) LIKE :search OR
+                    LOWER(cat.cp) LIKE :search OR
+                    LOWER(CAST(cat.fecCaptura AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(dm.cveDelegMun) LIKE :search OR
+                    LOWER(pais.nombre) LIKE :search
+                )
+                AND (
+                    :activo IS NULL OR cat.blnActivo = :activo
+                )
+            """,
+            countQuery = """
+            SELECT COUNT(cat)
+            FROM CatColonia cat
+            LEFT JOIN cat.cveDelegMun dm
+            LEFT JOIN dm.cveEntidad en
+            LEFT JOIN en.cvePais pais
+            LEFT JOIN cat.cveLocalidad loc
+            WHERE
+                (
+                    :search IS NULL OR
+                    LOWER(cat.cveColonia) LIKE :search OR
+                    LOWER(cat.nombre) LIKE :search OR
+                    LOWER(dm.nombre) LIKE :search OR
+                    LOWER(loc.nombre) LIKE :search OR
+                    LOWER(cat.cp) LIKE :search OR
+                    LOWER(CAST(cat.fecCaptura AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(dm.cveDelegMun) LIKE :search OR
+                    LOWER(pais.nombre) LIKE :search
                 )
                 AND (
                     :activo IS NULL OR cat.blnActivo = :activo

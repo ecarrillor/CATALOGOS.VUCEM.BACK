@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface ICatMedioTransporteTtraRepository extends JpaRepository<CatMedioTransporteTtra, Integer> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatMedioTransporteTtraDTO(
                 e.id,
                 t.id,
@@ -27,12 +27,25 @@ public interface ICatMedioTransporteTtraRepository extends JpaRepository<CatMedi
             FROM CatMedioTransporteTtra e
             JOIN e.idTipoTramite t
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(t.descModalidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideMedioTransporteGob) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(CAST(t.id AS string)) LIKE :search OR
+                LOWER(t.descModalidad) LIKE :search OR
+                LOWER(e.ideMedioTransporteGob) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatMedioTransporteTtra e
+            JOIN e.idTipoTramite t
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(CAST(t.id AS string)) LIKE :search OR
+                LOWER(t.descModalidad) LIKE :search OR
+                LOWER(e.ideMedioTransporteGob) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatMedioTransporteTtraDTO> search(@Param("search") String search,

@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 
 public interface ICatDictamenTramiteRepository extends JpaRepository<CatDictamenTramite, CatDictamenTramiteId> {
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.DictamenTramite.CatDictamenTramiteResponseDTO(
                 tt.id,        
                 tt.descServicio,
@@ -27,12 +27,32 @@ public interface ICatDictamenTramiteRepository extends JpaRepository<CatDictamen
             WHERE
             (
                 :search IS NULL OR
-                    LOWER(CAST(tt.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(tt.descServicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(td.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(td.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(CAST(tt.id AS string)) LIKE :search OR
+                    LOWER(tt.descServicio) LIKE :search OR
+                    LOWER(CAST(td.id AS string)) LIKE :search OR
+                    LOWER(td.nombre) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
+            )
+            AND
+            (
+                :activo IS NULL OR a.blnActivo = :activo
+            )
+            """,
+            countQuery = """
+            SELECT COUNT(a)
+            FROM CatDictamenTramite a
+            JOIN a.tipoTramite tt
+            JOIN a.tipoDictamen td
+            WHERE
+            (
+                :search IS NULL OR
+                    LOWER(CAST(tt.id AS string)) LIKE :search OR
+                    LOWER(tt.descServicio) LIKE :search OR
+                    LOWER(CAST(td.id AS string)) LIKE :search OR
+                    LOWER(td.nombre) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
             )
             AND
             (

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatAduanaTtraRepository extends JpaRepository<CatAduanaTtra, Long>, JpaSpecificationExecutor<CatAduanaTtra> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.AduanaTramite.CatAduanaTramiteResponseDTO(
                 a.id,
                 u.cveAduana,
@@ -30,9 +30,24 @@ public interface ICatAduanaTtraRepository extends JpaRepository<CatAduanaTtra, L
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(u.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(u.cveAduana) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.aliasAduana) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) )
+                    LOWER(u.nombre) LIKE :search OR
+                    LOWER(u.cveAduana) LIKE :search OR
+                    LOWER(a.aliasAduana) LIKE :search )
+                AND (
+                    :activo IS NULL OR a.blnActivo = :activo
+                )
+            """,
+            countQuery = """
+            SELECT COUNT(a)
+            FROM CatAduanaTtra a
+            JOIN a.cveAduana u
+            JOIN a.idTipoTramite b
+            WHERE
+                (
+                    :search IS NULL OR
+                    LOWER(u.nombre) LIKE :search OR
+                    LOWER(u.cveAduana) LIKE :search OR
+                    LOWER(a.aliasAduana) LIKE :search )
                 AND (
                     :activo IS NULL OR a.blnActivo = :activo
                 )

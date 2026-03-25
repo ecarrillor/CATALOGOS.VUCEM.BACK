@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatPaisRestriccionTtraRepository extends JpaRepository<CatPaisRestriccionTtra, Integer> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatPaisRestriccionTtraDTO(
                 e.id,
                 tt.id,
@@ -28,14 +28,31 @@ public interface ICatPaisRestriccionTtraRepository extends JpaRepository<CatPais
             LEFT JOIN e.idTipoTramite tt
             LEFT JOIN e.cvePais p
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(tt.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(tt.descModalidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(p.cvePais) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(p.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideTipoRestriccionPaisTtra) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(CAST(tt.id AS string)) LIKE :search OR
+                LOWER(tt.descModalidad) LIKE :search OR
+                LOWER(p.cvePais) LIKE :search OR
+                LOWER(p.nombre) LIKE :search OR
+                LOWER(e.ideTipoRestriccionPaisTtra) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
+            )
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatPaisRestriccionTtra e
+            LEFT JOIN e.idTipoTramite tt
+            LEFT JOIN e.cvePais p
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(CAST(tt.id AS string)) LIKE :search OR
+                LOWER(tt.descModalidad) LIKE :search OR
+                LOWER(p.cvePais) LIKE :search OR
+                LOWER(p.nombre) LIKE :search OR
+                LOWER(e.ideTipoRestriccionPaisTtra) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
             )
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)

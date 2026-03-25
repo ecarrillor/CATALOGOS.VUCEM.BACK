@@ -34,13 +34,13 @@ public interface ICatRestricDescProdRepository extends JpaRepository<CatRestricD
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.idRestriccionTtra.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.idRestriccionTtra.descRestriccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.idDescripcionProd.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.idDescripcionProd.descripcionProducto) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(CAST(a.id AS string)) LIKE :search OR
+                    LOWER(CAST(a.idRestriccionTtra.id AS string)) LIKE :search OR
+                    LOWER(a.idRestriccionTtra.descRestriccion) LIKE :search OR
+                    LOWER(CAST(a.idDescripcionProd.id AS string)) LIKE :search OR
+                    LOWER(a.idDescripcionProd.descripcionProducto) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
                 )
                 AND (:activo IS NULL OR a.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR tr.id = :idTipoTramite)
@@ -53,13 +53,13 @@ public interface ICatRestricDescProdRepository extends JpaRepository<CatRestricD
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.idRestriccionTtra.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.idRestriccionTtra.descRestriccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.idDescripcionProd.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.idDescripcionProd.descripcionProducto) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(CAST(a.id AS string)) LIKE :search OR
+                    LOWER(CAST(a.idRestriccionTtra.id AS string)) LIKE :search OR
+                    LOWER(a.idRestriccionTtra.descRestriccion) LIKE :search OR
+                    LOWER(CAST(a.idDescripcionProd.id AS string)) LIKE :search OR
+                    LOWER(a.idDescripcionProd.descripcionProducto) LIKE :search OR
+                    LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
                 )
                 AND (:activo IS NULL OR a.blnActivo = :activo)
                 AND (:idTipoTramite IS NULL OR tr.id = :idTipoTramite)

@@ -34,7 +34,7 @@ public interface ICatLocalidadRepository extends JpaRepository<CatLocalidad, Str
                                        @Param("cveMunicipio") String cveMunicipio);
 
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatLocalidadDTO(
                 e.cveLocalidad,
                 e.nombre,
@@ -48,11 +48,26 @@ public interface ICatLocalidadRepository extends JpaRepository<CatLocalidad, Str
             FROM CatLocalidad e
              WHERE
                 (:search IS NULL OR
-                    LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.cveLocalidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.cveDelegMun.cveDelegMun) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.cp) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.cveDelegMun.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(e.nombre) LIKE :search OR
+                    LOWER(e.cveLocalidad) LIKE :search OR
+                    LOWER(e.cveDelegMun.cveDelegMun) LIKE :search OR
+                    LOWER(e.cp) LIKE :search OR
+                    LOWER(e.cveDelegMun.nombre) LIKE :search
+                )
+                AND (
+                    :activo IS NULL OR e.blnActivo = :activo
+                )
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatLocalidad e
+            WHERE
+                (:search IS NULL OR
+                    LOWER(e.nombre) LIKE :search OR
+                    LOWER(e.cveLocalidad) LIKE :search OR
+                    LOWER(e.cveDelegMun.cveDelegMun) LIKE :search OR
+                    LOWER(e.cp) LIKE :search OR
+                    LOWER(e.cveDelegMun.nombre) LIKE :search
                 )
                 AND (
                     :activo IS NULL OR e.blnActivo = :activo

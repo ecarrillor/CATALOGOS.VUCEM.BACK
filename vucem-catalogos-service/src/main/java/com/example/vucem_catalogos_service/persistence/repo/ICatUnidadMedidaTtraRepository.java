@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ICatUnidadMedidaTtraRepository extends JpaRepository<CatUnidadMedidaTtra, Integer> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatUnidadMedidaTtraDTO(
                 e.id,
                 e.cveUnidadMedida.cveUnidadMedida,
@@ -26,13 +26,28 @@ public interface ICatUnidadMedidaTtraRepository extends JpaRepository<CatUnidadM
             FROM CatUnidadMedidaTtra e
             WHERE (
                         :search IS NULL OR
-                        LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                        LOWER(e.cveUnidadMedida.cveUnidadMedida) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                        LOWER(e.cveUnidadMedida.descripcion) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                        LOWER(CAST(e.idTipoTramite.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                        LOWER(e.idTipoTramite.descModalidad) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                        LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                        LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
+                        LOWER(CAST(e.id AS string)) LIKE :search OR
+                        LOWER(e.cveUnidadMedida.cveUnidadMedida) LIKE :search OR
+                        LOWER(e.cveUnidadMedida.descripcion) LIKE :search OR
+                        LOWER(CAST(e.idTipoTramite.id AS string)) LIKE :search OR
+                        LOWER(e.idTipoTramite.descModalidad) LIKE :search OR
+                        LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                        LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
+                   )
+              AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatUnidadMedidaTtra e
+            WHERE (
+                        :search IS NULL OR
+                        LOWER(CAST(e.id AS string)) LIKE :search OR
+                        LOWER(e.cveUnidadMedida.cveUnidadMedida) LIKE :search OR
+                        LOWER(e.cveUnidadMedida.descripcion) LIKE :search OR
+                        LOWER(CAST(e.idTipoTramite.id AS string)) LIKE :search OR
+                        LOWER(e.idTipoTramite.descModalidad) LIKE :search OR
+                        LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                        LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
                    )
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)

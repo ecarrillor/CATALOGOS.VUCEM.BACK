@@ -15,7 +15,7 @@ public interface ICatFundamentoDictamanRepository extends JpaRepository<CatFunda
         JpaSpecificationExecutor<CatFundamentoDictamen> {
 
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.FundamentoDictamen.CatFundamentoDictamenResponseDTO(
                 a.id,
                 a.descripcion,
@@ -27,10 +27,25 @@ public interface ICatFundamentoDictamanRepository extends JpaRepository<CatFunda
             FROM CatFundamentoDictamen a
            WHERE (
                       :search IS NULL OR
-                      LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                      LOWER(a.descripcion) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                      LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                      LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
+                      LOWER(CAST(a.id AS string)) LIKE :search OR
+                      LOWER(a.descripcion) LIKE :search OR
+                      LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                      LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
+                )
+                           AND
+                           (
+                               :activo IS NULL OR a.blnActivo = :activo
+                           )
+            """,
+            countQuery = """
+            SELECT COUNT(a)
+            FROM CatFundamentoDictamen a
+           WHERE (
+                      :search IS NULL OR
+                      LOWER(CAST(a.id AS string)) LIKE :search OR
+                      LOWER(a.descripcion) LIKE :search OR
+                      LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                      LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
                 )
                            AND
                            (

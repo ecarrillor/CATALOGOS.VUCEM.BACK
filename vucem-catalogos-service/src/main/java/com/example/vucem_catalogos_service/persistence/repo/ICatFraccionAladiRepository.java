@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ICatFraccionAladiRepository extends JpaRepository<CatFraccionAladi, Long>, JpaSpecificationExecutor<CatFraccionAladi> {
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.FraccionALADI.CatFraccionALADIResponseDTO(
                 a.id,
                 a.ideTipoFraccionAladi,
@@ -26,9 +26,24 @@ public interface ICatFraccionAladiRepository extends JpaRepository<CatFraccionAl
             WHERE
                      (
                      :search IS NULL OR
-                    LOWER(a.ideTipoFraccionAladi) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.cveFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(a.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(a.ideTipoFraccionAladi) LIKE :search OR
+                    LOWER(a.cveFraccion) LIKE :search OR
+                    LOWER(a.descripcion) LIKE :search
+                     )
+                           AND
+                           (
+                               :activo IS NULL OR a.blnActivo = :activo
+                           )
+            """,
+            countQuery = """
+            SELECT COUNT(a)
+            FROM CatFraccionAladi a
+            WHERE
+                     (
+                     :search IS NULL OR
+                    LOWER(a.ideTipoFraccionAladi) LIKE :search OR
+                    LOWER(a.cveFraccion) LIKE :search OR
+                    LOWER(a.descripcion) LIKE :search
                      )
                            AND
                            (

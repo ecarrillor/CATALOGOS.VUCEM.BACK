@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatClasificacionRegimenRepository extends JpaRepository<CatClasificacionRegimen, CatClasificacionRegimanId> {
 
-    @Query("""
+    @Query(value = """
                 SELECT new com.example.vucem_catalogos_service.model.dto.CatClasificacionRegimenDTO(
                     e.id.cveClasificacionRegimen,
                     e.id.cveRegimen,
@@ -27,13 +27,28 @@ public interface ICatClasificacionRegimenRepository extends JpaRepository<CatCla
                 FROM CatClasificacionRegimen e
                 JOIN e.cveRegimen re
                 WHERE (:search IS NULL OR
-                     LOWER(e.id.cveClasificacionRegimen) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                     LOWER(e.id.cveRegimen) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                     LOWER(re.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                     LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                     LOWER(e.codRegimen) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                     LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                     LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                     LOWER(e.id.cveClasificacionRegimen) LIKE :search OR
+                     LOWER(e.id.cveRegimen) LIKE :search OR
+                     LOWER(re.nombre) LIKE :search OR
+                     LOWER(e.nombre) LIKE :search OR
+                     LOWER(e.codRegimen) LIKE :search OR
+                     LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                     LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
+                )
+                AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+                FROM CatClasificacionRegimen e
+                JOIN e.cveRegimen re
+                WHERE (:search IS NULL OR
+                     LOWER(e.id.cveClasificacionRegimen) LIKE :search OR
+                     LOWER(e.id.cveRegimen) LIKE :search OR
+                     LOWER(re.nombre) LIKE :search OR
+                     LOWER(e.nombre) LIKE :search OR
+                     LOWER(e.codRegimen) LIKE :search OR
+                     LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                     LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
                 )
                 AND (:activo IS NULL OR e.blnActivo = :activo)
             """)

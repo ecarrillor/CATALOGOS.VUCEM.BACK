@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ICatUsoMercanciaTtraRepository extends JpaRepository<CatUsoMercanciaTtra, Short> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatUsoMercanciaTtraDTO(
                 e.id,
                 CASE WHEN tr.id IS NOT NULL THEN tr.id ELSE NULL END,
@@ -25,14 +25,28 @@ public interface ICatUsoMercanciaTtraRepository extends JpaRepository<CatUsoMerc
             FROM CatUsoMercanciaTtra e
             LEFT JOIN e.idTipoTramite tr
             WHERE (:search IS NULL OR :search = '' OR
-            LOWER(e.descUsoMercancia) LIKE LOWER(CONCAT('%', :search, '%')) OR
-            LOWER(tr.descModalidad) LIKE LOWER(CONCAT('%', :search, '%')) OR
+            LOWER(e.descUsoMercancia) LIKE :search OR
+            LOWER(tr.descModalidad) LIKE :search OR
         
-            CAST(tr.id AS string) LIKE CONCAT('%', :search, '%') OR
-            CAST(e.id AS string) LIKE CONCAT('%', :search, '%') OR
+            CAST(tr.id AS string) LIKE :search OR
+            CAST(e.id AS string) LIKE :search OR
         
-            CAST(e.fecIniVigencia AS string) LIKE CONCAT('%', :search, '%') OR
-            CAST(e.fecFinVigencia AS string) LIKE CONCAT('%', :search, '%'))
+            CAST(e.fecIniVigencia AS string) LIKE :search OR
+            CAST(e.fecFinVigencia AS string) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)""",
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatUsoMercanciaTtra e
+            LEFT JOIN e.idTipoTramite tr
+            WHERE (:search IS NULL OR :search = '' OR
+            LOWER(e.descUsoMercancia) LIKE :search OR
+            LOWER(tr.descModalidad) LIKE :search OR
+        
+            CAST(tr.id AS string) LIKE :search OR
+            CAST(e.id AS string) LIKE :search OR
+        
+            CAST(e.fecIniVigencia AS string) LIKE :search OR
+            CAST(e.fecFinVigencia AS string) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)""")
     Page<CatUsoMercanciaTtraDTO> search(
             @Param("search") String search,

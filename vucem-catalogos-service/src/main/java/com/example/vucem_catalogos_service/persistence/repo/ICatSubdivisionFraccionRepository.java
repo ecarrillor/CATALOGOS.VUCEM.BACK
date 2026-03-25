@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ICatSubdivisionFraccionRepository extends JpaRepository<CatSubdivisionFraccion, String> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatSubdivisionFraccionDTO(
                 e.cveSubdivision,
                 e.cveFraccion.cveFraccion,
@@ -26,14 +26,28 @@ public interface ICatSubdivisionFraccionRepository extends JpaRepository<CatSubd
             )
             FROM CatSubdivisionFraccion e
             WHERE (:search IS NULL OR
-                LOWER(e.cveSubdivision) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveFraccion.cveFraccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveFraccion.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.codSubdivision) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.precioEstimado AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(e.cveSubdivision) LIKE :search OR
+                LOWER(e.cveFraccion.cveFraccion) LIKE :search OR
+                LOWER(e.cveFraccion.descripcion) LIKE :search OR
+                LOWER(e.codSubdivision) LIKE :search OR
+                LOWER(e.descripcion) LIKE :search OR
+                LOWER(CAST(e.precioEstimado AS string)) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
+              AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatSubdivisionFraccion e
+            WHERE (:search IS NULL OR
+                LOWER(e.cveSubdivision) LIKE :search OR
+                LOWER(e.cveFraccion.cveFraccion) LIKE :search OR
+                LOWER(e.cveFraccion.descripcion) LIKE :search OR
+                LOWER(e.codSubdivision) LIKE :search OR
+                LOWER(e.descripcion) LIKE :search OR
+                LOWER(CAST(e.precioEstimado AS string)) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatSubdivisionFraccionDTO> search(

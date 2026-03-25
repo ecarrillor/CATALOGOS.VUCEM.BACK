@@ -12,16 +12,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatServicioImmexRepository extends JpaRepository<CatServicioImmex, Short> {
 
-    @Query("SELECT new com.example.vucem_catalogos_service.model.dto.CatServicioImmexDTO(" +
+    @Query(value = "SELECT new com.example.vucem_catalogos_service.model.dto.CatServicioImmexDTO(" +
             "e.id, e.nombre, e.fecIniVigencia, e.ideTipoServicioImmex, e.fecFinVigencia, e.blnActivo) " +
             "FROM CatServicioImmex e " +
             "WHERE (:activo IS NULL OR e.blnActivo = :activo) " +
             "AND (:search IS NULL OR :search = '' " +
-            "OR LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(e.nombre) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(e.ideTipoServicioImmex) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))")
+            "OR LOWER(CAST(e.id AS string)) LIKE :search " +
+            "OR LOWER(e.nombre) LIKE :search " +
+            "OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search " +
+            "OR LOWER(e.ideTipoServicioImmex) LIKE :search " +
+            "OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)",
+            countQuery = "SELECT COUNT(e) FROM CatServicioImmex e  WHERE (:activo IS NULL OR e.blnActivo = :activo)  AND (:search IS NULL OR :search = ''  OR LOWER(CAST(e.id AS string)) LIKE :search  OR LOWER(e.nombre) LIKE :search  OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search  OR LOWER(e.ideTipoServicioImmex) LIKE :search  OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)")
     Page<CatServicioImmexDTO> search(@Param("search") String search,
                                      @Param("activo") Boolean activo,
                                      Pageable pageable);

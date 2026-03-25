@@ -44,12 +44,15 @@ public class CatUnidadAdminAduanaServiceImpl implements ICatUnidadAdminAduanaSer
         Boolean activo = null;
         String texto = null;
 
-        if ("activo".equalsIgnoreCase(search)) {
-            activo = true;
-        } else if ("inactivo".equalsIgnoreCase(search)) {
-            activo = false;
-        } else {
-            texto = search;
+        if (search != null && !search.isBlank()) {
+            String s = search.trim().toLowerCase();
+            if (s.equals("activo")) {
+                activo = true;
+            } else if (s.equals("inactivo")) {
+                activo = false;
+            } else {
+                texto = "%" + s + "%";
+            }
         }
 
         Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);

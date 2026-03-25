@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public interface ICatEquivalenciaAelcRepository extends JpaRepository<CatEquivalenciaAelc, CatEquivalenciaAelcId> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatEquivalenciaAelcDTO(
                 e.id.fecIniVigencia,
                 e.id.cveMoneda,
@@ -30,12 +30,25 @@ public interface ICatEquivalenciaAelcRepository extends JpaRepository<CatEquival
             FROM CatEquivalenciaAelc e
             JOIN e.moneda m
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.id.cveMoneda) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(m.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.valor AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecCaptura AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(e.id.cveMoneda) LIKE :search OR
+                LOWER(m.nombre) LIKE :search OR
+                LOWER(CAST(e.valor AS string)) LIKE :search OR
+                LOWER(CAST(e.fecCaptura AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatEquivalenciaAelc e
+            JOIN e.moneda m
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(e.id.cveMoneda) LIKE :search OR
+                LOWER(m.nombre) LIKE :search OR
+                LOWER(CAST(e.valor AS string)) LIKE :search OR
+                LOWER(CAST(e.fecCaptura AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatEquivalenciaAelcDTO> search(@Param("search") String search,

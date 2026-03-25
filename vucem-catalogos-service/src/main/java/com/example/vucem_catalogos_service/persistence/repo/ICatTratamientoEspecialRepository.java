@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ICatTratamientoEspecialRepository extends JpaRepository<CatTratamientoEspecial, Short> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatTratamientoEspecialDTO(
                 e.id,
                 e.nombre,
@@ -23,11 +23,22 @@ public interface ICatTratamientoEspecialRepository extends JpaRepository<CatTrat
             )
             FROM CatTratamientoEspecial e
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideClasifTratamiento) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(e.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideClasifTratamiento) LIKE :search)
+              AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatTratamientoEspecial e
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(e.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideClasifTratamiento) LIKE :search)
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatTratamientoEspecialDTO> search(

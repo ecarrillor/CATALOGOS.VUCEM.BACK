@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface ICatFundamentoTtraRepository extends JpaRepository<CatFundamentoTtra, Short> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatFundamentoTtraDTO(
                 e.id,
                 CASE WHEN e.idTipoTramite IS NOT NULL THEN e.idTipoTramite.id ELSE NULL END,
@@ -28,14 +28,28 @@ public interface ICatFundamentoTtraRepository extends JpaRepository<CatFundament
             )
             FROM CatFundamentoTtra e
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.idTipoTramite.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.idTipoTramite.descSubservicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideTipoFundamentoTtra) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descFundamento) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descContenidoFundamento) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(CAST(e.idTipoTramite.id AS string)) LIKE :search OR
+                LOWER(e.idTipoTramite.descSubservicio) LIKE :search OR
+                LOWER(e.ideTipoFundamentoTtra) LIKE :search OR
+                LOWER(e.descFundamento) LIKE :search OR
+                LOWER(e.descContenidoFundamento) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatFundamentoTtra e
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(CAST(e.idTipoTramite.id AS string)) LIKE :search OR
+                LOWER(e.idTipoTramite.descSubservicio) LIKE :search OR
+                LOWER(e.ideTipoFundamentoTtra) LIKE :search OR
+                LOWER(e.descFundamento) LIKE :search OR
+                LOWER(e.descContenidoFundamento) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatFundamentoTtraDTO> search(@Param("search") String search,

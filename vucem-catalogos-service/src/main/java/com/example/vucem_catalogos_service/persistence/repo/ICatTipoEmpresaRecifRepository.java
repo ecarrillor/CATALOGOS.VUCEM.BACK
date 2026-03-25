@@ -17,7 +17,7 @@ public interface ICatTipoEmpresaRecifRepository extends JpaRepository<CatTipoEmp
 
     List<CatTipoEmpresaRecif> findByBlnActivoTrue();
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatTipoEmpresaRecifDTO(
                 e.cveTipoEmpresaRecif,
                 CASE WHEN e.cveTipoEmpresaRecifR IS NOT NULL THEN e.cveTipoEmpresaRecifR.cveTipoEmpresaRecif ELSE NULL END,
@@ -29,12 +29,24 @@ public interface ICatTipoEmpresaRecifRepository extends JpaRepository<CatTipoEmp
             )
             FROM CatTipoEmpresaRecif e
             WHERE (:search IS NULL OR
-                LOWER(e.cveTipoEmpresaRecif) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.cveTipoEmpresaRecifR.cveTipoEmpresaRecif AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveTipoEmpresaRecifR.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(e.cveTipoEmpresaRecif) LIKE :search OR
+                LOWER(CAST(e.cveTipoEmpresaRecifR.cveTipoEmpresaRecif AS string)) LIKE :search OR
+                LOWER(e.cveTipoEmpresaRecifR.descripcion) LIKE :search OR
+                LOWER(e.descripcion) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
+              AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatTipoEmpresaRecif e
+            WHERE (:search IS NULL OR
+                LOWER(e.cveTipoEmpresaRecif) LIKE :search OR
+                LOWER(CAST(e.cveTipoEmpresaRecifR.cveTipoEmpresaRecif AS string)) LIKE :search OR
+                LOWER(e.cveTipoEmpresaRecifR.descripcion) LIKE :search OR
+                LOWER(e.descripcion) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatTipoEmpresaRecifDTO> search(

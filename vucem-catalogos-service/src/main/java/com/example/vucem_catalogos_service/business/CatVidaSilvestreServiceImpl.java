@@ -22,23 +22,30 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
 public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
 
     // Columnas permitidas para ordenamiento.
-    // Clave: nombre que envía el frontend | Valor: ruta de entidad JPA para el ORDER BY
+    // Clave: nombre que envía el frontend | Valor: ruta JPQL cualificada con alias de query
     // NO se permite ordenar por: fecIniVigencia, fecFinVigencia, blnActivo
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "id",                    "id",
-            "ideTipoVidaSilvestre",  "ideTipoVidaSilvestre",
-            "descGenero",            "idGenero.descGenero",
-            "descEspecie",           "idEspecie.descEspecie",
-            "descNombreComun",       "descNombreComun",
-            "descNombreCientifico",  "descNombreCientifico",
-            "ideClasifTaxonomica",   "ideClasifTaxonomica"
+            "id",                    "e.id",
+            "ideTipoVidaSilvestre",  "e.ideTipoVidaSilvestre",
+            "descGenero",            "gen.descGenero",
+            "descEspecie",           "especie.descEspecie",
+            "descNombreComun",       "e.descNombreComun",
+            "descNombreCientifico",  "e.descNombreCientifico",
+            "ideClasifTaxonomica",   "e.ideClasifTaxonomica"
     );
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+            "descGenero", "descEspecie", "descNombreComun", "descNombreCientifico"
+    );
+
+    private static final String DEFAULT_SORT_KEY = "id";
 
     @Autowired
     private ICatVidaSilvestreRepository catVidaSilvestreRepository;
@@ -72,10 +79,8 @@ public class CatVidaSilvestreServiceImpl implements ICatVidaSilvestreService {
         // Pre-resolver tipo Long → tipoVida String para evitar problema de tipos null en PostgreSQL
         String tipoVida = resolverTipoVidaParaFiltro(tipo);
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
-        Pageable pageableWithSort = sort.isSorted()
-                ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
-                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS, DEFAULT_SORT_KEY);
+        Pageable pageableWithSort = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 
         Page<CatVidaSilvestreDTO> page = catVidaSilvestreRepository.search(texto, tipoVida, activo, pageableWithSort);
 

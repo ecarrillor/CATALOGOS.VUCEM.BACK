@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface ICatUnidadAdminAduanaRepository extends JpaRepository<CatUnidadAdminAduana, CatUnidadAdminAduanaId> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatUnidadAdminAduanaDTO(
                 e.id.cveUnidadAdministrativa,
                 e.id.cveAduana,
@@ -25,12 +25,24 @@ public interface ICatUnidadAdminAduanaRepository extends JpaRepository<CatUnidad
             )
             FROM CatUnidadAdminAduana e
             WHERE (:search IS NULL OR
-                LOWER(e.id.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.id.cveAduana) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveUnidadAdministrativa.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveAduana.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(e.id.cveUnidadAdministrativa) LIKE :search OR
+                LOWER(e.id.cveAduana) LIKE :search OR
+                LOWER(e.cveUnidadAdministrativa.nombre) LIKE :search OR
+                LOWER(e.cveAduana.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
+              AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatUnidadAdminAduana e
+            WHERE (:search IS NULL OR
+                LOWER(e.id.cveUnidadAdministrativa) LIKE :search OR
+                LOWER(e.id.cveAduana) LIKE :search OR
+                LOWER(e.cveUnidadAdministrativa.nombre) LIKE :search OR
+                LOWER(e.cveAduana.nombre) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatUnidadAdminAduanaDTO> search(

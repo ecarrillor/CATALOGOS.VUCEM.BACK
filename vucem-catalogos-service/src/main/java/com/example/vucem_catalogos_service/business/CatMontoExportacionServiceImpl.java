@@ -71,7 +71,7 @@ public class CatMontoExportacionServiceImpl extends AbstractCatalogService<CatMo
             } else if (s.equals("inactivo")) {
                 activo = false;
             } else {
-                texto = search.trim();
+                texto = "%" + search.trim().toLowerCase() + "%";
             }
         }
 

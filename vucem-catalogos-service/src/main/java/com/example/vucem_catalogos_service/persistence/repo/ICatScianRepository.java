@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface ICatScianRepository extends JpaRepository<CatScian, String> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatScianDTO(
                 e.cveScian,
                 e.descScian,
@@ -24,9 +24,17 @@ public interface ICatScianRepository extends JpaRepository<CatScian, String> {
                 e.giro
             )
             FROM CatScian e
-            WHERE (:search IS NULL OR LOWER(e.cveScian) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
-                OR LOWER(e.descScian) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
-                OR LOWER(e.giro) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            WHERE (:search IS NULL OR LOWER(e.cveScian) LIKE :search
+                OR LOWER(e.descScian) LIKE :search
+                OR LOWER(e.giro) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatScian e
+            WHERE (:search IS NULL OR LOWER(e.cveScian) LIKE :search
+                OR LOWER(e.descScian) LIKE :search
+                OR LOWER(e.giro) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatScianDTO> search(@Param("search") String search,

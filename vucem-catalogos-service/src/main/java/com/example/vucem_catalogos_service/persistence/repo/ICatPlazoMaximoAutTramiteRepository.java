@@ -16,20 +16,21 @@ import java.time.LocalDate;
 @Repository
 public interface ICatPlazoMaximoAutTramiteRepository extends JpaRepository<CatPlazoMaximoAutTramite, CatPlazoMaximoAutTramiteId> {
 
-    @Query("SELECT new com.example.vucem_catalogos_service.model.dto.CatPlazoMaximoAutTramiteDTO(" +
+    @Query(value = "SELECT new com.example.vucem_catalogos_service.model.dto.CatPlazoMaximoAutTramiteDTO(" +
             "e.id.idTipoTramite, e.id.fecIniVigencia, e.idTipoTramite.descServicio, " +
             "e.fecFinVigencia, e.plazoAnios, e.idePlazoMeses, e.blnIlimitado, e.plazo, e.blnAsignacionFechaFin, e.blnActivo) " +
             "FROM CatPlazoMaximoAutTramite e " +
             "WHERE (:activo IS NULL OR e.blnActivo = :activo) " +
             "AND (:search IS NULL OR :search = '' " +
-            "OR LOWER(CAST(e.id.idTipoTramite AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(CAST(e.id.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(e.idTipoTramite.descServicio) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(CAST(e.plazoAnios AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(e.idePlazoMeses) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(e.plazo) LIKE LOWER(CONCAT('%', :search, '%'))" +
-            ")")
+            "OR LOWER(CAST(e.id.idTipoTramite AS string)) LIKE :search " +
+            "OR LOWER(CAST(e.id.fecIniVigencia AS string)) LIKE :search " +
+            "OR LOWER(e.idTipoTramite.descServicio) LIKE :search " +
+            "OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search " +
+            "OR LOWER(CAST(e.plazoAnios AS string)) LIKE :search " +
+            "OR LOWER(e.idePlazoMeses) LIKE :search " +
+            "OR LOWER(e.plazo) LIKE :search" +
+            ")",
+            countQuery = "SELECT COUNT(e) FROM CatPlazoMaximoAutTramite e  WHERE (:activo IS NULL OR e.blnActivo = :activo)  AND (:search IS NULL OR :search = ''  OR LOWER(CAST(e.id.idTipoTramite AS string)) LIKE :search  OR LOWER(CAST(e.id.fecIniVigencia AS string)) LIKE :search  OR LOWER(e.idTipoTramite.descServicio) LIKE :search  OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search  OR LOWER(CAST(e.plazoAnios AS string)) LIKE :search  OR LOWER(e.idePlazoMeses) LIKE :search  OR LOWER(e.plazo) LIKE :search )")
     Page<CatPlazoMaximoAutTramiteDTO> search(@Param("search") String search,
                                               @Param("activo") Boolean activo,
                                               Pageable pageable);

@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface ICatAduanaClasifProdRepository extends JpaRepository<CatAduanaClasifProd, Long> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatAduanaClasifProdDTO(
                 e.id,
                 CASE WHEN e.aduana IS NOT NULL THEN e.aduana.cveAduana ELSE NULL END,
@@ -28,13 +28,27 @@ public interface ICatAduanaClasifProdRepository extends JpaRepository<CatAduanaC
             )
             FROM CatAduanaClasifProd e
             WHERE (:texto IS NULL OR
-                (e.aduana IS NOT NULL AND LOWER(e.aduana.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))) OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                (e.aduana IS NOT NULL AND LOWER(e.aduana.cveAduana) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))) OR
-                (e.idClasifProducto IS NOT NULL AND LOWER(CAST(e.idClasifProducto.idClasifProduct AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))) OR
-                (e.idClasifProducto IS NOT NULL AND LOWER(e.idClasifProducto.nombre) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%'))) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:texto AS string), '%')))
+                (e.aduana IS NOT NULL AND LOWER(e.aduana.nombre) LIKE :texto) OR
+                LOWER(CAST(e.id AS string)) LIKE :texto OR
+                (e.aduana IS NOT NULL AND LOWER(e.aduana.cveAduana) LIKE :texto) OR
+                (e.idClasifProducto IS NOT NULL AND LOWER(CAST(e.idClasifProducto.idClasifProduct AS string)) LIKE :texto) OR
+                (e.idClasifProducto IS NOT NULL AND LOWER(e.idClasifProducto.nombre) LIKE :texto) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :texto OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :texto)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            AND (:idClasifProducto IS NULL OR (e.idClasifProducto IS NOT NULL AND e.idClasifProducto.idClasifProduct = :idClasifProducto))
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatAduanaClasifProd e
+            WHERE (:texto IS NULL OR
+                (e.aduana IS NOT NULL AND LOWER(e.aduana.nombre) LIKE :texto) OR
+                LOWER(CAST(e.id AS string)) LIKE :texto OR
+                (e.aduana IS NOT NULL AND LOWER(e.aduana.cveAduana) LIKE :texto) OR
+                (e.idClasifProducto IS NOT NULL AND LOWER(CAST(e.idClasifProducto.idClasifProduct AS string)) LIKE :texto) OR
+                (e.idClasifProducto IS NOT NULL AND LOWER(e.idClasifProducto.nombre) LIKE :texto) OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :texto OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :texto)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             AND (:idClasifProducto IS NULL OR (e.idClasifProducto IS NOT NULL AND e.idClasifProducto.idClasifProduct = :idClasifProducto))
             """)

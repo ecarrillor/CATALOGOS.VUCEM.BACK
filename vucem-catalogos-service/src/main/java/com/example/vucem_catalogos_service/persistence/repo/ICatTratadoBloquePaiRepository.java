@@ -36,13 +36,13 @@ public interface ICatTratadoBloquePaiRepository extends JpaRepository<CatTratado
               AND (:idTratadoAcuerdo IS NULL OR tbp.id.idTratadoAcuerdo = :idTratadoAcuerdo)
               AND (:blnActivo IS NULL OR tbp.blnActivo = :blnActivo)
               AND (:search IS NULL OR
-                   LOWER(tbp.id.cvePais) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(p.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(tbp.id.idTratadoAcuerdo AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(t.cveTratadoAcuerdo) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(tbp.fecCaptura AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(tbp.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(tbp.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))
+                   LOWER(tbp.id.cvePais) LIKE :search OR
+                   LOWER(p.nombre) LIKE :search OR
+                   LOWER(CAST(tbp.id.idTratadoAcuerdo AS string)) LIKE :search OR
+                   LOWER(t.cveTratadoAcuerdo) LIKE :search OR
+                   LOWER(CAST(tbp.fecCaptura AS string)) LIKE :search OR
+                   LOWER(CAST(tbp.fecIniVigencia AS string)) LIKE :search OR
+                   LOWER(CAST(tbp.fecFinVigencia AS string)) LIKE :search)
             """,
             countQuery = """
             SELECT COUNT(tbp)
@@ -53,13 +53,13 @@ public interface ICatTratadoBloquePaiRepository extends JpaRepository<CatTratado
               AND (:idTratadoAcuerdo IS NULL OR tbp.id.idTratadoAcuerdo = :idTratadoAcuerdo)
               AND (:blnActivo IS NULL OR tbp.blnActivo = :blnActivo)
               AND (:search IS NULL OR
-                   LOWER(tbp.id.cvePais) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(p.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(tbp.id.idTratadoAcuerdo AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(t.cveTratadoAcuerdo) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(tbp.fecCaptura AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(tbp.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                   LOWER(CAST(tbp.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))
+                   LOWER(tbp.id.cvePais) LIKE :search OR
+                   LOWER(p.nombre) LIKE :search OR
+                   LOWER(CAST(tbp.id.idTratadoAcuerdo AS string)) LIKE :search OR
+                   LOWER(t.cveTratadoAcuerdo) LIKE :search OR
+                   LOWER(CAST(tbp.fecCaptura AS string)) LIKE :search OR
+                   LOWER(CAST(tbp.fecIniVigencia AS string)) LIKE :search OR
+                   LOWER(CAST(tbp.fecFinVigencia AS string)) LIKE :search)
             """)
     Page<CatTratadoBloquePaiResponseDTO> search(
             @Param("cvePais") String cvePais,

@@ -17,7 +17,7 @@ import java.util.List;
 public interface ICatDependenciaRepository extends JpaRepository<CatDependencia, Long> {
 
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.Dependencia.CatDependenciaResponseDTO(
                 a.id,
                 a.nombre,
@@ -34,13 +34,33 @@ public interface ICatDependenciaRepository extends JpaRepository<CatDependencia,
             WHERE
                      (
                            :search IS NULL OR
-                           LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                           LOWER(a.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                           LOWER(a.acronimo) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                           LOWER(b.nombre) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                           LOWER(b.cveCalendario) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                           LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                           LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
+                           LOWER(CAST(a.id AS string)) LIKE :search OR
+                           LOWER(a.nombre) LIKE :search OR
+                           LOWER(a.acronimo) LIKE :search OR
+                           LOWER(b.nombre) LIKE :search OR
+                           LOWER(b.cveCalendario) LIKE :search OR
+                           LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                           LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
+                     )
+                           AND
+                           (
+                               :activo IS NULL OR a.blnActivo = :activo
+                           )
+            """,
+            countQuery = """
+            SELECT COUNT(a)
+            FROM CatDependencia a
+            JOIN a.cveCalendario b
+            WHERE
+                     (
+                           :search IS NULL OR
+                           LOWER(CAST(a.id AS string)) LIKE :search OR
+                           LOWER(a.nombre) LIKE :search OR
+                           LOWER(a.acronimo) LIKE :search OR
+                           LOWER(b.nombre) LIKE :search OR
+                           LOWER(b.cveCalendario) LIKE :search OR
+                           LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                           LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
                      )
                            AND
                            (

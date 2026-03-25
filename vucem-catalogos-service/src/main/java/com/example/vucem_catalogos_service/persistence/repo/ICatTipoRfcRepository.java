@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface ICatTipoRfcRepository extends JpaRepository<CatTipoRfc, CatTipoRfcId> {
 
-    @Query("""
+    @Query(value = """
         SELECT new com.example.vucem_catalogos_service.model.dto.CatTipoRfcDTO(
             e.id.rfc,
             e.id.ideTipoRfc,
@@ -35,18 +35,36 @@ public interface ICatTipoRfcRepository extends JpaRepository<CatTipoRfc, CatTipo
         FROM CatTipoRfc e
         LEFT JOIN e.cveUnidadAdministrativa ua
         WHERE (:search IS NULL OR
-            LOWER(e.id.rfc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.id.ideTipoRfc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.razonSocial) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.direccion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.telefono) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.clave) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.correoElectronico) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(e.fax) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(ua.cveUnidadAdministrativa) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-            LOWER(ua.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+            LOWER(e.id.rfc) LIKE :search OR
+            LOWER(e.id.ideTipoRfc) LIKE :search OR
+            LOWER(e.razonSocial) LIKE :search OR
+            LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+            LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+            LOWER(e.direccion) LIKE :search OR
+            LOWER(e.telefono) LIKE :search OR
+            LOWER(e.clave) LIKE :search OR
+            LOWER(e.correoElectronico) LIKE :search OR
+            LOWER(e.fax) LIKE :search OR
+            LOWER(ua.cveUnidadAdministrativa) LIKE :search OR
+            LOWER(ua.nombre) LIKE :search)
+        AND (:activo IS NULL OR e.blnActivo = :activo) """,
+            countQuery = """
+            SELECT COUNT(e)
+        FROM CatTipoRfc e
+        LEFT JOIN e.cveUnidadAdministrativa ua
+        WHERE (:search IS NULL OR
+            LOWER(e.id.rfc) LIKE :search OR
+            LOWER(e.id.ideTipoRfc) LIKE :search OR
+            LOWER(e.razonSocial) LIKE :search OR
+            LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+            LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+            LOWER(e.direccion) LIKE :search OR
+            LOWER(e.telefono) LIKE :search OR
+            LOWER(e.clave) LIKE :search OR
+            LOWER(e.correoElectronico) LIKE :search OR
+            LOWER(e.fax) LIKE :search OR
+            LOWER(ua.cveUnidadAdministrativa) LIKE :search OR
+            LOWER(ua.nombre) LIKE :search)
         AND (:activo IS NULL OR e.blnActivo = :activo) """)
     Page<CatTipoRfcDTO> search(@Param("search") String search,
                                @Param("activo") Boolean activo,

@@ -41,7 +41,7 @@ public class InfAdicionalAduanaServiceImpl implements IInfAdicionalAduanaService
 
     @Override
     public PageResponseDTO<InfAdicionalAduanaDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
-        String texto = (search != null && !search.isBlank()) ? search : null;
+        String texto = (search != null && !search.isBlank()) ? "%" + search.trim().toLowerCase() + "%" : null;
 
         Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
         Pageable sortedPageable = sort.isSorted()

@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface ICatDocumentoTramiteRepository extends JpaRepository<CatDocumentoTramite, CatDocumentoTramiteId> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatDocumentoTramiteDTO(
                 td.id,
                 td.nombre,
@@ -34,15 +34,32 @@ public interface ICatDocumentoTramiteRepository extends JpaRepository<CatDocumen
             JOIN e.idTipoDoc td
             JOIN e.idTipoTramite tr
             WHERE (:search IS NULL OR
-                LOWER(CAST(td.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(td.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(tr.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(tr.descModalidad) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideClasificacionDocumento) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideTipoSolicitanteRfe) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideReglaAnexado) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(td.id AS string)) LIKE :search OR
+                LOWER(td.nombre) LIKE :search OR
+                LOWER(CAST(tr.id AS string)) LIKE :search OR
+                LOWER(tr.descModalidad) LIKE :search OR
+                LOWER(e.ideClasificacionDocumento) LIKE :search OR
+                LOWER(e.ideTipoSolicitanteRfe) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideReglaAnexado) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatDocumentoTramite e
+            JOIN e.idTipoDoc td
+            JOIN e.idTipoTramite tr
+            WHERE (:search IS NULL OR
+                LOWER(CAST(td.id AS string)) LIKE :search OR
+                LOWER(td.nombre) LIKE :search OR
+                LOWER(CAST(tr.id AS string)) LIKE :search OR
+                LOWER(tr.descModalidad) LIKE :search OR
+                LOWER(e.ideClasificacionDocumento) LIKE :search OR
+                LOWER(e.ideTipoSolicitanteRfe) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideReglaAnexado) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatDocumentoTramiteDTO> search(@Param("search") String search,

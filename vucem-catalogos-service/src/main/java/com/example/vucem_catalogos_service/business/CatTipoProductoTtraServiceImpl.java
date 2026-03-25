@@ -29,6 +29,7 @@ public class CatTipoProductoTtraServiceImpl implements ICatTipoProductoTtraServi
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "id", "id",
             "descTipoProducto", "descTipoProducto",
+            "ideTipoCertificadoMerc", "ideTipoCertificadoMerc",
             "nombreTipoTramite", "idTipoTramite.descSubservicio"
     );
 
@@ -46,12 +47,15 @@ public class CatTipoProductoTtraServiceImpl implements ICatTipoProductoTtraServi
         Boolean activo = null;
         String texto = null;
 
-        if ("activo".equalsIgnoreCase(search)) {
-            activo = true;
-        } else if ("inactivo".equalsIgnoreCase(search)) {
-            activo = false;
-        } else {
-            texto = search;
+        if (search != null && !search.isBlank()) {
+            String s = search.trim().toLowerCase();
+            if (s.equals("activo")) {
+                activo = true;
+            } else if (s.equals("inactivo")) {
+                activo = false;
+            } else {
+                texto = "%" + s + "%";
+            }
         }
 
         Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);

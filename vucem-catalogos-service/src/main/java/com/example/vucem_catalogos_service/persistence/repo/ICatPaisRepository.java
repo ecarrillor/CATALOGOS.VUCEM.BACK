@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface ICatPaisRepository extends JpaRepository<CatPais, String> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatPaisDTO(
                 cat.cvePais,
                 cat.nombre,
@@ -31,13 +31,32 @@ public interface ICatPaisRepository extends JpaRepository<CatPais, String> {
             WHERE
                 (
                     :search IS NULL OR
-                    LOWER(cat.cvePais) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(cat.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(mon.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(cat.cvePaisWco) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(cat.nombreAlterno) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(cat.cvePais) LIKE :search OR
+                    LOWER(cat.nombre) LIKE :search OR
+                    LOWER(mon.nombre) LIKE :search OR
+                    LOWER(cat.cvePaisWco) LIKE :search OR
+                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(cat.nombreAlterno) LIKE :search
+                )
+                AND (
+                    :activo IS NULL OR cat.blnActivo = :activo
+                )
+            """,
+            countQuery = """
+            SELECT COUNT(cat)
+            FROM CatPais cat
+            LEFT JOIN cat.cveMoneda mon
+            WHERE
+                (
+                    :search IS NULL OR
+                    LOWER(cat.cvePais) LIKE :search OR
+                    LOWER(cat.nombre) LIKE :search OR
+                    LOWER(mon.nombre) LIKE :search OR
+                    LOWER(cat.cvePaisWco) LIKE :search OR
+                    LOWER(CAST(cat.fecFinVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(cat.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(cat.nombreAlterno) LIKE :search
                 )
                 AND (
                     :activo IS NULL OR cat.blnActivo = :activo

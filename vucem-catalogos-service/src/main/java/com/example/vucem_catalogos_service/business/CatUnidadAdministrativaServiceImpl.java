@@ -69,7 +69,7 @@ public class CatUnidadAdministrativaServiceImpl implements ICatUnidadAdministrat
             } else if (s.equals("inactivo")) {
                 activo = false;
             } else {
-                texto = search;
+                texto = "%" + search.trim().toLowerCase() + "%";
             }
         }
 

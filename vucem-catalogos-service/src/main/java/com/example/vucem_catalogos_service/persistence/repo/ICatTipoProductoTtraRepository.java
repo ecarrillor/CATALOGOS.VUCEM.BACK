@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ICatTipoProductoTtraRepository extends JpaRepository<CatTipoProductoTtra, Short> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatTipoProductoTtraDTO(
                 e.id,
                 t.id,
@@ -26,13 +26,27 @@ public interface ICatTipoProductoTtraRepository extends JpaRepository<CatTipoPro
             FROM CatTipoProductoTtra e
             JOIN e.idTipoTramite t
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(t.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(t.descSubservicio) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descTipoProducto) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideTipoCertificadoMerc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(CAST(t.id AS string)) LIKE :search OR
+                LOWER(t.descSubservicio) LIKE :search OR
+                LOWER(e.descTipoProducto) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideTipoCertificadoMerc) LIKE :search)
+              AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatTipoProductoTtra e
+            JOIN e.idTipoTramite t
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(CAST(t.id AS string)) LIKE :search OR
+                LOWER(t.descSubservicio) LIKE :search OR
+                LOWER(e.descTipoProducto) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideTipoCertificadoMerc) LIKE :search)
               AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatTipoProductoTtraDTO> search(

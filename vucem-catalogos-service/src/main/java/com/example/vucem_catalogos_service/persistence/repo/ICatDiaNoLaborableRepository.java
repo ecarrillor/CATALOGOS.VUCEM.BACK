@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public interface ICatDiaNoLaborableRepository extends JpaRepository<CatDiaNoLaborable, CatDiaNoLaborableId> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatDiaNoLaborableDTO(
                 e.id.fecNoLaborable,
                 e.id.cveCalendario,
@@ -29,12 +29,24 @@ public interface ICatDiaNoLaborableRepository extends JpaRepository<CatDiaNoLabo
             )
             FROM CatDiaNoLaborable e
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id.fecNoLaborable AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.id.cveCalendario) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveCalendario.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.descripcion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id.fecNoLaborable AS string)) LIKE :search OR
+                LOWER(e.id.cveCalendario) LIKE :search OR
+                LOWER(e.cveCalendario.nombre) LIKE :search OR
+                LOWER(e.descripcion) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatDiaNoLaborable e
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id.fecNoLaborable AS string)) LIKE :search OR
+                LOWER(e.id.cveCalendario) LIKE :search OR
+                LOWER(e.cveCalendario.nombre) LIKE :search OR
+                LOWER(e.descripcion) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatDiaNoLaborableDTO> search(@Param("search") String search,

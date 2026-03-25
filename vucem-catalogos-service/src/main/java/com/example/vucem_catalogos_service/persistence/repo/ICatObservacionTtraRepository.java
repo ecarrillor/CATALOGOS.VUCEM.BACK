@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatObservacionTtraRepository extends JpaRepository<CatObservacionTtra, Long> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.ObservacionTramite.CatObservacionTramiteResponseDTO(
                 a.id,
                 b.descModalidad,
@@ -27,11 +27,29 @@ public interface ICatObservacionTtraRepository extends JpaRepository<CatObservac
             WHERE
                             (
                                         :search IS NULL OR
-                                        LOWER(CAST(a.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(b.descModalidad) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(a.descObservacionDict) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(CAST(a.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR
-                                        LOWER(CAST(a.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%'))
+                                        LOWER(CAST(a.id AS string)) LIKE :search OR
+                                        LOWER(b.descModalidad) LIKE :search OR
+                                        LOWER(a.descObservacionDict) LIKE :search OR
+                                        LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                                        LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
+                           )
+                           AND
+                           (
+                               :activo IS NULL OR a.blnActivo = :activo
+                           )
+            """,
+            countQuery = """
+            SELECT COUNT(a)
+            FROM CatObservacionTtra a
+            JOIN a.idTipoTramite b
+            WHERE
+                            (
+                                        :search IS NULL OR
+                                        LOWER(CAST(a.id AS string)) LIKE :search OR
+                                        LOWER(b.descModalidad) LIKE :search OR
+                                        LOWER(a.descObservacionDict) LIKE :search OR
+                                        LOWER(CAST(a.fecIniVigencia AS string)) LIKE :search OR
+                                        LOWER(CAST(a.fecFinVigencia AS string)) LIKE :search
                            )
                            AND
                            (

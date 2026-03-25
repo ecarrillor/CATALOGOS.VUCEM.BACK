@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface ICatEquivMonedaRepository extends JpaRepository<CatEquivMoneda, Integer> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatEquivMonedaDTO(
                 e.id,
                 mo.cveMoneda,
@@ -32,14 +32,34 @@ public interface ICatEquivMonedaRepository extends JpaRepository<CatEquivMoneda,
             JOIN e.cveMonedaDestino md
              WHERE
                 (:search IS NULL OR
-                    LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(mo.cveMoneda) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(mo.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(md.cveMoneda) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(md.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(e.valorConversion AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(CAST(e.id AS string)) LIKE :search OR
+                    LOWER(mo.cveMoneda) LIKE :search OR
+                    LOWER(mo.nombre) LIKE :search OR
+                    LOWER(md.cveMoneda) LIKE :search OR
+                    LOWER(md.nombre) LIKE :search OR
+                    LOWER(CAST(e.valorConversion AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
+                )
+                AND (
+                    :activo IS NULL OR e.blnActivo = :activo
+                )
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatEquivMoneda e
+            JOIN e.cveMonedaOrigen mo
+            JOIN e.cveMonedaDestino md
+             WHERE
+                (:search IS NULL OR
+                    LOWER(CAST(e.id AS string)) LIKE :search OR
+                    LOWER(mo.cveMoneda) LIKE :search OR
+                    LOWER(mo.nombre) LIKE :search OR
+                    LOWER(md.cveMoneda) LIKE :search OR
+                    LOWER(md.nombre) LIKE :search OR
+                    LOWER(CAST(e.valorConversion AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
                 )
                 AND (
                     :activo IS NULL OR e.blnActivo = :activo

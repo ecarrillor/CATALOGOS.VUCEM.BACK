@@ -12,18 +12,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatUsoEspecMercanciaTtraRepository extends JpaRepository<CatUsoEspecMercanciaTtra, Short> {
 
-    @Query("SELECT new com.example.vucem_catalogos_service.model.dto.CatUsoEspecMercanciaTtraDTO(" +
+    @Query(value = "SELECT new com.example.vucem_catalogos_service.model.dto.CatUsoEspecMercanciaTtraDTO(" +
             "e.id, e.idTipoTramite.id, e.idTipoTramite.descServicio, " +
             "e.descUsoEspMercancia, e.fecIniVigencia, e.fecFinVigencia, e.blnActivo, e.blnReqRegistroSanitario) " +
             "FROM CatUsoEspecMercanciaTtra e " +
             "WHERE (:activo IS NULL OR e.blnActivo = :activo) " +
             "AND (:search IS NULL OR :search = '' " +
-            "OR LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(CAST(e.idTipoTramite.id AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(e.idTipoTramite.descServicio) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(e.descUsoEspMercancia) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', :search, '%')))")
+            "OR LOWER(CAST(e.id AS string)) LIKE :search " +
+            "OR LOWER(CAST(e.idTipoTramite.id AS string)) LIKE :search " +
+            "OR LOWER(e.idTipoTramite.descServicio) LIKE :search " +
+            "OR LOWER(e.descUsoEspMercancia) LIKE :search " +
+            "OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search " +
+            "OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)",
+            countQuery = "SELECT COUNT(e) FROM CatUsoEspecMercanciaTtra e  WHERE (:activo IS NULL OR e.blnActivo = :activo)  AND (:search IS NULL OR :search = ''  OR LOWER(CAST(e.id AS string)) LIKE :search  OR LOWER(CAST(e.idTipoTramite.id AS string)) LIKE :search  OR LOWER(e.idTipoTramite.descServicio) LIKE :search  OR LOWER(e.descUsoEspMercancia) LIKE :search  OR LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search  OR LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search)")
     Page<CatUsoEspecMercanciaTtraDTO> search(@Param("search") String search,
                                               @Param("activo") Boolean activo,
                                               Pageable pageable);

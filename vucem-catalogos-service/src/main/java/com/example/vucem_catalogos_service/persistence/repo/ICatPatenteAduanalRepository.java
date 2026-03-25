@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatPatenteAduanalRepository extends JpaRepository<CatPatenteAduanal, String> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatPatenteAduanalDTO(
                 e.cvePatenteAduanal,
                 e.rfc,
@@ -23,11 +23,23 @@ public interface ICatPatenteAduanalRepository extends JpaRepository<CatPatenteAd
             )
             FROM CatPatenteAduanal e
             WHERE (:search IS NULL OR
-                LOWER(e.cvePatenteAduanal) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.rfc) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideEstPatenteAut) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                LOWER(e.cvePatenteAduanal) LIKE :search OR
+                LOWER(e.rfc) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideEstPatenteAut) LIKE :search
+            )
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatPatenteAduanal e
+            WHERE (:search IS NULL OR
+                LOWER(e.cvePatenteAduanal) LIKE :search OR
+                LOWER(e.rfc) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideEstPatenteAut) LIKE :search
             )
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)

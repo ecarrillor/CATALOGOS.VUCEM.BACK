@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface ICatTratadoAcuerdoRepository extends JpaRepository<CatTratadoAcuerdo, Short> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatTratadoAcuerdoDTO(
                 e.id,
                 e.ideTipoTratadoAcuerdo,
@@ -31,14 +31,28 @@ public interface ICatTratadoAcuerdoRepository extends JpaRepository<CatTratadoAc
             )
             FROM CatTratadoAcuerdo e
             WHERE (:search IS NULL OR
-                LOWER(CAST(e.id AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideTipoTratadoAcuerdo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.cveTratadoAcuerdo) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.nombre) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecCaptura AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(e.ideTipoCupoSaai) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(e.ideTipoTratadoAcuerdo) LIKE :search OR
+                LOWER(e.cveTratadoAcuerdo) LIKE :search OR
+                LOWER(e.nombre) LIKE :search OR
+                LOWER(CAST(e.fecCaptura AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideTipoCupoSaai) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search)
+            AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatTratadoAcuerdo e
+            WHERE (:search IS NULL OR
+                LOWER(CAST(e.id AS string)) LIKE :search OR
+                LOWER(e.ideTipoTratadoAcuerdo) LIKE :search OR
+                LOWER(e.cveTratadoAcuerdo) LIKE :search OR
+                LOWER(e.nombre) LIKE :search OR
+                LOWER(CAST(e.fecCaptura AS string)) LIKE :search OR
+                LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search OR
+                LOWER(e.ideTipoCupoSaai) LIKE :search OR
+                LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search)
             AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
     Page<CatTratadoAcuerdoDTO> search(@Param("search") String search,

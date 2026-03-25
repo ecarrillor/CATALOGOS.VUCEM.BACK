@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICatDeclaracionTramiteRepository extends JpaRepository<CatDeclaracionTramite, CatDeclaracionTramiteId> {
 
-    @Query("""
+    @Query(value = """
             SELECT new com.example.vucem_catalogos_service.model.dto.CatDeclaracionTramiteDTO(
                 e.id.cveDeclaracion,
                 e.id.idTipoTramite,
@@ -24,11 +24,23 @@ public interface ICatDeclaracionTramiteRepository extends JpaRepository<CatDecla
             )
             FROM CatDeclaracionTramite e
             WHERE (:search IS NULL OR
-                    LOWER(e.id.cveDeclaracion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(e.id.idTipoTramite AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(e.cveDeclaracion.descDeclaracion) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')) OR
-                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                    LOWER(e.id.cveDeclaracion) LIKE :search OR
+                    LOWER(CAST(e.id.idTipoTramite AS string)) LIKE :search OR
+                    LOWER(e.cveDeclaracion.descDeclaracion) LIKE :search OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
+                )
+                AND (:activo IS NULL OR e.blnActivo = :activo)
+            """,
+            countQuery = """
+            SELECT COUNT(e)
+            FROM CatDeclaracionTramite e
+            WHERE (:search IS NULL OR
+                    LOWER(e.id.cveDeclaracion) LIKE :search OR
+                    LOWER(CAST(e.id.idTipoTramite AS string)) LIKE :search OR
+                    LOWER(e.cveDeclaracion.descDeclaracion) LIKE :search OR
+                    LOWER(CAST(e.fecIniVigencia AS string)) LIKE :search OR
+                    LOWER(CAST(e.fecFinVigencia AS string)) LIKE :search
                 )
                 AND (:activo IS NULL OR e.blnActivo = :activo)
             """)
