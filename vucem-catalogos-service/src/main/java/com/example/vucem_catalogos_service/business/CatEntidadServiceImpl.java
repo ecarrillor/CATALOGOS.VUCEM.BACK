@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 public class CatEntidadServiceImpl implements ICatEntidadService {
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "cveEntidad", "e.cveEntidad",
-            "nombre", "e.nombre",
-            "codEntidadIdc", "e.codEntidadIdc"
+            "cveEntidad", "cveEntidad",
+            "nombre", "nombre",
+            "codEntidadIdc", "codEntidadIdc"
     );
 
     @Autowired
