@@ -33,7 +33,7 @@ public class CatVigenciaServicioServiceImpl implements ICatVigenciaServicioServi
             "numVigencia", "numVigencia",
             "ideTipoVigencia", "ideTipoVigencia",
             "ideTipoServicioCeror", "ideTipoServicioCeror",
-            "cvePais", "catPaisTratadoAcuerdo.cvePais.cvePais",
+            "nombrePais", "catPaisTratadoAcuerdo.cvePais.nombre",
             "nombreBloque", "idBloque.nombre",
             "criterio", "cveCriterioOrigen.cveCriterioOrigen"
     );

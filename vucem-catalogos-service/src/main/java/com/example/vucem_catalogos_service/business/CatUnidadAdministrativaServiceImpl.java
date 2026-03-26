@@ -33,11 +33,13 @@ public class CatUnidadAdministrativaServiceImpl implements ICatUnidadAdministrat
             "cveUnidadAdministrativa", "cveUnidadAdministrativa",
             "ideTipoUnidadAdministrativa", "ideTipoUnidadAdministrativa",
             "nombre", "nombre",
+            "cveUnidadAdministrativaR", "parent.cveUnidadAdministrativa",
             "acronimo", "acronimo",
             "descripcion", "descripcion",
             "nivel", "nivel",
             "nombreEntidad", "cveEntidad.nombre",
-            "nombreDependencia", "idDependencia.nombre"
+            "nombreDependencia", "idDependencia.nombre",
+            "blnFronteriza", "blnFronteriza"
     );
 
     @Autowired

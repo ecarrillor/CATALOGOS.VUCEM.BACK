@@ -29,6 +29,7 @@ public class CatTratadoAcuerdoServiceImpl implements ICatTratadoAcuerdoService {
             "ideTipoTratadoAcuerdo", "ideTipoTratadoAcuerdo",
             "cveTratadoAcuerdo", "cveTratadoAcuerdo",
             "nombre", "nombre",
+            "blnPexim", "blnPexim",
             "ideTipoCupoSaai", "ideTipoCupoSaai"
     );
 

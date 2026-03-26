@@ -43,7 +43,8 @@ public class CatPaisTratadoAcuerdo {
 
     @Column(name = "bln_envio_electronico")
     private Boolean blnEnvioElectronico;
-    @OneToMany
+
+    @OneToMany(mappedBy = "catPaisTratadoAcuerdo")
     private Set<CatVigenciaServicio> catVigenciaServicios = new LinkedHashSet<>();
     @OneToMany
     private Set<CnfNormaPaisCriterio> cnfNormaPaisCriterios = new LinkedHashSet<>();

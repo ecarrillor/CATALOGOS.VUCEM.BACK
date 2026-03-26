@@ -45,6 +45,8 @@ public class CatTratadoBloquePaiServiceImpl implements ICatTratadoBloquePaiServi
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cvePais", "tbp.id.cvePais",
             "nombrePais", "p.nombre",
+            "blnEnvioElectronico", "blnEnvioElectronico",
+            "blnMuestraCertificado", "blnMuestraCertificado",
             "cveTratadoAcuerdo", "t.cveTratadoAcuerdo"
     );
 
@@ -55,7 +57,7 @@ public class CatTratadoBloquePaiServiceImpl implements ICatTratadoBloquePaiServi
         Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
         Pageable pageableWithSort = sort.isSorted()
                 ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
-                : pageable;
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "t.cveTratadoAcuerdo"));
 
         Page<CatTratadoBloquePaiResponseDTO> page =
                 repository.search(cvePais, idTratadoAcuerdo, blnActivo, search, pageableWithSort);

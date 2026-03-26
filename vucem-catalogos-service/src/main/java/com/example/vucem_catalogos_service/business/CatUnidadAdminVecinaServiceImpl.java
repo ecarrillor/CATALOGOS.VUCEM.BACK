@@ -64,7 +64,7 @@ public class CatUnidadAdminVecinaServiceImpl implements ICatUnidadAdminVecinaSer
         Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
         Pageable sortedPageable = sort.isSorted()
                 ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
-                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id.cveUnidadAdministrativa"));
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "cveUnidadAdministrativa.nombre"));
 
         Page<CatUnidadAdminVecinaDTO> page = catUnidadAdminVecinaRepository.search(texto, activo, sortedPageable);
 
