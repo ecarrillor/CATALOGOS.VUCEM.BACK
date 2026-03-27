@@ -11,6 +11,7 @@ import com.example.vucem_catalogos_service.model.entity.CatDependencia;
 import com.example.vucem_catalogos_service.persistence.repo.ICatCalendarioRepository;
 import com.example.vucem_catalogos_service.persistence.repo.ICatDependenciaRepository;
 import jakarta.transaction.Transactional;
+import org.apache.tomcat.util.http.parser.TE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -33,6 +35,12 @@ public class CatDependenciaServiceImpl implements ICatDependenciaService {
             "nombreDependencia", "a.nombre",
             "acronimo", "a.acronimo",
             "nombreCalendario", "b.nombre"
+    );
+
+    private static final String DEFAULT_SORT_KEY = "cveDependencia";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+        "nombreDependencia", "acronimo", "nombreCalendario"
     );
 
     @Autowired
@@ -61,7 +69,7 @@ public class CatDependenciaServiceImpl implements ICatDependenciaService {
             }
         }
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS,DEFAULT_SORT_KEY);
         Pageable sortedPageable = sort.isSorted()
                 ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
                 : pageable;

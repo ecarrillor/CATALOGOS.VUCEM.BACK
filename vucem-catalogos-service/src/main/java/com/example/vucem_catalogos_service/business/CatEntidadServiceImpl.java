@@ -26,7 +26,8 @@ public class CatEntidadServiceImpl implements ICatEntidadService {
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cveEntidad", "cveEntidad",
             "nombre", "nombre",
-            "codEntidadIdc", "codEntidadIdc"
+            "codEntidadIdc", "codEntidadIdc",
+            "cvePais", "cvePais.nombre"
     );
 
     @Autowired

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -32,6 +33,12 @@ public class CatClasificacionRegimenServiceImpl implements ICatClasificacionRegi
             "nombreRegimen", "re.nombre",
             "nombre", "e.nombre",
             "codRegimen", "e.codRegimen"
+    );
+
+    private static final String DEFAULT_SORT_KEY = "cveClasificacionRegimen";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+            "cveRegimen", "nombreRegimen", "nombre", "codRegimen"
     );
 
     @Autowired
@@ -56,7 +63,7 @@ public class CatClasificacionRegimenServiceImpl implements ICatClasificacionRegi
             }
         }
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS, DEFAULT_SORT_KEY);
         Pageable sortedPageable = sort.isSorted()
                 ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
                 : pageable;

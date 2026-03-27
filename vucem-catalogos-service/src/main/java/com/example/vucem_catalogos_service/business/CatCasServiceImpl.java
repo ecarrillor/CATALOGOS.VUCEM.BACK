@@ -28,6 +28,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -50,6 +51,11 @@ public class CatCasServiceImpl implements ICatCasService {
             "descCas", "cas.descCas",
             "nombreTramite", "tt.descModalidad"
     );
+    private static final String DEFAULT_SORT_KEY = "id";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+
+    );
 
     @Override
     public PageResponseDTO<CatCaResponseDTO> listAll(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable) {
@@ -71,7 +77,7 @@ public class CatCasServiceImpl implements ICatCasService {
             }
         }
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS, DEFAULT_SORT_KEY);
         Pageable pageableWithSort = sort.isSorted()
                 ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
                 : pageable;

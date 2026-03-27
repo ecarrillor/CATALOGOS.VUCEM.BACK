@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -28,7 +29,11 @@ public class CatCapituloFraccionServiceImpl extends AbstractCatalogService<CatCa
             "cveCapituloFraccion", "cveCapituloFraccion",
             "nombre",              "nombre"
     );
+    private static final String DEFAULT_SORT_KEY = "cveCapituloFraccion";
 
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+
+    );
     @Autowired
     private ICatCapituloFraccionRepository catCapituloFraccionRepository;
 
@@ -80,9 +85,22 @@ public class CatCapituloFraccionServiceImpl extends AbstractCatalogService<CatCa
     }
 
     private Sort buildValidatedSort(Sort incoming) {
-        if (incoming == null || incoming.isUnsorted()) return Sort.unsorted();
+        if (incoming == null || incoming.isUnsorted()) {
+            return Sort.by(Sort.Direction.ASC, ALLOWED_SORT_COLUMNS.get(DEFAULT_SORT_KEY));
+        }
+
         Sort.Order order = incoming.stream().findFirst().orElse(null);
-        if (order == null) return Sort.unsorted();
-        return SortValidator.buildSort(order.getProperty(), order.getDirection().name(), ALLOWED_SORT_COLUMNS);
+
+        if (order == null) {
+            return Sort.by(Sort.Direction.ASC, ALLOWED_SORT_COLUMNS.get(DEFAULT_SORT_KEY));
+        }
+
+        return SortValidator.buildSort(
+                order.getProperty(),
+                order.getDirection().name(),
+                ALLOWED_SORT_COLUMNS,
+                TEXT_COLUMNS,
+                DEFAULT_SORT_KEY
+        );
     }
 }

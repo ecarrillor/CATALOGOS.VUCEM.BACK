@@ -20,16 +20,26 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
 public class CatDocumentoTramiteServiceImpl implements ICatDocumentoTramiteService {
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "idTipoDoc", "td.id",
-            "nombreTipoDoc", "td.nombre",
-            "idTipoTramite", "tr.id",
-            "descModalidad", "tr.descModalidad"
+            "idTipoDoc",                 "td.id",
+            "nombreDocumento",           "td.nombre",
+            "idTipoTramite",             "tr.id",
+            "nombreTramite",             "tr.descModalidad",
+            "blnEspecifico",             "e.blnEspecifico",
+            "ideClasificacionDocumento", "e.ideClasificacionDocumento",
+            "ideTipoSolicitanteRfe",     "e.ideTipoSolicitanteRfe"
+    );
+
+    private static final String DEFAULT_SORT_KEY = "idTipoDoc";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+            "nombreDocumento", "nombreTramite"
     );
 
     @Autowired
@@ -54,7 +64,7 @@ public class CatDocumentoTramiteServiceImpl implements ICatDocumentoTramiteServi
             }
         }
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS,DEFAULT_SORT_KEY);
         Pageable sortedPageable = sort.isSorted()
                 ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
                 : pageable;

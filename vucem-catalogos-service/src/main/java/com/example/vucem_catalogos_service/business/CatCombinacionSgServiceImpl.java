@@ -20,18 +20,34 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
 public class CatCombinacionSgServiceImpl implements ICatCombinacionSgService {
 
-    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "id", "e.id",
-            "ideTipoCertificadoMerc", "e.ideTipoCertificadoMerc",
-            "descEspecie", "e.cvcEspecie.descGenerica1",
-            "descNombreComun", "e.cvcNombreComun.descGenerica1",
-            "nombrePais", "e.cvePais.nombre"
-    );
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.ofEntries(
+
+            Map.entry("id", "e.id"),
+
+            Map.entry("cvcEspecie", "e.cvcEspecie.cveCatalogo"),
+            Map.entry("descEspecie", "e.cvcEspecie.descGenerica1"),
+
+            Map.entry("cvcFuncionZootecnica", "e.cvcFuncionZootecnica.cveCatalogo"),
+            Map.entry("descFuncionZootecnica", "e.cvcFuncionZootecnica.descGenerica1"),
+
+            Map.entry("cvcNombreComun", "e.cvcNombreComun.cveCatalogo"),
+            Map.entry("descNombreComun", "e.cvcNombreComun.descGenerica1"),
+
+            Map.entry("cvcTipoProducto", "e.cvcTipoProducto.cveCatalogo"),
+            Map.entry("descTipoProducto", "e.cvcTipoProducto.descGenerica1"),
+
+            Map.entry("cvePais", "e.cvePais.cvePais"),
+            Map.entry("nombrePais", "e.cvePais.nombre"),
+
+            Map.entry("ideTipoCertificadoMerc", "e.ideTipoCertificadoMerc"));
+
+
 
     @Autowired
     private ICatCombinacionSgRepository catCombinacionSgRepository;

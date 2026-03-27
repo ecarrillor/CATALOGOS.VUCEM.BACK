@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -27,7 +28,13 @@ public class CatDelegMunServiceImpl implements ICatDelegMunService {
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cveDelegMun", "cat.cveDelegMun",
             "nombre", "cat.nombre",
-            "entidad", "cat.cveEntidad.nombre"
+            "nombreEntidad", "cat.cveEntidad.nombre"
+    );
+
+    private static final String DEFAULT_SORT_KEY = "cveDelegMun";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+        "nombre", "nombreEntidad"
     );
 
     @Autowired
@@ -51,7 +58,7 @@ public class CatDelegMunServiceImpl implements ICatDelegMunService {
             }
         }
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS, DEFAULT_SORT_KEY);
         Pageable sortedPageable = sort.isSorted()
                 ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
                 : pageable;

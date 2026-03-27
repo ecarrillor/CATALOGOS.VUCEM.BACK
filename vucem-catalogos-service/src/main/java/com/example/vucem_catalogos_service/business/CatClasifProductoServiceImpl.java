@@ -22,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +40,14 @@ public class CatClasifProductoServiceImpl implements ICatClasifProductoService {
             "nombreTipoTramite", "t.descModalidad",
             "nombreClasifProductoR", "r.nombre",
             "nombre", "e.nombre",
-            "ideTipoClasifProducto", "e.ideTipoClasifProducto"
+            "ideTipoClasifProducto", "e.ideTipoClasifProducto",
+            "idClasifProductoR", "r.idClasifProduct"
+    );
+
+    private static final String DEFAULT_SORT_KEY = "idClasifProduct";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+            "nombreClasifProductoR", "nombre"
     );
 
     @Override
@@ -58,7 +66,7 @@ public class CatClasifProductoServiceImpl implements ICatClasifProductoService {
             }
         }
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS, DEFAULT_SORT_KEY);
         Pageable pageableWithSort = sort.isSorted()
                 ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
                 : pageable;

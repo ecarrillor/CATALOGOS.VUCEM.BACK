@@ -45,14 +45,18 @@ public class CatCasFraccionTtraServiceImpl implements ICatCasFraccionTtraService
     @Autowired
     private ICatTipoTramiteRepository tipoTramiteRepository;
 
-    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "id", "a.id",
-            "descCas", "cas.descCas",
-            "cveFraccion", "fra.cveFraccion",
-            "descripcionFraccion", "fra.descripcion",
-            "descTipoTramite", "tt.descModalidad",
-            "descFraccionAlt", "a.descFraccionAlt",
-            "ideIdentificadorRegla", "a.ideIdentificadorRegla"
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.ofEntries(
+            Map.entry("id", "a.id"),
+            Map.entry("descCas", "cas.descCas"),
+            Map.entry("cveFraccion", "fra.cveFraccion"),
+            Map.entry("descripcionFraccion", "fra.descripcion"),
+            Map.entry("descTipoTramite", "tt.descModalidad"),
+            Map.entry("descFraccionAlt", "a.descFraccionAlt"),
+            Map.entry("ideIdentificadorRegla", "a.ideIdentificadorRegla"),
+            Map.entry("cvnWasser", "a.cvnWasser"),
+            Map.entry("cvnArmas", "a.cvnArmas"),
+            Map.entry("cvnMontreal", "a.cvnMontreal"),
+            Map.entry("cvnEstocolmo", "a.cvnEstocolmo")
     );
 
     @Override

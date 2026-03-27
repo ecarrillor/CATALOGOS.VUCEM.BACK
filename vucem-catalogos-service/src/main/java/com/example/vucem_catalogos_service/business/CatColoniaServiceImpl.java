@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -30,6 +31,12 @@ public class CatColoniaServiceImpl implements ICatColoniaService {
             "municipio", "dm.nombre",
             "localidad", "loc.nombre",
             "cp", "cat.cp"
+    );
+
+    private static final String DEFAULT_SORT_KEY = "cveColonia";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+            "nombre", "municipio", "localidad", "cp"
     );
 
     @Autowired
@@ -60,7 +67,7 @@ public class CatColoniaServiceImpl implements ICatColoniaService {
             }
         }
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS, DEFAULT_SORT_KEY);
         Pageable sortedPageable = sort.isSorted()
                 ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
                 : pageable;

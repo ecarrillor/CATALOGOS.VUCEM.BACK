@@ -24,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -45,6 +46,12 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
             "nombreClasifProducto", "a.idClasifProducto.nombre"
     );
 
+    private static final String DEFAULT_SORT_KEY = "idAduanaClasifProduct";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+            "cveAduana", "nombreAduana", "nombreClasifProducto"
+    );
+
     @Override
     public PageResponseDTO<CatAduanaClasifProdResponseDTO> catAduanaListAll(String search, Long idTipoTramite, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
@@ -62,7 +69,7 @@ public class CatAduanaClasifProductoServiceImpl implements ICatAduanaClasifProdu
             }
         }
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS,DEFAULT_SORT_KEY);
         Pageable pageableWithSort = sort.isSorted()
                 ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort)
                 : pageable;

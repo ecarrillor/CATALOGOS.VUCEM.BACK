@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Transactional
 @Service
@@ -27,6 +28,11 @@ public class CatLenguajeServiceImpl extends AbstractCatalogService<CatLenguaje,S
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cveLenguaje", "cveLenguaje",
             "nombre",      "nombre"
+    );
+
+    private static final String DEFAULT_SORT_KEY = "cveLenguaje";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
     );
 
     @Autowired
@@ -79,9 +85,22 @@ public class CatLenguajeServiceImpl extends AbstractCatalogService<CatLenguaje,S
     }
 
     private Sort buildValidatedSort(Sort incoming) {
-        if (incoming == null || incoming.isUnsorted()) return Sort.unsorted();
+        if (incoming == null || incoming.isUnsorted()) {
+            return Sort.by(Sort.Direction.ASC, ALLOWED_SORT_COLUMNS.get(DEFAULT_SORT_KEY));
+        }
+
         Sort.Order order = incoming.stream().findFirst().orElse(null);
-        if (order == null) return Sort.unsorted();
-        return SortValidator.buildSort(order.getProperty(), order.getDirection().name(), ALLOWED_SORT_COLUMNS);
+
+        if (order == null) {
+            return Sort.by(Sort.Direction.ASC, ALLOWED_SORT_COLUMNS.get(DEFAULT_SORT_KEY));
+        }
+
+        return SortValidator.buildSort(
+                order.getProperty(),
+                order.getDirection().name(),
+                ALLOWED_SORT_COLUMNS,
+                TEXT_COLUMNS,
+                DEFAULT_SORT_KEY
+        );
     }
 }
