@@ -29,7 +29,8 @@ public class CatJustificacionTramiteServiceImpl implements ICatJustificacionTram
    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
            "idJustificacionTramite", "id",
            "descripcionJustificacion", "descJustificacion",
-           "descripcionContenido", "descContenidoJustificacion"
+           "descripcionContenido", "descContenidoJustificacion",
+           "nombreTramite", "b.descServicio"
    );
 
    @Autowired

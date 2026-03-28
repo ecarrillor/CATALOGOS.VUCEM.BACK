@@ -24,7 +24,9 @@ public class CatSectorProsecServiceImpl implements ICatSectorProsecService {
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cveSectorProsec", "cveSectorProsec",
-            "nombre", "nombre"
+            "nombre", "nombre",
+            "blnProductorIndirecto", "blnProductorIndirecto",
+            "blnAmpliacionMercancias", "blnAmpliacionMercancias"
     );
 
     @Autowired

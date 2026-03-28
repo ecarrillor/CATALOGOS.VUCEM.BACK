@@ -18,16 +18,31 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
 public class CatRecintoFiscalizadoServiceImpl implements ICatRecintoFiscalizadoService {
 
-    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "id", "id",
-            "nombre", "nombre",
-            "rfc", "rfc",
-            "numAutorizacion", "numAutorizacion"
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.ofEntries(
+            Map.entry("id",                         "id"),
+            Map.entry("cveAduana",                  "cveAduana.cveAduana"),
+            Map.entry("nombreAduana",               "cveAduana.nombre"),
+            Map.entry("ideTipoRecintoFiscalizado",  "ideTipoRecintoFiscalizado"),
+            Map.entry("nombre",                     "nombre"),
+            Map.entry("rfc",                        "rfc"),
+            Map.entry("numAutorizacion",            "numAutorizacion"),
+            Map.entry("codCamir",                   "codCamir"),
+            Map.entry("blnComRfMf",                 "blnComRfMf"),
+            Map.entry("correoElectronico",          "correoElectronico"),
+            Map.entry("descUrl",                    "descUrl"),
+            Map.entry("tipo",                       "tipo")
+    );
+
+    private static final String DEFAULT_SORT_KEY = "id";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+
     );
 
     @Autowired
@@ -56,7 +71,7 @@ public class CatRecintoFiscalizadoServiceImpl implements ICatRecintoFiscalizadoS
             }
         }
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS, DEFAULT_SORT_KEY);
         Pageable sortedPageable = sort.isSorted()
                 ? PageRequest.of(page, size, sort)
                 : PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "nombre"));

@@ -27,7 +27,8 @@ public class CatParametroServiceImpl implements ICatParametroService {
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cveParametro", "cveParametro",
             "descripcion", "descripcion",
-            "valor", "valor"
+            "valor", "valor",
+            "dependencia", "b.nombre"
     );
 
     @Autowired

@@ -28,7 +28,8 @@ public class CatObservacionTramiteServiceImpl implements ICatObservacionTramiteS
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "numObservacionTramite", "id",
-            "descripcionObservacion", "descObservacionDict"
+            "descripcionObservacion", "descObservacionDict",
+            "tipoTramite", "b.descModalidad"
     );
 
     @Autowired

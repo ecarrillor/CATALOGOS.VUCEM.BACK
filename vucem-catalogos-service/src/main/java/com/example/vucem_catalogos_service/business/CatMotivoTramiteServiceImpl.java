@@ -29,7 +29,9 @@ public class CatMotivoTramiteServiceImpl implements ICatMotivoTramiteService {
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "idMotivoTramite", "id",
             "descripcionMotivo", "descMotivo",
-            "descripcionContenido", "descContenidoMotivo"
+            "descripcionContenido", "descContenidoMotivo",
+            "tipoTramite", "b.descModalidad",
+            "tipoMotivo", "a.ideTipoMotivoTtra"
     );
 
     @Autowired

@@ -26,7 +26,8 @@ public class CatLeyendaTextoServiceImpl implements ICatLeyendaTextoService {
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cveLeyenda", "id",
             "leyenda", "leyenda",
-            "numAnio", "numAnio"
+            "numAnio", "numAnio",
+            "tipoLeyenda", "a.ideTipoLeyendaTexto"
     );
 
     @Autowired

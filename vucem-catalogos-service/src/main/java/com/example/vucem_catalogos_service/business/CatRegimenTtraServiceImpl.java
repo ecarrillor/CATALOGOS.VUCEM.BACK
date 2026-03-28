@@ -29,7 +29,8 @@ public class CatRegimenTtraServiceImpl implements ICatRegimenTtraService {
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "id", "id",
             "cveRegimen", "cveRegimen.cveRegimen",
-            "nombreRegimen", "cveRegimen.nombre"
+            "nombreRegimen", "cveRegimen.nombre",
+            "nombreTipoTramite", "e.idTipoTramite.descSubservicio"
     );
 
     @Autowired
