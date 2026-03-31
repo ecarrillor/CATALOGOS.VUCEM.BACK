@@ -54,7 +54,8 @@ public class CatFraccionTtraServiceImpl implements ICatFraccionTtraService {
             "factorConversion", "a.factorConversion",
             "valorEquivalencia", "a.valorEquivalencia",
             "cveUnidadMedida", "a.cveUnidadMedida",
-            "descripcionCategoriaTextil", "cat.descripcion"
+            "descripcionCategoriaTextil", "cat.descripcion",
+            "descFraccionAlt", "a.descFraccionAlt"
     );
 
     @Override
