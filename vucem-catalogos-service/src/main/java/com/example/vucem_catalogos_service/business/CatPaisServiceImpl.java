@@ -30,7 +30,8 @@ public class CatPaisServiceImpl implements ICatPaisService {
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cvePais", "cvePais",
             "nombre", "nombre",
-            "cvePaisWco", "cvePaisWco"
+            "cvePaisWco", "cvePaisWco",
+            "cveMoneda", "mon.nombre"
     );
 
     @Autowired
