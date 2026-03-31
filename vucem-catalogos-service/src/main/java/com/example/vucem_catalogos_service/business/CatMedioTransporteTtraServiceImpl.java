@@ -25,7 +25,9 @@ import java.util.Map;
 public class CatMedioTransporteTtraServiceImpl implements ICatMedioTransporteTtraService {
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "id", "id"
+            "id", "id",
+            "nombreTipoTramite", "t.descModalidad",
+            "ideMedioTransporteGob", "e.ideMedioTransporteGob"
     );
 
     @Autowired
