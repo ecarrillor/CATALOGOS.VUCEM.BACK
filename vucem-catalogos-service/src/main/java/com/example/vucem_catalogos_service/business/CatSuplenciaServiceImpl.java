@@ -27,7 +27,8 @@ public class CatSuplenciaServiceImpl implements ICatSuplenciaService {
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "id", "id",
-            "texto", "texto"
+            "texto", "texto",
+            "nombreDependencia", "e.idDependencia.nombre"
     );
 
     @Autowired

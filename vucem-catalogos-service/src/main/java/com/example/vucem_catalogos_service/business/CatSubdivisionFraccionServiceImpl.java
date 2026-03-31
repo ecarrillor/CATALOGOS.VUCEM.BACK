@@ -30,7 +30,9 @@ public class CatSubdivisionFraccionServiceImpl implements ICatSubdivisionFraccio
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cveSubdivision", "cveSubdivision",
             "descripcionSubdivision", "descripcion",
-            "codSubdivision", "codSubdivision"
+            "codSubdivision", "codSubdivision",
+            "cveFraccion", "e.cveFraccion.cveFraccion",
+            "precioEstimado", "e.precioEstimado"
     );
 
     @Autowired

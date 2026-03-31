@@ -29,7 +29,8 @@ public class CatTarifaServiceImpl implements ICatTarifaService {
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cveTipoTramite", "idTipoTramite.descSubservicio",
-            "tarifa", "tarifa"
+            "tarifa", "tarifa",
+            "cveTipoTarifa", "e.id.ideTipoTarifa"
     );
 
     @Autowired
