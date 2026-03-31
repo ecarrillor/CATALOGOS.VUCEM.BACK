@@ -31,7 +31,7 @@ public class CatNormalOficialServiceImpl implements ICatNormalOficialService {
             Map.entry("ideClasifNorma",        "ideClasifNorma"),
             Map.entry("cvePais",               "p.cvePais"),
             Map.entry("nombrePais",            "p.nombre"),
-            Map.entry("idNormaOficialR",       "normaOficialR.id"),
+            Map.entry("idNormaOficialR",       "r.id"),
             Map.entry("blnLoteEstructurado",   "blnLoteEstructurado")
     );
 
