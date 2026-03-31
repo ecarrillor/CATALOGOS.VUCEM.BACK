@@ -28,7 +28,10 @@ public class CatPlazoMaximoAutTramiteServiceImpl implements ICatPlazoMaximoAutTr
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "descServicio", "idTipoTramite.descServicio",
             "plazo", "plazo",
-            "plazoAnios", "plazoAnios"
+            "plazoAnios", "plazoAnios",
+            "idePlazoMeses", "e.idePlazoMeses",
+            "blnIlimitado", "e.blnIlimitado",
+            "blnAsignacionFechaFin", "e.blnAsignacionFechaFin"
     );
 
     @Autowired

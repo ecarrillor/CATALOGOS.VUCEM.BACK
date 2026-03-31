@@ -25,7 +25,10 @@ import java.util.Map;
 public class CatPaisRestriccionTtraServiceImpl implements ICatPaisRestriccionTtraService {
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "id", "id"
+            "id", "id",
+            "nombreTipoTramite", "tt.descModalidad",
+            "cvePais", "p.cvePais",
+            "ideTipoRestriccionPaisTtra", "e.ideTipoRestriccionPaisTtra"
     );
 
     @Autowired
