@@ -24,7 +24,8 @@ public class CatSeccionTtraServiceImpl implements ICatSeccionTtraService {
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "id", "id",
-            "descSeccion", "descSeccion"
+            "descSeccion", "descSeccion",
+            "descServicio", "e.idTipoTramite.descServicio"
     );
 
     @Autowired
