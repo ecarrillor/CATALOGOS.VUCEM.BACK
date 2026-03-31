@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -41,6 +42,12 @@ public class CatFundamentoTtraServiceImpl implements ICatFundamentoTtraService {
             "descContenidoFundamento", "e.descContenidoFundamento"
     );
 
+    private static final String DEFAULT_SORT_KEY = "id";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
+
+    );
+
     @Override
     public PageResponseDTO<CatFundamentoTtraDTO> list(String search, String sortBy, String sortDir, Pageable pageable) {
         Boolean activo = null;
@@ -57,7 +64,7 @@ public class CatFundamentoTtraServiceImpl implements ICatFundamentoTtraService {
             }
         }
 
-        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS);
+        Sort sort = SortValidator.buildSort(sortBy, sortDir, ALLOWED_SORT_COLUMNS, TEXT_COLUMNS, DEFAULT_SORT_KEY);
         Pageable sortedPageable = sort.isUnsorted() ? pageable
                 : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 
