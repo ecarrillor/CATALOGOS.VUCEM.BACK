@@ -22,10 +22,17 @@ import java.util.Map;
 @Transactional
 public class CatNormalOficialServiceImpl implements ICatNormalOficialService {
 
-    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "id", "id",
-            "claveNorma", "claveNorma",
-            "descNorma", "descNorma"
+    private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.ofEntries(
+            Map.entry("id",                    "id"),
+            Map.entry("claveNorma",            "claveNorma"),
+            Map.entry("descNorma",             "descNorma"),
+            Map.entry("fecPublicacion",        "fecPublicacion"),
+            Map.entry("fecEntradaVigor",       "fecEntradaVigor"),
+            Map.entry("ideClasifNorma",        "ideClasifNorma"),
+            Map.entry("cvePais",               "pais.cvePais"),
+            Map.entry("nombrePais",            "pais.nombre"),
+            Map.entry("idNormaOficialR",       "normaOficialR.id"),
+            Map.entry("blnLoteEstructurado",   "blnLoteEstructurado")
     );
 
     @Autowired

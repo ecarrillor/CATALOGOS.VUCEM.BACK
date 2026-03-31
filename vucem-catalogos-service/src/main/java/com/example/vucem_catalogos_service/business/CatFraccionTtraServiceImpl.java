@@ -46,11 +46,14 @@ public class CatFraccionTtraServiceImpl implements ICatFraccionTtraService {
     private ICatCategoriaTextilRepository categoriaTextilRepository;
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "id", "e.id",
+            "id", "a.id",
             "cveFraccion", "e.cveFraccionArancelaria.cveFraccionArancelaria",
-            "descripcionFraccion", "e.cveFraccionArancelaria.descripcion",
             "idTipoTramite", "e.idTipoTramite.id",
-            "descTipoTramite", "e.idTipoTramite.descSubservicio"
+            "descTipoTramite", "e.idTipoTramite.descSubservicio",
+            "descripcionFraccion", "fra.descripcion",
+            "factorConversion", "a.factorConversion",
+            "valorEquivalencia", "a.valorEquivalencia",
+            "cveUnidadMedida", "a.cveUnidadMedida"
     );
 
     @Override

@@ -55,7 +55,8 @@ public class CatFundamentoDictamanServiceImpl extends AbstractCatalogService<Cat
     // Allowed columns for the generic findAll (Specification-based)
     private static final Map<String, String> ALLOWED_SORT_COLUMNS_FINDALL = Map.of(
             "id",          "id",
-            "descripcion", "descripcion"
+            "descripcion", "descripcion",
+            "blnSentidoFundamento", "a.blnSentidoFundamento"
     );
 
     @Override
@@ -93,8 +94,9 @@ public class CatFundamentoDictamanServiceImpl extends AbstractCatalogService<Cat
 
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS_DICTAMEN = Map.of(
-            "cveFundamentoDictamen", "e.id",
-            "descripcion", "e.descripcion"
+            "cveFundamentoDictamen", "a.id",
+            "descripcion", "a.descripcion",
+            "blnSentidoFundamento", "a.blnSentidoFundamento"
     );
 
     @Override

@@ -31,7 +31,9 @@ public class CatMontoExportacionServiceImpl extends AbstractCatalogService<CatMo
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "razonSocial", "razonSocial",
-            "monto", "monto"
+            "monto", "monto",
+            "rfcExportador","id.rfcExportador",
+            "fecMontoExportacion", "id.fecMontoExportacion"
     );
 
     @Autowired

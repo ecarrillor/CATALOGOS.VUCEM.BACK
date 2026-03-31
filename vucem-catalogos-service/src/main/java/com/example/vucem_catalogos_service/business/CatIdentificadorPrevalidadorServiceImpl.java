@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Transactional
 @Service
@@ -26,7 +27,13 @@ public class CatIdentificadorPrevalidadorServiceImpl extends AbstractCatalogServ
     // NO se permite ordenar por: fecIniVigencia, fecFinVigencia, blnActivo, blnUtilizado
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "id",                      "id",
-            "caracterIdentificacion",  "caracterIdentificacion"
+            "caracterIdentificacion",  "caracterIdentificacion",
+            "blnUtilizado", "blnUtilizado"
+    );
+
+    private static final String DEFAULT_SORT_KEY = "id";
+
+    private static final Set<String> TEXT_COLUMNS = Set.of(
     );
 
     @Autowired
@@ -63,7 +70,7 @@ public class CatIdentificadorPrevalidadorServiceImpl extends AbstractCatalogServ
         Sort validatedSort = buildValidatedSort(pageable.getSort());
         Pageable sortedPageable = validatedSort.isSorted()
                 ? PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), validatedSort)
-                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "caracterIdentificacion"));
+                : PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
 
         Specification<CatIdentificadorPrevalidador> spec =
                 GenericSearchSpecification.<CatIdentificadorPrevalidador>searchInFields(
@@ -82,6 +89,6 @@ public class CatIdentificadorPrevalidadorServiceImpl extends AbstractCatalogServ
         if (incoming == null || incoming.isUnsorted()) return Sort.unsorted();
         Sort.Order order = incoming.stream().findFirst().orElse(null);
         if (order == null) return Sort.unsorted();
-        return SortValidator.buildSort(order.getProperty(), order.getDirection().name(), ALLOWED_SORT_COLUMNS);
+        return SortValidator.buildSort(order.getProperty(), order.getDirection().name(), ALLOWED_SORT_COLUMNS, TEXT_COLUMNS, DEFAULT_SORT_KEY);
     }
 }

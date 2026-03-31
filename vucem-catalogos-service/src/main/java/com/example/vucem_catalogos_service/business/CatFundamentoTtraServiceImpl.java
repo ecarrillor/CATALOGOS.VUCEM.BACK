@@ -37,7 +37,8 @@ public class CatFundamentoTtraServiceImpl implements ICatFundamentoTtraService {
             "idTipoTramite", "e.idTipoTramite.id",
             "nombreTipoTramite", "e.idTipoTramite.descSubservicio",
             "ideTipoFundamentoTtra", "e.ideTipoFundamentoTtra",
-            "descFundamento", "e.descFundamento"
+            "descFundamento", "e.descFundamento",
+            "descContenidoFundamento", "e.descContenidoFundamento"
     );
 
     @Override

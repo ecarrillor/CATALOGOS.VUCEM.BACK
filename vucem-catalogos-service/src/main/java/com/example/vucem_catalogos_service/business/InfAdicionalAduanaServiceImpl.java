@@ -30,7 +30,8 @@ public class InfAdicionalAduanaServiceImpl implements IInfAdicionalAduanaService
             "cveAduana", "cveAduana",
             "nombreAduana", "catAduana.nombre",
             "correoNotificacion", "correoNotificacion",
-            "tagAduana", "tagAduana"
+            "tagAduana", "tagAduana",
+            "blnCuentaRni", "e.blnCuentaRni"
     );
 
     @Autowired
