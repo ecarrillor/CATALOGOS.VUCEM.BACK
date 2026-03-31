@@ -22,7 +22,8 @@ public class CatServicioImmexServiceImpl implements ICatServicioImmexService {
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "id", "id",
-            "nombre", "nombre"
+            "nombre", "nombre",
+            "ideTipoServicioImmex", "e.ideTipoServicioImmex"
     );
 
     @Autowired
