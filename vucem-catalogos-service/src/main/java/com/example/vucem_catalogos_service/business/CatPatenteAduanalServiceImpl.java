@@ -22,8 +22,8 @@ public class CatPatenteAduanalServiceImpl implements ICatPatenteAduanalService {
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cvePatenteAduanal", "cvePatenteAduanal",
-            "rfc", "rfc"
-    );
+            "rfc", "rfc",
+            "ideEstPatenteAut", "e.ideEstPatenteAut"    );
 
     @Autowired
     private ICatPatenteAduanalRepository catPatenteAduanalRepository;

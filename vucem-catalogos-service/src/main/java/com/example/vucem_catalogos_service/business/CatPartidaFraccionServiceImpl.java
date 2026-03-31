@@ -26,7 +26,8 @@ public class CatPartidaFraccionServiceImpl implements ICatPartidaFraccionService
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
             "cvePartidaFraccion", "id.cvePartidaFraccion",
-            "nombre", "nombre"
+            "nombre", "nombre",
+            "nombreCapituloFraccion", "cap.nombre"
     );
 
     @Autowired
