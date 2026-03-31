@@ -34,8 +34,11 @@ public class CatVigenciaServicioServiceImpl implements ICatVigenciaServicioServi
             "ideTipoVigencia", "ideTipoVigencia",
             "ideTipoServicioCeror", "ideTipoServicioCeror",
             "nombrePais", "catPaisTratadoAcuerdo.cvePais.nombre",
-            "nombreBloque", "idBloque.nombre",
-            "criterio", "cveCriterioOrigen.cveCriterioOrigen"
+            "cvePais", "cat.cvePais.cvePais",
+            "nombreBloque", "b.nombre",
+            "criterio", "cveCriterioOrigen.cveCriterioOrigen",
+            "idTratadoAcuerdo", "cat.idTratadoAcuerdo.id",
+            "idBloque", "b.id"
     );
 
     @Autowired
