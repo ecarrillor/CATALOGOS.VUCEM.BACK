@@ -27,10 +27,10 @@ public class CatFraccionALADIServiceImpl implements ICatFraccionALADIService {
     private ICatFraccionAladiRepository iCatFraccionAladiRepository;
 
     private static final Map<String, String> ALLOWED_SORT_COLUMNS = Map.of(
-            "idFraccionAladi", "e.id",
-            "cveTipoFraccion", "e.cveTipoFraccion",
-            "cveFraccionAladi", "e.cveFraccionAladi",
-            "descripcion", "e.descripcion"
+            "idFraccionAladi", "a.id",
+            "cveTipoFraccion", "a.cveFraccion",
+            "cveFraccionAladi", "a.ideTipoFraccionAladi",
+            "descripcion", "a.descripcion"
     );
 
     @Override
