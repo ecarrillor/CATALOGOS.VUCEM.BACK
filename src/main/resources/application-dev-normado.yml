@@ -1,0 +1,175 @@
+server:
+  port: 8080
+  error:
+    # No incluir stack trace en respuestas
+    include-stacktrace: never
+    # No incluir mensaje de excepción
+    include-message: never
+  #Configuraciones del tomcat
+  tomcat:
+    threads:
+      max: ${TOMCAT_MAX_THREADS:200}
+      min-spare: ${TOMCAT_MIN_SPARE_THREADS:10}
+    accept-count: ${TOMCAT_ACCEPT_COUNT:100}
+    max-connections: ${TOMCAT_MAX_CONNECTIONS:8192}
+    connection-timeout: ${TOMCAT_CONNECTION_TIMEOUT:60000}
+
+app:
+  interceptor:
+    rendimiento: ${INTERCEPTOR_RENDIMIENTO:true}
+  cors:
+    allowed-origins: ${CORS_ORIGEN}
+    allowed-headers: "*"
+    allowed-methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+    allow-credentials: false
+  swagger:
+    servers: ${SWAGGER_SERVERS}
+
+springdoc:
+  api-docs:
+    enabled: ${SWAGGER_ENABLED:true}
+    path: /api/^project.name^/v3/api-docs
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED:true}
+    tags-sorter: alpha #Ordena los endpoint alfabéticamente
+    defaultModelsExpandDepth: 0  # Colapsa la sección schemas
+    doc-expansion: none  # Colapsa todos los tags al cargar la página
+    display-request-duration: true  # Muestra la duración de las peticiones de ejemplo
+    path: /api/^project.name^/sw-documentacion
+    url: /api/^project.name^/sw-documentacion
+spring:
+  mvc:
+    # Lanza excepción cuando no encuentra handler
+    "[throw-exception-if-no-handler-found]": true
+  web:
+    resources:
+      # Desactiva mapeo automático de recursos estáticos
+      add-mappings: false
+  # Desactiva la página de error de Whitelabel
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+  output:
+    ansi:
+      enabled: DETECT
+  application:
+    name: ^project.name^
+    version: ^project.version^
+  jackson:
+    time-zone: America/Mexico_City
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      minimum-idle: ${HIKARI_MIN_IDLE}
+      maximum-pool-size: ${HIKARI_MAX_POOL}
+      connection-timeout: ${HIKARI_CONNECTION_TIMEOUT}
+      idle-timeout: ${HIKARI_IDLE_TIMEOUT}
+      max-lifetime: ${HIKARI_MAX_LIFETIME}
+      pool-name: ${HIKARI_POOL_NAME:APP_CATALOGO_ADMIN_POOL}
+      connection-init-sql: ${DB_SEARCH_PATH}
+      connection-test-query: SELECT 1
+      leak-detection-threshold: ${HIKARI_LEAK_DETECTION}
+      register-mbeans: true
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
+      open-in-view: false
+  jpa:
+    open-in-view: false
+    show-sql: ${JPA_SHOW_SQL}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        "[format_sql]": ${JPA_FORMAT_SQL}
+        jdbc:
+          "[time_zone]": America/Mexico_City
+          "[batch_size]": ${JPA_BATCH_SIZE}
+        "[generate_statistics]": ${JPA_GENERATE_STATS}
+        session:
+          events:
+            log:
+              "[LOG_QUERIES_SLOWER_THAN_MS]": ${JPA_SLOW_QUERY_MS}
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+  config: # Configuraciones de los servicios externos a consumir
+    import:
+      - classpath:microservicio/ms-ejemplo.yml
+
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT}
+    "[mx.gob.sat]": ${LOG_LEVEL_APP}
+    "[org.springframework]": ${LOG_LEVEL_SPRING}
+    "[com.zaxxer.hikari.HikariConfig]": error
+    "[org.hibernate]": error
+    "[org.hibernate.SQL]": error
+    "[org.hibernate.orm.session.events]": error
+    "[org.hibernate.type.descriptor.sql.BasicBinder]": error
+    "[org.hibernate.loader.Loader]": error
+    "[org.springframework.boot.autoconfigure]": info
+    "[org.springframework.web]": ${LOG_LEVEL_SPRING_WEB}
+    "[org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor]": info
+    "[com.fasterxml.jackson.databind]": info
+
+management:
+  tracing:
+    enabled: false
+    sampling:
+      probability: 1.0
+  opentelemetry:
+    enabled: false
+    exporter:
+      otlp:
+        enabled: false  # Deshabilitado
+        # Cuando tengas ELK/Jaeger disponible, descomenta y actualiza:
+        # enabled: true
+        # endpoint: http://localhost:4317        # Jaeger OTLP
+        # endpoint: http://elk-server:4317       # ELK Stack
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+        "[spring.data.repository.invocations]": true
+      percentiles:
+        "[http.server.requests]": 0.5, 0.95, 0.99
+        "[spring.data.repository.invocations]": 0.5, 0.95, 0.99
+    tags:
+      application: ^project.artifactId^
+      version: ^project.version^
+  web:
+    server:
+      request:
+        autotime:
+          enabled: true
+  endpoints:
+    web:
+      base-path: /api/^project.name^/actuator
+      exposure:
+        include: ${ACTUATOR_ENDPOINTS}
+  endpoint:
+    health:
+      show-details: ${HEALTH_SHOW_DETAILS}
+info:
+  app:
+    name: ^project.name^
+    version: ^project.version^
+# Configuración OpenTelemetry
+otel:
+  java:
+    global-autoconfigure:
+      enabled: true
+  service:
+    name: ^project.artifactId^
+  resource:
+    attributes:
+      "[service.name]": ^project.artifactId^
+      "[service.version]": ^project.version^

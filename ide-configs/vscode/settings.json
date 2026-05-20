@@ -1,0 +1,154 @@
+{
+    // ========== CONFIGURACIÓN DE CHECKSTYLE ==========
+    
+    // Ruta al archivo de configuración de Checkstyle del proyecto
+    "java.checkstyle.configuration": "${workspaceFolder}/checkstyle.xml",
+    
+    // Versión específica de Checkstyle a usar (debe coincidir con pom.xml)
+    "java.checkstyle.version": "10.12.4",
+    
+    // Ejecutar Checkstyle automáticamente al abrir/editar archivos
+    "java.checkstyle.autocheck": true,
+    
+    // ========== FORMATEO AUTOMÁTICO ==========
+    
+    // Formatear código automáticamente al guardar archivo (Ctrl+S)
+    "editor.formatOnSave": false,
+    
+    // Formatear código mientras escribes (ej: al escribir ; o })
+    "editor.formatOnType": false,
+    
+    // Formatear código al pegar desde clipboard (Ctrl+V)
+    "editor.formatOnPaste": false,
+    
+    // ========== ACCIONES AL GUARDAR ==========
+    
+    // Acciones que se ejecutan automáticamente cada vez que guardas un archivo
+    "editor.codeActionsOnSave": {
+        // Organizar imports automáticamente (eliminar no usados, ordenar)
+        "source.organizeImports": "never",
+        // Aplicar todas las correcciones automáticas disponibles
+        "source.fixAll": "never"
+    },
+    
+    // ========== CONFIGURACIÓN DE INDENTACIÓN ==========
+    
+    // Usar espacios en lugar de tabuladores (alineado con .editorconfig)
+    "editor.insertSpaces": true,
+    
+    // Número de espacios por tabulación (4 espacios = 1 tab)
+    "editor.tabSize": 4,
+    
+    // No detectar indentación automáticamente, usar configuración fija
+    "editor.detectIndentation": false,
+    
+    // ========== CONFIGURACIÓN DE JAVA ==========
+    
+    // Análisis automático de null en tiempo real
+    "java.compile.nullAnalysis.mode": "automatic",
+    
+    // Actualizar configuración de build de forma interactiva
+    "java.configuration.updateBuildConfiguration": "interactive",
+    
+    // Organizar imports al guardar archivos Java
+    "java.saveActions.organizeImports": true,
+    
+    // Habilitar formateo de código Java
+    "java.format.enabled": true,
+    
+    // Habilitar validación de código Java en tiempo real
+    "java.validation.enabled": true,
+    
+    // ========== INDICADORES VISUALES EN EDITOR ==========
+    
+    // Mostrar espacios en blanco y tabuladores en los bordes de palabras
+    "editor.renderWhitespace": "boundary",
+    
+    // Mostrar caracteres de control (como \n, \r, \t)
+    "editor.renderControlCharacters": true,
+    
+    // Línea vertical que marca el límite de 120 caracteres
+    "editor.rulers": [120],
+    
+    // ========== INDICADORES EN EXPLORADOR DE ARCHIVOS ==========
+    
+    // Mostrar decoraciones de problemas en archivos del explorador
+    "problems.decorations.enabled": true,
+    
+    // Mostrar colores en archivos con errores/warnings en explorador
+    "explorer.decorations.colors": true,
+    
+    // Badges requieren extensiones adicionales (no nativo en VS Code)
+    // "explorer.decorations.badges": true,
+    
+    // ========== CONFIGURACIÓN DE ERROR LENS (EXTENSIÓN) ==========
+    
+    // Habilitar extensión Error Lens (muestra errores inline)
+    "errorLens.enabled": true,
+    
+    // Tipos de diagnósticos que Error Lens debe mostrar
+    "errorLens.enabledDiagnosticLevels": ["error", "warning", "info"],
+    
+    // Mostrar errores en todas las líneas, no solo donde está el cursor
+    "errorLens.followCursor": "allLines",
+    
+    // Mostrar iconos de errores en el gutter (margen izquierdo)
+    "errorLens.gutterIconsEnabled": true,
+    
+    // ========== COLORES PERSONALIZADOS ==========
+    
+    // Personalización de colores para diferentes tipos de problemas
+    "workbench.colorCustomizations": {
+        // Color rojo para iconos de errores
+        "problemsErrorIcon.foreground": "#f14c4c",
+        // Color naranja para iconos de advertencias
+        "problemsWarningIcon.foreground": "#ff8c00",
+        // Color azul para iconos de información
+        "problemsInfoIcon.foreground": "#3794ff",
+        // Color rojo para texto de errores en listas
+        "list.errorForeground": "#f14c4c",
+        // Color naranja para texto de advertencias en listas
+        "list.warningForeground": "#ff8c00"
+    },
+    
+    // ========== CONFIGURACIÓN DE PESTAÑAS Y EDITOR ==========
+    
+    // Mostrar decoraciones (indicadores) en pestañas de archivos
+    "workbench.editor.decorations": true,
+    
+    // Desactivar vista previa de archivos (abrir directamente para editar)
+    "workbench.editor.enablePreview": false,
+    
+    // ========== CONFIGURACIÓN DEL EXPLORADOR ==========
+    
+    // Desactivar anidamiento de archivos relacionados
+    "explorer.fileNesting.enabled": false,
+    
+    // Desactivar compactación de carpetas vacías
+    "explorer.compactFolders": false,
+    
+    // ========== CONFIGURACIÓN DEL ÁRBOL DE ARCHIVOS ==========
+    
+    // Siempre mostrar guías de indentación en el árbol de archivos
+    "workbench.tree.renderIndentGuides": "always",
+    
+    // Espaciado de indentación en el árbol de archivos (20 píxeles)
+    "workbench.tree.indent": 20,
+    
+    // ========== CONFIGURACIÓN DEL PANEL DE PROBLEMAS ==========
+    
+    // Mostrar problema actual en la barra de estado
+    "problems.showCurrentInStatus": true,
+    
+    // Mostrar contador total de problemas en barra de estado
+    "problems.visibility": true,
+    
+    // Ordenar problemas por severidad (errores primero, luego warnings)
+    "problems.sortOrder": "severity",
+    
+    // Mantener panel Problems siempre visible
+    "problems.autoReveal": true,
+    
+    // Mostrar archivos con problemas agrupados
+    "problems.groupByFiles": true
+}

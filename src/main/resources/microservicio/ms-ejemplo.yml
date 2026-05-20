@@ -1,0 +1,48 @@
+# Configuración general para clientes Feign
+feign:
+  client:
+    config:
+      ejemploClient:
+        connectTimeout: 5000 # Tiempo de conexión para el cliente Feign ejemploClient
+        readTimeout: 5000 # Tiempo de lectura para el cliente Feign ejemploClient
+
+# Seccion de URLs base configurable para microservicios
+ms:
+  ejemplo:
+    url: ${MS_EJEMPLO_URL:https://api-v30.cloud-ultrasist.net/api/ejemplo}   # URL del servicio de ejemplo vía Feign
+
+# Configuración de Resilience4j
+resilience4j:
+  circuitbreaker:
+    instances:
+      ms-ejemplo:
+        registerHealthIndicator: true # Registra el estado del circuit breaker en Actuator Health
+        slidingWindowSize: 10 # Número de llamadas evaluadas para calcular la tasa de error
+        permittedNumberOfCallsInHalfOpenState: 2 # Número de llamadas permitidas cuando el circuito está medio abierto
+        waitDurationInOpenState: 10s # Tiempo que permanecerá abierto el circuito antes de intentar reabrirlo
+        failureRateThreshold: 50 # Porcentaje de errores que abre el circuito (50%)
+        eventConsumerBufferSize: 10 # Tamaño del buffer de eventos que se almacenan
+  retry:
+    instances:
+      ms-ejemplo:
+        maxAttempts: 3 # Número máximo de intentos (1 inicial + 2 reintentos)
+        waitDuration: 2s # Tiempo de espera entre cada intento
+        retryExceptions: # Excepciones activarán un reintento
+            - feign.FeignException$ServiceUnavailable
+            - java.net.ConnectException
+        ignoreExceptions: # No se reintentará y se propagará directamente
+          - feign.FeignException$NotFound
+          - feign.FeignException$BadRequest
+          - java.util.concurrent.TimeoutException
+          - java.net.NoRouteToHostException
+          - io.github.resilience4j.circuitbreaker.CallNotPermittedException
+          - mx.gob.sat.basems.exceptions.api.MSRecursoNoExisteException
+          - mx.gob.sat.basems.exceptions.api.MSPeticionInvalidaException
+          - mx.gob.sat.basems.exceptions.infrastructure.ServicioNoDisponibleException
+          - mx.gob.sat.basems.exceptions.validation.ModeloInvalidoException
+
+  timelimiter:
+    instances:
+      ms-ejemplo:
+        timeoutDuration: 120s # Tiempo máximo de ejecución para una llamada (después de esto falla)
+
