@@ -1,0 +1,743 @@
+# ============================================================================
+# Kubernetes Deployment Manifest for ce-tr-catalogo-admin-b - VUCEM 3.0
+# ============================================================================
+# MODIFICABLE: Variables de entorno (${VAR}) se inyectan en CI/CD
+# NO MODIFICAR: Estructura de recursos K8s sin aprobación de arquitectura
+# ============================================================================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vucem3-apps
+  labels:
+    name: vucem3-apps
+    project: "vucem-3.0"
+    service: "ce-tr-catalogo-admin-b"
+    service-type: "rest-api"
+
+---
+# ============================================================================
+# ConfigMap - Variables de configuración por ambiente
+# ============================================================================
+# MODIFICABLE: Todos los valores en 'data' pueden ajustarse por ambiente
+# IMPORTANTE: Cambios aquí NO requieren rebuild de imagen Docker
+# RECOMENDACIÓN: Usar valores por defecto (:-valor) para facilitar despliegue
+# ============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ce-tr-catalogo-admin-b-config
+  namespace: vucem3-apps
+  labels:
+    app: ce-tr-catalogo-admin-b
+    service-type: "rest-api"
+data:
+  # Variables de entorno proporcionadas
+  
+  # Hikari pool configuration (MODIFICABLE sin rebuild)
+  # AJUSTAR según carga: dev=pequeño, prod=grande
+  hikari-min-idle: "2"  # Conexiones mínimas inactivas (dev:2, prod:5-10)
+  hikari-max-pool: "10"  # Conexiones máximas (dev:10, prod:20-50)
+  hikari-connection-timeout: "30000"  # Timeout conexión en ms (30s)
+  hikari-idle-timeout: "300000"  # Tiempo inactivo antes de cerrar (5min)
+  hikari-max-lifetime: "1740000"  # Vida máxima conexión (29min)
+  hikari-leak-detection: "60000"  # Detección fugas (dev:60s, prod:0=off)
+  hikari-pool-name: "APP_CATALOGO_ADMIN_POOL"  # Nombre del pool de conexiones
+
+  # Tomcat configuration (MODIFICABLE por ambiente)
+  # AJUSTAR según tráfico esperado y recursos del pod
+  tomcat-max-threads: "200"  # Threads máximos (dev:200, prod:400-800)
+  tomcat-accept-count: "100"  # Cola de espera (dev:100, prod:200)
+  tomcat-connection-timeout: "60000"  # Timeout en ms (60s)
+  tomcat-max-connections: "1000"  # Conexiones simultáneas (dev:1000, prod:2000-5000)
+  tomcat-min-spare-threads: "10"  # Threads mínimos disponibles
+
+  # CORS configuration
+  cors-allowed-origins: "*"
+
+  # Logging configuration (ajustable por ambiente)
+  log-level-root: "INFO"
+  log-level-app: "DEBUG"  # dev=DEBUG, prod=INFO
+  log-level-spring: "WARN"  # dev=WARN, prod=ERROR
+  log-level-spring-web: "DEBUG"  # dev=DEBUG, prod=WARN
+
+  # JPA/Hibernate configuration (ajustable por ambiente)
+  jpa-show-sql: "false"  # dev=true, prod=false
+  jpa-format-sql: "false"  # dev=true, prod=false
+  jpa-batch-size: "25"
+  jpa-fetch-size: "50"
+  jpa-generate-stats: "false"  # dev=true, prod=false
+  jpa-slow-query-ms: "100"  # dev=100, prod=1000
+  jpa-ddl-auto: "none"  # none, validate (NUNCA update/create en prod)
+
+  # Swagger configuration
+  swagger-enabled: "true"  # dev=true, prod=false
+  swagger-servers: "https://api-tramites.vucem.ultrasist.org|Desarrollo"
+
+  # Management/Actuator - Solo valores que cambian por ambiente
+  actuator-endpoints: "health,info,metrics,prometheus,loggers,circuitbreakers"
+  health-show-details: "always"  # dev=always, prod=when_authorized
+
+  # ELK Stack (opcional)
+  elk-stack-url: "http://elk-server:4317"
+
+  # Microservices URLs (Agregar urls de aplicaciones externas)
+  ms-ejemplo-url: "https://api-v30.cloud-ultrasist.net/api/ejemplo"
+
+---
+# Esta sección es para crear los secretos necesarios una vez creados es necesario eliminar 
+# esta sección del manifiesto para evitar que se sobreescriban los secretos en cada despliegue, 
+# es importante que los secretos existan antes de desplegar la aplicación, de lo contrario el 
+# despliegue fallará al no encontrar los secretos necesarios para la configuración de la base de datos.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ce-tr-catalogo-admin-b-secrets
+  namespace: vucem3-apps
+  labels:
+    app: ce-tr-catalogo-admin-b
+    service-type: "rest-api"
+type: Opaque
+stringData:
+  db-url: "jdbc:postgresql://10.190.96.3:5000/vucprod1_tramites" 
+  db-username: "vucem_tramites_dev"
+  db-password: "PostgresTramDev2026"
+  db-search-path: "SET search_path TO vucem_app_p01"
+
+---
+# ============================================================================
+# Deployment - Definición del despliegue de la aplicación
+# ============================================================================
+# MODIFICABLE: replicas, resources, env vars
+# CRÍTICO: strategy, probes, securityContext requieren validación
+# ============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ce-tr-catalogo-admin-b
+  namespace: vucem3-apps
+  labels:
+    app: ce-tr-catalogo-admin-b
+    tier: backend
+    component: rest-api
+    service-type: "rest-api"
+spec:
+   # MODIFICABLE: Número de réplicas del pod
+  replicas: 1  # AJUSTAR: dev=1, qa=2, prod=2-4 (ver HPA para auto-escalado)
+  
+  strategy:
+    type: RollingUpdate  # NO MODIFICAR: Asegura zero-downtime
+    rollingUpdate:
+      maxSurge: 1  # MODIFICABLE: Pods extra durante actualización (1=+50%)
+      maxUnavailable: 0  # NO MODIFICAR: Mantiene disponibilidad (0=sin downtime)
+  selector:
+    matchLabels:
+      app: ce-tr-catalogo-admin-b
+  template:
+    metadata:
+      labels:
+        app: ce-tr-catalogo-admin-b
+        tier: backend
+        component: rest-api
+        service-type: "rest-api"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/api/catalogo-admin/actuator/prometheus"
+    spec:
+      serviceAccountName: ce-tr-catalogo-admin-b-sa
+      # NO MODIFICAR: Contexto de seguridad del pod (requerido por políticas)
+      securityContext:
+        runAsNonRoot: true  # OBLIGATORIO: No ejecutar como root
+        runAsUser: 1000  # FIJO: Usuario no privilegiado
+        runAsGroup: 1000  # FIJO: Grupo no privilegiado
+        fsGroup: 1000  # FIJO: Permisos de archivos
+        fsGroupChangePolicy: "OnRootMismatch"
+        seccompProfile:
+          type: RuntimeDefault  # OBLIGATORIO: Perfil de seguridad
+      # Importante: Asegúrate de que este secret exista en Rancher para bajar la imagen
+      imagePullSecrets:
+        - name: nexus-registry-secrets
+      containers:
+        - name: ce-tr-catalogo-admin-b
+          image: 10.224.95.73:30082/vuc3-servicios-tramites/ce-tr-catalogo-admin-b:latest
+          imagePullPolicy: Always
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+        
+          # ========================================================================
+          # RECURSOS DEL CONTENEDOR - MODIFICABLE según necesidades
+          # ========================================================================
+          resources:
+            requests:
+              memory: "768Mi"
+              cpu: "250m"
+              ephemeral-storage: "512Mi"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+              ephemeral-storage: "1Gi"
+          envFrom:
+            - configMapRef:
+                name: ce-tr-catalogo-admin-b-config
+            - secretRef:
+                name: ce-tr-catalogo-admin-b-secrets
+          env:
+            # Spring configuration
+            - name: SPRING_PROFILES_ACTIVE
+              value: "default"
+            - name: SPRING_CLOUD_CONFIG_ENABLED
+              value: "false"
+            - name: TZ
+              value: "America/Mexico_City"
+           
+            # MODIFICABLE: Optimizaciones JVM (ajustar según recursos del pod)
+            # MaxRAMPercentage: % de memoria del límite del pod (70% de 512Mi = ~358Mi heap)
+            # InitialRAMPercentage: % memoria inicial (50% de 512Mi = ~256Mi)
+            # MaxMetaspaceSize: Memoria para clases (256m suficiente para app mediana)
+            - name: JAVA_OPTS
+              value: "-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0 -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+UseContainerSupport -XX:+ExitOnOutOfMemoryError -XX:MaxMetaspaceSize=256m -Dfile.encoding=UTF-8 -Duser.timezone=America/Mexico_City -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true"
+
+            # Database configuration
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: ce-tr-catalogo-admin-b-secrets
+                  key: db-url
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: ce-tr-catalogo-admin-b-secrets
+                  key: db-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ce-tr-catalogo-admin-b-secrets
+                  key: db-password
+            - name: DB_SEARCH_PATH
+              valueFrom:
+                secretKeyRef:
+                  name: ce-tr-catalogo-admin-b-secrets
+                  key: db-search-path
+            
+            # Hikari pool configuration (Spring Boot auto-config)
+            - name: HIKARI_MIN_IDLE
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: hikari-min-idle
+            - name: HIKARI_MAX_POOL
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: hikari-max-pool
+            - name: HIKARI_CONNECTION_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: hikari-connection-timeout
+            - name: HIKARI_IDLE_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: hikari-idle-timeout
+            - name: HIKARI_MAX_LIFETIME
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: hikari-max-lifetime
+            - name: HIKARI_LEAK_DETECTION
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: hikari-leak-detection
+            - name: HIKARI_POOL_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: hikari-pool-name
+            
+            # Tomcat configuration (ajustable por ambiente)
+            - name: TOMCAT_MAX_THREADS
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: tomcat-max-threads
+            - name: TOMCAT_ACCEPT_COUNT
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: tomcat-accept-count
+            - name: TOMCAT_CONNECTION_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: tomcat-connection-timeout
+            - name: TOMCAT_MAX_CONNECTIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: tomcat-max-connections
+            - name: TOMCAT_MIN_SPARE_THREADS
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: tomcat-min-spare-threads
+
+            # CORS configuration
+            - name: CORS_ORIGEN
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: cors-allowed-origins
+            
+            # Logging configuration (granular por componente)
+            - name: LOG_LEVEL_ROOT
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: log-level-root
+            - name: LOG_LEVEL_APP
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: log-level-app
+            - name: LOG_LEVEL_SPRING
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: log-level-spring
+            - name: LOG_LEVEL_SPRING_WEB
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: log-level-spring-web
+            
+            # JPA/Hibernate configuration
+            - name: JPA_SHOW_SQL
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: jpa-show-sql
+            - name: JPA_FORMAT_SQL
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: jpa-format-sql
+            - name: JPA_BATCH_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: jpa-batch-size
+            - name: JPA_FETCH_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: jpa-fetch-size
+            - name: JPA_GENERATE_STATS
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: jpa-generate-stats
+            - name: JPA_SLOW_QUERY_MS
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: jpa-slow-query-ms
+            - name: JPA_DDL_AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: jpa-ddl-auto
+            
+            # Management/Actuator configuration (específico del ambiente)
+            - name: ACTUATOR_ENDPOINTS
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: actuator-endpoints
+            - name: HEALTH_SHOW_DETAILS
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: health-show-details
+
+            # Swagger configuration
+            - name: SWAGGER_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: swagger-enabled
+            - name: SWAGGER_SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: swagger-servers
+                    
+            # Microservices URLs
+            - name: MS_EJEMPLO_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ce-tr-catalogo-admin-b-config
+                  key: ms-ejemplo-url
+
+          volumeMounts:
+            - name: app-logs
+              mountPath: /app/logs
+            - name: temp-storage
+              mountPath: /tmp
+
+          # Probes configuradas según los logs de mapeo (/api/sat-catalogo-admin/...)
+          livenessProbe:
+            httpGet:
+              path: /api/sat-catalogo-admin/actuator/health/liveness
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 90  # Espera antes del 1er check (ajustar si app tarda más)
+            periodSeconds: 30  # Frecuencia de verificación (cada 30s)
+            timeoutSeconds: 5  # Timeout por request (5s)
+            successThreshold: 1  # Checks exitosos para considerar healthy
+            failureThreshold: 3  # Fallos consecutivos antes de reiniciar (3x30s=90s)
+        
+          readinessProbe:  # MODIFICABLE: Controla cuándo recibe tráfico
+            httpGet:
+              path: /api/sat-catalogo-admin/actuator/health/readiness
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 60  # Espera antes del 1er check
+            periodSeconds: 10  # Verificación cada 10s (más frecuente que liveness)
+            timeoutSeconds: 5  # Timeout por request
+            successThreshold: 1  # Checks exitosos para recibir tráfico
+            failureThreshold: 3  # Fallos antes de quitar del balanceo (3x10s=30s)
+          
+          startupProbe:  # MODIFICABLE: Protege durante arranque lento
+            httpGet:
+              path: /api/sat-catalogo-admin/actuator/health
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 30  # Espera inicial
+            periodSeconds: 10  # Verificación cada 10s
+            timeoutSeconds: 5  # Timeout por request
+            successThreshold: 1  # 1 check exitoso = app iniciada
+            failureThreshold: 30  # Max intentos (30x10s=300s=5min para iniciar)
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+              - ALL
+              add:
+              - NET_BIND_SERVICE
+            seccompProfile:
+              type: RuntimeDefault
+        
+      # MODIFICABLE: Volúmenes temporales (se pierden al reiniciar pod)
+      volumes:
+      - name: app-logs
+        emptyDir:
+          sizeLimit: "1Gi"  # AJUSTAR: Tamaño máximo para logs (dev:1Gi, prod:2-5Gi)
+      - name: temp-storage
+        emptyDir:
+          sizeLimit: "512Mi"  # AJUSTAR: Espacio temporal (archivos temp, cache)
+      
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: ce-tr-catalogo-admin-b
+              topologyKey: kubernetes.io/hostname
+      
+      tolerations:
+      - key: "node.kubernetes.io/not-ready"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 300
+      - key: "node.kubernetes.io/unreachable"
+        operator: "Exists"
+        effect: "NoExecute"
+        tolerationSeconds: 300
+
+---
+# ServiceAccount con permisos mínimos
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ce-tr-catalogo-admin-b-sa
+  namespace: vucem3-apps
+  labels:
+    app: ce-tr-catalogo-admin-b
+    service-type: "rest-api"
+automountServiceAccountToken: false
+
+---
+# RBAC Role - Permisos mínimos necesarios
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: vucem3-apps
+  name: ce-tr-catalogo-admin-b-role
+  labels:
+    app: ce-tr-catalogo-admin-b
+    service-type: "rest-api"
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list"]
+
+---
+# RBAC RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ce-tr-catalogo-admin-b-rolebinding
+  namespace: vucem3-apps
+  labels:
+    app: ce-tr-catalogo-admin-b
+subjects:
+- kind: ServiceAccount
+  name: ce-tr-catalogo-admin-b-sa
+  namespace: vucem3-apps
+roleRef:
+  kind: Role
+  name: ce-tr-catalogo-admin-b-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Service - Expone el deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: ce-tr-catalogo-admin-b-service
+  namespace: vucem3-apps
+  labels:
+    app: ce-tr-catalogo-admin-b
+    service-type: "rest-api"
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+    prometheus.io/path: "/api/sat-catalogo-admin/actuator/prometheus"
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  - name: management
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: ce-tr-catalogo-admin-b
+  sessionAffinity: None
+---
+
+# Ingress - Acceso externo con seguridad mejorada
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ce-tr-catalogo-admin-b-ingress
+  namespace: vucem3-apps
+  labels:
+    app: ce-tr-catalogo-admin-b
+    service-type: "rest-api"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - ce-tr-catalogo-admin-b.vucem.gob.mx
+    secretName: ce-tr-catalogo-admin-b-tls
+  rules:
+  - host: ce-tr-catalogo-admin-b.vucem.gob.mx
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ce-tr-catalogo-admin-b-service
+            port:
+              number: 80
+---
+
+# ============================================================================
+# HorizontalPodAutoscaler (HPA) - Escalado automático de pods
+# ============================================================================
+# MODIFICABLE: minReplicas, maxReplicas, métricas y umbrales
+# FUNCIÓN: Escala automáticamente según CPU/memoria
+# IMPORTANTE: Requiere metrics-server instalado en el cluster
+# ============================================================================
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ce-tr-catalogo-admin-b-hpa
+  namespace: vucem3-apps
+  labels:
+    app: ce-tr-catalogo-admin-b
+    service-type: "rest-api"
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ce-tr-catalogo-admin-b
+  
+  # MODIFICABLE: Rango de réplicas para auto-escalado
+  minReplicas: 1  # AJUSTAR: Mínimo de pods (dev:1, prod:2-3)
+  maxReplicas: 4  # AJUSTAR: Máximo de pods (dev:2-4, prod:6-10)
+  
+  # MODIFICABLE: Métricas y umbrales para escalar
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70  # AJUSTAR: Escala si CPU promedio > 70% (50-80%)
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+      selectPolicy: Min
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 60
+      - type: Pods
+        value: 2
+        periodSeconds: 60
+      selectPolicy: Max
+---
+
+# PodDisruptionBudget - Alta disponibilidad
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: ce-tr-catalogo-admin-b-pdb
+  namespace: vucem3-apps
+  labels:
+    app: ce-tr-catalogo-admin-b
+    service-type: "rest-api"
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: ce-tr-catalogo-admin-b
+---
+
+# NetworkPolicy - Seguridad de red
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ce-tr-catalogo-admin-b-netpol
+  namespace: vucem3-apps
+  labels:
+    app: ce-tr-catalogo-admin-b
+    service-type: "rest-api"
+spec:
+  podSelector:
+    matchLabels:
+      app: ce-tr-catalogo-admin-b
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  # Allow from ingress controller
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: nginx-ingress
+    ports:
+    - protocol: TCP
+      port: 8080
+  # Allow from monitoring
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    ports:
+    - protocol: TCP
+      port: 8080
+  # Allow from VUCEM services
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          project: "vucem-3.0"
+    ports:
+    - protocol: TCP
+      port: 8080
+  # Allow from gateway cross-VPC (NodePort traffic via VPC Peering)
+  - from:
+    - ipBlock:
+        cidr: 10.0.0.0/16
+    - ipBlock:
+        cidr: 10.1.0.0/16
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  # DNS
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  # PostgreSQL
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 5432
+    - protocol: TCP
+      port: 5433
+    - protocol: TCP
+      port: 15432
+  # Redis (opcional)
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 6379
+  # HTTPS/HTTP
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
+    - protocol: TCP
+      port: 8080
+  # VUCEM services
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          project: "vucem-3.0"
+    ports:
+    - protocol: TCP
+      port: 8080

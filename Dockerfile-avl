@@ -1,0 +1,43 @@
+# =============================================================================
+# IMAGEN BASE CONFIGURABLE POR AMBIENTE (MTR-CI-CD-CaaS v2.1)
+# =============================================================================
+# Uso:
+#   - Integración (SAT):  --build-arg NEXUS_HOST=10.224.95.73:30081
+#   - Develop (Ultrasist): --build-arg NEXUS_HOST=nexus.vucem.ultrasist.org
+# =============================================================================
+ARG NEXUS_HOST=nexus:8084
+FROM ${NEXUS_HOST}/ubuntu/ubuntu24.04:latest
+
+WORKDIR /app
+
+RUN groupadd --system appgroup && \
+    useradd --system --gid appgroup --home-dir /app --shell /usr/sbin/nologin appuser
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates curl wget gnupg dumb-init locales && \
+    wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /usr/share/keyrings/adoptium.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb jammy main" > /etc/apt/sources.list.d/adoptium.list && \
+    apt-get update && apt-get install -y temurin-21-jre && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN locale-gen es_MX.UTF-8 || true
+
+ARG JAR_FILE=target/*.jar
+COPY --chown=appuser:appgroup ${JAR_FILE} /app/app.jar
+
+ENV TZ=America/Mexico_City LANG=es_MX.UTF-8 LC_ALL=es_MX.UTF-8
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=70.0 -XX:+UseG1GC -XX:+UseContainerSupport \
+    -XX:+ExitOnOutOfMemoryError -Djava.security.egd=file:/dev/./urandom"
+
+USER appuser
+EXPOSE 8080
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "sh", "-c"]
+CMD ["java $JAVA_OPTS -jar /app/app.jar"]
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8080/api/catalogo-admin/actuator/health || exit 1
+
+LABEL org.opencontainers.image.title="VUCEM 3.0 SAT Catálogo Admin. Service" \
+    org.opencontainers.image.vendor="Gobierno de México - SAT" \
+    mx.gob.sat.service="sat-catalogo-admin" mx.gob.sat.area="tramites"

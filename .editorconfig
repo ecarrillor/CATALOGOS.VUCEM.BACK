@@ -1,0 +1,34 @@
+# Indica que este es el archivo .editorconfig raíz del proyecto
+root = true
+
+# Configuración para TODOS los archivos (*)
+[*]
+# Codificación de caracteres UTF-8 para todos los archivos
+charset = utf-8
+# Terminación de línea estilo Unix (LF) en lugar de Windows (CRLF)
+end_of_line = lf
+# Insertar una línea vacía al final del archivo automáticamente
+insert_final_newline = true
+# Eliminar espacios en blanco al final de las líneas
+trim_trailing_whitespace = true
+
+# Configuración específica para archivos Java
+[*.java]
+# Usar espacios en lugar de tabuladores para indentación
+indent_style = space
+# Usar 4 espacios por nivel de indentación
+indent_size = 4
+# Longitud máxima de línea de 120 caracteres
+max_line_length = 120
+
+# Configuración para archivos XML, YAML y YML
+[*.{xml,yml,yaml}]
+# Usar espacios para indentación
+indent_style = space
+# Usar 2 espacios por nivel de indentación (estándar para estos formatos)
+indent_size = 2
+
+# Configuración específica para archivos Markdown
+[*.md]
+# NO eliminar espacios al final (necesarios para saltos de línea en Markdown)
+trim_trailing_whitespace = false

@@ -1,0 +1,92 @@
+{"properties": [
+  {
+    "name": "spring.application.version",
+    "type": "java.lang.String",
+    "description": "Representa la version de la aplicación"
+  },
+  {
+    "name": "spring.data.jpa.[open-in-view]",
+    "type": "java.lang.String",
+    "description": "Mejora la seguridad y rendimiento con el valor false para evitar el EAGER"
+  },
+  {
+    "name": "management.web.server.request.autotime.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'management.web.server.request.autotime.enabled'"
+  },
+  {
+    "name": "spring.data.jpa.open-in-view",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.data.jpa.open-in-view'"
+  },
+  {
+    "name": "management.opentelemetry.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'management.opentelemetry.enabled'"
+  },
+  {
+    "name": "management.opentelemetry.exporter.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'management.opentelemetry.exporter.enabled'"
+  },
+  {
+    "name": "app.swagger.servers",
+    "type": "java.util.List",
+    "description": "A description for 'app.swagger.servers'"
+  },
+  {
+    "name": "app.cors.allowed-origins",
+    "type": "java.util.List",
+    "description": "A description for 'app.cors.allowed-origins'"
+  },
+  {
+    "name": "app.cors.allowed-headers",
+    "type": "java.lang.String",
+    "description": "A description for 'app.cors.allowed-headers'"
+  },
+  {
+    "name": "app.cors.allowed-methods",
+    "type": "java.util.List",
+    "description": "A description for 'app.cors.allowed-methods'"
+  },
+  {
+    "name": "app.cors.allow-credentials",
+    "type": "java.lang.String",
+    "description": "A description for 'app.cors.allow-credentials'"
+  },
+  {
+    "name": "app.interceptor.rendimiento",
+    "type": "java.lang.Boolean",
+    "description": "A description for 'app.interceptor.rendimiento'"
+  },
+  {
+    "name": "management.opentelemetry.exporter.otlp.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'management.opentelemetry.exporter.otlp.enabled'"
+  },
+  {
+    "name": "otel.java.global-autoconfigure.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'otel.java.global-autoconfigure.enabled'"
+  },
+  {
+    "name": "otel.service.name",
+    "type": "java.lang.String",
+    "description": "A description for 'otel.service.name'"
+  },
+  {
+    "name": "otel.resource.attributes.[service.name]",
+    "type": "java.lang.String",
+    "description": "A description for 'otel.resource.attributes.[service.name]'"
+  },
+  {
+    "name": "otel.resource.attributes.[service.version]",
+    "type": "java.lang.String",
+    "description": "A description for 'otel.resource.attributes.[service.version]'"
+  },
+  {
+    "name": "spring.mvc.[throw-exception-if-no-handler-found]",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.mvc.[throw-exception-if-no-handler-found]'"
+  }
+]}

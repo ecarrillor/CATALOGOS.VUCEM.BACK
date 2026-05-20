@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="severity" value="warning"/>
+    <property name="fileExtensions" value="java, properties, xml"/>
+
+    <!-- Excluir Application.java de todas las reglas -->
+    <module name="SuppressionFilter">
+        <property name="file" value="suppressions.xml"/>
+    </module>
+    
+    <!-- Verifica que las líneas no excedan 120 caracteres -->
+    <module name="LineLength">
+        <property name="max" value="120"/>
+    </module>
+
+    <!-- Verifica que no se usen caracteres de tabulación, solo espacios -->
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <module name="TreeWalker">
+        <!-- ========== CONVENCIONES DE NOMBRES ESTÁNDAR ========== -->
+        
+        <!-- Verifica que las constantes usen UPPER_CASE -->
+        <module name="ConstantName"/>
+        
+        <!-- Verifica que las variables locales finales usen camelCase -->
+        <module name="LocalFinalVariableName"/>
+        
+        <!-- Verifica que las variables locales usen camelCase -->
+        <module name="LocalVariableName"/>
+        
+        <!-- Verifica que los miembros de clase usen camelCase -->
+        <module name="MemberName"/>
+        
+        <!-- Verifica que los métodos usen camelCase -->
+        <module name="MethodName"/>
+        
+        <!-- Verifica que los paquetes usen lowercase con puntos -->
+        <module name="PackageName"/>
+        
+        <!-- Verifica que los parámetros usen camelCase -->
+        <module name="ParameterName"/>
+        
+        <!-- Verifica que las variables estáticas usen camelCase -->
+        <module name="StaticVariableName"/>
+
+        <!-- ========== IMPORTS ========== -->
+        
+        <!-- Prohíbe el uso de imports con asterisco (import java.util.*) -->
+        <module name="AvoidStarImport"/>
+                
+        <!-- Detecta imports duplicados -->
+        <module name="RedundantImport"/>
+        
+        <!-- Detecta imports que no se usan en el código -->
+        <module name="UnusedImports"/>
+
+        <!-- ========== VIOLACIONES DE TAMAÑO ========== -->
+        
+        <!-- Verifica que los métodos no excedan cierto número de líneas -->
+        <module name="MethodLength"/>
+        
+        <!-- Verifica que los métodos no tengan demasiados parámetros -->
+        <module name="ParameterNumber"/>
+
+        <!-- ========== ESPACIOS EN BLANCO ========== -->
+        
+        <!-- Verifica espacios en iteradores for vacíos -->
+        <module name="EmptyForIteratorPad"/>
+        
+        <!-- Verifica espacios alrededor de generics <T> -->
+        <module name="GenericWhitespace"/>
+        
+        <!-- Verifica espacios entre nombre de método y paréntesis -->
+        <module name="MethodParamPad"/>
+        
+        <!-- Verifica que no haya espacios después de ciertos tokens -->
+        <module name="NoWhitespaceAfter"/>
+        
+        <!-- Verifica que no haya espacios antes de ciertos tokens -->
+        <module name="NoWhitespaceBefore"/>
+        
+        <!-- Verifica el wrapping de operadores -->
+        <module name="OperatorWrap"/>
+        
+        <!-- Verifica espacios dentro de paréntesis -->
+        <module name="ParenPad"/>
+        
+        <!-- Verifica espacios en cast de tipos -->
+        <module name="TypecastParenPad"/>
+        
+        <!-- Verifica espacios después de comas, semicolons, etc. -->
+        <module name="WhitespaceAfter"/>
+        
+        <!-- Verifica espacios alrededor de operadores y keywords -->
+        <module name="WhitespaceAround"/>
+
+        <!-- ========== MODIFICADORES ========== -->
+        
+        <!-- Verifica el orden correcto de modificadores (public static final) -->
+        <module name="ModifierOrder"/>
+        
+        <!-- Detecta modificadores redundantes (como final en interfaces) -->
+        <module name="RedundantModifier"/>
+
+        <!-- ========== BLOQUES DE CÓDIGO ========== -->
+        
+        <!-- Evita bloques anidados innecesarios -->
+        <module name="AvoidNestedBlocks"/>
+        
+        <!-- Verifica que los bloques vacíos tengan comentarios -->
+        <module name="EmptyBlock"/>
+        
+        <!-- Verifica posición de llaves izquierdas { -->
+        <module name="LeftCurly"/>
+        
+        <!-- Requiere llaves en if, while, for, etc. -->
+        <module name="NeedBraces"/>
+        
+        <!-- Verifica posición de llaves derechas } -->
+        <module name="RightCurly"/>
+
+        <!-- ========== PROBLEMAS COMUNES DE CODIFICACIÓN ========== -->
+        
+        <!-- Detecta statements vacíos (solo ;) -->
+        <module name="EmptyStatement"/>
+        
+        <!-- Verifica que si se sobrescribe equals(), también se sobrescriba hashCode() -->
+        <module name="EqualsHashCode"/>
+        
+        <!-- Detecta cuando parámetros ocultan campos de clase -->
+        <module name="HiddenField">
+            <property name="ignoreConstructorParameter" value="true"/>
+            <property name="ignoreSetter" value="true"/>
+        </module>
+        
+        <!-- Prohíbe instanciación de ciertas clases -->
+        <module name="IllegalInstantiation"/>
+        
+        <!-- Detecta asignaciones dentro de expresiones -->
+        <module name="InnerAssignment"/>
+        
+        <!-- Requiere default case en switch statements -->
+        <module name="MissingSwitchDefault"/>
+        
+        <!-- Simplifica expresiones booleanas complejas -->
+        <module name="SimplifyBooleanExpression"/>
+        
+        <!-- Simplifica returns booleanos -->
+        <module name="SimplifyBooleanReturn"/>
+
+        <!-- ========== DISEÑO DE CLASES ========== -->
+        
+        <!-- Marca clases que deberían ser final -->
+        <module name="FinalClass"/>
+        
+        <!-- Verifica que las utility classes tengan constructor privado -->
+        <module name="HideUtilityClassConstructor"/>
+        
+        <!-- Verifica que las interfaces definan un tipo -->
+        <module name="InterfaceIsType"/>
+        
+        <!-- Controla la visibilidad de campos de clase -->
+        <module name="VisibilityModifier"/>
+
+        <!-- ========== MISCELÁNEOS ========== -->
+        
+        <!-- Prefiere int[] sobre int array[] -->
+        <module name="ArrayTypeStyle"/>
+        
+        <!-- Requiere que los parámetros sean final -->
+        <module name="FinalParameters"/>
+        
+        <!-- Detecta comentarios TODO -->
+        <module name="TodoComment"/>
+        
+        <!-- Requiere L mayúscula en literales long (100L no 100l) -->
+        <module name="UpperEll"/>
+
+        <!-- ========== DOCUMENTACIÓN JAVADOC ========== -->
+        
+        <!-- Requiere JavaDoc para clases públicas -->
+        <module name="MissingJavadocType">
+            <property name="tokens" value="CLASS_DEF,INTERFACE_DEF"/>
+        </module>
+        
+        <!-- Requiere JavaDoc para métodos públicos -->
+        <module name="MissingJavadocMethod">
+            <property name="tokens" value="METHOD_DEF"/>
+            <property name="allowMissingPropertyJavadoc" value="true"/>
+        </module>
+        
+        <!-- Valida el formato del JavaDoc -->
+        <module name="JavadocStyle">
+            <property name="checkFirstSentence" value="true"/>
+            <property name="checkEmptyJavadoc" value="true"/>
+            <property name="checkHtml" value="true"/>
+        </module>
+        
+        <!-- Valida que los parámetros estén documentados -->
+        <module name="JavadocMethod">
+            <property name="validateThrows" value="true"/>
+        </module>
+
+        <!-- ========== ANOTACIONES ========== -->
+        
+        <!-- Verifica la ubicación de las anotaciones -->
+        <module name="AnnotationLocation"/>
+        
+        <!-- Verifica el estilo de uso de anotaciones -->
+        <module name="AnnotationUseStyle"/>
+        
+        <!-- Verifica que se use @Override cuando corresponde -->
+        <module name="MissingOverride"/>
+        
+        <!-- Detecta declaraciones múltiples en una línea (int a, b;) -->
+        <module name="MultipleVariableDeclarations"/>
+        
+        <!-- Verifica que cada variable se declare en su propia línea -->
+        <module name="OneStatementPerLine"/>
+        
+        <!-- Detecta strings literales duplicadas -->
+        <module name="MultipleStringLiterals">
+            <property name="allowedDuplicates" value="2"/>
+        </module>
+        
+        <!-- Verifica complejidad ciclomática de métodos -->
+        <module name="CyclomaticComplexity">
+            <property name="max" value="10"/>
+        </module>
+        
+        <!-- Detecta magic numbers -->
+        <module name="MagicNumber">
+            <property name="ignoreNumbers" value="-1, 0, 1, 2"/>
+            <property name="ignoreHashCodeMethod" value="true"/>
+            <property name="ignoreAnnotation" value="true"/>
+        </module>
+        
+        <!-- Verifica que los catch blocks no estén vacíos -->
+        <module name="EmptyCatchBlock">
+            <property name="exceptionVariableName" value="expected|ignore"/>
+        </module>
+        
+        <!-- Detecta fall-through en switch sin comentario -->
+        <module name="FallThrough"/>
+        
+        <!-- Verifica indentación consistente -->
+        <module name="Indentation">
+            <property name="basicOffset" value="4"/>
+            <property name="braceAdjustment" value="0"/>
+            <property name="caseIndent" value="4"/>
+        </module>
+    </module>
+</module>
